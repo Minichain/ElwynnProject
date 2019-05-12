@@ -1,44 +1,34 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class GUI {
-    private JPanel jPanel;
+public class ElwynnGraphics {
+    private ElwynnJPanel elwynnJPanel;
     private JFrame frame;
-    private int width = 1280;
-    private int height = 720;
 
-    void createJFrame() {
+    public void createJFrame() {
         //create JFrame Instance
         frame = new JFrame();
-        frame.setTitle("JFrame Hello World!");
+        frame.setTitle("ElwynnJFrame");
         frame.setLayout(new BorderLayout());
 
-        frame.setSize(new Dimension(width, height));
+        frame.setSize(new Dimension(Parameters.getInstance().WINDOW_WIDTH, Parameters.getInstance().WINDOW_HEIGHT));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         //this will make the app to always display at the center
         frame.setLocationRelativeTo(null);
     }
 
-    void createJPanel() {
-        jPanel = new JPanel();
-        jPanel.setVisible(true);
-
+    public void createJPanel() {
+        elwynnJPanel = new ElwynnJPanel(Parameters.getInstance().WINDOW_WIDTH, Parameters.getInstance().WINDOW_HEIGHT);
+        elwynnJPanel.setVisible(true);
+        elwynnJPanel.addMyKeyListener();
     }
 
-    public void setWidth(int width) {
-        this.width = width;
+    public void addJPanelToJFrame() {
+        frame.add(elwynnJPanel);
     }
 
-    public int getWidth() {
-        return width;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
-    }
-
-    public int getHeight() {
-        return height;
+    public void updateFrame() {
+        elwynnJPanel.repaint();
     }
 }

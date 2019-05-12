@@ -1,8 +1,36 @@
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        GUI gui = new GUI();
-        gui.createJFrame();
+        long timeElapsed;
+        long lastUpdateTime = 0;
+        long currentTime;
+
+        ElwynnGraphics elwynnGraphics = new ElwynnGraphics();
+        elwynnGraphics.createJFrame();
+        elwynnGraphics.createJPanel();
+        elwynnGraphics.addJPanelToJFrame();
+
+        GameStatus.getInstance().setGameRunning(true);
+
+        //Main game loop
+        while (GameStatus.getInstance().isGameRunning()) {
+            try {
+                //Compute the time elapsed since the last frame
+                currentTime = System.currentTimeMillis();
+                timeElapsed = currentTime - lastUpdateTime;
+
+                elwynnGraphics.updateFrame();
+                Character.getInstance().updateCharacter(timeElapsed);
+                lastUpdateTime = currentTime;
+
+                //Wait time until processing next frame. FPS locked.
+                Thread.sleep(1000 / Parameters.getInstance().FRAMES_PER_SECOND);
+            } catch (InterruptedException e) {
+                System.out.println(e);
+                System.exit(1);
+            }
+        }
+
+        System.exit(1);
     }
 }
