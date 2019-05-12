@@ -13,7 +13,12 @@ public class Character {
         IDLE, RUNNING, JUMPING, DYING;
     }
 
+    public enum Facing {
+        LEFT, RIGHT;
+    }
+
     private Status characterStatus;
+    private Facing characterFacing;
 
     private BufferedImage spriteSheet;
     private BufferedImage sprite;
@@ -29,6 +34,7 @@ public class Character {
         yPosition = Parameters.getInstance().WINDOW_HEIGHT / 2;
         speed = 0.1;
         characterStatus = Status.IDLE;
+        characterFacing = Facing.RIGHT;
 
         try {
             loadSprite();
@@ -52,15 +58,25 @@ public class Character {
     }
 
     public BufferedImage getSprite() {
+        int animation = 0;
+
         switch (characterStatus) {
             case IDLE:
-                sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, 0, spriteWidth - 1, spriteHeight - 1);
+                if (characterFacing == Facing.RIGHT) {
+                    animation= 0;
+                } else if (characterFacing == Facing.LEFT) {
+                    animation= 1;
+                }
                 break;
             case RUNNING:
-                int animation = 1;
-                sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
+                if (characterFacing == Facing.RIGHT) {
+                    animation= 2;
+                } else if (characterFacing == Facing.LEFT) {
+                    animation= 3;
+                }
                 break;
         }
+        sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
         return sprite;
     }
 
@@ -85,6 +101,7 @@ public class Character {
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
             characterStatus = Status.RUNNING;
+            characterFacing = Facing.LEFT;
             xPosition = xPosition - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().issKeyPressed()) {
@@ -93,6 +110,7 @@ public class Character {
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
             characterStatus = Status.RUNNING;
+            characterFacing = Facing.RIGHT;
             xPosition = xPosition + timeElapsed * speed;
         }
 
