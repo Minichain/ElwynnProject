@@ -8,6 +8,7 @@ public class MyKeyListener extends KeyAdapter {
     private boolean aKeyPressed;
     private boolean sKeyPressed;
     private boolean dKeyPressed;
+    private boolean spaceKeyPressed;
 
     private MyKeyListener() {
     }
@@ -41,6 +42,13 @@ public class MyKeyListener extends KeyAdapter {
             case "D":
                 dKeyPressed = true;
                 break;
+            case "Space":
+                Character character = Character.getInstance();
+                if (!spaceKeyPressed && character.getCharacterStatus() != Character.Status.JUMPING) {
+                    character.performJump();
+                }
+                spaceKeyPressed = true;
+                break;
         }
     }
 
@@ -60,6 +68,9 @@ public class MyKeyListener extends KeyAdapter {
                 break;
             case "D":
                 dKeyPressed = false;
+                break;
+            case "Space":
+                spaceKeyPressed = false;
                 break;
         }
     }

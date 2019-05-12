@@ -27,12 +27,13 @@ public class Character {
     private int spriteHeight;
     private int idleFrames = 8;
     private int runningFrames = 6;
+    private int jumpingFrames = 6;
     private float scale = 2;
 
     private Character() {
         xPosition = Parameters.getInstance().WINDOW_WIDTH / 2;
         yPosition = Parameters.getInstance().WINDOW_HEIGHT / 2;
-        speed = 0.1;
+        speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Facing.RIGHT;
 
@@ -75,6 +76,13 @@ public class Character {
                     animation= 3;
                 }
                 break;
+            case JUMPING:
+                if (characterFacing == Facing.RIGHT) {
+                    animation= 4;
+                } else if (characterFacing == Facing.LEFT) {
+                    animation= 5;
+                }
+                break;
         }
         sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
         return sprite;
@@ -93,23 +101,33 @@ public class Character {
     }
 
     public void updateCharacter(long timeElapsed) {
-        characterStatus = Status.IDLE;
+        if (characterStatus != Status.JUMPING) {
+            characterStatus = Status.IDLE;
+        }
 
         if (MyKeyListener.getInstance().iswKeyPressed()) {
-            characterStatus = Status.RUNNING;
+            if (characterStatus != Status.JUMPING) {
+                characterStatus = Status.RUNNING;
+            }
             yPosition = yPosition - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
-            characterStatus = Status.RUNNING;
+            if (characterStatus != Status.JUMPING) {
+                characterStatus = Status.RUNNING;
+            }
             characterFacing = Facing.LEFT;
             xPosition = xPosition - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().issKeyPressed()) {
-            characterStatus = Status.RUNNING;
+            if (characterStatus != Status.JUMPING) {
+                characterStatus = Status.RUNNING;
+            }
             yPosition = yPosition + timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
-            characterStatus = Status.RUNNING;
+            if (characterStatus != Status.JUMPING) {
+                characterStatus = Status.RUNNING;
+            }
             characterFacing = Facing.RIGHT;
             xPosition = xPosition + timeElapsed * speed;
         }
@@ -120,6 +138,13 @@ public class Character {
                 break;
             case RUNNING:
                 spriteFrame = (spriteFrame + (timeElapsed * 0.01)) % runningFrames;
+                break;
+            case JUMPING:
+                if (spriteFrame >= (jumpingFrames - 1)) {
+                    characterStatus = Status.IDLE;
+                } else {
+                    spriteFrame = (spriteFrame + (timeElapsed * 0.01)) % jumpingFrames;
+                }
                 break;
         }
     }
@@ -138,5 +163,14 @@ public class Character {
 
     public double getYPosition() {
         return yPosition;
+    }
+
+    public Status getCharacterStatus() {
+        return characterStatus;
+    }
+
+    public void performJump() {
+        spriteFrame = 0;
+        characterStatus = Status.JUMPING;
     }
 }
