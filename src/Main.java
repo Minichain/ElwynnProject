@@ -19,12 +19,12 @@ public class Main {
                 currentTime = System.currentTimeMillis();
                 timeElapsed = currentTime - lastUpdateTime;
 
-                elwynnGraphics.updateFrame();
                 Character.getInstance().updateCharacter(timeElapsed);
+                elwynnGraphics.updateFrame(timeElapsed);
                 lastUpdateTime = currentTime;
 
                 //Wait time until processing next frame. FPS locked.
-                Thread.sleep(1000 / Parameters.getInstance().FRAMES_PER_SECOND);
+                Thread.sleep(1000 / Parameters.getInstance().getFramesPerSecond());
             } catch (InterruptedException e) {
                 System.out.println(e);
                 System.exit(1);

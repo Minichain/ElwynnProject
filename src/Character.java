@@ -5,8 +5,8 @@ import java.io.IOException;
 
 public class Character {
     private static Character instance = null;
-    private double xPosition;
-    private double yPosition;
+    private double xCoordinate;
+    private double yCoordinate;
     private double speed;
 
     public enum Status {
@@ -31,8 +31,8 @@ public class Character {
     private float scale = 2;
 
     private Character() {
-        xPosition = Parameters.getInstance().WINDOW_WIDTH / 2;
-        yPosition = Parameters.getInstance().WINDOW_HEIGHT / 2;
+        xCoordinate = Parameters.getInstance().getWindowWidth() / 2;
+        yCoordinate = Parameters.getInstance().getWindowHeight() / 2;
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Facing.RIGHT;
@@ -59,27 +59,28 @@ public class Character {
     }
 
     public BufferedImage getSprite() {
-        int animation = 0;
+        int animation;
 
         switch (characterStatus) {
+            default:
             case IDLE:
                 if (characterFacing == Facing.RIGHT) {
                     animation= 0;
-                } else if (characterFacing == Facing.LEFT) {
+                } else {
                     animation= 1;
                 }
                 break;
             case RUNNING:
                 if (characterFacing == Facing.RIGHT) {
                     animation= 2;
-                } else if (characterFacing == Facing.LEFT) {
+                } else {
                     animation= 3;
                 }
                 break;
             case JUMPING:
                 if (characterFacing == Facing.RIGHT) {
                     animation= 4;
-                } else if (characterFacing == Facing.LEFT) {
+                } else {
                     animation= 5;
                 }
                 break;
@@ -109,27 +110,27 @@ public class Character {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
-            yPosition = yPosition - timeElapsed * speed;
+            yCoordinate = yCoordinate - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
             characterFacing = Facing.LEFT;
-            xPosition = xPosition - timeElapsed * speed;
+            xCoordinate = xCoordinate - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().issKeyPressed()) {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
-            yPosition = yPosition + timeElapsed * speed;
+            yCoordinate = yCoordinate + timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
             characterFacing = Facing.RIGHT;
-            xPosition = xPosition + timeElapsed * speed;
+            xCoordinate = xCoordinate + timeElapsed * speed;
         }
 
         switch(characterStatus) {
@@ -149,20 +150,17 @@ public class Character {
         }
     }
 
-    public void setXPosition(double x) {
-        xPosition = x;
+    public double getxCoordinate() {
+        return xCoordinate;
     }
 
-    public double getXPosition() {
-        return xPosition;
+    public double getyCoordinate() {
+        return yCoordinate;
     }
 
-    public void setYPosition(double y) {
-        yPosition = y;
-    }
-
-    public double getYPosition() {
-        return yPosition;
+    public void setCoordinates(int x, int y) {
+        xCoordinate = x;
+        yCoordinate = y;
     }
 
     public Status getCharacterStatus() {

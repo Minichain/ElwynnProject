@@ -14,16 +14,25 @@ public class ElwynnJPanel extends JPanel {
 
     public void paint(Graphics g){
         super.paint(g); // cleans the panel
-//        g.fillRect((int)Character.getInstance().getXPosition(),
-//                (int)Character.getInstance().getYPosition(),
-//                40,
-//                40);
+
+        g.drawImage(Scene.getInstance().getSprite(),
+                0 - Camera.getInstance().getxCoordinate() + (Parameters.getInstance().getWindowWidth() / 2),
+                0 - Camera.getInstance().getyCoordinate() + (Parameters.getInstance().getWindowHeight() / 2),
+                (int)(Scene.getInstance().getSpriteWidth() * Scene.getInstance().getScale()),
+                (int)(Scene.getInstance().getSpriteHeight() * Scene.getInstance().getScale()),
+                null);
 
         g.drawImage(Character.getInstance().getSprite(),
-                (int)Character.getInstance().getXPosition(),
-                (int)Character.getInstance().getYPosition(),
+                (int)Character.getInstance().getxCoordinate()
+                        - Camera.getInstance().getxCoordinate()
+                        + (Parameters.getInstance().getWindowWidth() / 2)
+                        - (Character.getInstance().getSpriteWidth() / 2),
+                (int)Character.getInstance().getyCoordinate()
+                        - Camera.getInstance().getyCoordinate()
+                        + (Parameters.getInstance().getWindowHeight() / 2)
+                        - (Character.getInstance().getSpriteHeight() / 2),
                 (int)(Character.getInstance().getSpriteWidth() * Character.getInstance().getScale()),
                 (int)(Character.getInstance().getSpriteHeight() * Character.getInstance().getScale()),
-                this);
+                null);
     }
 }

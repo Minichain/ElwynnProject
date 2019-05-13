@@ -11,7 +11,27 @@ public class Parameters {
         return instance;
     }
 
-    public int FRAMES_PER_SECOND = 60;
-    public int WINDOW_WIDTH = 1280;
-    public int WINDOW_HEIGHT = 720;
+    public int framesPerSecond = 60;
+    public int windowWidth = 1280;
+    public int windowHeight = 720;
+
+    public void setWindowWidth(int width) {
+        windowWidth = width;
+    }
+
+    public void setWindowHeight(int height) {
+        windowHeight = height;
+    }
+
+    public int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public int getWindowHeight() {
+        return windowHeight;
+    }
+
+    public int getFramesPerSecond() {
+        return framesPerSecond;
+    }
 }

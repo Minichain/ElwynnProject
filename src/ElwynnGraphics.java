@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class ElwynnGraphics {
     private ElwynnJPanel elwynnJPanel;
@@ -11,7 +13,7 @@ public class ElwynnGraphics {
         frame.setTitle("ElwynnJFrame");
         frame.setLayout(new BorderLayout());
 
-        frame.setSize(new Dimension(Parameters.getInstance().WINDOW_WIDTH, Parameters.getInstance().WINDOW_HEIGHT));
+        frame.setSize(new Dimension(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight()));
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
         //this will make the app to always display at the center
@@ -19,16 +21,27 @@ public class ElwynnGraphics {
     }
 
     public void createJPanel() {
-        elwynnJPanel = new ElwynnJPanel(Parameters.getInstance().WINDOW_WIDTH, Parameters.getInstance().WINDOW_HEIGHT);
+        elwynnJPanel = new ElwynnJPanel(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight());
         elwynnJPanel.setVisible(true);
         elwynnJPanel.addMyKeyListener();
+
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent componentEvent) {
+                int newWidth = componentEvent.getComponent().getWidth();
+                int newHeight = componentEvent.getComponent().getHeight();
+                System.out.println("JFrame resized, newWidth: " + newWidth + ", newHeight: " + newHeight);
+                Parameters.getInstance().setWindowWidth(newWidth);
+                Parameters.getInstance().setWindowHeight(newHeight);
+            }
+        });
     }
 
     public void addJPanelToJFrame() {
         frame.add(elwynnJPanel);
     }
 
-    public void updateFrame() {
+    public void updateFrame(long timeElapsed) {
+        Camera.getInstance().setCoordinates((int)Character.getInstance().getxCoordinate(), (int)Character.getInstance().getyCoordinate());
         elwynnJPanel.repaint();
     }
 }
