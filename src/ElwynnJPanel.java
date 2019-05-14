@@ -34,5 +34,8 @@ public class ElwynnJPanel extends JPanel {
                 (int)(Character.getInstance().getSpriteWidth() * Character.getInstance().getScale()),
                 (int)(Character.getInstance().getSpriteHeight() * Character.getInstance().getScale()),
                 null);
+
+        g.drawString("X: " + Character.getInstance().getxCoordinate(), 10, 20);
+        g.drawString("Y: " + Character.getInstance().getyCoordinate(), 10, 35);
     }
 }

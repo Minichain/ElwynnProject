@@ -5,34 +5,34 @@ import java.io.IOException;
 
 public class Character {
     private static Character instance = null;
-    private double xCoordinate;
-    private double yCoordinate;
-    private double speed;
+    private static double xCoordinate;
+    private static double yCoordinate;
+    private static double speed;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING;
     }
 
     public enum Facing {
-        LEFT, RIGHT;
+        LEFT, RIGHT, UP, DOWN;
     }
 
-    private Status characterStatus;
-    private Facing characterFacing;
+    private static Status characterStatus;
+    private static Facing characterFacing;
 
-    private BufferedImage spriteSheet;
-    private BufferedImage sprite;
-    private double spriteFrame;
-    private int spriteWidth;
-    private int spriteHeight;
-    private int idleFrames = 8;
-    private int runningFrames = 6;
-    private int jumpingFrames = 6;
-    private float scale = 2;
+    private static BufferedImage spriteSheet;
+    private static BufferedImage sprite;
+    private static double spriteFrame;
+    private static int spriteWidth;
+    private static int spriteHeight;
+    private static int idleFrames;
+    private static int runningFrames;
+    private static int specialAnimationFrames;
+    private static float scale;
 
     private Character() {
-        xCoordinate = Parameters.getInstance().getWindowWidth() / 2;
-        yCoordinate = Parameters.getInstance().getWindowHeight() / 2;
+        xCoordinate = Scene.getInstance().getSpriteWidth() / 2;
+        yCoordinate = Scene.getInstance().getSpriteHeight() / 2;
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Facing.RIGHT;
@@ -52,10 +52,26 @@ public class Character {
     }
 
     private void loadSprite() throws IOException {
-        String path = "res/Sprites/WolfSprites/80x48Wolf_FullSheet.png";
+        String path;
+//        path = "res/Sprites/characters/80x48Wolf_FullSheet.png";
+        path = "res/Sprites/characters/51x72bardo_character_01.png";
         spriteSheet = ImageIO.read(new File(path));
-        spriteWidth = 80;
-        spriteHeight = 48;
+
+        //Bard
+        spriteWidth = 51;
+        spriteHeight = 72;
+        scale = 1.25f;
+        idleFrames = 1;
+        runningFrames = 3;
+        specialAnimationFrames = 4;
+
+//        //Wolf
+//        spriteWidth = 80;
+//        spriteHeight = 48;
+//        scale = 2;
+//        idleFrames = 8;
+//        runningFrames = 6;
+//        specialAnimationFrames = 6;
     }
 
     public BufferedImage getSprite() {
@@ -64,25 +80,29 @@ public class Character {
         switch (characterStatus) {
             default:
             case IDLE:
-                if (characterFacing == Facing.RIGHT) {
-                    animation= 0;
+                if (characterFacing == Facing.DOWN) {
+                    animation= 4;
+                } else if (characterFacing == Facing.LEFT) {
+                    animation= 5;
+                } else if (characterFacing == Facing.RIGHT) {
+                    animation= 6;
                 } else {
-                    animation= 1;
+                    animation= 7;
                 }
                 break;
             case RUNNING:
-                if (characterFacing == Facing.RIGHT) {
+                if (characterFacing == Facing.DOWN) {
+                    animation= 0;
+                } else if (characterFacing == Facing.LEFT) {
+                    animation= 1;
+                } else if (characterFacing == Facing.RIGHT) {
                     animation= 2;
                 } else {
                     animation= 3;
                 }
                 break;
             case JUMPING:
-                if (characterFacing == Facing.RIGHT) {
-                    animation= 4;
-                } else {
-                    animation= 5;
-                }
+                animation= 8;
                 break;
         }
         sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
@@ -110,6 +130,7 @@ public class Character {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
+            characterFacing = Facing.UP;
             yCoordinate = yCoordinate - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
@@ -123,6 +144,7 @@ public class Character {
             if (characterStatus != Status.JUMPING) {
                 characterStatus = Status.RUNNING;
             }
+            characterFacing = Facing.DOWN;
             yCoordinate = yCoordinate + timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
@@ -141,10 +163,10 @@ public class Character {
                 spriteFrame = (spriteFrame + (timeElapsed * 0.01)) % runningFrames;
                 break;
             case JUMPING:
-                if (spriteFrame >= (jumpingFrames - 1)) {
+                if (spriteFrame >= (specialAnimationFrames - 1)) {
                     characterStatus = Status.IDLE;
                 } else {
-                    spriteFrame = (spriteFrame + (timeElapsed * 0.01)) % jumpingFrames;
+                    spriteFrame = (spriteFrame + (timeElapsed * 0.01)) % specialAnimationFrames;
                 }
                 break;
         }

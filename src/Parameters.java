@@ -1,7 +1,7 @@
 public class Parameters {
     private static Parameters instance = null;
 
-    Parameters() {
+    private Parameters() {
     }
 
     public static Parameters getInstance() {
@@ -11,9 +11,9 @@ public class Parameters {
         return instance;
     }
 
-    public int framesPerSecond = 60;
-    public int windowWidth = 1280;
-    public int windowHeight = 720;
+    private static int framesPerSecond = 60;
+    private static int windowWidth = 1280;
+    private static int windowHeight = 720;
 
     public void setWindowWidth(int width) {
         windowWidth = width;
