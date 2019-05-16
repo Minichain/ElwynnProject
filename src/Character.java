@@ -6,19 +6,18 @@ import java.io.IOException;
 public class Character {
     private static Character instance = null;
     private static double xCoordinate;
+    private static double previousXCoordinate;
     private static double yCoordinate;
+    private static double previousYCoordinate;
     private static double speed;
+    private static double[] displacementVector;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING;
     }
 
-    public enum Facing {
-        LEFT, RIGHT, UP, DOWN;
-    }
-
     private static Status characterStatus;
-    private static Facing characterFacing;
+    private static Utils.DirectionFacing characterFacing;
 
     private static BufferedImage spriteSheet;
     private static BufferedImage sprite;
@@ -35,7 +34,8 @@ public class Character {
         yCoordinate = Scene.getInstance().getSpriteHeight() / 2;
         speed = 0.25;
         characterStatus = Status.IDLE;
-        characterFacing = Facing.RIGHT;
+        characterFacing = Utils.DirectionFacing.RIGHT;
+        displacementVector = new double[2];
 
         try {
             loadSprite();
@@ -80,22 +80,22 @@ public class Character {
         switch (characterStatus) {
             default:
             case IDLE:
-                if (characterFacing == Facing.DOWN) {
+                if (characterFacing == Utils.DirectionFacing.DOWN) {
                     animation= 4;
-                } else if (characterFacing == Facing.LEFT) {
+                } else if (characterFacing == Utils.DirectionFacing.LEFT) {
                     animation= 5;
-                } else if (characterFacing == Facing.RIGHT) {
+                } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
                     animation= 6;
                 } else {
                     animation= 7;
                 }
                 break;
             case RUNNING:
-                if (characterFacing == Facing.DOWN) {
+                if (characterFacing == Utils.DirectionFacing.DOWN) {
                     animation= 0;
-                } else if (characterFacing == Facing.LEFT) {
+                } else if (characterFacing == Utils.DirectionFacing.LEFT) {
                     animation= 1;
-                } else if (characterFacing == Facing.RIGHT) {
+                } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
                     animation= 2;
                 } else {
                     animation= 3;
@@ -122,37 +122,43 @@ public class Character {
     }
 
     public void updateCharacter(long timeElapsed) {
+        previousXCoordinate = xCoordinate;
+        previousYCoordinate = yCoordinate;
         if (characterStatus != Status.JUMPING) {
             characterStatus = Status.IDLE;
         }
 
+        double[] movement = new double[2];
         if (MyKeyListener.getInstance().iswKeyPressed()) {
-            if (characterStatus != Status.JUMPING) {
-                characterStatus = Status.RUNNING;
-            }
-            characterFacing = Facing.UP;
-            yCoordinate = yCoordinate - timeElapsed * speed;
+            movement[1] = - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
-            if (characterStatus != Status.JUMPING) {
-                characterStatus = Status.RUNNING;
-            }
-            characterFacing = Facing.LEFT;
-            xCoordinate = xCoordinate - timeElapsed * speed;
+            movement[0] = - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().issKeyPressed()) {
-            if (characterStatus != Status.JUMPING) {
-                characterStatus = Status.RUNNING;
-            }
-            characterFacing = Facing.DOWN;
-            yCoordinate = yCoordinate + timeElapsed * speed;
+            movement[1] = + timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
-            if (characterStatus != Status.JUMPING) {
-                characterStatus = Status.RUNNING;
-            }
-            characterFacing = Facing.RIGHT;
-            xCoordinate = xCoordinate + timeElapsed * speed;
+            movement[0] = + timeElapsed * speed;
+        }
+
+        //Normalize movement
+        if (movement[0] != 0 && movement[1] != 0) {
+            movement[0] *= 0.75;
+            movement[1] *= 0.75;
+        }
+
+        if (!checkCollision((int)(xCoordinate + movement[0]), (int)(yCoordinate + movement[1]))) {
+            xCoordinate += movement[0];
+            yCoordinate += movement[1];
+        }
+
+        displacementVector[0] = xCoordinate - previousXCoordinate;
+        displacementVector[1] = yCoordinate - previousYCoordinate;
+
+        if (isRunning() && characterStatus != Status.JUMPING) {
+            characterFacing = Utils.checkDirectionFacing(displacementVector);
+            characterStatus = Status.RUNNING;
         }
 
         switch(characterStatus) {
@@ -170,6 +176,15 @@ public class Character {
                 }
                 break;
         }
+    }
+
+    public boolean checkCollision(int x, int y) {
+        int pixelValue = Scene.getInstance().getCollisionsMap().getRGB(x, y);
+        return pixelValue != 0;
+    }
+
+    public boolean isRunning() {
+        return (displacementVector[0] != 0 || displacementVector[1] != 0);
     }
 
     public double getxCoordinate() {

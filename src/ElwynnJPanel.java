@@ -18,9 +18,18 @@ public class ElwynnJPanel extends JPanel {
         g.drawImage(Scene.getInstance().getSprite(),
                 0 - Camera.getInstance().getxCoordinate() + (Parameters.getInstance().getWindowWidth() / 2),
                 0 - Camera.getInstance().getyCoordinate() + (Parameters.getInstance().getWindowHeight() / 2),
-                (int)(Scene.getInstance().getSpriteWidth() * Scene.getInstance().getScale()),
-                (int)(Scene.getInstance().getSpriteHeight() * Scene.getInstance().getScale()),
+                (Scene.getInstance().getSpriteWidth()),
+                (Scene.getInstance().getSpriteHeight()),
                 null);
+
+        if (Parameters.getInstance().isDebugMode()) {
+            g.drawImage(Scene.getInstance().getCollisionsMap(),
+                    0 - Camera.getInstance().getxCoordinate() + (Parameters.getInstance().getWindowWidth() / 2),
+                    0 - Camera.getInstance().getyCoordinate() + (Parameters.getInstance().getWindowHeight() / 2),
+                    (Scene.getInstance().getSpriteWidth()),
+                    (Scene.getInstance().getSpriteHeight()),
+                    null);
+        }
 
         g.drawImage(Character.getInstance().getSprite(),
                 (int)Character.getInstance().getxCoordinate()
@@ -35,7 +44,7 @@ public class ElwynnJPanel extends JPanel {
                 (int)(Character.getInstance().getSpriteHeight() * Character.getInstance().getScale()),
                 null);
 
-        g.drawString("X: " + Character.getInstance().getxCoordinate(), 10, 20);
-        g.drawString("Y: " + Character.getInstance().getyCoordinate(), 10, 35);
+        g.drawString("X: " + (int)Character.getInstance().getxCoordinate(), 10, 20);
+        g.drawString("Y: " + (int)Character.getInstance().getyCoordinate(), 10, 35);
     }
 }
