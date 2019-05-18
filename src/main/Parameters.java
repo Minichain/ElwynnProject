@@ -1,3 +1,5 @@
+package main;
+
 public class Parameters {
     private static Parameters instance = null;
     private static int framesPerSecond;

@@ -1,11 +1,13 @@
+package entities;
+
+import main.Coordinates;
+
 public class Camera {
     private static Camera instance = null;
-    int xCoordinate;
-    int yCoordinate;
+    Coordinates coordinates;
 
     Camera() {
-        xCoordinate = 0;
-        yCoordinate = 0;
+        coordinates = new Coordinates(0, 0);
     }
 
     public static Camera getInstance() {
@@ -15,16 +17,12 @@ public class Camera {
         return instance;
     }
 
-    public int getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public int getyCoordinate() {
-        return yCoordinate;
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 
     public void setCoordinates(int x, int y) {
-        xCoordinate = x;
-        yCoordinate = y;
+        coordinates.setxCoordinate(x);
+        coordinates.setyCoordinate(y);
     }
 }

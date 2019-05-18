@@ -1,14 +1,19 @@
+package entities;
+
+import listeners.MyKeyListener;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+import main.Coordinates;
+import main.Utils;
+
 public class Character {
     private static Character instance = null;
-    private static double xCoordinate;
-    private static double previousXCoordinate;
-    private static double yCoordinate;
-    private static double previousYCoordinate;
+    private static Coordinates currentCoordinates;
+    private static Coordinates previousCoordinates;
     private static double speed;
     private static double[] displacementVector;
 
@@ -30,8 +35,8 @@ public class Character {
     private static float scale;
 
     private Character() {
-        xCoordinate = Scene.getInstance().getSpriteWidth() / 2;
-        yCoordinate = Scene.getInstance().getSpriteHeight() / 2;
+        currentCoordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
+        previousCoordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;
@@ -53,8 +58,8 @@ public class Character {
 
     private void loadSprite() throws IOException {
         String path;
-//        path = "res/Sprites/characters/80x48Wolf_FullSheet.png";
-        path = "res/Sprites/characters/51x72bardo_character_01.png";
+//        path = "res/sprites/characters/80x48Wolf_FullSheet.png";
+        path = "res/sprites/characters/51x72bardo_character_01.png";
         spriteSheet = ImageIO.read(new File(path));
 
         //Bard
@@ -122,39 +127,39 @@ public class Character {
     }
 
     public void updateCharacter(long timeElapsed) {
-        previousXCoordinate = xCoordinate;
-        previousYCoordinate = yCoordinate;
+        previousCoordinates.setxCoordinate(currentCoordinates.getxCoordinate());
+        previousCoordinates.setyCoordinate(currentCoordinates.getyCoordinate());
         if (characterStatus != Status.JUMPING) {
             characterStatus = Status.IDLE;
         }
 
         double[] movement = new double[2];
         if (MyKeyListener.getInstance().iswKeyPressed()) {
-            movement[1] = - timeElapsed * speed;
+            movement[1] = movement[1] - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isaKeyPressed()) {
-            movement[0] = - timeElapsed * speed;
+            movement[0] = movement[0] - timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().issKeyPressed()) {
-            movement[1] = + timeElapsed * speed;
+            movement[1] = movement[1] + timeElapsed * speed;
         }
         if (MyKeyListener.getInstance().isdKeyPressed()) {
-            movement[0] = + timeElapsed * speed;
+            movement[0] = movement[0] + timeElapsed * speed;
         }
 
-        //Normalize movement
+        //Normalize movement. The module of the movement vector must stay close to 1.
         if (movement[0] != 0 && movement[1] != 0) {
             movement[0] *= 0.75;
             movement[1] *= 0.75;
         }
 
-        if (!checkCollision((int)(xCoordinate + movement[0]), (int)(yCoordinate + movement[1]))) {
-            xCoordinate += movement[0];
-            yCoordinate += movement[1];
+        if (!checkCollision((int)(currentCoordinates.getxCoordinate() + movement[0]), (int)(currentCoordinates.getyCoordinate() + movement[1]))) {
+            currentCoordinates.setxCoordinate(currentCoordinates.getxCoordinate() + movement[0]);
+            currentCoordinates.setyCoordinate(currentCoordinates.getyCoordinate() + movement[1]);
         }
 
-        displacementVector[0] = xCoordinate - previousXCoordinate;
-        displacementVector[1] = yCoordinate - previousYCoordinate;
+        displacementVector[0] = currentCoordinates.getxCoordinate() - previousCoordinates.getxCoordinate();
+        displacementVector[1] = currentCoordinates.getyCoordinate() - previousCoordinates.getyCoordinate();
 
         if (isRunning() && characterStatus != Status.JUMPING) {
             characterFacing = Utils.checkDirectionFacing(displacementVector);
@@ -187,17 +192,13 @@ public class Character {
         return (displacementVector[0] != 0 || displacementVector[1] != 0);
     }
 
-    public double getxCoordinate() {
-        return xCoordinate;
-    }
-
-    public double getyCoordinate() {
-        return yCoordinate;
+    public Coordinates getCurrentCoordinates() {
+        return currentCoordinates;
     }
 
     public void setCoordinates(int x, int y) {
-        xCoordinate = x;
-        yCoordinate = y;
+        currentCoordinates.setxCoordinate(x);
+        currentCoordinates.setyCoordinate(y);
     }
 
     public Status getCharacterStatus() {

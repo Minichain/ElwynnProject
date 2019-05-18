@@ -1,3 +1,7 @@
+package listeners;
+
+import main.Parameters;
+import entities.Character;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -27,7 +31,7 @@ public class MyKeyListener extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
+//        System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
 
         switch (KeyEvent.getKeyText(e.getKeyCode())) {
             case "W":

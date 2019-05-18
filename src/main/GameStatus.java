@@ -1,3 +1,5 @@
+package main;
+
 public class GameStatus {
     private static GameStatus instance = null;
     private boolean gameRunning;

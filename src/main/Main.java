@@ -1,3 +1,7 @@
+package main;
+
+import entities.Character;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -12,7 +16,7 @@ public class Main {
 
         GameStatus.getInstance().setGameRunning(true);
 
-        //Main game loop
+        //main.Main game loop
         while (GameStatus.getInstance().isGameRunning()) {
             try {
                 //Compute the time elapsed since the last frame

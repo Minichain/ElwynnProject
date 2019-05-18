@@ -1,3 +1,8 @@
+package main;
+
+import entities.Camera;
+import entities.Character;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
@@ -24,6 +29,7 @@ public class ElwynnGraphics {
         elwynnJPanel = new ElwynnJPanel(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight());
         elwynnJPanel.setVisible(true);
         elwynnJPanel.addMyKeyListener();
+        elwynnJPanel.addMyMouseListener();
 
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent componentEvent) {
@@ -41,7 +47,8 @@ public class ElwynnGraphics {
     }
 
     public void updateFrame(long timeElapsed) {
-        Camera.getInstance().setCoordinates((int)Character.getInstance().getxCoordinate(), (int)Character.getInstance().getyCoordinate());
+        Camera.getInstance().setCoordinates((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), (int)Character.getInstance().getCurrentCoordinates().getyCoordinate());
+        elwynnJPanel.setTimeElapsed(timeElapsed);
         elwynnJPanel.repaint();
     }
 }
