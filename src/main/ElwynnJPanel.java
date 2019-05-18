@@ -37,6 +37,8 @@ public class ElwynnJPanel extends JPanel {
         super.paint(g); // cleans the panel
 
         double[] localCoordinates;
+
+        /** SCENE BACKGROUND IS DRAWN FIRST **/
         localCoordinates = Scene.getInstance().getCoordinates().toLocalCoordinates();
         g.drawImage(Scene.getInstance().getSprite(),
                 (int)localCoordinates[0],
@@ -45,17 +47,21 @@ public class ElwynnJPanel extends JPanel {
                 Scene.getInstance().getSpriteHeight(),
                 null);
 
+
+        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
         Entity entity;
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
-            System.out.println("Painting tree Nº " + (i + 1) + " at (" + entity.getCoordinates().getxCoordinate() + ", " + entity.getCoordinates().getyCoordinate());
+//            System.out.println("Painting tree Nº " + (i + 1)
+//                    + " at (" + entity.getCoordinates().getxCoordinate()
+//                    + ", " + entity.getCoordinates().getyCoordinate());
             localCoordinates = entity.getCoordinates().toLocalCoordinates();
             g.drawImage(entity.getSprite(),
                     (int)localCoordinates[0]
                             - (entity.getSprite().getWidth() / 2),
                     (int)localCoordinates[1]
-                            - (entity.getSprite().getHeight() / 2),
+                            - (int)(entity.getSprite().getHeight() * 0.75),
                     entity.getSprite().getWidth(),
                     entity.getSprite().getHeight(),
                     null);

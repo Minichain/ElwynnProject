@@ -7,6 +7,7 @@ import java.io.IOException;
 
 public class Tree extends StaticEntity {
     private BufferedImage sprite;
+    private int typesOfTrees = 6;
 
     public Tree(int x, int y) {
         super(x, y);
@@ -19,7 +20,8 @@ public class Tree extends StaticEntity {
 
     private void loadSprite() throws IOException {
         String path;
-        path = "res/sprites/tree_01.png";
+        int random = (int)((Math.random() * 100) % typesOfTrees) + 1;
+        path = "res/sprites/tree_0" + random + ".png";
         sprite = ImageIO.read(new File(path));
     }
 
