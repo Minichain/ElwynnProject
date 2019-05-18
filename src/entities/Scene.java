@@ -14,20 +14,20 @@ public class Scene {
     private static Scene instance = null;
 
     private static Coordinates coordinates;
-    private static BufferedImage sprite;
+    private BufferedImage sprite;
     private static BufferedImage collisionsMap;
     private static int spriteWidth;
     private static int spriteHeight;
     private static float scale = 2;
 
-    private static List<Tree> listOfTrees = new ArrayList<>();
+    private static List<Entity> listOfEntities = new ArrayList<>();
 
     private Scene() {
         coordinates = new Coordinates(0, 0);
 
         try {
             loadSprite();
-            loadCollisionsMap();
+//            loadCollisionsMap();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -78,7 +78,32 @@ public class Scene {
         return scale;
     }
 
-    public List<Tree> getListOfTrees() {
-        return listOfTrees;
+    public void sortListOfEntitiesByDepth() {
+        int numberOfTrees = listOfEntities.size();
+        if (numberOfTrees <= 1) {
+            return;
+        }
+
+        List<Entity> tempListOfTrees = new ArrayList<>();
+        Entity minDepthTree =  null;
+        for (int i = 0; i < numberOfTrees; i++) {
+            double minDepth = 10000;
+            for (int j = 0; j < listOfEntities.size(); j++) {
+                if (listOfEntities.get(j).getCoordinates().getyCoordinate() < minDepth) {
+                    minDepth = listOfEntities.get(j).getCoordinates().getyCoordinate();
+                    minDepthTree = listOfEntities.get(j);
+                }
+            }
+            if (minDepthTree != null) {
+                listOfEntities.remove(minDepthTree);
+                tempListOfTrees.add(minDepthTree);
+            }
+        }
+        listOfEntities = tempListOfTrees;
+    }
+
+    public List<Entity> getListOfEntities() {
+        sortListOfEntitiesByDepth();
+        return listOfEntities;
     }
 }

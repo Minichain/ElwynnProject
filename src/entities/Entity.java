@@ -2,7 +2,9 @@ package entities;
 
 import main.Coordinates;
 
-public class Entity {
+import java.awt.image.BufferedImage;
+
+public abstract class Entity {
     private Coordinates coordinates;
 
     public Entity(int x, int y) {
@@ -16,4 +18,6 @@ public class Entity {
     public void setCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;
     }
+
+    public abstract BufferedImage getSprite();
 }

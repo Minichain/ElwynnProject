@@ -27,7 +27,7 @@ public class MyMouseListener implements MouseListener {
         System.out.println("New tree created at " + e.getX() + ", " + e.getY());
         Tree newTree = new Tree(e.getX() + (int)Camera.getInstance().getCoordinates().getxCoordinate() - (Parameters.getInstance().getWindowWidth() / 2),
                 e.getY() + (int)Camera.getInstance().getCoordinates().getyCoordinate() - (Parameters.getInstance().getWindowHeight() / 2));
-        Scene.getInstance().getListOfTrees().add(newTree);
+        Scene.getInstance().getListOfEntities().add(newTree);
     }
 
     public void mouseReleased(MouseEvent e) {

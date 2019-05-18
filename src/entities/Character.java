@@ -10,10 +10,8 @@ import java.io.IOException;
 import main.Coordinates;
 import main.Utils;
 
-public class Character {
+public class Character extends DynamicEntity {
     private static Character instance = null;
-    private static Coordinates currentCoordinates;
-    private static Coordinates previousCoordinates;
     private static double speed;
     private static double[] displacementVector;
 
@@ -35,8 +33,8 @@ public class Character {
     private static float scale;
 
     private Character() {
-        currentCoordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
-        previousCoordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
+        super(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2,
+                Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;
@@ -52,6 +50,7 @@ public class Character {
     public static Character getInstance() {
         if (instance == null) {
             instance = new Character();
+            Scene.getInstance().getListOfEntities().add(instance);
         }
         return instance;
     }
@@ -63,9 +62,9 @@ public class Character {
         spriteSheet = ImageIO.read(new File(path));
 
         //Bard
-        spriteWidth = 51;
-        spriteHeight = 72;
-        scale = 1.25f;
+        spriteWidth = 64;
+        spriteHeight = 90;
+        scale = 1.00f;
         idleFrames = 1;
         runningFrames = 3;
         specialAnimationFrames = 4;
@@ -127,8 +126,8 @@ public class Character {
     }
 
     public void updateCharacter(long timeElapsed) {
-        previousCoordinates.setxCoordinate(currentCoordinates.getxCoordinate());
-        previousCoordinates.setyCoordinate(currentCoordinates.getyCoordinate());
+        getPreviousCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate());
+        getPreviousCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate());
         if (characterStatus != Status.JUMPING) {
             characterStatus = Status.IDLE;
         }
@@ -153,13 +152,13 @@ public class Character {
             movement[1] *= 0.75;
         }
 
-        if (!checkCollision((int)(currentCoordinates.getxCoordinate() + movement[0]), (int)(currentCoordinates.getyCoordinate() + movement[1]))) {
-            currentCoordinates.setxCoordinate(currentCoordinates.getxCoordinate() + movement[0]);
-            currentCoordinates.setyCoordinate(currentCoordinates.getyCoordinate() + movement[1]);
+        if (!checkCollision((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))) {
+            getCurrentCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate() + movement[0]);
+            getCurrentCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate() + movement[1]);
         }
 
-        displacementVector[0] = currentCoordinates.getxCoordinate() - previousCoordinates.getxCoordinate();
-        displacementVector[1] = currentCoordinates.getyCoordinate() - previousCoordinates.getyCoordinate();
+        displacementVector[0] = getCurrentCoordinates().getxCoordinate() - getPreviousCoordinates().getxCoordinate();
+        displacementVector[1] = getCurrentCoordinates().getyCoordinate() - getPreviousCoordinates().getyCoordinate();
 
         if (isRunning() && characterStatus != Status.JUMPING) {
             characterFacing = Utils.checkDirectionFacing(displacementVector);
@@ -184,6 +183,9 @@ public class Character {
     }
 
     public boolean checkCollision(int x, int y) {
+        if (Scene.getInstance().getCollisionsMap() == null) {
+            return false;
+        }
         int pixelValue = Scene.getInstance().getCollisionsMap().getRGB(x, y);
         return pixelValue != 0;
     }
@@ -193,12 +195,12 @@ public class Character {
     }
 
     public Coordinates getCurrentCoordinates() {
-        return currentCoordinates;
+        return getCoordinates();
     }
 
     public void setCoordinates(int x, int y) {
-        currentCoordinates.setxCoordinate(x);
-        currentCoordinates.setyCoordinate(y);
+        getCurrentCoordinates().setxCoordinate(x);
+        getCurrentCoordinates().setyCoordinate(y);
     }
 
     public Status getCharacterStatus() {

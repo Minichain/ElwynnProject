@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Tree extends StaticEntity{
+public class Tree extends StaticEntity {
     private BufferedImage sprite;
 
     public Tree(int x, int y) {

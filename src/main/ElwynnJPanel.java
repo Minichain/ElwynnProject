@@ -1,9 +1,8 @@
 package main;
 
-import entities.Camera;
 import entities.Character;
+import entities.Entity;
 import entities.Scene;
-import entities.Tree;
 import listeners.MyKeyListener;
 import listeners.MyMouseListener;
 
@@ -46,23 +45,24 @@ public class ElwynnJPanel extends JPanel {
                 Scene.getInstance().getSpriteHeight(),
                 null);
 
-        Tree tree;
-        List<Tree> listOfTrees = Scene.getInstance().getListOfTrees();
-        for (int i = 0; i < listOfTrees.size(); i++) {
-            tree = listOfTrees.get(i);
-//            System.out.println("Painting tree Nº " + i + " at (" + tree.getCoordinates().getxCoordinate() + ", " + tree.getCoordinates().getyCoordinate()
-//                    + "). Width: " + tree.getSprite().getWidth() + ", Height: " + tree.getSprite().getHeight());
-            localCoordinates = tree.getCoordinates().toLocalCoordinates();
-            g.drawImage(tree.getSprite(),
+        Entity entity;
+        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
+        for (int i = 0; i < listOfEntities.size(); i++) {
+            entity = listOfEntities.get(i);
+            System.out.println("Painting tree Nº " + (i + 1) + " at (" + entity.getCoordinates().getxCoordinate() + ", " + entity.getCoordinates().getyCoordinate());
+            localCoordinates = entity.getCoordinates().toLocalCoordinates();
+            g.drawImage(entity.getSprite(),
                     (int)localCoordinates[0]
-                            - (tree.getSprite().getWidth() / 2),
+                            - (entity.getSprite().getWidth() / 2),
                     (int)localCoordinates[1]
-                            - (tree.getSprite().getHeight() / 2),
-                    tree.getSprite().getWidth(),
-                    tree.getSprite().getHeight(),
+                            - (entity.getSprite().getHeight() / 2),
+                    entity.getSprite().getWidth(),
+                    entity.getSprite().getHeight(),
                     null);
         }
 
+
+        /** DEBUG ELEMENTS **/
         if (Parameters.getInstance().isDebugMode()) {
             localCoordinates = Scene.getCoordinates().toLocalCoordinates();
             g.drawImage(Scene.getInstance().getCollisionsMap(),
@@ -80,15 +80,5 @@ public class ElwynnJPanel extends JPanel {
             g.drawString("X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
             g.drawString("Y: " + (int)Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
         }
-
-        localCoordinates = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
-        g.drawImage(Character.getInstance().getSprite(),
-                (int)localCoordinates[0]
-                        - (Character.getInstance().getSpriteWidth() / 2),
-                (int)localCoordinates[1]
-                        - (Character.getInstance().getSpriteHeight() / 2),
-                (int)(Character.getInstance().getSpriteWidth() * Character.getInstance().getScale()),
-                (int)(Character.getInstance().getSpriteHeight() * Character.getInstance().getScale()),
-                null);
     }
 }
