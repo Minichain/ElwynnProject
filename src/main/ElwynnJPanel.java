@@ -1,5 +1,6 @@
 package main;
 
+import entities.Camera;
 import entities.Character;
 import entities.Entity;
 import entities.Scene;
@@ -57,14 +58,17 @@ public class ElwynnJPanel extends JPanel {
 //                    + " at (" + entity.getCoordinates().getxCoordinate()
 //                    + ", " + entity.getCoordinates().getyCoordinate());
             localCoordinates = entity.getCoordinates().toLocalCoordinates();
-            g.drawImage(entity.getSprite(),
-                    (int)localCoordinates[0]
-                            - (entity.getSprite().getWidth() / 2),
-                    (int)localCoordinates[1]
-                            - (int)(entity.getSprite().getHeight() * 0.75),
-                    entity.getSprite().getWidth(),
-                    entity.getSprite().getHeight(),
-                    null);
+            int renderDistance = 1500;  //TODO This should depend on the Window and Camera width/height
+            if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
+                g.drawImage(entity.getSprite(),
+                        (int)localCoordinates[0]
+                                - (entity.getSprite().getWidth() / 2),
+                        (int)localCoordinates[1]
+                                - (int)(entity.getSprite().getHeight() * 0.75),
+                        entity.getSprite().getWidth(),
+                        entity.getSprite().getHeight(),
+                        null);
+            }
         }
 
 
@@ -85,6 +89,7 @@ public class ElwynnJPanel extends JPanel {
             g.drawString("FPS: " + fps, 10, 20);
             g.drawString("X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
             g.drawString("Y: " + (int)Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
+            g.drawString("Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
         }
     }
 }

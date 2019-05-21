@@ -7,7 +7,7 @@ public class Camera {
     Coordinates coordinates;
 
     Camera() {
-        coordinates = new Coordinates(0, 0);
+        coordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
     }
 
     public static Camera getInstance() {

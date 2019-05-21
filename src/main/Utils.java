@@ -67,4 +67,17 @@ public class Utils {
 
         return resizedImage;
     }
+
+    public static double module(double[] vector) {
+        double sum = 0;
+        for (int i = 0; i < vector.length; i++) {
+            sum += Math.pow(vector[i], 2);
+        }
+        return Math.sqrt(sum);
+    }
+
+    public static double module(Coordinates coordinates1, Coordinates coordinates2) {
+        return Math.sqrt(Math.pow(coordinates1.getxCoordinate() - coordinates2.getxCoordinate(), 2)
+                + Math.pow(coordinates1.getyCoordinate() - coordinates2.getyCoordinate(), 2));
+    }
 }

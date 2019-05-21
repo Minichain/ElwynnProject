@@ -47,8 +47,18 @@ public class ElwynnGraphics {
     }
 
     public void updateFrame(long timeElapsed) {
-        Camera.getInstance().setCoordinates((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), (int)Character.getInstance().getCurrentCoordinates().getyCoordinate());
+        updateCamera();
         elwynnJPanel.setTimeElapsed(timeElapsed);
         elwynnJPanel.repaint();
+    }
+
+    private void updateCamera() {
+        double[] cameraVelocityVector = new double[2];
+        cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().getxCoordinate() - Camera.getInstance().getCoordinates().getxCoordinate();
+        cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().getyCoordinate() - Camera.getInstance().getCoordinates().getyCoordinate();
+        double cameraSpeed = Utils.module(cameraVelocityVector) * 0.05;
+        cameraVelocityVector = Utils.normalizeVector(cameraVelocityVector);
+        Camera.getInstance().setCoordinates((int) (Camera.getInstance().getCoordinates().getxCoordinate() + (cameraVelocityVector[0] * cameraSpeed)),
+                (int)(Camera.getInstance().getCoordinates().getyCoordinate() + (cameraVelocityVector[1] * cameraSpeed)));
     }
 }
