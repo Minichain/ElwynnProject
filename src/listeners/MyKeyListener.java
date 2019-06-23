@@ -1,5 +1,6 @@
 package listeners;
 
+import entities.Scene;
 import main.Parameters;
 import entities.Character;
 import java.awt.event.KeyAdapter;
@@ -53,12 +54,15 @@ public class MyKeyListener extends KeyAdapter {
                 }
                 spaceKeyPressed = true;
                 break;
-            case "F1":
+            case "F1":  //Debug Mode
                 if (Parameters.getInstance().isDebugMode()) {
                     Parameters.getInstance().setDebugMode(false);
                 } else {
                     Parameters.getInstance().setDebugMode(true);
                 }
+                break;
+            case "F2":  //Reset
+                Scene.getInstance().initEntities();
                 break;
         }
     }
@@ -82,6 +86,9 @@ public class MyKeyListener extends KeyAdapter {
                 break;
             case "Space":
                 spaceKeyPressed = false;
+                break;
+            case "F1":
+            case "F2":
                 break;
         }
     }

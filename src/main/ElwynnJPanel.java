@@ -68,6 +68,14 @@ public class ElwynnJPanel extends JPanel {
                         entity.getSprite().getWidth(),
                         entity.getSprite().getHeight(),
                         null);
+
+                /** DEBUG ELEMENTS **/
+                if (Parameters.getInstance().isDebugMode()) {
+                    int radius = 50;
+                    g.drawOval((int)localCoordinates[0] - radius,
+                            (int)localCoordinates[1] - radius,
+                            radius * 2, radius * 2);
+                }
             }
         }
 

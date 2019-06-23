@@ -20,8 +20,11 @@ public class Tree extends StaticEntity {
 
     private void loadSprite() throws IOException {
         String path;
+
+        //Generate a random tree
         int random = (int)((Math.random() * 100) % typesOfTrees) + 1;
         path = "res/sprites/tree_0" + random + ".png";
+
         sprite = ImageIO.read(new File(path));
     }
 

@@ -106,4 +106,10 @@ public class Scene {
         sortListOfEntitiesByDepth();
         return listOfEntities;
     }
+
+    public void initEntities() {
+        Scene.getInstance().getListOfEntities().clear();
+        Character.getInstance().resetCharacter();
+        Scene.getInstance().getListOfEntities().add(Character.getInstance());
+    }
 }

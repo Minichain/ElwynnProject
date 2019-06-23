@@ -6,6 +6,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import main.Coordinates;
 import main.Utils;
@@ -35,16 +36,25 @@ public class Character extends DynamicEntity {
     private Character() {
         super(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2,
                 Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
-        speed = 0.25;
-        characterStatus = Status.IDLE;
-        characterFacing = Utils.DirectionFacing.RIGHT;
-        displacementVector = new double[2];
-
+        initCharacter();
         try {
             loadSprite();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void resetCharacter() {
+        initCharacter();
+    }
+
+    private void initCharacter() {
+        getCurrentCoordinates().setxCoordinate(Scene.getInstance().getSpriteWidth() / 2);
+        getCurrentCoordinates().setyCoordinate(Scene.getInstance().getSpriteHeight() / 2);
+        speed = 0.25;
+        characterStatus = Status.IDLE;
+        characterFacing = Utils.DirectionFacing.RIGHT;
+        displacementVector = new double[2];
     }
 
     public static Character getInstance() {
@@ -152,7 +162,8 @@ public class Character extends DynamicEntity {
             movement[1] *= 0.75;
         }
 
-        if (!checkCollision((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))) {
+        if (!checkCollision((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))
+                && !checkCollisionWithEntities((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))) {
             getCurrentCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate() + movement[0]);
             getCurrentCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate() + movement[1]);
         }
@@ -180,6 +191,20 @@ public class Character extends DynamicEntity {
                 }
                 break;
         }
+    }
+
+    private boolean checkCollisionWithEntities(int x, int y) {
+        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
+        double distanceToEntity;
+        for (int i = 0; i < listOfEntities.size(); i++) {
+            if (listOfEntities.get(i) != this) {    //Do not check collision with yourself!
+                distanceToEntity = Utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
+                if (distanceToEntity < 50) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public boolean checkCollision(int x, int y) {
