@@ -15,6 +15,7 @@ public class Main {
         elwynnGraphics.addJPanelToJFrame();
 
         GameStatus.getInstance().setGameRunning(true);
+        System.out.println("Game initiated and running");
 
         //main.Main game loop
         while (GameStatus.getInstance().isGameRunning()) {
@@ -35,6 +36,7 @@ public class Main {
             }
         }
 
+        System.out.println("Game stopped running");
         System.exit(1);
     }
 }
