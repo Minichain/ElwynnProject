@@ -8,6 +8,7 @@ public class Main {
         long timeElapsed;
         long lastUpdateTime = 0;
         long currentTime;
+        long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getFramesPerSecond();
 
         ElwynnGraphics elwynnGraphics = new ElwynnGraphics();
         elwynnGraphics.createJFrame();
@@ -29,7 +30,9 @@ public class Main {
                 lastUpdateTime = currentTime;
 
                 //Wait time until processing next frame. FPS locked.
-                Thread.sleep(1000 / Parameters.getInstance().getFramesPerSecond());
+                if ((System.currentTimeMillis() - currentTime) < maxTimeBetweenFrames) {
+                    Thread.sleep(maxTimeBetweenFrames);
+                }
             } catch (InterruptedException e) {
                 System.out.println(e);
                 System.exit(1);

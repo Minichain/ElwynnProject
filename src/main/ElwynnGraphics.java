@@ -35,7 +35,7 @@ public class ElwynnGraphics {
             public void componentResized(ComponentEvent componentEvent) {
                 int newWidth = componentEvent.getComponent().getWidth();
                 int newHeight = componentEvent.getComponent().getHeight();
-                System.out.println("JFrame resized, newWidth: " + newWidth + ", newHeight: " + newHeight);
+                System.out.println("ElwynGraphicsLog:: JFrame resized. newWidth: " + newWidth + ", newHeight: " + newHeight);
                 Parameters.getInstance().setWindowWidth(newWidth);
                 Parameters.getInstance().setWindowHeight(newHeight);
             }
@@ -59,6 +59,8 @@ public class ElwynnGraphics {
         double cameraSpeed = Utils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
         cameraVelocityVector = Utils.normalizeVector(cameraVelocityVector);
 
+//        System.out.println("ElwynGraphicsLog:: cameraVelocityVector: " + cameraVelocityVector[0] + ", " + cameraVelocityVector[1]);
+//        System.out.println("ElwynGraphicsLog:: cameraVelocityVector after applying cameraSpeed: " + cameraVelocityVector[0] * cameraSpeed + ", " + cameraVelocityVector[1] * cameraSpeed);
         if (Double.isNaN(cameraVelocityVector[0]) || Double.isNaN(cameraVelocityVector[1])) {
             return;
         }
