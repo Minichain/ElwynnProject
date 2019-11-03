@@ -25,11 +25,14 @@ public class Main {
                 currentTime = System.currentTimeMillis();
                 timeElapsed = currentTime - lastUpdateTime;
 
+                //Update
                 Character.getInstance().updateCharacter(timeElapsed);
-                elwynnGraphics.updateFrame(timeElapsed);
-                lastUpdateTime = currentTime;
+
+                //Render
+                elwynnGraphics.renderFrame(timeElapsed);
 
                 //Wait time until processing next frame. FPS locked.
+                lastUpdateTime = currentTime;
                 if ((System.currentTimeMillis() - currentTime) < maxTimeBetweenFrames) {
                     Thread.sleep(maxTimeBetweenFrames);
                 }

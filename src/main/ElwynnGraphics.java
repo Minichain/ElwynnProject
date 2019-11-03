@@ -46,7 +46,7 @@ public class ElwynnGraphics {
         frame.add(elwynnJPanel);
     }
 
-    public void updateFrame(long timeElapsed) {
+    public void renderFrame(long timeElapsed) {
         updateCamera(timeElapsed);
         elwynnJPanel.setTimeElapsed(timeElapsed);
         elwynnJPanel.repaint();
