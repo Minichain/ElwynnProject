@@ -26,6 +26,8 @@ public class ElwynnJPanel extends JPanel {
 
     public void addMyMouseListener() {
         addMouseListener(MyMouseListener.getInstance());
+        addMouseMotionListener(MyMouseListener.getInstance());
+        addMouseWheelListener(MyMouseListener.getInstance());
         setFocusable(true);
     }
 
@@ -36,18 +38,24 @@ public class ElwynnJPanel extends JPanel {
 
     public void paint(Graphics g){
         super.paint(g); // cleans the panel
+        Graphics2D graphics2D = (Graphics2D) g;
 
         double[] localCoordinates;
 
         /** SCENE BACKGROUND IS DRAWN FIRST **/
-        localCoordinates = Scene.getInstance().getCoordinates().toLocalCoordinates();
-        g.drawImage(Scene.getInstance().getSprite(),
-                (int)localCoordinates[0],
-                (int)localCoordinates[1],
-                Scene.getInstance().getSpriteWidth(),
-                Scene.getInstance().getSpriteHeight(),
-                null);
-
+        byte[][] arrayOfTyles = Scene.getInstance().getArrayOfTiles();
+        localCoordinates = Scene.getInstance().getCenter().toLocalCoordinates();
+        //TODO create the background from the tiles and paint it as one image
+        for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
+            for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
+                graphics2D.drawImage(Scene.getInstance().getTile(arrayOfTyles[i][j]),
+                        (i * Parameters.getTilesSizeX()) + (int)localCoordinates[0],
+                        (j * Parameters.getTilesSizeY()) + (int)localCoordinates[1],
+                        Parameters.getTilesSizeX(),
+                        Parameters.getTilesSizeY(),
+                        null);
+            }
+        }
 
         /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
         Entity entity;
@@ -60,7 +68,7 @@ public class ElwynnJPanel extends JPanel {
             localCoordinates = entity.getCoordinates().toLocalCoordinates();
             int renderDistance = 1500;  //TODO This should depend on the Window and Camera width/height
             if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
-                g.drawImage(entity.getSprite(),
+                graphics2D.drawImage(entity.getSprite(),
                         (int)localCoordinates[0]
                                 - (entity.getSprite().getWidth() / 2),
                         (int)localCoordinates[1]
@@ -72,32 +80,33 @@ public class ElwynnJPanel extends JPanel {
                 /** DEBUG ELEMENTS **/
                 if (Parameters.getInstance().isDebugMode()) {
                     int radius = 50;
-                    g.drawOval((int)localCoordinates[0] - radius,
+                    graphics2D.drawOval((int)localCoordinates[0] - radius,
                             (int)localCoordinates[1] - radius,
                             radius * 2, radius * 2);
                 }
             }
         }
 
+        /** MOUSE POSITION **/
+        int mouseX = MyMouseListener.getInstance().getMousePositionX();
+        int mouseY = MyMouseListener.getInstance().getMousePositionY();
+        graphics2D.drawImage(Scene.getInstance().getTile(3),
+                mouseX,
+                mouseY,
+                Parameters.getTilesSizeX(),
+                Parameters.getTilesSizeY(),
+                null);
 
         /** DEBUG ELEMENTS **/
         if (Parameters.getInstance().isDebugMode()) {
-            localCoordinates = Scene.getCoordinates().toLocalCoordinates();
-            g.drawImage(Scene.getInstance().getCollisionsMap(),
-                    (int)localCoordinates[0],
-                    (int)localCoordinates[1],
-                    (Scene.getInstance().getSpriteWidth()),
-                    (Scene.getInstance().getSpriteHeight()),
-                    null);
-
-            g.drawLine(0, Parameters.getInstance().getWindowHeight()/2,
+            graphics2D.drawLine(0, Parameters.getInstance().getWindowHeight()/2,
                     Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight()/2);
-            g.drawLine(Parameters.getInstance().getWindowWidth()/2, 0,
+            graphics2D.drawLine(Parameters.getInstance().getWindowWidth()/2, 0,
                     Parameters.getInstance().getWindowWidth()/2, Parameters.getInstance().getWindowHeight());
-            g.drawString("FPS: " + fps, 10, 20);
-            g.drawString("X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
-            g.drawString("Y: " + (int)Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
-            g.drawString("Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
+            graphics2D.drawString("FPS: " + fps, 10, 20);
+            graphics2D.drawString("X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
+            graphics2D.drawString("Y: " + (int)Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
+            graphics2D.drawString("Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
         }
     }
 }

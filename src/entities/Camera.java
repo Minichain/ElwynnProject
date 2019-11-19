@@ -5,9 +5,11 @@ import main.Coordinates;
 public class Camera {
     private static Camera instance = null;
     Coordinates coordinates;
+    private static int xInitialCoordinate = 1000;
+    private static int yInitialCoordinate = 1000;
 
     Camera() {
-        coordinates = new Coordinates(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
+        coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);
     }
 
     public static Camera getInstance() {
@@ -24,5 +26,10 @@ public class Camera {
     public void setCoordinates(int x, int y) {
         coordinates.setxCoordinate(x);
         coordinates.setyCoordinate(y);
+    }
+
+    public void resetCamera() {
+        this.setCoordinates((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
+                (int) Character.getInstance().getCurrentCoordinates().getyCoordinate());
     }
 }

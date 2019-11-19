@@ -57,6 +57,9 @@ public class ElwynnGraphics {
         cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().getxCoordinate() - Camera.getInstance().getCoordinates().getxCoordinate();
         cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().getyCoordinate() - Camera.getInstance().getCoordinates().getyCoordinate();
         double cameraSpeed = Utils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
+        if (cameraSpeed > 1000) { //Too much speed?
+            cameraSpeed = 0;
+        }
         cameraVelocityVector = Utils.normalizeVector(cameraVelocityVector);
 
 //        System.out.println("ElwynGraphicsLog:: cameraVelocityVector: " + cameraVelocityVector[0] + ", " + cameraVelocityVector[1]);

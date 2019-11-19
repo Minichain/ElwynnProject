@@ -37,4 +37,15 @@ public class Coordinates {
                 + (Parameters.getInstance().getWindowHeight() / 2));
         return newCoordinates;
     }
+
+    public double[] toGlobalCoordinates() {
+        double[] newCoordinates = new double[2];
+        newCoordinates[0] = (xCoordinate
+                + Camera.getInstance().getCoordinates().getxCoordinate()
+                - (Parameters.getInstance().getWindowWidth() / 2));
+        newCoordinates[1] = (yCoordinate
+                + Camera.getInstance().getCoordinates().getyCoordinate()
+                - (Parameters.getInstance().getWindowHeight() / 2));
+        return newCoordinates;
+    }
 }

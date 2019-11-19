@@ -11,13 +11,13 @@ public class Utils {
     public static double[] normalizeVector(double[] inputVector) {
         int vectorLength = inputVector.length;
         double[] vectorNormalized = new double[vectorLength];
-        double vectorSum = 0;
-        for (int i = 0; i < vectorLength; i++) {
-            vectorSum += Math.pow(inputVector[i], 2);
-        }
-        vectorSum = Math.sqrt(vectorSum);
-        for (int i = 0; i < vectorLength; i++) {
-            vectorNormalized[i] = inputVector[i] / vectorSum;
+        double vectorModule = Utils.module(inputVector);
+        if (vectorModule > 0) {
+            for (int i = 0; i < vectorLength; i++) {
+                vectorNormalized[i] = inputVector[i] / vectorModule;
+            }
+        } else {
+            vectorNormalized = inputVector;
         }
         return vectorNormalized;
     }

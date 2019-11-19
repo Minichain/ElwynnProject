@@ -32,10 +32,11 @@ public class Character extends DynamicEntity {
     private static int runningFrames;
     private static int specialAnimationFrames;
     private static float scale;
+    private static int xInitialCoordinate = 1000;
+    private static int yInitialCoordinate = 1000;
 
     private Character() {
-        super(Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2,
-                Scene.getInstance().getSpriteWidth() / 2, Scene.getInstance().getSpriteHeight() / 2);
+        super(xInitialCoordinate, yInitialCoordinate, xInitialCoordinate, yInitialCoordinate);
         initCharacter();
         try {
             loadSprite();
@@ -49,8 +50,8 @@ public class Character extends DynamicEntity {
     }
 
     private void initCharacter() {
-        getCurrentCoordinates().setxCoordinate(Scene.getInstance().getSpriteWidth() / 2);
-        getCurrentCoordinates().setyCoordinate(Scene.getInstance().getSpriteHeight() / 2);
+        getCurrentCoordinates().setxCoordinate(xInitialCoordinate);
+        getCurrentCoordinates().setyCoordinate(yInitialCoordinate);
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;
@@ -67,25 +68,14 @@ public class Character extends DynamicEntity {
 
     private void loadSprite() throws IOException {
         String path;
-//        path = "res/sprites/characters/80x48Wolf_FullSheet.png";
         path = "res/sprites/characters/51x72bardo_character_01.png";
         spriteSheet = ImageIO.read(new File(path));
-
-        //Bard
         spriteWidth = 64;
         spriteHeight = 90;
         scale = 1.00f;
         idleFrames = 1;
         runningFrames = 3;
         specialAnimationFrames = 4;
-
-//        //Wolf
-//        spriteWidth = 80;
-//        spriteHeight = 48;
-//        scale = 2;
-//        idleFrames = 8;
-//        runningFrames = 6;
-//        specialAnimationFrames = 6;
     }
 
     public BufferedImage getSprite() {
@@ -208,11 +198,8 @@ public class Character extends DynamicEntity {
     }
 
     public boolean checkCollision(int x, int y) {
-        if (Scene.getInstance().getCollisionsMap() == null) {
-            return false;
-        }
-        int pixelValue = Scene.getInstance().getCollisionsMap().getRGB(x, y);
-        return pixelValue != 0;
+        //TODO
+        return false;
     }
 
     public boolean isRunning() {

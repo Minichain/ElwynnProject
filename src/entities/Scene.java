@@ -1,7 +1,6 @@
 package entities;
 
 import main.Coordinates;
-import main.Utils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -12,25 +11,58 @@ import java.util.List;
 
 public class Scene {
     private static Scene instance = null;
-
-    private static Coordinates coordinates;
-    private BufferedImage sprite;
-    private static BufferedImage collisionsMap;
-    private static int spriteWidth;
-    private static int spriteHeight;
     private static float scale = 2;
-
     private static List<Entity> listOfEntities = new ArrayList<>();
+    private static byte[][] arrayOfTiles;
+    private int sceneX;
+    private int sceneY;
+    private static BufferedImage grass00;
+    private static BufferedImage grass01;
+    private static BufferedImage grass02;
+    private static BufferedImage grass03;
+    private static Coordinates center;
 
     private Scene() {
-        coordinates = new Coordinates(0, 0);
-
+        center = new Coordinates(0, 0);
+        sceneX = 100;
+        sceneY = 100;
+        arrayOfTiles = new byte[sceneX][sceneY];
+        for (int i = 0; i < sceneX; i++) {
+            for (int j = 0; j < sceneY; j++) {
+                arrayOfTiles[i][j] = (byte)((Math.random() * 10) % 3);
+            }
+        }
         try {
-            loadSprite();
-//            loadCollisionsMap();
+            loadSprites();
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void loadSprites() throws IOException {
+        String path;
+        path = "res/sprites/tiles/grass_00.png";
+        grass00 = ImageIO.read(new File(path));
+        path = "res/sprites/tiles/grass_01.png";
+        grass01 = ImageIO.read(new File(path));
+        path = "res/sprites/tiles/grass_02.png";
+        grass02 = ImageIO.read(new File(path));
+        path = "res/sprites/tiles/grass_03.png";
+        grass03 = ImageIO.read(new File(path));
+    }
+
+    public static BufferedImage getTile(int tileNum) {
+        switch(tileNum) {
+            case 0:
+                return grass00;
+            case 1:
+                return grass01;
+            case 2:
+                return grass02;
+            case 3:
+                return grass03;
+        }
+        return null;
     }
 
     public static Scene getInstance() {
@@ -40,42 +72,24 @@ public class Scene {
         return instance;
     }
 
-    private void loadSprite() throws IOException {
-        String path = "res/sprites/background_01.png";
-        sprite = ImageIO.read(new File(path));
-        sprite = Utils.resizeImage(sprite, (int)(sprite.getWidth() * scale), (int)(sprite.getHeight() * scale));
-        spriteWidth = sprite.getWidth();
-        spriteHeight = sprite.getHeight();
+    public byte[][] getArrayOfTiles() {
+        return arrayOfTiles;
     }
 
-    public BufferedImage getSprite() {
-        return sprite;
+    public void setTile(int x, int y, byte value) {
+        arrayOfTiles[x][y] = value;
     }
 
-    private void loadCollisionsMap() throws IOException {
-        String path = "res/sprites/background_collisions_01.png";
-        collisionsMap = ImageIO.read(new File(path));
-        collisionsMap = Utils.resizeImage(collisionsMap, (int)(collisionsMap.getWidth() * scale), (int)(collisionsMap.getHeight() * scale));
+    public int getSceneX() {
+        return sceneX;
     }
 
-    public static Coordinates getCoordinates() {
-        return coordinates;
+    public int getSceneY() {
+        return sceneY;
     }
 
-    public BufferedImage getCollisionsMap() {
-        return collisionsMap;
-    }
-
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
-
-    public float getScale() {
-        return scale;
+    public static Coordinates getCenter() {
+        return center;
     }
 
     public void sortListOfEntitiesByDepth() {
@@ -110,6 +124,7 @@ public class Scene {
     public void initEntities() {
         Scene.getInstance().getListOfEntities().clear();
         Character.getInstance().resetCharacter();
+        Camera.getInstance().resetCamera();
         Scene.getInstance().getListOfEntities().add(Character.getInstance());
     }
 }
