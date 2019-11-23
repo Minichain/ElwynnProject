@@ -32,8 +32,8 @@ public class Character extends DynamicEntity {
     private static int runningFrames;
     private static int specialAnimationFrames;
     private static float scale;
-    private static int xInitialCoordinate = 1000;
-    private static int yInitialCoordinate = 1000;
+    private static int xInitialCoordinate = 5000;
+    private static int yInitialCoordinate = 5000;
 
     private Character() {
         super(xInitialCoordinate, yInitialCoordinate, xInitialCoordinate, yInitialCoordinate);

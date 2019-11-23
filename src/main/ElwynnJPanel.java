@@ -40,6 +40,7 @@ public class ElwynnJPanel extends JPanel {
         super.paint(g); // cleans the panel
         Graphics2D graphics2D = (Graphics2D) g;
 
+        int renderDistance = 1000;  //TODO This should depend on the Window and Camera width/height
         double[] localCoordinates;
 
         /** SCENE BACKGROUND IS DRAWN FIRST **/
@@ -48,12 +49,16 @@ public class ElwynnJPanel extends JPanel {
         //TODO create the background from the tiles and paint it as one image
         for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
             for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
-                graphics2D.drawImage(Scene.getInstance().getTile(arrayOfTyles[i][j]),
-                        (i * Parameters.getTilesSizeX()) + (int)localCoordinates[0],
-                        (j * Parameters.getTilesSizeY()) + (int)localCoordinates[1],
-                        Parameters.getTilesSizeX(),
-                        Parameters.getTilesSizeY(),
-                        null);
+                int x = (i * Parameters.getTilesSizeX());
+                int y = (j * Parameters.getTilesSizeY());
+                if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
+                    graphics2D.drawImage(Scene.getInstance().getTile(arrayOfTyles[i][j]),
+                            x + (int)localCoordinates[0],
+                            y + (int)localCoordinates[1],
+                            Parameters.getTilesSizeX(),
+                            Parameters.getTilesSizeY(),
+                            null);
+                }
             }
         }
 
@@ -66,7 +71,6 @@ public class ElwynnJPanel extends JPanel {
 //                    + " at (" + entity.getCoordinates().getxCoordinate()
 //                    + ", " + entity.getCoordinates().getyCoordinate());
             localCoordinates = entity.getCoordinates().toLocalCoordinates();
-            int renderDistance = 1500;  //TODO This should depend on the Window and Camera width/height
             if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
                 graphics2D.drawImage(entity.getSprite(),
                         (int)localCoordinates[0]
@@ -90,7 +94,7 @@ public class ElwynnJPanel extends JPanel {
         /** MOUSE POSITION **/
         int mouseX = MyMouseListener.getInstance().getMousePositionX();
         int mouseY = MyMouseListener.getInstance().getMousePositionY();
-        graphics2D.drawImage(Scene.getInstance().getTile(3),
+        graphics2D.drawImage(Scene.getInstance().getTile(MyMouseListener.getInstance().getMouseWheelPosition() % 4),
                 mouseX,
                 mouseY,
                 Parameters.getTilesSizeX(),

@@ -5,8 +5,8 @@ import main.Coordinates;
 public class Camera {
     private static Camera instance = null;
     Coordinates coordinates;
-    private static int xInitialCoordinate = 1000;
-    private static int yInitialCoordinate = 1000;
+    private static int xInitialCoordinate = 5000;
+    private static int yInitialCoordinate = 5000;
 
     Camera() {
         coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);

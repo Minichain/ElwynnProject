@@ -11,7 +11,6 @@ import java.util.List;
 
 public class Scene {
     private static Scene instance = null;
-    private static float scale = 2;
     private static List<Entity> listOfEntities = new ArrayList<>();
     private static byte[][] arrayOfTiles;
     private int sceneX;
@@ -24,8 +23,8 @@ public class Scene {
 
     private Scene() {
         center = new Coordinates(0, 0);
-        sceneX = 100;
-        sceneY = 100;
+        sceneX = 1000;
+        sceneY = 1000;
         arrayOfTiles = new byte[sceneX][sceneY];
         for (int i = 0; i < sceneX; i++) {
             for (int j = 0; j < sceneY; j++) {
@@ -37,6 +36,13 @@ public class Scene {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public static Scene getInstance() {
+        if (instance == null) {
+            instance = new Scene();
+        }
+        return instance;
     }
 
     private void loadSprites() throws IOException {
@@ -63,13 +69,6 @@ public class Scene {
                 return grass03;
         }
         return null;
-    }
-
-    public static Scene getInstance() {
-        if (instance == null) {
-            instance = new Scene();
-        }
-        return instance;
     }
 
     public byte[][] getArrayOfTiles() {

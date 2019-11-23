@@ -12,6 +12,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
     private static MyMouseListener instance = null;
     private int mousePositionX;
     private int mousePositionY;
+    private int mouseWheelPosition;
 
     private MyMouseListener() {
     }
@@ -34,7 +35,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
         double[] mouseGlobalCoordinates = mouseCoordinates.toGlobalCoordinates();
         int x = (int) Math.floor(mouseGlobalCoordinates[0] / Parameters.getTilesSizeX());
         int y = (int) Math.floor(mouseGlobalCoordinates[1] / Parameters.getTilesSizeY());
-        Scene.getInstance().setTile(x, y, (byte) 3);
+        Scene.getInstance().setTile(x, y, (byte) (mouseWheelPosition % 4));
     }
 
     public void mouseReleased(MouseEvent e) {
@@ -54,6 +55,8 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
     }
 
     public void mouseDragged(MouseEvent e) {
+        this.mousePositionX = e.getX();
+        this.mousePositionY = e.getY();
     }
 
     public void mouseMoved(MouseEvent e) {
@@ -71,6 +74,10 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
 
     @Override
     public void mouseWheelMoved(MouseWheelEvent e) {
+        mouseWheelPosition += e.getWheelRotation();
+    }
 
+    public int getMouseWheelPosition() {
+        return mouseWheelPosition;
     }
 }
