@@ -1,12 +1,17 @@
 package entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 public class Tree extends StaticEntity {
-    private BufferedImage sprite;
+    private Texture spriteSheet;
+    private TextureRegion sprite;
     private int typesOfTrees = 6;
 
     public Tree(int x, int y) {
@@ -25,10 +30,10 @@ public class Tree extends StaticEntity {
         int random = (int)((Math.random() * 100) % typesOfTrees) + 1;
         path = "res/sprites/tree_0" + random + ".png";
 
-        sprite = ImageIO.read(new File(path));
+        spriteSheet = new Texture(Gdx.files.internal(path));
     }
 
-    public BufferedImage getSprite() {
+    public TextureRegion getSprite() {
         return sprite;
     }
 }

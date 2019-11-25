@@ -1,8 +1,8 @@
 package entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.Coordinates;
-
-import java.awt.image.BufferedImage;
 
 public abstract class Entity {
     private Coordinates coordinates;
@@ -19,5 +19,5 @@ public abstract class Entity {
         this.coordinates = coordinates;
     }
 
-    public abstract BufferedImage getSprite();
+    public abstract TextureRegion getSprite();
 }

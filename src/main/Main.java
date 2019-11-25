@@ -1,48 +1,17 @@
 package main;
 
-import entities.Character;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
+import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class Main {
-
     public static void main(String[] args) {
-        long timeElapsed;
-        long lastUpdateTime = 0;
-        long currentTime;
-        long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getFramesPerSecond();
-
-        ElwynnGraphics elwynnGraphics = new ElwynnGraphics();
-        elwynnGraphics.createJFrame();
-        elwynnGraphics.createJPanel();
-        elwynnGraphics.addJPanelToJFrame();
-
-        GameStatus.getInstance().setGameRunning(true);
-        System.out.println("Game initiated and running");
-
-        //main.Main game loop
-        while (GameStatus.getInstance().isGameRunning()) {
-            try {
-                //Compute the time elapsed since the last frame
-                currentTime = System.currentTimeMillis();
-                timeElapsed = currentTime - lastUpdateTime;
-
-                //Update
-                Character.getInstance().updateCharacter(timeElapsed);
-
-                //Render
-                elwynnGraphics.renderFrame(timeElapsed);
-
-                //Wait time until processing next frame. FPS locked.
-                lastUpdateTime = currentTime;
-                if ((System.currentTimeMillis() - currentTime) < maxTimeBetweenFrames) {
-                    Thread.sleep(maxTimeBetweenFrames);
-                }
-            } catch (InterruptedException e) {
-                System.out.println(e);
-                System.exit(1);
-            }
-        }
-
-        System.out.println("Game stopped running");
-        System.exit(1);
+        LwjglApplicationConfiguration applicationConfiguration = new LwjglApplicationConfiguration();
+        applicationConfiguration.title = "ElwynnProject";
+        applicationConfiguration.useGL30 = false;
+        applicationConfiguration.width = Parameters.getInstance().getWindowWidth();
+        applicationConfiguration.height = Parameters.getInstance().getWindowHeight();
+        applicationConfiguration.foregroundFPS = 60;
+        applicationConfiguration.backgroundFPS = 30;
+        new LwjglApplication(new Game(), applicationConfiguration);
     }
 }

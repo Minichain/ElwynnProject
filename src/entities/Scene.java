@@ -1,5 +1,7 @@
 package entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import main.Coordinates;
 
 import javax.imageio.ImageIO;
@@ -15,10 +17,10 @@ public class Scene {
     private static byte[][] arrayOfTiles;
     private int sceneX;
     private int sceneY;
-    private static BufferedImage grass00;
-    private static BufferedImage grass01;
-    private static BufferedImage grass02;
-    private static BufferedImage grass03;
+    private static Texture grass00;
+    private static Texture grass01;
+    private static Texture grass02;
+    private static Texture grass03;
     private static Coordinates center;
 
     private Scene() {
@@ -48,16 +50,16 @@ public class Scene {
     private void loadSprites() throws IOException {
         String path;
         path = "res/sprites/tiles/grass_00.png";
-        grass00 = ImageIO.read(new File(path));
+        grass00 = new Texture(Gdx.files.internal(path));
         path = "res/sprites/tiles/grass_01.png";
-        grass01 = ImageIO.read(new File(path));
+        grass01 = new Texture(Gdx.files.internal(path));
         path = "res/sprites/tiles/grass_02.png";
-        grass02 = ImageIO.read(new File(path));
+        grass02 = new Texture(Gdx.files.internal(path));
         path = "res/sprites/tiles/grass_03.png";
-        grass03 = ImageIO.read(new File(path));
+        grass03 = new Texture(Gdx.files.internal(path));
     }
 
-    public static BufferedImage getTile(int tileNum) {
+    public static Texture getTile(int tileNum) {
         switch(tileNum) {
             case 0:
                 return grass00;

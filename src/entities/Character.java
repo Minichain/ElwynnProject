@@ -1,6 +1,7 @@
 package entities;
 
-import listeners.MyKeyListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -8,6 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.Coordinates;
 import main.Utils;
 
@@ -23,8 +26,8 @@ public class Character extends DynamicEntity {
     private static Status characterStatus;
     private static Utils.DirectionFacing characterFacing;
 
-    private static BufferedImage spriteSheet;
-    private static BufferedImage sprite;
+    private static Texture spriteSheet;
+    private static TextureRegion sprite;
     private static double spriteFrame;
     private static int spriteWidth;
     private static int spriteHeight;
@@ -38,11 +41,7 @@ public class Character extends DynamicEntity {
     private Character() {
         super(xInitialCoordinate, yInitialCoordinate, xInitialCoordinate, yInitialCoordinate);
         initCharacter();
-        try {
-            loadSprite();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadSprite();
     }
 
     public void resetCharacter() {
@@ -66,10 +65,10 @@ public class Character extends DynamicEntity {
         return instance;
     }
 
-    private void loadSprite() throws IOException {
+    private void loadSprite() {
         String path;
         path = "res/sprites/characters/51x72bardo_character_01.png";
-        spriteSheet = ImageIO.read(new File(path));
+        spriteSheet = new Texture(Gdx.files.internal(path));
         spriteWidth = 64;
         spriteHeight = 90;
         scale = 1.00f;
@@ -78,38 +77,38 @@ public class Character extends DynamicEntity {
         specialAnimationFrames = 4;
     }
 
-    public BufferedImage getSprite() {
+    public TextureRegion getSprite() {
         int animation;
 
         switch (characterStatus) {
             default:
             case IDLE:
                 if (characterFacing == Utils.DirectionFacing.DOWN) {
-                    animation= 4;
+                    animation= 7;
                 } else if (characterFacing == Utils.DirectionFacing.LEFT) {
                     animation= 5;
                 } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
                     animation= 6;
                 } else {
-                    animation= 7;
+                    animation= 4;
                 }
                 break;
             case RUNNING:
                 if (characterFacing == Utils.DirectionFacing.DOWN) {
-                    animation= 0;
+                    animation= 3;
                 } else if (characterFacing == Utils.DirectionFacing.LEFT) {
                     animation= 1;
                 } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
                     animation= 2;
                 } else {
-                    animation= 3;
+                    animation= 0;
                 }
                 break;
             case JUMPING:
                 animation= 8;
                 break;
         }
-        sprite = spriteSheet.getSubimage((int)spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
+        sprite = new TextureRegion(spriteSheet, (int) spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
         return sprite;
     }
 
@@ -125,7 +124,7 @@ public class Character extends DynamicEntity {
         return scale;
     }
 
-    public void updateCharacter(long timeElapsed) {
+    public void update(long timeElapsed) {
         getPreviousCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate());
         getPreviousCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate());
         if (characterStatus != Status.JUMPING) {
@@ -133,16 +132,16 @@ public class Character extends DynamicEntity {
         }
 
         double[] movement = new double[2];
-        if (MyKeyListener.getInstance().iswKeyPressed()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             movement[1] = movement[1] - timeElapsed * speed;
         }
-        if (MyKeyListener.getInstance().isaKeyPressed()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             movement[0] = movement[0] - timeElapsed * speed;
         }
-        if (MyKeyListener.getInstance().issKeyPressed()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP)) {
             movement[1] = movement[1] + timeElapsed * speed;
         }
-        if (MyKeyListener.getInstance().isdKeyPressed()) {
+        if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             movement[0] = movement[0] + timeElapsed * speed;
         }
 

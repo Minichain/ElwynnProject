@@ -8,7 +8,7 @@ import entities.Tree;
 import main.Coordinates;
 import main.Parameters;
 
-public class MyMouseListener implements MouseListener, MouseMotionListener, MouseWheelListener {
+public class MyMouseListener {
     private static MyMouseListener instance = null;
     private int mousePositionX;
     private int mousePositionY;
@@ -23,7 +23,7 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
         }
         return instance;
     }
-
+/*
     public void mousePressed(MouseEvent e) {
         System.out.println("mousePressed event at " + e.getX() + ", " + e.getY());
 //        System.out.println("New tree created at " + e.getX() + ", " + e.getY());
@@ -79,5 +79,5 @@ public class MyMouseListener implements MouseListener, MouseMotionListener, Mous
 
     public int getMouseWheelPosition() {
         return mouseWheelPosition;
-    }
+    }*/
 }

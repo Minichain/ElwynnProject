@@ -1,19 +1,7 @@
 package listeners;
 
-import entities.Scene;
-import main.Parameters;
-import entities.Character;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-
-public class MyKeyListener extends KeyAdapter {
+public class MyKeyListener {
     private static MyKeyListener instance = null;
-
-    private boolean wKeyPressed;
-    private boolean aKeyPressed;
-    private boolean sKeyPressed;
-    private boolean dKeyPressed;
-    private boolean spaceKeyPressed;
 
     private MyKeyListener() {
     }
@@ -24,12 +12,7 @@ public class MyKeyListener extends KeyAdapter {
         }
         return instance;
     }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
+/*
     @Override
     public void keyPressed(KeyEvent e) {
 //        System.out.println("keyPressed = " + KeyEvent.getKeyText(e.getKeyCode()));
@@ -65,47 +48,5 @@ public class MyKeyListener extends KeyAdapter {
                 Scene.getInstance().initEntities();
                 break;
         }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-//        System.out.println("keyReleased = " + KeyEvent.getKeyText(e.getKeyCode()));
-
-        switch (KeyEvent.getKeyText(e.getKeyCode())) {
-            case "W":
-                wKeyPressed = false;
-                break;
-            case "A":
-                aKeyPressed = false;
-                break;
-            case "S":
-                sKeyPressed = false;
-                break;
-            case "D":
-                dKeyPressed = false;
-                break;
-            case "Space":
-                spaceKeyPressed = false;
-                break;
-            case "F1":
-            case "F2":
-                break;
-        }
-    }
-
-    public boolean iswKeyPressed() {
-        return wKeyPressed;
-    }
-
-    public boolean isaKeyPressed() {
-        return aKeyPressed;
-    }
-
-    public boolean issKeyPressed() {
-        return sKeyPressed;
-    }
-
-    public boolean isdKeyPressed() {
-        return dKeyPressed;
-    }
+    }*/
 }
