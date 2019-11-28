@@ -1,16 +1,10 @@
 package main;
 
-import com.badlogic.gdx.Gdx;
-import entities.Camera;
 import entities.Character;
-import entities.Entity;
 import entities.Scene;
-import listeners.MyKeyListener;
-import listeners.MyMouseListener;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.List;
 
 public class ElwynnJPanel extends JPanel {
     private long timeElapsed;

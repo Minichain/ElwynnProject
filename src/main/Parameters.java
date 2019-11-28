@@ -2,20 +2,24 @@ package main;
 
 public class Parameters {
     private static Parameters instance = null;
-    private static int framesPerSecond;
+    private static int foregroundFramesPerSecond;
+    private static int backgroundFramesPerSecond;
     private static int windowWidth;
     private static int windowHeight;
     private static boolean debugMode;
     private static int tilesSizeX;
     private static int tilesSizeY;
+    private static Coordinates startingCoordinates;
 
     private Parameters() {
         debugMode = false;
-        framesPerSecond = 60;
+        foregroundFramesPerSecond = 60;
+        backgroundFramesPerSecond = 30;
         windowWidth = 1280;
         windowHeight = 720;
         tilesSizeX = 64;
         tilesSizeY = 64;
+        startingCoordinates = new Coordinates(5000, 5000);
     }
 
     public static Parameters getInstance() {
@@ -41,12 +45,20 @@ public class Parameters {
         return windowHeight;
     }
 
-    public void setFramesPerSecond(int fps) {
-        framesPerSecond = fps;
+    public void setForegroundFramesPerSecond(int fps) {
+        foregroundFramesPerSecond = fps;
     }
 
-    public int getFramesPerSecond() {
-        return framesPerSecond;
+    public int getForegroundFramesPerSecond() {
+        return foregroundFramesPerSecond;
+    }
+
+    public void setBackgroundFramesPerSecond(int fps) {
+        backgroundFramesPerSecond = fps;
+    }
+
+    public int getBackgroundFramesPerSecond() {
+        return backgroundFramesPerSecond;
     }
 
     public void setDebugMode(boolean dm) {
@@ -57,11 +69,15 @@ public class Parameters {
         return debugMode;
     }
 
-    public static int getTilesSizeX() {
+    public int getTilesSizeX() {
         return tilesSizeX;
     }
 
-    public static int getTilesSizeY() {
+    public int getTilesSizeY() {
         return tilesSizeY;
+    }
+
+    public Coordinates getStartingCoordinates() {
+        return startingCoordinates;
     }
 }

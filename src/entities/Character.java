@@ -3,15 +3,12 @@ package entities;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import main.Coordinates;
+import main.Parameters;
 import main.Utils;
 
 public class Character extends DynamicEntity {
@@ -35,11 +32,12 @@ public class Character extends DynamicEntity {
     private static int runningFrames;
     private static int specialAnimationFrames;
     private static float scale;
-    private static int xInitialCoordinate = 5000;
-    private static int yInitialCoordinate = 5000;
 
     private Character() {
-        super(xInitialCoordinate, yInitialCoordinate, xInitialCoordinate, yInitialCoordinate);
+        super((int) Parameters.getInstance().getStartingCoordinates().getxCoordinate(),
+                (int) Parameters.getInstance().getStartingCoordinates().getyCoordinate(),
+                (int) Parameters.getInstance().getStartingCoordinates().getxCoordinate(),
+                (int) Parameters.getInstance().getStartingCoordinates().getyCoordinate());
         initCharacter();
         loadSprite();
     }
@@ -49,8 +47,8 @@ public class Character extends DynamicEntity {
     }
 
     private void initCharacter() {
-        getCurrentCoordinates().setxCoordinate(xInitialCoordinate);
-        getCurrentCoordinates().setyCoordinate(yInitialCoordinate);
+        getCurrentCoordinates().setxCoordinate(Parameters.getInstance().getStartingCoordinates().getxCoordinate());
+        getCurrentCoordinates().setyCoordinate(Parameters.getInstance().getStartingCoordinates().getyCoordinate());
         speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;

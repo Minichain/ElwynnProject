@@ -10,8 +10,10 @@ public class Main {
         applicationConfiguration.useGL30 = false;
         applicationConfiguration.width = Parameters.getInstance().getWindowWidth();
         applicationConfiguration.height = Parameters.getInstance().getWindowHeight();
-        applicationConfiguration.foregroundFPS = 60;
-        applicationConfiguration.backgroundFPS = 30;
+        applicationConfiguration.resizable = true;
+        applicationConfiguration.vSyncEnabled = true;
+        applicationConfiguration.foregroundFPS = Parameters.getInstance().getForegroundFramesPerSecond();
+        applicationConfiguration.backgroundFPS = Parameters.getInstance().getBackgroundFramesPerSecond();
         new LwjglApplication(new Game(), applicationConfiguration);
     }
 }

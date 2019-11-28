@@ -12,6 +12,7 @@ import entities.Camera;
 import entities.Character;
 import entities.Entity;
 import entities.Scene;
+import listeners.MyInputListener;
 
 import java.util.List;
 
@@ -22,14 +23,20 @@ public class Game implements ApplicationListener {
     private long timeElapsed;
     private long lastUpdateTime = 0;
     private long currentTime;
-    private long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getFramesPerSecond();
+    private long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
 
     @Override
     public void create() {
         System.out.println("ElwynGraphicsLog:: ApplicationListener create");
+        Camera.getInstance().position.set(
+                (float) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
+                (float) Character.getInstance().getCurrentCoordinates().getyCoordinate(),
+                0);
+        Camera.getInstance().update();
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         bitmapFont = new BitmapFont();
+        Gdx.input.setInputProcessor(MyInputListener.getInstance());
     }
 
     @Override
@@ -40,7 +47,7 @@ public class Game implements ApplicationListener {
 
     @Override
     public void render() {
-        System.out.println("ElwynGraphicsLog:: ApplicationListener update and render");
+//        System.out.println("ElwynGraphicsLog:: ApplicationListener update and render");
         //Compute the time elapsed since the last frame
         currentTime = System.currentTimeMillis();
         timeElapsed = currentTime - lastUpdateTime;
@@ -81,8 +88,10 @@ public class Game implements ApplicationListener {
         double[] localCoordinates;
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        batch.begin();
         Gdx.gl.glLineWidth(1);
+
+        batch.setProjectionMatrix(Camera.getInstance().projection);
+        batch.begin();
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.BLACK);
 
@@ -92,8 +101,8 @@ public class Game implements ApplicationListener {
         //TODO create the background from the tiles and paint it as one image
         for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
             for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
-                int x = (i * Parameters.getTilesSizeX());
-                int y = (j * Parameters.getTilesSizeY());
+                int x = (i * Parameters.getInstance().getTilesSizeX());
+                int y = (j * Parameters.getInstance().getTilesSizeY());
                 if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
                     batch.draw(Scene.getInstance().getTile(arrayOfTyles[i][j]),
                             (float) (x + localCoordinates[0]),
@@ -108,7 +117,7 @@ public class Game implements ApplicationListener {
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
-//            System.out.println("Painting tree Nº " + (i + 1)
+//            System.out.println("Painting entity Nº " + (i + 1)
 //                    + " at (" + entity.getCoordinates().getxCoordinate()
 //                    + ", " + entity.getCoordinates().getyCoordinate());
             localCoordinates = entity.getCoordinates().toLocalCoordinates();
@@ -133,14 +142,14 @@ public class Game implements ApplicationListener {
         /** DEBUG ELEMENTS **/
         if (Parameters.getInstance().isDebugMode()) {
             long fps = 1000 / timeElapsed;
-            shapeRenderer.line(0, Parameters.getInstance().getWindowHeight()/2,
-                    Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight()/2);
-            shapeRenderer.line(Parameters.getInstance().getWindowWidth()/2, 0,
-                    Parameters.getInstance().getWindowWidth()/2, Parameters.getInstance().getWindowHeight());
+            shapeRenderer.line(0, Parameters.getInstance().getWindowHeight() / 2,
+                    Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight() / 2);
+            shapeRenderer.line(Parameters.getInstance().getWindowWidth() / 2, 0,
+                    Parameters.getInstance().getWindowWidth() / 2, Parameters.getInstance().getWindowHeight());
             bitmapFont.setColor(Color.BLACK);
             bitmapFont.draw(batch, "FPS: " + fps, 10, 20);
             bitmapFont.draw(batch, "X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
-            bitmapFont.draw(batch, "Y: " + (int)Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
+            bitmapFont.draw(batch, "Y: " + (int) Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
             bitmapFont.draw(batch, "Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
         }
 
@@ -151,7 +160,9 @@ public class Game implements ApplicationListener {
     @Override
     public void resize(int width, int height) {
         System.out.println("ElwynGraphicsLog:: ApplicationListener resize to (" + width + ", " + height + ")");
-        Gdx.graphics.setDisplayMode(width, height, false);
+        Camera.getInstance().viewportWidth = width;
+        Camera.getInstance().viewportHeight = height;
+        Camera.getInstance().update();
     }
 
     @Override

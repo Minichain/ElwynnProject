@@ -1,21 +1,27 @@
 package entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import listeners.MyInputListener;
 import main.Coordinates;
 import main.Utils;
 
-public class Camera {
+public class Camera extends OrthographicCamera {
     private static Camera instance = null;
-    Coordinates coordinates;
-    private static int xInitialCoordinate = 5000;
-    private static int yInitialCoordinate = 5000;
+    private static Coordinates coordinates;
 
-    private Camera() {
-        coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);
+    public Camera(int width, int height) {
+        super(width, height);
+        coordinates = new Coordinates(0, 0);
+        coordinates.setxCoordinate((int) Character.getInstance().getCurrentCoordinates().getxCoordinate());
+        coordinates.setyCoordinate((int) Character.getInstance().getCurrentCoordinates().getyCoordinate());
+        position.set((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
+                (int) Character.getInstance().getCurrentCoordinates().getyCoordinate(), 0);
     }
 
     public static Camera getInstance() {
         if (instance == null) {
-            instance = new Camera();
+            instance = new Camera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         }
         return instance;
     }
@@ -27,6 +33,7 @@ public class Camera {
     public void setCoordinates(int x, int y) {
         coordinates.setxCoordinate(x);
         coordinates.setyCoordinate(y);
+        position.set(x, y, 0);
     }
 
     public void resetCamera() {
@@ -36,8 +43,8 @@ public class Camera {
 
     public void update(long timeElapsed) {
         double[] cameraVelocityVector = new double[2];
-        cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().getxCoordinate() - Camera.getInstance().getCoordinates().getxCoordinate();
-        cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().getyCoordinate() - Camera.getInstance().getCoordinates().getyCoordinate();
+        cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().getxCoordinate() - this.getCoordinates().getxCoordinate();
+        cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().getyCoordinate() - this.getCoordinates().getyCoordinate();
         double cameraSpeed = Utils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
         if (cameraSpeed > 1000) { //Too much speed?
             cameraSpeed = 0;
@@ -50,7 +57,9 @@ public class Camera {
             return;
         }
 
-        Camera.getInstance().setCoordinates((int) (Camera.getInstance().getCoordinates().getxCoordinate() + (cameraVelocityVector[0] * cameraSpeed)),
-                (int)(Camera.getInstance().getCoordinates().getyCoordinate() + (cameraVelocityVector[1] * cameraSpeed)));
+        this.setCoordinates((int) (this.getCoordinates().getxCoordinate() + (cameraVelocityVector[0] * cameraSpeed)),
+                (int) (this.getCoordinates().getyCoordinate() + (cameraVelocityVector[1] * cameraSpeed)));
+        this.zoom = 1.0f + ((float) MyInputListener.getInstance().getMouseWheelPosition() / 50f);
+        update();
     }
 }
