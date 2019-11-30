@@ -48,7 +48,7 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
         getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
-        speed = 0.0625;
+        speed = 0.075;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;
         displacementVector = new double[2];
@@ -64,12 +64,12 @@ public class Character extends DynamicEntity {
 
     private void loadSprite() {
         String path;
-        path = "res/sprites/characters/bardo_character_02.png";
+        path = "res/sprites/characters/link.png";
         spriteSheet = new Texture(Gdx.files.internal(path));
         spriteWidth = 16;
-        spriteHeight = 22;
+        spriteHeight = 26;
         idleFrames = 1;
-        runningFrames = 3;
+        runningFrames = 8;
         specialAnimationFrames = 4;
     }
 
@@ -80,31 +80,31 @@ public class Character extends DynamicEntity {
             default:
             case IDLE:
                 if (characterFacing == Utils.DirectionFacing.DOWN) {
-                    animation= 7;
+                    animation = 0;
                 } else if (characterFacing == Utils.DirectionFacing.LEFT) {
-                    animation= 5;
+                    animation = 3;
                 } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
-                    animation= 6;
+                    animation = 1;
                 } else {
-                    animation= 4;
+                    animation = 2;
                 }
                 break;
             case RUNNING:
                 if (characterFacing == Utils.DirectionFacing.DOWN) {
-                    animation= 3;
+                    animation = 4;
                 } else if (characterFacing == Utils.DirectionFacing.LEFT) {
-                    animation= 1;
+                    animation = 7;
                 } else if (characterFacing == Utils.DirectionFacing.RIGHT) {
-                    animation= 2;
+                    animation = 5;
                 } else {
-                    animation= 0;
+                    animation = 6;
                 }
                 break;
             case JUMPING:
                 animation= 8;
                 break;
         }
-        sprite = new TextureRegion(spriteSheet, (int) spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth - 1, spriteHeight - 1);
+        sprite = new TextureRegion(spriteSheet, (int) spriteFrame * spriteWidth, animation * spriteHeight, spriteWidth, spriteHeight);
         return sprite;
     }
 
