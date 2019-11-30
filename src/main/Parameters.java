@@ -7,8 +7,6 @@ public class Parameters {
     private static int windowWidth;
     private static int windowHeight;
     private static boolean debugMode;
-    private static int tilesSizeX;
-    private static int tilesSizeY;
     private static Coordinates startingCoordinates;
 
     private Parameters() {
@@ -17,8 +15,6 @@ public class Parameters {
         backgroundFramesPerSecond = 30;
         windowWidth = 1280;
         windowHeight = 720;
-        tilesSizeX = 64;
-        tilesSizeY = 64;
         startingCoordinates = new Coordinates(5000, 5000);
     }
 
@@ -67,14 +63,6 @@ public class Parameters {
 
     public boolean isDebugMode() {
         return debugMode;
-    }
-
-    public int getTilesSizeX() {
-        return tilesSizeX;
-    }
-
-    public int getTilesSizeY() {
-        return tilesSizeY;
     }
 
     public Coordinates getStartingCoordinates() {

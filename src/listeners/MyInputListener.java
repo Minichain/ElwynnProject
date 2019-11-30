@@ -6,7 +6,7 @@ public class MyInputListener implements InputProcessor {
     private static MyInputListener instance = null;
     private int mousePositionX;
     private int mousePositionY;
-    private int mouseWheelPosition;
+    public int mouseWheelPosition;
 
     private MyInputListener() {
     }
@@ -56,11 +56,6 @@ public class MyInputListener implements InputProcessor {
     @Override
     public boolean scrolled(int i) {
         mouseWheelPosition += i;
-        System.out.println("AdriHell:: scrolled " + mouseWheelPosition);
         return false;
-    }
-
-    public int getMouseWheelPosition() {
-        return mouseWheelPosition;
     }
 }

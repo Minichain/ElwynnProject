@@ -18,6 +18,7 @@ import java.util.List;
 
 public class Game implements ApplicationListener {
     private SpriteBatch batch;
+    private SpriteBatch batchUI;
     private ShapeRenderer shapeRenderer;
     private BitmapFont bitmapFont;
     private long timeElapsed;
@@ -29,11 +30,12 @@ public class Game implements ApplicationListener {
     public void create() {
         System.out.println("ElwynGraphicsLog:: ApplicationListener create");
         Camera.getInstance().position.set(
-                (float) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
-                (float) Character.getInstance().getCurrentCoordinates().getyCoordinate(),
+                (float) Character.getInstance().getCurrentCoordinates().x,
+                (float) Character.getInstance().getCurrentCoordinates().y,
                 0);
         Camera.getInstance().update();
         batch = new SpriteBatch();
+        batchUI = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
         bitmapFont = new BitmapFont();
         Gdx.input.setInputProcessor(MyInputListener.getInstance());
@@ -43,6 +45,7 @@ public class Game implements ApplicationListener {
     public void dispose() {
         System.out.println("ElwynGraphicsLog:: ApplicationListener dispose");
         batch.dispose();
+        batchUI.dispose();
     }
 
     @Override
@@ -60,6 +63,7 @@ public class Game implements ApplicationListener {
 
         /** RENDER **/
         renderScene();
+        renderUI();
 
         //Wait time until processing next frame. FPS locked.
         lastUpdateTime = currentTime;
@@ -81,33 +85,32 @@ public class Game implements ApplicationListener {
     private void updateScene() {
         Character.getInstance().update(timeElapsed);
         Camera.getInstance().update(timeElapsed);
+
+        System.out.println("Character at (" + Character.getInstance().getCoordinates().x + ", " + Character.getInstance().getCoordinates().y + ")");
+        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
     }
 
     private void renderScene() {
-        int renderDistance = 2500;  //TODO This should depend on the Window and Camera width/height
-        double[] localCoordinates;
+        int renderDistance = 500;  //TODO This should depend on the Window and Camera width/height
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glLineWidth(1);
 
-        batch.setProjectionMatrix(Camera.getInstance().projection);
         batch.begin();
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.BLACK);
+        batch.setProjectionMatrix(Camera.getInstance().combined);
 
         /** SCENE BACKGROUND IS DRAWN FIRST **/
-        byte[][] arrayOfTyles = Scene.getInstance().getArrayOfTiles();
-        localCoordinates = Scene.getInstance().getCenter().toLocalCoordinates();
+        byte[][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
         //TODO create the background from the tiles and paint it as one image
         for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
             for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
-                int x = (i * Parameters.getInstance().getTilesSizeX());
-                int y = (j * Parameters.getInstance().getTilesSizeY());
+                int x = (i * 16);
+                int y = (j * 16);
                 if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
-                    batch.draw(Scene.getInstance().getTile(arrayOfTyles[i][j]),
-                            (float) (x + localCoordinates[0]),
-                            (float) (y + localCoordinates[1]),
-                            64, 64);
+                    batch.draw(Scene.getInstance().getTile(arrayOfTiles[i][j]),
+                            (float) x,
+                            (float) y,
+                            16, 16);
                 }
             }
         }
@@ -117,27 +120,20 @@ public class Game implements ApplicationListener {
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
-//            System.out.println("Painting entity Nº " + (i + 1)
-//                    + " at (" + entity.getCoordinates().getxCoordinate()
-//                    + ", " + entity.getCoordinates().getyCoordinate());
-            localCoordinates = entity.getCoordinates().toLocalCoordinates();
             if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
-//            if (true) {
                 batch.draw(entity.getSprite(),
-                        (float)localCoordinates[0]
-                                - (float)(entity.getSprite().getRegionWidth() / 2),
-                        (float)localCoordinates[1]
-                                - (float)(entity.getSprite().getRegionHeight() * 0.75));
-
-                /** DEBUG ELEMENTS **/
-                if (Parameters.getInstance().isDebugMode()) {
-//                    int radius = 50;
-//                    graphics2D.drawOval((int)localCoordinates[0] - radius,
-//                            (int)localCoordinates[1] - radius,
-//                            radius * 2, radius * 2);
-                }
+                        (float) entity.getCoordinates().x - (float) (entity.getSprite().getRegionWidth() * 0.5),
+                        (float) entity.getCoordinates().y - (float) (entity.getSprite().getRegionHeight() * 0.5));
             }
         }
+
+        batch.end();
+    }
+
+    private void renderUI() {
+        batchUI.begin();
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.BLACK);
 
         /** DEBUG ELEMENTS **/
         if (Parameters.getInstance().isDebugMode()) {
@@ -147,14 +143,19 @@ public class Game implements ApplicationListener {
             shapeRenderer.line(Parameters.getInstance().getWindowWidth() / 2, 0,
                     Parameters.getInstance().getWindowWidth() / 2, Parameters.getInstance().getWindowHeight());
             bitmapFont.setColor(Color.BLACK);
-            bitmapFont.draw(batch, "FPS: " + fps, 10, 20);
-            bitmapFont.draw(batch, "X: " + (int) Character.getInstance().getCurrentCoordinates().getxCoordinate(), 10, 35);
-            bitmapFont.draw(batch, "Y: " + (int) Character.getInstance().getCurrentCoordinates().getyCoordinate(), 10, 50);
-            bitmapFont.draw(batch, "Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
+            bitmapFont.draw(batchUI, "FPS: " + fps, 10, 20);
+            bitmapFont.draw(batchUI, "X: " + (int) Character.getInstance().getCurrentCoordinates().x, 10, 35);
+            bitmapFont.draw(batchUI, "Y: " + (int) Character.getInstance().getCurrentCoordinates().y, 10, 50);
+            bitmapFont.draw(batchUI, "Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
         }
 
-        batch.end();
+        /** MOUSE POSITION **/
+        int mouseX = Gdx.input.getX();
+        int mouseY = Gdx.input.getY();
+        batchUI.draw(Scene.getInstance().getTile(3), mouseX, mouseY, 16,16);
+
         shapeRenderer.end();
+        batchUI.end();
     }
 
     @Override

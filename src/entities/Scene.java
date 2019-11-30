@@ -4,9 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import main.Coordinates;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +18,7 @@ public class Scene {
     private static Texture grass01;
     private static Texture grass02;
     private static Texture grass03;
+    private static int numberOfTileTextures = 4;
     private static Coordinates center;
 
     private Scene() {
@@ -73,6 +71,10 @@ public class Scene {
         return null;
     }
 
+    public int getNumberOfTileTextures() {
+        return numberOfTileTextures;
+    }
+
     public byte[][] getArrayOfTiles() {
         return arrayOfTiles;
     }
@@ -104,8 +106,8 @@ public class Scene {
         for (int i = 0; i < numberOfTrees; i++) {
             double minDepth = 10000;
             for (int j = 0; j < listOfEntities.size(); j++) {
-                if (listOfEntities.get(j).getCoordinates().getyCoordinate() < minDepth) {
-                    minDepth = listOfEntities.get(j).getCoordinates().getyCoordinate();
+                if (listOfEntities.get(j).getCoordinates().y < minDepth) {
+                    minDepth = listOfEntities.get(j).getCoordinates().y;
                     minDepthTree = listOfEntities.get(j);
                 }
             }

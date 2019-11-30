@@ -77,7 +77,7 @@ public class Utils {
     }
 
     public static double module(Coordinates coordinates1, Coordinates coordinates2) {
-        return Math.sqrt(Math.pow(coordinates1.getxCoordinate() - coordinates2.getxCoordinate(), 2)
-                + Math.pow(coordinates1.getyCoordinate() - coordinates2.getyCoordinate(), 2));
+        return Math.sqrt(Math.pow(coordinates1.x - coordinates2.x, 2)
+                + Math.pow(coordinates1.y - coordinates2.y, 2));
     }
 }

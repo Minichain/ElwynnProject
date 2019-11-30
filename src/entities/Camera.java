@@ -9,14 +9,13 @@ import main.Utils;
 public class Camera extends OrthographicCamera {
     private static Camera instance = null;
     private static Coordinates coordinates;
+    private static float initialZoom = 0.5f;
 
     public Camera(int width, int height) {
         super(width, height);
-        coordinates = new Coordinates(0, 0);
-        coordinates.setxCoordinate((int) Character.getInstance().getCurrentCoordinates().getxCoordinate());
-        coordinates.setyCoordinate((int) Character.getInstance().getCurrentCoordinates().getyCoordinate());
-        position.set((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
-                (int) Character.getInstance().getCurrentCoordinates().getyCoordinate(), 0);
+        position.set((int) Character.getInstance().getCurrentCoordinates().x,
+                (int) Character.getInstance().getCurrentCoordinates().y, 0);
+        zoom = initialZoom;
     }
 
     public static Camera getInstance() {
@@ -27,24 +26,22 @@ public class Camera extends OrthographicCamera {
     }
 
     public Coordinates getCoordinates() {
-        return coordinates;
+        return new Coordinates(this.position.x, this.position.y);      //FIXME
     }
 
     public void setCoordinates(int x, int y) {
-        coordinates.setxCoordinate(x);
-        coordinates.setyCoordinate(y);
         position.set(x, y, 0);
     }
 
     public void resetCamera() {
-        this.setCoordinates((int) Character.getInstance().getCurrentCoordinates().getxCoordinate(),
-                (int) Character.getInstance().getCurrentCoordinates().getyCoordinate());
+        this.position.x = (int) Character.getInstance().getCurrentCoordinates().x;
+        this.position.y = (int) Character.getInstance().getCurrentCoordinates().y;
     }
 
     public void update(long timeElapsed) {
         double[] cameraVelocityVector = new double[2];
-        cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().getxCoordinate() - this.getCoordinates().getxCoordinate();
-        cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().getyCoordinate() - this.getCoordinates().getyCoordinate();
+        cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().x - this.position.x;
+        cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().y - this.position.y;
         double cameraSpeed = Utils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
         if (cameraSpeed > 1000) { //Too much speed?
             cameraSpeed = 0;
@@ -57,9 +54,10 @@ public class Camera extends OrthographicCamera {
             return;
         }
 
-        this.setCoordinates((int) (this.getCoordinates().getxCoordinate() + (cameraVelocityVector[0] * cameraSpeed)),
-                (int) (this.getCoordinates().getyCoordinate() + (cameraVelocityVector[1] * cameraSpeed)));
-        this.zoom = 1.0f + ((float) MyInputListener.getInstance().getMouseWheelPosition() / 50f);
+        this.position.x += (cameraVelocityVector[0] * cameraSpeed);
+        this.position.y += (cameraVelocityVector[1] * cameraSpeed);
+
+        this.zoom = initialZoom + ((float) MyInputListener.getInstance().mouseWheelPosition / 50f);
         update();
     }
 }

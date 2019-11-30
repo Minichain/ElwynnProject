@@ -26,18 +26,17 @@ public class Character extends DynamicEntity {
     private static Texture spriteSheet;
     private static TextureRegion sprite;
     private static double spriteFrame;
-    private static int spriteWidth;
-    private static int spriteHeight;
+    public static int spriteWidth;
+    public static int spriteHeight;
     private static int idleFrames;
     private static int runningFrames;
     private static int specialAnimationFrames;
-    private static float scale;
 
     private Character() {
-        super((int) Parameters.getInstance().getStartingCoordinates().getxCoordinate(),
-                (int) Parameters.getInstance().getStartingCoordinates().getyCoordinate(),
-                (int) Parameters.getInstance().getStartingCoordinates().getxCoordinate(),
-                (int) Parameters.getInstance().getStartingCoordinates().getyCoordinate());
+        super((int) Parameters.getInstance().getStartingCoordinates().x,
+                (int) Parameters.getInstance().getStartingCoordinates().y,
+                (int) Parameters.getInstance().getStartingCoordinates().x,
+                (int) Parameters.getInstance().getStartingCoordinates().y);
         initCharacter();
         loadSprite();
     }
@@ -47,9 +46,9 @@ public class Character extends DynamicEntity {
     }
 
     private void initCharacter() {
-        getCurrentCoordinates().setxCoordinate(Parameters.getInstance().getStartingCoordinates().getxCoordinate());
-        getCurrentCoordinates().setyCoordinate(Parameters.getInstance().getStartingCoordinates().getyCoordinate());
-        speed = 0.25;
+        getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
+        getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
+        speed = 0.0625;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.RIGHT;
         displacementVector = new double[2];
@@ -65,11 +64,10 @@ public class Character extends DynamicEntity {
 
     private void loadSprite() {
         String path;
-        path = "res/sprites/characters/51x72bardo_character_01.png";
+        path = "res/sprites/characters/bardo_character_02.png";
         spriteSheet = new Texture(Gdx.files.internal(path));
-        spriteWidth = 64;
-        spriteHeight = 90;
-        scale = 1.00f;
+        spriteWidth = 16;
+        spriteHeight = 22;
         idleFrames = 1;
         runningFrames = 3;
         specialAnimationFrames = 4;
@@ -110,21 +108,9 @@ public class Character extends DynamicEntity {
         return sprite;
     }
 
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
-
-    public float getScale() {
-        return scale;
-    }
-
     public void update(long timeElapsed) {
-        getPreviousCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate());
-        getPreviousCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate());
+        getPreviousCoordinates().x = getCurrentCoordinates().x;
+        getPreviousCoordinates().y = getCurrentCoordinates().y;
         if (characterStatus != Status.JUMPING) {
             characterStatus = Status.IDLE;
         }
@@ -149,14 +135,14 @@ public class Character extends DynamicEntity {
             movement[1] *= 0.75;
         }
 
-        if (!checkCollision((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))
-                && !checkCollisionWithEntities((int)(getCurrentCoordinates().getxCoordinate() + movement[0]), (int)(getCurrentCoordinates().getyCoordinate() + movement[1]))) {
-            getCurrentCoordinates().setxCoordinate(getCurrentCoordinates().getxCoordinate() + movement[0]);
-            getCurrentCoordinates().setyCoordinate(getCurrentCoordinates().getyCoordinate() + movement[1]);
+        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))
+                && !checkCollisionWithEntities((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))) {
+            getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+            getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
         }
 
-        displacementVector[0] = getCurrentCoordinates().getxCoordinate() - getPreviousCoordinates().getxCoordinate();
-        displacementVector[1] = getCurrentCoordinates().getyCoordinate() - getPreviousCoordinates().getyCoordinate();
+        displacementVector[0] = getCurrentCoordinates().x - getPreviousCoordinates().x;
+        displacementVector[1] = getCurrentCoordinates().y - getPreviousCoordinates().y;
 
         if (isRunning() && characterStatus != Status.JUMPING) {
             characterFacing = Utils.checkDirectionFacing(displacementVector);
@@ -205,11 +191,6 @@ public class Character extends DynamicEntity {
 
     public Coordinates getCurrentCoordinates() {
         return getCoordinates();
-    }
-
-    public void setCoordinates(int x, int y) {
-        getCurrentCoordinates().setxCoordinate(x);
-        getCurrentCoordinates().setyCoordinate(y);
     }
 
     public Status getCharacterStatus() {
