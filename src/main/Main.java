@@ -1,19 +1,40 @@
 package main;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import org.lwjgl.opengl.GL;
+
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
     public static void main(String[] args) {
-        LwjglApplicationConfiguration applicationConfiguration = new LwjglApplicationConfiguration();
-        applicationConfiguration.title = "ElwynnProject";
-        applicationConfiguration.useGL30 = false;
-        applicationConfiguration.width = Parameters.getInstance().getWindowWidth();
-        applicationConfiguration.height = Parameters.getInstance().getWindowHeight();
-        applicationConfiguration.resizable = true;
-        applicationConfiguration.vSyncEnabled = true;
-        applicationConfiguration.foregroundFPS = Parameters.getInstance().getForegroundFramesPerSecond();
-        applicationConfiguration.backgroundFPS = Parameters.getInstance().getBackgroundFramesPerSecond();
-        new LwjglApplication(new Game(), applicationConfiguration);
+        if (!glfwInit()) {
+            System.err.println("GLFW Failed to initialize!");
+            System.exit(0);
+        }
+
+        long window = glfwCreateWindow(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), "ElwynnProject", 0, 0);
+
+        glfwShowWindow(window);
+
+        glfwMakeContextCurrent(window);
+
+        GL.createCapabilities();
+
+        while(!glfwWindowShouldClose(window)) {
+            glfwPollEvents();
+            glClear(GL_COLOR_BUFFER_BIT);
+
+            glBegin(GL_QUADS);
+            glVertex2f(-0.5f, 0.5f);
+            glVertex2f(0.5f, 0.5f);
+            glVertex2f(0.5f, -0.5f);
+            glVertex2f(-0.5f, -0.5f);
+            glEnd();
+
+            glfwSwapBuffers(window);
+        }
+
+        glfwTerminate();
+        System.exit(0);
     }
 }
