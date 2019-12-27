@@ -29,7 +29,7 @@ public class Utils {
 
     public static DirectionFacing checkDirectionFacing(double x, double y) {
         DirectionFacing directionFacing;
-        y = -y; // y axis inverted in libGdx
+//        y = -y; // y axis inverted in libGdx
         if (x > 0) {
             if (y > 0) {
                 if (y >= x) {

@@ -1,101 +1,36 @@
-//package main;
-//
-//import com.badlogic.gdx.ApplicationListener;
-//import com.badlogic.gdx.Gdx;
-//import com.badlogic.gdx.Input;
-//import com.badlogic.gdx.graphics.Color;
-//import com.badlogic.gdx.graphics.GL20;
-//import com.badlogic.gdx.graphics.g2d.BitmapFont;
-//import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-//import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-//import entities.Camera;
-//import entities.Character;
-//import entities.Entity;
-//import entities.Scene;
-//import listeners.MyInputListener;
-//
-//import java.util.List;
-//
-//public class Game implements ApplicationListener {
-//    private SpriteBatch batch;
-//    private SpriteBatch batchUI;
-//    private SpriteBatch batchDebugUI;
-//    private ShapeRenderer shapeRenderer;
-//    private BitmapFont bitmapFont;
-//    private long timeElapsed;
-//    private long lastUpdateTime = 0;
-//    private long currentTime;
-//    private long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
-//
-//    @Override
-//    public void create() {
-//        System.out.println("ElwynGraphicsLog:: ApplicationListener create");
-//        Camera.getInstance().position.set(
-//                (float) Character.getInstance().getCurrentCoordinates().x,
-//                (float) Character.getInstance().getCurrentCoordinates().y,
-//                0);
-//        Camera.getInstance().update();
-//        batch = new SpriteBatch();
-//        batchUI = new SpriteBatch();
-//        batchDebugUI = new SpriteBatch();
-//        shapeRenderer = new ShapeRenderer();
-//        bitmapFont = new BitmapFont();
-//        Gdx.input.setInputProcessor(MyInputListener.getInstance());
-//    }
-//
-//    @Override
-//    public void dispose() {
-//        System.out.println("ElwynGraphicsLog:: ApplicationListener dispose");
-//        batch.dispose();
-//        batchUI.dispose();
-//        batchDebugUI.dispose();
-//    }
-//
-//    @Override
-//    public void render() {
-////        System.out.println("ElwynGraphicsLog:: ApplicationListener update and render");
-//        //Compute the time elapsed since the last frame
-//        currentTime = System.currentTimeMillis();
-//        timeElapsed = currentTime - lastUpdateTime;
-//
-//        /** UPDATE **/
-//        updateScene();
-//
-//        /** RENDER **/
-//        renderScene();
-//        renderUI();
-//        if (Parameters.getInstance().isDebugMode()) {
-//            renderDebugUI();
-//        }
-//
-//        //Wait time until processing next frame. FPS locked.
-//        lastUpdateTime = currentTime;
-////        if ((System.currentTimeMillis() - currentTime) < maxTimeBetweenFrames) {
-////            try {
-////                Thread.sleep(maxTimeBetweenFrames);
-////            } catch (InterruptedException e) {
-////                e.printStackTrace();
-////            }
-////        }
-//    }
-//
-//    private void updateScene() {
-//        Character.getInstance().update(timeElapsed);
-//        Camera.getInstance().update(timeElapsed);
-//
-////        System.out.println("Character at (" + Character.getInstance().getCoordinates().x + ", " + Character.getInstance().getCoordinates().y + ")");
-////        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
-////        System.out.println("Cursor at (" + Gdx.input.getX() + ", " + Gdx.input.getY() + ")");
-//    }
-//
-//    private void renderScene() {
-//        int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
-//        Gdx.gl.glClearColor(1, 1, 1, 1);
-//        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//
-//        batch.begin();
-//        batch.setProjectionMatrix(Camera.getInstance().combined);
-//
+package main;
+
+import entities.Camera;
+import entities.Character;
+import entities.Entity;
+import entities.Scene;
+import listeners.MyInputListener;
+
+import java.util.List;
+
+public class Game {
+    private long lastUpdateTime = 0;
+    private long currentTime;
+    private long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
+
+    public Game() {
+        System.out.println("Game created");
+    }
+
+    public static void updateScene(long timeElapsed) {
+        Character.getInstance().update(timeElapsed);
+        Camera.getInstance().update(timeElapsed);
+
+//        System.out.println("Character at (" + Character.getInstance().getCoordinates().x + ", " + Character.getInstance().getCoordinates().y + ")");
+//        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
+//        System.out.println("Cursor at (" + Gdx.input.getX() + ", " + Gdx.input.getY() + ")");
+    }
+
+    public static void renderScene() {
+        int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
+        Character.getInstance().drawSprite();
+
+
 //        /** SCENE BACKGROUND IS DRAWN FIRST **/
 //        byte[][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
 //        //TODO create the background from the tiles and paint it as one image
@@ -112,21 +47,17 @@
 //            }
 //        }
 //
-//        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
-//        Entity entity;
-//        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
-//        for (int i = 0; i < listOfEntities.size(); i++) {
-//            entity = listOfEntities.get(i);
-//            if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
-//                batch.draw(entity.getSprite(),
-//                        (float) entity.getCoordinates().x - (float) (entity.getSprite().getRegionWidth() * 0.5),
-//                        (float) entity.getCoordinates().y - (float) (entity.getSprite().getRegionHeight() * 0.5));
-//            }
-//        }
-//
-//        batch.end();
-//    }
-//
+        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
+        Entity entity;
+        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
+        for (int i = 0; i < listOfEntities.size(); i++) {
+            entity = listOfEntities.get(i);
+            if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
+                entity.drawSprite();
+            }
+        }
+    }
+
 //    private void renderUI() {
 //        batchUI.begin();
 //
@@ -159,23 +90,5 @@
 //        shapeRenderer.end();
 //        batchDebugUI.end();
 //    }
-//
-//    @Override
-//    public void resize(int width, int height) {
-//        System.out.println("ElwynGraphicsLog:: ApplicationListener resize to (" + width + ", " + height + ")");
-////        Camera.getInstance().viewportWidth = width;
-////        Camera.getInstance().viewportHeight = height;
-//        Camera.getInstance().update();
-//    }
-//
-//    @Override
-//    public void pause() {
-//        System.out.println("ElwynGraphicsLog:: ApplicationListener pause");
-//    }
-//
-//    @Override
-//    public void resume() {
-//        System.out.println("ElwynGraphicsLog:: ApplicationListener resume");
-//    }
-//}
-//
+}
+

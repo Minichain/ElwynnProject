@@ -15,7 +15,7 @@ public class Parameters {
         backgroundFramesPerSecond = 30;
         windowWidth = 1280;
         windowHeight = 720;
-        startingCoordinates = new Coordinates(5000, 5000);
+        startingCoordinates = new Coordinates(100, 100);
     }
 
     public static Parameters getInstance() {
