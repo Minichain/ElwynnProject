@@ -5,16 +5,39 @@ import entities.Character;
 import entities.Entity;
 import entities.Scene;
 import listeners.MyInputListener;
+import org.lwjgl.glfw.GLFWWindowSizeCallback;
+import org.lwjgl.opengl.GL;
 
 import java.util.List;
 
-public class Game {
-    private long lastUpdateTime = 0;
-    private long currentTime;
-    private long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 
-    public Game() {
-        System.out.println("Game created");
+public class Game {
+    private static MyInputListener myInputListener;
+    private static GLFWWindowSizeCallback windowSizeCallback;
+
+    public static void startGame() {
+        long window = glfwCreateWindow(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), "ElwynnProject", 0, 0);
+        Parameters.getInstance().setWindow(window);
+        glfwShowWindow(window);
+        glfwMakeContextCurrent(window);
+
+        GL.createCapabilities();
+
+        glfwPollEvents();
+
+        myInputListener = new MyInputListener();
+
+        windowSizeCallback = new GLFWWindowSizeCallback(){
+            @Override
+            public void invoke(long window, int width, int height){
+                Parameters.getInstance().setWindowWidth(width);
+                Parameters.getInstance().setWindowHeight(height);
+                glViewport(0, 0, width, height);
+            }
+        };
+        glfwSetWindowSizeCallback(Parameters.getInstance().getWindow(), windowSizeCallback);
     }
 
     public static void updateScene(long timeElapsed) {
@@ -23,37 +46,43 @@ public class Game {
 
 //        System.out.println("Character at (" + Character.getInstance().getCoordinates().x + ", " + Character.getInstance().getCoordinates().y + ")");
 //        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
-//        System.out.println("Cursor at (" + Gdx.input.getX() + ", " + Gdx.input.getY() + ")");
     }
 
     public static void renderScene() {
         int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
-        Character.getInstance().drawSprite();
+        double[] localCoordinates;
 
+        MyOpenGL.prepareOpenGL();
 
-//        /** SCENE BACKGROUND IS DRAWN FIRST **/
-//        byte[][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
-//        //TODO create the background from the tiles and paint it as one image
-//        for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
-//            for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
-//                int x = (i * 16);
-//                int y = (j * 16);
-//                if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
-//                    batch.draw(Scene.getInstance().getTile(arrayOfTiles[i][j]),
-//                            (float) x,
-//                            (float) y,
-//                            16, 16);
-//                }
-//            }
-//        }
-//
+        /** SCENE BACKGROUND IS DRAWN FIRST **/
+        byte[][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
+        //TODO create the background from the tiles and paint it as one image
+        for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
+            for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
+                int x = (i * 16 * 2);
+                int y = (j * 16 * 2);
+                localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
+                if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
+                    Scene.getInstance().getTile(arrayOfTiles[i][j]).bind();
+                    float u = 0;
+                    float v = 1f;
+                    float u2 = 1f;
+                    float v2 = 0f;
+                    glBegin(GL_QUADS);
+                    MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v, u2, v2, 16 * 3, 16 * 3);
+                    glEnd();
+                }
+            }
+        }
+
         /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
         Entity entity;
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
             if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
-                entity.drawSprite();
+                localCoordinates = entity.getCoordinates().toLocalCoordinates();
+                entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1]);
             }
         }
     }

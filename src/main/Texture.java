@@ -82,7 +82,7 @@ public class Texture {
      * @param data   Pixel data of the image
      */
     public void uploadData(int width, int height, ByteBuffer data) {
-        uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+        uploadData(GL_RGBA, width, height, GL_RGBA, data);
     }
 
     /**
@@ -167,7 +167,7 @@ public class Texture {
         texture.setParameter(GL_TEXTURE_MIN_FILTER, GL_NEAREST);
         texture.setParameter(GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
-        texture.uploadData(GL_RGBA8, width, height, GL_RGBA, data);
+        texture.uploadData(GL_RGBA, width, height, GL_RGBA, data);
 
         return texture;
     }

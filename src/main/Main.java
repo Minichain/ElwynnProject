@@ -18,19 +18,9 @@ public class Main {
             System.exit(0);
         }
 
-        long window = glfwCreateWindow(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), "ElwynnProject", 0, 0);
+        Game.startGame();
 
-        glfwShowWindow(window);
-
-        glfwMakeContextCurrent(window);
-
-        GL.createCapabilities();
-
-        glfwPollEvents();
-
-        MyInputListener myInputListener = new MyInputListener(window);
-
-        while(!glfwWindowShouldClose(window)) {
+        while(!glfwWindowShouldClose(Parameters.getInstance().getWindow())) {
             try {
                 //Compute the time elapsed since the last frame
                 currentTime = System.currentTimeMillis();
@@ -43,7 +33,7 @@ public class Main {
                 Game.updateScene(timeElapsed);
                 Game.renderScene();
 
-                glfwSwapBuffers(window);
+                glfwSwapBuffers(Parameters.getInstance().getWindow());
 
                 lastUpdateTime = currentTime;
 

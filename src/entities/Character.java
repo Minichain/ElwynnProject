@@ -1,10 +1,7 @@
 package entities;
 
 import listeners.MyInputListener;
-import main.Coordinates;
-import main.Parameters;
-import main.Texture;
-import main.Utils;
+import main.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -44,7 +41,7 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
         getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
-        speed = 0.075;
+        speed = 0.25;
         characterStatus = Status.IDLE;
         characterFacing = Utils.DirectionFacing.DOWN;
         displacementVector = new double[2];
@@ -98,26 +95,11 @@ public class Character extends DynamicEntity {
         }
     }
 
-    public void drawSprite() {
-        float x = (float) getCurrentCoordinates().x;
-        float y = (float) getCurrentCoordinates().y;
-        float spriteWidth = 16 * 3;
-        float spriteHeight = 26 * 3;
+    public void drawSprite(int x, int y) {
+        int spriteWidth = 16 * 2;
+        int spriteHeight = 26 * 2;
 
-        //usually glOrtho would not be included in our game loop
-        //however, since it's deprecated, let's keep it inside of this debug function which we will remove later
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), 0, 1, -1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glEnable(GL_TEXTURE_2D); //likely redundant; will be removed upon migration to "modern GL"
-
-        //bind the texture before rendering it
         texture.bind();
-
-        //setup our texture coordinates
-        //(u,v) is another common way of writing (s,t)
 
         int xFrames = 8;
         int yFrames = 8;
@@ -127,16 +109,9 @@ public class Character extends DynamicEntity {
         float v2 = 1f - ((1f / yFrames) * spriteY) - (1f / yFrames);
 
         //immediate mode is deprecated -- we are only using it for quick debugging
-        glColor4f(1f, 1f, 1f, 1f);
+//        glColor4f(1f, 1f, 1f, 1f);
         glBegin(GL_QUADS);
-        glTexCoord2f(u, v);
-        glVertex2f(x, y);
-        glTexCoord2f(u, v2);
-        glVertex2f(x, y + spriteHeight);
-        glTexCoord2f(u2, v2);
-        glVertex2f(x + spriteWidth, y + spriteHeight);
-        glTexCoord2f(u2, v);
-        glVertex2f(x + spriteWidth, y);
+        MyOpenGL.drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight);
         glEnd();
     }
 
@@ -177,7 +152,6 @@ public class Character extends DynamicEntity {
         displacementVector[1] = getCurrentCoordinates().y - getPreviousCoordinates().y;
 
         if (isRunning()) {
-            System.out.println("Character is running!!");
             characterFacing = Utils.checkDirectionFacing(displacementVector);
             characterStatus = Status.RUNNING;
         }

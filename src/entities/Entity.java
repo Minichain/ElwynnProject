@@ -17,5 +17,5 @@ public abstract class Entity {
         this.coordinates = coordinates;
     }
 
-    public abstract void drawSprite();
+    public abstract void drawSprite(int x, int y);
 }

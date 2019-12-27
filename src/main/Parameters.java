@@ -6,6 +6,7 @@ public class Parameters {
     private static int backgroundFramesPerSecond;
     private static int windowWidth;
     private static int windowHeight;
+    private static long window;
     private static boolean debugMode;
     private static Coordinates startingCoordinates;
 
@@ -15,7 +16,7 @@ public class Parameters {
         backgroundFramesPerSecond = 30;
         windowWidth = 1280;
         windowHeight = 720;
-        startingCoordinates = new Coordinates(100, 100);
+        startingCoordinates = new Coordinates(1000, 1000);
     }
 
     public static Parameters getInstance() {
@@ -67,5 +68,13 @@ public class Parameters {
 
     public Coordinates getStartingCoordinates() {
         return startingCoordinates;
+    }
+
+    public long getWindow() {
+        return window;
+    }
+
+    public void setWindow(long w) {
+        window = w;
     }
 }
