@@ -17,4 +17,11 @@ public class Coordinates {
         newCoordinates[1] = (y - Camera.getInstance().getCoordinates().y + ((double) Parameters.getInstance().getWindowHeight() / 2));
         return newCoordinates;
     }
+
+    public double[] toGlobalCoordinates() {
+        double[] newCoordinates = new double[2];
+        newCoordinates[0] = (x + Camera.getInstance().getCoordinates().x - ((double) Parameters.getInstance().getWindowWidth() / 2));
+        newCoordinates[1] = (y + Camera.getInstance().getCoordinates().y - ((double) Parameters.getInstance().getWindowHeight() / 2));
+        return newCoordinates;
+    }
 }

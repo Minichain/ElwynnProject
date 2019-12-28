@@ -56,8 +56,7 @@ public class Character extends DynamicEntity {
     }
 
     private void loadSprite() {
-        String path;
-        path = "res/sprites/characters/link.png";
+        String path = "res/sprites/characters/link.png";
         texture = Texture.loadTexture(path);
         spriteWidth = 16;
         spriteHeight = 26;
@@ -95,10 +94,8 @@ public class Character extends DynamicEntity {
         }
     }
 
+    @Override
     public void drawSprite(int x, int y) {
-        int spriteWidth = 16 * 2;
-        int spriteHeight = 26 * 2;
-
         texture.bind();
 
         int xFrames = 8;
@@ -107,11 +104,10 @@ public class Character extends DynamicEntity {
         float v = 1f - ((1f / yFrames) * spriteY);
         float u2 = ((1f / xFrames) * (int) spriteX) + (1f / xFrames);
         float v2 = 1f - ((1f / yFrames) * spriteY) - (1f / yFrames);
+        double scale = Scene.getZoom();
 
-        //immediate mode is deprecated -- we are only using it for quick debugging
-//        glColor4f(1f, 1f, 1f, 1f);
         glBegin(GL_QUADS);
-        MyOpenGL.drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight);
+        MyOpenGL.drawTexture(x, y, u, v, u2, v2, (int) (spriteWidth * scale), (int) (spriteHeight * scale));
         glEnd();
     }
 

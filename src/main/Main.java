@@ -1,8 +1,6 @@
 package main;
 
-import entities.Character;
 import listeners.MyInputListener;
-import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -20,33 +18,38 @@ public class Main {
 
         Game.startGame();
 
-        while(!glfwWindowShouldClose(Parameters.getInstance().getWindow())) {
+        while(!glfwWindowShouldClose(Parameters.getInstance().getWindow()) && GameStatus.getInstance().isGameRunning()) {
             try {
                 //Compute the time elapsed since the last frame
                 currentTime = System.currentTimeMillis();
                 timeElapsed = currentTime - lastUpdateTime;
 
-
                 glfwPollEvents();
                 glClear(GL_COLOR_BUFFER_BIT);
 
-                Game.updateScene(timeElapsed);
-                Game.renderScene();
+                Game.update(timeElapsed);
+                Game.render();
 
                 glfwSwapBuffers(Parameters.getInstance().getWindow());
 
                 lastUpdateTime = currentTime;
 
-
                 //Wait time until processing next frame. FPS locked.
                 Thread.sleep(1000 / Parameters.getInstance().getForegroundFramesPerSecond());
             } catch (InterruptedException e) {
                 System.out.println(e);
-                System.exit(1);
+                MyInputListener.release();
+                glfwTerminate();
+                exit(1);
             }
         }
 
+        exit(0);
+    }
+
+    public static void exit(int status) {
+        MyInputListener.release();
         glfwTerminate();
-        System.exit(0);
+        System.exit(status);
     }
 }

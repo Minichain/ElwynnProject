@@ -14,7 +14,6 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Game {
-    private static MyInputListener myInputListener;
     private static GLFWWindowSizeCallback windowSizeCallback;
 
     public static void startGame() {
@@ -27,7 +26,7 @@ public class Game {
 
         glfwPollEvents();
 
-        myInputListener = new MyInputListener();
+        MyInputListener.initMyInputListener();
 
         windowSizeCallback = new GLFWWindowSizeCallback(){
             @Override
@@ -38,9 +37,11 @@ public class Game {
             }
         };
         glfwSetWindowSizeCallback(Parameters.getInstance().getWindow(), windowSizeCallback);
+
+        GameStatus.getInstance().setGameRunning(true);
     }
 
-    public static void updateScene(long timeElapsed) {
+    public static void update(long timeElapsed) {
         Character.getInstance().update(timeElapsed);
         Camera.getInstance().update(timeElapsed);
 
@@ -48,32 +49,31 @@ public class Game {
 //        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
     }
 
-    public static void renderScene() {
+    public static void render() {
+        MyOpenGL.prepareOpenGL();
+        renderScene();
+        renderUI();
+    }
+
+    private static void renderScene() {
         int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
         double[] localCoordinates;
 
-        MyOpenGL.prepareOpenGL();
-
         /** SCENE BACKGROUND IS DRAWN FIRST **/
-        byte[][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
-        //TODO create the background from the tiles and paint it as one image
+        Scene.getInstance().bindTileSetTexture();
+        glBegin(GL_QUADS);
         for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
             for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
-                int x = (i * 16 * 2);
-                int y = (j * 16 * 2);
-                localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
-                if (Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y)) < renderDistance) {
-                    Scene.getInstance().getTile(arrayOfTiles[i][j]).bind();
-                    float u = 0;
-                    float v = 1f;
-                    float u2 = 1f;
-                    float v2 = 0f;
-                    glBegin(GL_QUADS);
-                    MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v, u2, v2, 16 * 3, 16 * 3);
-                    glEnd();
+                double scale = Scene.getZoom();
+                int x = (i * (int) (Scene.getTileWidth() * scale));
+                int y = (j * (int) (Scene.getTileHeight() * scale));
+                double distanceBetweenCharacterAndTile = Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                if (distanceBetweenCharacterAndTile < renderDistance) {
+                    Scene.getInstance().drawTile(i, j, x, y, scale, (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                 }
             }
         }
+        glEnd();
 
         /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
         Entity entity;
@@ -87,37 +87,30 @@ public class Game {
         }
     }
 
-//    private void renderUI() {
-//        batchUI.begin();
-//
-//        /** MOUSE POSITION **/
-//        int mouseX = Gdx.input.getX();
-//        int mouseY = Gdx.input.getY();
-//        if (mouseX > 0 && mouseX < Gdx.graphics.getWidth()
-//                && mouseY > 0 && mouseY < Gdx.graphics.getHeight()) {
-//            batchUI.draw(Scene.getInstance().getTile(3), mouseX, Gdx.graphics.getHeight() - mouseY, 16,16);
-//        }
-//
-//        batchUI.end();
-//    }
-//
-//    private void renderDebugUI() {
-//        batchDebugUI.begin();
-//        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-//        shapeRenderer.setColor(Color.BLACK);
-//
-//        /** DEBUG ELEMENTS **/
-//        shapeRenderer.line(0, Gdx.graphics.getHeight() / 2, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() / 2);
-//        shapeRenderer.line(Gdx.graphics.getWidth() / 2, 0, Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight());
-//        bitmapFont.setColor(Color.BLACK);
-//        long fps = 1000 / timeElapsed;
-//        bitmapFont.draw(batchDebugUI, "FPS: " + fps, 10, 20);
-//        bitmapFont.draw(batchDebugUI, "X: " + (int) Character.getInstance().getCurrentCoordinates().x, 10, 35);
-//        bitmapFont.draw(batchDebugUI, "Y: " + (int) Character.getInstance().getCurrentCoordinates().y, 10, 50);
-//        bitmapFont.draw(batchDebugUI, "Number of entities: " + Scene.getInstance().getListOfEntities().size(), 10, 65);
-//
-//        shapeRenderer.end();
-//        batchDebugUI.end();
-//    }
+    private static void renderUI() {
+        /** MOUSE POSITION **/
+        int mouseX = MyInputListener.getMousePositionX();
+        int mouseY = MyInputListener.getMousePositionY();
+        if (0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
+                && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
+            Scene.getInstance().bindTileSetTexture();
+            glBegin(GL_QUADS);
+            int numOfTilesInTileSetX = 4;
+            int numOfTilesInTileSetY = 4;
+            int[] tileFromTileSet = Scene.getInstance().getTile(MyInputListener.getMouseWheelPosition() % 10);
+            int tileFromTileSetX = tileFromTileSet[0];
+            int tileFromTileSetY = tileFromTileSet[1];
+            double u = ((1.0 / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
+            double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
+            double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
+            double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
+            MyOpenGL.drawTexture(mouseX, mouseY, u, v2, u2, v, 32, 32);
+            glEnd();
+        }
+    }
+
+    private void renderDebugUI() {
+
+    }
 }
 

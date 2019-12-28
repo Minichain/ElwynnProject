@@ -1,9 +1,9 @@
 package entities;
 
 import main.Coordinates;
+import main.MyOpenGL;
 import main.Texture;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,28 +13,21 @@ public class Scene {
     private static byte[][] arrayOfTiles;
     private int sceneX;
     private int sceneY;
-    private static Texture grass00;
-    private static Texture grass01;
-    private static Texture grass02;
-    private static Texture grass03;
-    private static int numberOfTileTextures = 4;
-    private static Coordinates center;
+    private static Texture tileSet;
+    private static int tileWidth = 16;
+    private static int tileHeight = 16;
+    private static double zoom = 2;
 
     private Scene() {
-        center = new Coordinates(0, 0);
         sceneX = 1000;
         sceneY = 1000;
         arrayOfTiles = new byte[sceneX][sceneY];
         for (int i = 0; i < sceneX; i++) {
             for (int j = 0; j < sceneY; j++) {
-                arrayOfTiles[i][j] = (byte)((Math.random() * 10) % 3);
+                arrayOfTiles[i][j] = (byte)((Math.random() * 100) % 4);
             }
         }
-        try {
-            loadSprites();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        loadSprites();
     }
 
     public static Scene getInstance() {
@@ -44,42 +37,86 @@ public class Scene {
         return instance;
     }
 
-    private void loadSprites() throws IOException {
+    private void loadSprites() {
         String path;
-        path = "res/sprites/tiles/grass_00.png";
-        grass00 = Texture.loadTexture(path);
-        path = "res/sprites/tiles/grass_01.png";
-        grass01 = Texture.loadTexture(path);
-        path = "res/sprites/tiles/grass_02.png";
-        grass02 = Texture.loadTexture(path);
-        path = "res/sprites/tiles/grass_03.png";
-        grass03 = Texture.loadTexture(path);
+        path = "res/sprites/tiles/tileset.png";
+        tileSet = Texture.loadTexture(path);
     }
 
-    public static Texture getTile(int tileNum) {
-        switch(tileNum) {
+    public void bindTileSetTexture() {
+        tileSet.bind();
+    }
+
+    public void drawTile(int i, int j, int x, int y, double scale, double alpha) {
+        double[] localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
+        int numOfTilesInTileSetX = tileSet.getWidth() / tileWidth;
+        int numOfTilesInTileSetY = tileSet.getHeight() / tileHeight;
+        int[] tileFromTileSet = getTile(arrayOfTiles[i][j]);
+        int tileFromTileSetX = tileFromTileSet[0];
+        int tileFromTileSetY = tileFromTileSet[1];
+        double u = ((1.0 / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
+        double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
+        double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
+        double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
+        MyOpenGL.drawTextureAlpha((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), alpha);
+    }
+
+    public int[] getTile(int tile) {
+        int[] tileFromTileSet;
+        switch (tile) {
             case 0:
-                return grass00;
+                tileFromTileSet = new int[]{0, 3};
+                return tileFromTileSet;
             case 1:
-                return grass01;
+                tileFromTileSet = new int[]{1, 3};
+                return tileFromTileSet;
             case 2:
-                return grass02;
+                tileFromTileSet = new int[]{2, 3};
+                return tileFromTileSet;
             case 3:
-                return grass03;
+                tileFromTileSet = new int[]{3, 3};
+                return tileFromTileSet;
+            case 4:
+                tileFromTileSet = new int[]{0, 2};
+                return tileFromTileSet;
+            case 5:
+                tileFromTileSet = new int[]{1, 2};
+                return tileFromTileSet;
+            case 6:
+                tileFromTileSet = new int[]{2, 2};
+                return tileFromTileSet;
+            case 7:
+                tileFromTileSet = new int[]{3, 2};
+                return tileFromTileSet;
+            case 8:
+                tileFromTileSet = new int[]{0, 1};
+                return tileFromTileSet;
+            case 9:
+                tileFromTileSet = new int[]{1, 1};
+                return tileFromTileSet;
+            case 10:
+                tileFromTileSet = new int[]{2, 1};
+                return tileFromTileSet;
+            case 11:
+            default:
+                tileFromTileSet = new int[]{3, 1};
+                return tileFromTileSet;
         }
-        return null;
-    }
-
-    public int getNumberOfTileTextures() {
-        return numberOfTileTextures;
-    }
-
-    public byte[][] getArrayOfTiles() {
-        return arrayOfTiles;
     }
 
     public void setTile(int x, int y, byte value) {
-        arrayOfTiles[x][y] = value;
+        if (0 < x && x < arrayOfTiles.length
+                && 0 < y && y < arrayOfTiles[0].length) {
+            arrayOfTiles[x][y] = value;
+        }
+    }
+
+    public static int getTileWidth() {
+        return tileWidth;
+    }
+
+    public static int getTileHeight() {
+        return tileHeight;
     }
 
     public int getSceneX() {
@@ -88,10 +125,6 @@ public class Scene {
 
     public int getSceneY() {
         return sceneY;
-    }
-
-    public static Coordinates getCenter() {
-        return center;
     }
 
     public void sortListOfEntitiesByDepth() {
@@ -128,5 +161,9 @@ public class Scene {
         Character.getInstance().resetCharacter();
         Camera.getInstance().resetCamera();
         Scene.getInstance().getListOfEntities().add(Character.getInstance());
+    }
+
+    public static double getZoom() {
+        return zoom;
     }
 }
