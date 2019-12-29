@@ -9,7 +9,8 @@ public class Main {
     public static void main(String[] args) {
         long timeElapsed;
         long lastUpdateTime = 0;
-        long currentTime;
+        long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
+        long timeSpentRendering;
 
         if (!glfwInit()) {
             System.err.println("GLFW Failed to initialize!");
@@ -21,21 +22,22 @@ public class Main {
         while(!glfwWindowShouldClose(Parameters.getInstance().getWindow()) && GameStatus.getInstance().isGameRunning()) {
             try {
                 //Compute the time elapsed since the last frame
-                currentTime = System.currentTimeMillis();
-                timeElapsed = currentTime - lastUpdateTime;
+                timeElapsed = System.currentTimeMillis() - lastUpdateTime;
+                lastUpdateTime = System.currentTimeMillis();
 
                 glfwPollEvents();
                 glClear(GL_COLOR_BUFFER_BIT);
 
                 Game.update(timeElapsed);
-                Game.render();
+                Game.render(timeElapsed);
 
                 glfwSwapBuffers(Parameters.getInstance().getWindow());
 
-                lastUpdateTime = currentTime;
-
+                timeSpentRendering = System.currentTimeMillis() - lastUpdateTime;
                 //Wait time until processing next frame. FPS locked.
-                Thread.sleep(1000 / Parameters.getInstance().getForegroundFramesPerSecond());
+                if (timeSpentRendering < maxTimeBetweenFrames) {
+                    Thread.sleep(maxTimeBetweenFrames - timeSpentRendering);
+                }
             } catch (InterruptedException e) {
                 System.out.println(e);
                 MyInputListener.release();

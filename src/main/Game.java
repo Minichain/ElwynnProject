@@ -49,10 +49,15 @@ public class Game {
 //        System.out.println("Camera at (" + Camera.getInstance().getCoordinates().x + ", " + Camera.getInstance().getCoordinates().y + ")");
     }
 
-    public static void render() {
+    public static void render(long timeElapsed) {
         MyOpenGL.prepareOpenGL();
+
         renderScene();
         renderUI();
+
+        if (timeElapsed <= 0) timeElapsed = 1;
+        float fps = 1000 / timeElapsed;
+        System.out.println("FPS: " + fps);
     }
 
     private static void renderScene() {
