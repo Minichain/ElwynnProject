@@ -85,8 +85,10 @@ public class MyInputListener {
             sKeyPressed = pressed;
         } else if (key == GLFW_KEY_D) {
             dKeyPressed = pressed;
-        } else if (key == GLFW_KEY_ESCAPE) {
+        } else if (key == GLFW_KEY_ESCAPE && pressed) {
             GameStatus.getInstance().setGameRunning(false);
+        } else if (key == GLFW_KEY_F1 && pressed) {
+            Parameters.getInstance().setDebugMode(!Parameters.getInstance().isDebugMode());
         }
     }
 

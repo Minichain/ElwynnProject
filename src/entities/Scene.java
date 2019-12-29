@@ -3,9 +3,12 @@ package entities;
 import main.Coordinates;
 import main.MyOpenGL;
 import main.Texture;
+import main.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Scene {
     private static Scene instance = null;
@@ -165,5 +168,41 @@ public class Scene {
 
     public static double getZoom() {
         return zoom;
+    }
+
+    public void render() {
+        int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
+        double[] localCoordinates;
+
+        /** SCENE BACKGROUND IS DRAWN FIRST **/
+        Scene.getInstance().bindTileSetTexture();
+        glBegin(GL_QUADS);
+        for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
+            for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
+                double scale = zoom;
+                int x = (i * (int) (tileWidth * scale));
+                int y = (j * (int) (tileHeight * scale));
+                double distanceBetweenCharacterAndTile = Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                if (distanceBetweenCharacterAndTile < renderDistance) {
+                    Scene.getInstance().drawTile(i, j, x, y, scale, (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                }
+            }
+        }
+        glEnd();
+
+        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
+        Entity entity;
+        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
+        for (int i = 0; i < listOfEntities.size(); i++) {
+            entity = listOfEntities.get(i);
+            if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
+                localCoordinates = entity.getCoordinates().toLocalCoordinates();
+                entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1]);
+            }
+        }
+    }
+
+    public byte[][] getArrayOfTiles() {
+        return arrayOfTiles;
     }
 }
