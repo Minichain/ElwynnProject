@@ -2,6 +2,7 @@ package main;
 
 import entities.Camera;
 import entities.Character;
+import entities.Enemy;
 import entities.Scene;
 import listeners.MyInputListener;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -23,6 +24,13 @@ public class Game {
 
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
+
+        Enemy enemy;
+        enemy = new Enemy(4500, 4500);
+        enemy = new Enemy(5500, 5500);
+        enemy = new Enemy(5500, 4500);
+        enemy = new Enemy(4500, 5500);
+
         GameStatus.getInstance().setGameRunning(true);
     }
 
@@ -39,7 +47,7 @@ public class Game {
     }
 
     public static void update(long timeElapsed) {
-        Scene.getInstance().sortListOfEntitiesByDepth();
+        Scene.getInstance().sortListOfEntitiesByDepthAndUpdate(timeElapsed);
         Character.getInstance().update(timeElapsed);
         Camera.getInstance().update(timeElapsed);
     }

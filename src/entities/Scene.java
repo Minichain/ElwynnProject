@@ -136,28 +136,35 @@ public class Scene {
         return numOfVerticalTiles;
     }
 
-    public void sortListOfEntitiesByDepth() {
-        int numberOfTrees = listOfEntities.size();
-        if (numberOfTrees <= 1) {
+    public void sortListOfEntitiesByDepthAndUpdate(long timeElapsed) {
+        int numberOfEntities = listOfEntities.size();
+        if (numberOfEntities <= 1) {
             return;
         }
 
-        List<Entity> tempListOfTrees = new ArrayList<>();
-        Entity minDepthTree =  null;
-        for (int i = 0; i < numberOfTrees; i++) {
+        List<Entity> tempEntitiesList = new ArrayList<>();
+        Entity minDepthEntity =  null;
+        for (int i = 0; i < numberOfEntities; i++) {
             double minDepth = 10000;
             for (int j = 0; j < listOfEntities.size(); j++) {
                 if (listOfEntities.get(j).getCoordinates().y < minDepth) {
                     minDepth = listOfEntities.get(j).getCoordinates().y;
-                    minDepthTree = listOfEntities.get(j);
+                    minDepthEntity = listOfEntities.get(j);
+                }
+
+                if (listOfEntities.get(j) instanceof Enemy) {
+                    ((Enemy) listOfEntities.get(j)).update(timeElapsed);
+                    System.out.println("Entity " + j + " at coordinates: " + listOfEntities.get(j).getCoordinates().x + ", " + listOfEntities.get(j).getCoordinates().y);
+                    System.out.println("TimeElapsed: " + timeElapsed);
                 }
             }
-            if (minDepthTree != null) {
-                listOfEntities.remove(minDepthTree);
-                tempListOfTrees.add(minDepthTree);
+
+            if (minDepthEntity != null) {
+                listOfEntities.remove(minDepthEntity);
+                tempEntitiesList.add(minDepthEntity);
             }
         }
-        listOfEntities = tempListOfTrees;
+        listOfEntities = tempEntitiesList;
     }
 
     public List<Entity> getListOfEntities() {
