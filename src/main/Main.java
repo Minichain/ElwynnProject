@@ -40,8 +40,6 @@ public class Main {
                 }
             } catch (InterruptedException e) {
                 System.out.println(e);
-                MyInputListener.release();
-                glfwTerminate();
                 exit(1);
             }
         }

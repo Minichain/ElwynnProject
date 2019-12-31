@@ -20,8 +20,10 @@ public class Character extends DynamicEntity {
     private static Texture texture;
     private static double spriteX;
     private static int spriteY;
-    public static int spriteWidth;
-    public static int spriteHeight;
+    private static int horizontalSprites;
+    private static int verticalSprites;
+    private static int spriteWidth;
+    private static int spriteHeight;
     private static int idleFrames;
     private static int runningFrames;
 
@@ -62,6 +64,8 @@ public class Character extends DynamicEntity {
         spriteHeight = 26;
         idleFrames = 1;
         runningFrames = 8;
+        horizontalSprites = 8;
+        verticalSprites = 8;
     }
 
     public void updateSpriteCoordinatesToDraw() {
@@ -98,12 +102,10 @@ public class Character extends DynamicEntity {
     public void drawSprite(int x, int y) {
         texture.bind();
 
-        int xFrames = 8;
-        int yFrames = 8;
-        float u = ((1f / xFrames) * (int) spriteX);
-        float v = 1f - ((1f / yFrames) * spriteY);
-        float u2 = ((1f / xFrames) * (int) spriteX) + (1f / xFrames);
-        float v2 = 1f - ((1f / yFrames) * spriteY) - (1f / yFrames);
+        float u = ((1f / horizontalSprites) * (int) spriteX);
+        float v = 1f - ((1f / verticalSprites) * spriteY);
+        float u2 = u + (1f / horizontalSprites);
+        float v2 = v - (1f / verticalSprites);
         double scale = Scene.getZoom();
 
         glBegin(GL_QUADS);
@@ -114,9 +116,7 @@ public class Character extends DynamicEntity {
     public void update(long timeElapsed) {
         getPreviousCoordinates().x = getCurrentCoordinates().x;
         getPreviousCoordinates().y = getCurrentCoordinates().y;
-        if (characterStatus != Status.JUMPING) {
-            characterStatus = Status.IDLE;
-        }
+        characterStatus = Status.IDLE;
 
         double[] movement = new double[2];
         if (MyInputListener.sKeyPressed) {
@@ -138,16 +138,16 @@ public class Character extends DynamicEntity {
             movement[1] *= 0.75;
         }
 
-//        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))
-//                && !checkCollisionWithEntities((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))) {
+        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))
+                && !checkCollisionWithEntities((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))) {
             getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
             getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
-//        }
+        }
 
         displacementVector[0] = getCurrentCoordinates().x - getPreviousCoordinates().x;
         displacementVector[1] = getCurrentCoordinates().y - getPreviousCoordinates().y;
 
-        if (isRunning()) {
+        if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
             characterFacing = Utils.checkDirectionFacing(displacementVector);
             characterStatus = Status.RUNNING;
         }
@@ -165,35 +165,31 @@ public class Character extends DynamicEntity {
 
         updateSpriteCoordinatesToDraw();
     }
-/*
+
     private boolean checkCollisionWithEntities(int x, int y) {
-        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
-        double distanceToEntity;
-        for (int i = 0; i < listOfEntities.size(); i++) {
-            if (listOfEntities.get(i) != this) {    //Do not check collision with yourself!
-                distanceToEntity = Utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
-                if (distanceToEntity < 50) {
-                    return true;
-                }
-            }
-        }
+//        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
+//        double distanceToEntity;
+//        for (int i = 0; i < listOfEntities.size(); i++) {
+//            if (listOfEntities.get(i) != this) {    //Do not check collision with yourself!
+//                distanceToEntity = Utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
+//                if (distanceToEntity < 50) {
+//                    return true;
+//                }
+//            }
+//        }
         return false;
     }
-*/
+
     public boolean checkCollision(int x, int y) {
         //TODO
         return false;
     }
 
-    public boolean isRunning() {
-        return (displacementVector[0] != 0 || displacementVector[1] != 0);
+    public Status getCharacterStatus() {
+        return characterStatus;
     }
 
     public Coordinates getCurrentCoordinates() {
         return getCoordinates();
-    }
-
-    public Status getCharacterStatus() {
-        return characterStatus;
     }
 }

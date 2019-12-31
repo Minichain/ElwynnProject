@@ -14,19 +14,21 @@ public class Scene {
     private static Scene instance = null;
     private static List<Entity> listOfEntities = new ArrayList<>();
     private static byte[][] arrayOfTiles;
-    private int sceneX;
-    private int sceneY;
+    private static int numOfHorizontalTiles;
+    private static int numOfVerticalTiles;
     private static Texture tileSet;
     private static int tileWidth = 16;
     private static int tileHeight = 16;
     private static double zoom = 2;
+    private static int renderDistance;
 
     private Scene() {
-        sceneX = 1000;
-        sceneY = 1000;
-        arrayOfTiles = new byte[sceneX][sceneY];
-        for (int i = 0; i < sceneX; i++) {
-            for (int j = 0; j < sceneY; j++) {
+        renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
+        numOfHorizontalTiles = 1000;
+        numOfVerticalTiles = 1000;
+        arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles];
+        for (int i = 0; i < numOfHorizontalTiles; i++) {
+            for (int j = 0; j < numOfVerticalTiles; j++) {
                 arrayOfTiles[i][j] = (byte)((Math.random() * 100) % 4);
             }
         }
@@ -50,11 +52,15 @@ public class Scene {
         tileSet.bind();
     }
 
-    public void drawTile(int i, int j, int x, int y, double scale, double alpha) {
+    private void drawTile(int i, int j, int x, int y, double scale, double alpha) {
+        drawTile(arrayOfTiles[i][j], x, y, scale, alpha);
+    }
+
+    private void drawTile(int tileType, int x, int y, double scale, double alpha) {
         double[] localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
         int numOfTilesInTileSetX = tileSet.getWidth() / tileWidth;
         int numOfTilesInTileSetY = tileSet.getHeight() / tileHeight;
-        int[] tileFromTileSet = getTile(arrayOfTiles[i][j]);
+        int[] tileFromTileSet = getTile(tileType);
         int tileFromTileSetX = tileFromTileSet[0];
         int tileFromTileSetY = tileFromTileSet[1];
         double u = ((1.0 / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
@@ -122,12 +128,12 @@ public class Scene {
         return tileHeight;
     }
 
-    public int getSceneX() {
-        return sceneX;
+    public int getNumOfHorizontalTiles() {
+        return numOfHorizontalTiles;
     }
 
-    public int getSceneY() {
-        return sceneY;
+    public int getNumOfVerticalTiles() {
+        return numOfVerticalTiles;
     }
 
     public void sortListOfEntitiesByDepth() {
@@ -155,7 +161,6 @@ public class Scene {
     }
 
     public List<Entity> getListOfEntities() {
-        sortListOfEntitiesByDepth();
         return listOfEntities;
     }
 
@@ -171,14 +176,18 @@ public class Scene {
     }
 
     public void render() {
-        int renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
-        double[] localCoordinates;
-
         /** SCENE BACKGROUND IS DRAWN FIRST **/
+        renderSceneBackground();
+
+        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
+        renderEntities();
+    }
+
+    private void renderSceneBackground() {
         Scene.getInstance().bindTileSetTexture();
         glBegin(GL_QUADS);
-        for (int i = 0; i < Scene.getInstance().getSceneX(); i++) {
-            for (int j = 0; j < Scene.getInstance().getSceneY(); j++) {
+        for (int i = 0; i < Scene.getInstance().getNumOfHorizontalTiles(); i++) {
+            for (int j = 0; j < Scene.getInstance().getNumOfVerticalTiles(); j++) {
                 double scale = zoom;
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
@@ -189,8 +198,10 @@ public class Scene {
             }
         }
         glEnd();
+    }
 
-        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
+    private void renderEntities() {
+        double[] localCoordinates;
         Entity entity;
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {

@@ -95,6 +95,9 @@ public class MyInputListener {
     public static void release() {
         keyCallback.free();
         mouseCallback.free();
+        mousePosCallback.free();
+        scrollCallback.free();
+        enterCallback.free();
     }
 
     public static int getMousePositionX() {

@@ -15,7 +15,7 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
-        glColor4f(1.0f,1.0f,1.0f, 1.0f);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glTexCoord2f(u, v);
         glVertex2f(x, y);
         glTexCoord2f(u, v2);
@@ -27,7 +27,7 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight) {
-        glColor4f(1.0f,1.0f,1.0f, 1.0f);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glTexCoord2d(u, v);
         glVertex2f(x, y);
         glTexCoord2d(u, v2);
@@ -39,7 +39,7 @@ public class MyOpenGL {
     }
 
     public static void drawTextureAlpha(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency) {
-        glColor4f(1.0f,1.0f,1.0f,(float) transparency);
+        glColor4f(1.0f, 1.0f, 1.0f, (float) transparency);
         glTexCoord2d(u, v);
         glVertex2f(x, y);
         glTexCoord2d(u, v2);
