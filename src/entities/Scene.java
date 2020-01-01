@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Scene {
     private static Scene instance = null;
-    private static List<Entity> listOfEntities = new ArrayList<>();
+    private static List<Entity> listOfEntities;
     private static byte[][] arrayOfTiles;
     private static int numOfHorizontalTiles;
     private static int numOfVerticalTiles;
@@ -23,6 +23,7 @@ public class Scene {
     private static int renderDistance;
 
     private Scene() {
+        listOfEntities = new ArrayList<>();
         renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
         numOfHorizontalTiles = 1000;
         numOfVerticalTiles = 1000;
@@ -67,7 +68,7 @@ public class Scene {
         double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
         double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
         double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-        MyOpenGL.drawTextureAlpha((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), alpha);
+        MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale));
     }
 
     public int[] getTile(int tile) {
@@ -136,35 +137,37 @@ public class Scene {
         return numOfVerticalTiles;
     }
 
-    public void sortListOfEntitiesByDepthAndUpdate(long timeElapsed) {
-        int numberOfEntities = listOfEntities.size();
-        if (numberOfEntities <= 1) {
+    public void update(long timeElapsed) {
+        sortAndUpdateEntities(timeElapsed);
+    }
+
+    private void sortAndUpdateEntities(long timeElapsed) {
+        if (listOfEntities.isEmpty()) {
             return;
         }
 
-        List<Entity> tempEntitiesList = new ArrayList<>();
-        Entity minDepthEntity =  null;
-        for (int i = 0; i < numberOfEntities; i++) {
-            double minDepth = 10000;
-            for (int j = 0; j < listOfEntities.size(); j++) {
-                if (listOfEntities.get(j).getCoordinates().y < minDepth) {
-                    minDepth = listOfEntities.get(j).getCoordinates().y;
-                    minDepthEntity = listOfEntities.get(j);
+        /** SORT ENTITIES (BUBBLE ALGORITHM) **/
+        int n = listOfEntities.size() - 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < (n - i); j++) {
+                Entity entity1 = listOfEntities.get(j + 1);
+                Entity entity2 = listOfEntities.get(j);
+                if (entity1.getCoordinates().y < entity2.getCoordinates().y) {
+                    listOfEntities.set(j + 1, entity2);
+                    listOfEntities.set(j, entity1);
                 }
-
-                if (listOfEntities.get(j) instanceof Enemy) {
-                    ((Enemy) listOfEntities.get(j)).update(timeElapsed);
-                    System.out.println("Entity " + j + " at coordinates: " + listOfEntities.get(j).getCoordinates().x + ", " + listOfEntities.get(j).getCoordinates().y);
-                    System.out.println("TimeElapsed: " + timeElapsed);
-                }
-            }
-
-            if (minDepthEntity != null) {
-                listOfEntities.remove(minDepthEntity);
-                tempEntitiesList.add(minDepthEntity);
             }
         }
-        listOfEntities = tempEntitiesList;
+
+        /** UPDATE ENTITIES **/
+        for (int i = 0; i < n; i++) {
+            Entity currentEntity = listOfEntities.get(i);
+            if (currentEntity instanceof Character) {
+                ((Character) currentEntity).update(timeElapsed);
+            } else if (currentEntity instanceof Enemy) {
+                ((Enemy) currentEntity).update(timeElapsed);
+            }
+        }
     }
 
     public List<Entity> getListOfEntities() {

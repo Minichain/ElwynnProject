@@ -23,7 +23,7 @@ public class Enemy extends DynamicEntity{
     private void initEnemy(int x, int y) {
         getCurrentCoordinates().x = x;
         getCurrentCoordinates().y = y;
-        setSpeed(0.0025);
+        setSpeed(0.15);
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         Scene.getInstance().getListOfEntities().add(this);
@@ -48,6 +48,10 @@ public class Enemy extends DynamicEntity{
         double[] movement = new double[2];
         movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
         movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
+
+        boolean chasing;
+        chasing = Utils.module(movement) > 50 && Utils.module(movement) < 200;
+
         movement = Utils.normalizeVector(movement);
 
 //        //Normalize movement. The module of the movement vector must stay close to 1.
@@ -56,8 +60,10 @@ public class Enemy extends DynamicEntity{
 //            movement[1] *= 0.75;
 //        }
 
-        getCurrentCoordinates().x = getCurrentCoordinates().x + (movement[0] * (timeElapsed * getSpeed()));
-        getCurrentCoordinates().y = getCurrentCoordinates().y + (movement[1] * (timeElapsed * getSpeed()));
+        if (chasing) {
+            getCurrentCoordinates().x = getCurrentCoordinates().x + (movement[0] * (timeElapsed * getSpeed()));
+            getCurrentCoordinates().y = getCurrentCoordinates().y + (movement[1] * (timeElapsed * getSpeed()));
+        }
 
         setDisplacementVector(new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y});
 

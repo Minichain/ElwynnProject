@@ -8,7 +8,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Main {
     public static void main(String[] args) {
         long timeElapsed;
-        long lastUpdateTime = 0;
+        long lastUpdateTime = System.currentTimeMillis();
         long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
         long timeSpentRendering;
 

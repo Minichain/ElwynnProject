@@ -1,7 +1,6 @@
 package main;
 
 import entities.Camera;
-import entities.Character;
 import entities.Enemy;
 import entities.Scene;
 import listeners.MyInputListener;
@@ -25,13 +24,18 @@ public class Game {
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
 
-        Enemy enemy;
-        enemy = new Enemy(4500, 4500);
-        enemy = new Enemy(5500, 5500);
-        enemy = new Enemy(5500, 4500);
-        enemy = new Enemy(4500, 5500);
+        createEnemies();
 
         GameStatus.getInstance().setGameRunning(true);
+    }
+
+    private static void createEnemies() {
+        for (int i = 0; i < 25; i++) {
+            for (int j = 0; j < 25; j++) {
+                int gap = 250;
+                new Enemy(3000 + (j * gap), 3000 + (i * gap));
+            }
+        }
     }
 
     private static void initWindowSizeCallBack() {
@@ -47,8 +51,7 @@ public class Game {
     }
 
     public static void update(long timeElapsed) {
-        Scene.getInstance().sortListOfEntitiesByDepthAndUpdate(timeElapsed);
-        Character.getInstance().update(timeElapsed);
+        Scene.getInstance().update(timeElapsed);
         Camera.getInstance().update(timeElapsed);
     }
 
