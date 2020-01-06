@@ -1,17 +1,24 @@
 package main;
 
+import org.lwjgl.opengl.GL;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class MyOpenGL {
     public static void prepareOpenGL() {
+        GL.createCapabilities();
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        glEnable(GL_BLEND);
+    }
+
+    public static void prepareFrame() {
+        glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
         glOrtho(0, Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), 0, 1, -1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
-        glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-        glEnable(GL_BLEND);
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {

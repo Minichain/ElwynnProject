@@ -159,8 +159,11 @@ public class Scene {
             }
         }
 
+        //TODO add Insertion Sort Algorithm
+        //TODO add Quick Sort Algorithm
+
         /** UPDATE ENTITIES **/
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
             if (currentEntity instanceof Character) {
                 ((Character) currentEntity).update(timeElapsed);

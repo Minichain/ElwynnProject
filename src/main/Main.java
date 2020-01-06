@@ -3,7 +3,6 @@ package main;
 import listeners.MyInputListener;
 
 import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL11.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -26,7 +25,6 @@ public class Main {
                 lastUpdateTime = System.currentTimeMillis();
 
                 glfwPollEvents();
-                glClear(GL_COLOR_BUFFER_BIT);
 
                 Game.update(timeElapsed);
                 Game.render(timeElapsed);

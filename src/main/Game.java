@@ -5,7 +5,6 @@ import entities.Enemy;
 import entities.Scene;
 import listeners.MyInputListener;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
-import org.lwjgl.opengl.GL;
 
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
@@ -18,7 +17,7 @@ public class Game {
         Parameters.getInstance().setWindow(window);
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
-        GL.createCapabilities();
+        MyOpenGL.prepareOpenGL();
         glfwPollEvents();
 
         MyInputListener.initMyInputListener();
@@ -56,7 +55,7 @@ public class Game {
     }
 
     public static void render(long timeElapsed) {
-        MyOpenGL.prepareOpenGL();
+        MyOpenGL.prepareFrame();
         Scene.getInstance().render();
         UserInterface.getInstance().render(timeElapsed);
     }
