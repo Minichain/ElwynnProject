@@ -50,7 +50,7 @@ public class Enemy extends DynamicEntity{
         movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
 
         boolean chasing;
-        chasing = Utils.module(movement) > 50 && Utils.module(movement) < 200;
+        chasing = Utils.module(movement) > 50 && Utils.module(movement) < 500;
 
         movement = Utils.normalizeVector(movement);
 

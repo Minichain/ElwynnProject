@@ -6,7 +6,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
     public static void main(String[] args) {
-        long timeElapsed;
+        long timeElapsed = 0;
         long lastUpdateTime = System.currentTimeMillis();
         long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
         long timeSpentRendering;
@@ -21,6 +21,7 @@ public class Main {
         while(!glfwWindowShouldClose(Parameters.getInstance().getWindow()) && GameStatus.getInstance().isGameRunning()) {
             try {
                 //Compute the time elapsed since the last frame
+                GameStatus.RUNTIME += timeElapsed;
                 timeElapsed = System.currentTimeMillis() - lastUpdateTime;
                 lastUpdateTime = System.currentTimeMillis();
 

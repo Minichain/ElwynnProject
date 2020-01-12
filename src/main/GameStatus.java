@@ -4,6 +4,7 @@ public class GameStatus {
     private static GameStatus instance = null;
     private boolean gameRunning;
     private boolean gamePaused;
+    public static long RUNTIME = 0;
 
     private GameStatus() {
     }

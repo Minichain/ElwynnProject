@@ -3,6 +3,8 @@ package main;
 import entities.Character;
 import entities.Scene;
 import listeners.MyInputListener;
+import org.lwjgl.opengl.ARBShaderObjects;
+import org.lwjgl.opengl.GL20;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -47,12 +49,14 @@ public class UserInterface {
         renderText(10, 10, text, 2);
         text = "Num of Entities: " + Scene.getInstance().getListOfEntities().size();
         renderText(10, 30, text, 2);
-        text = "Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")";
-        renderText(10, 50, text, 2);
         text = "Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length * Scene.getInstance().getArrayOfTiles()[0].length;
+        renderText(10, 50, text, 2);
+        text = "Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")";
         renderText(10, 70, text, 2);
         text = "Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")";
         renderText(10, 90, text, 2);
+        text = "Game Mode: " + " " + GameMode.getInstance().getGameMode();
+        renderText(10, 110, text, 2);
 
         glEnd();
     }
@@ -79,7 +83,36 @@ public class UserInterface {
     private void renderCursorUI() {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
-        if (0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
+            int location = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
+            ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
+            ARBShaderObjects.glUniform1fARB(location, (float) GameStatus.RUNTIME);
+
+            System.out.println("AdriHell:: time is " + ARBShaderObjects.glGetUniformfARB(MyOpenGL.programShader01, location));
+            System.out.println("AdriHell:: time should be " + (float) GameStatus.RUNTIME);
+
+            glDisable(GL_BLEND);
+            glBegin(GL_TRIANGLES);
+            double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
+            double[] v1 = new double[]{1, 0};
+            double[] v2 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
+            v2 = Utils.normalizeVector(v2);
+            v1[1] = - (v2[0] * v1[0]) / v2[1];
+            v1 = Utils.normalizeVector(v1);
+
+            float coneWidth = 50;
+
+            glVertex2f(mouseX + (float) (v1[0] * coneWidth), mouseY + (float) (v1[1] * coneWidth));
+            glVertex2f(mouseX - (float) (v1[0] * coneWidth), mouseY - (float) (v1[1] * coneWidth));
+            glVertex2f((float) characterLocalCoords[0], (float) characterLocalCoords[1]);
+
+            glEnd();
+            glEnable(GL_BLEND);
+
+            //release the shader
+            ARBShaderObjects.glUseProgramObjectARB(0);
+        } else if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE
+                && 0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
                 && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
             Scene.getInstance().bindTileSetTexture();
             glBegin(GL_QUADS);

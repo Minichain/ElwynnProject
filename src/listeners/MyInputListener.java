@@ -2,6 +2,7 @@ package listeners;
 
 import entities.Scene;
 import main.Coordinates;
+import main.GameMode;
 import main.GameStatus;
 import main.Parameters;
 import org.lwjgl.glfw.*;
@@ -39,9 +40,7 @@ public class MyInputListener {
             @Override
             public void invoke(long window, int button, int action, int mods) {
                 if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS) {
-                    double[] globalCoordinates = new Coordinates(mousePositionX, mousePositionY).toGlobalCoordinates();
-                    Scene.getInstance().setTile((int) (globalCoordinates[0] / (Scene.getTileWidth() * Scene.getZoom())),
-                            (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition() % 10));
+                    processLeftButtonPressed();
                 }
             }
         };
@@ -76,6 +75,14 @@ public class MyInputListener {
         glfwSetCursorEnterCallback(window, enterCallback);
     }
 
+    private static void processLeftButtonPressed() {
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
+            double[] globalCoordinates = new Coordinates(mousePositionX, mousePositionY).toGlobalCoordinates();
+            Scene.getInstance().setTile((int) (globalCoordinates[0] / (Scene.getTileWidth() * Scene.getZoom())),
+                    (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition() % 10));
+        }
+    }
+
     private static void setKeyPressed(int key, boolean pressed) {
         if (key == GLFW_KEY_W) {
             wKeyPressed = pressed;
@@ -89,6 +96,10 @@ public class MyInputListener {
             GameStatus.getInstance().setGameRunning(false);
         } else if (key == GLFW_KEY_F1 && pressed) {
             Parameters.getInstance().setDebugMode(!Parameters.getInstance().isDebugMode());
+        } else if (key == GLFW_KEY_F2 && pressed) {
+            GameMode.getInstance().setGameMode(GameMode.Mode.NORMAL);
+        } else if (key == GLFW_KEY_F3 && pressed) {
+            GameMode.getInstance().setGameMode(GameMode.Mode.CREATIVE);
         }
     }
 
