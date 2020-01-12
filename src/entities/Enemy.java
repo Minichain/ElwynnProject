@@ -125,7 +125,9 @@ public class Enemy extends DynamicEntity{
         double scale = Scene.getZoom();
 
         glBegin(GL_QUADS);
-        MyOpenGL.drawTexture(x, y, u, v, u2, v2, (int) (getSpriteWidth() * scale), (int) (getSpriteHeight() * scale));
+        x -= (getSpriteWidth() / 2) * (int) scale;
+        y -= (getSpriteHeight() / 2) * (int) scale;
+        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (int) (getSpriteWidth() * scale), (int) (getSpriteHeight() * scale));
         glEnd();
     }
 }
