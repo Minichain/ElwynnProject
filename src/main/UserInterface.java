@@ -4,7 +4,8 @@ import entities.Character;
 import entities.Scene;
 import listeners.MyInputListener;
 import org.lwjgl.opengl.ARBShaderObjects;
-import org.lwjgl.opengl.GL20;
+
+import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -40,25 +41,42 @@ public class UserInterface {
 
         if (timeElapsed <= 0) timeElapsed = 1;
         float fps = 1000 / timeElapsed;
+        double[] characterLocalCoordinates = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
 
+        /** DEBUG TEXT **/
         fontSpriteWhite.bind();
+
+        ArrayList<String> textList = new ArrayList<>();
+        int textScale = 2;
+        int topMargin = 10;
+        int leftMargin = 10;
+        int gapBetweenTexts = 10 * textScale;
+
+        textList.add("FPS: " + fps);
+        textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
+        textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length * Scene.getInstance().getArrayOfTiles()[0].length);
+        textList.add("Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
+        textList.add("Character Local Coordinates: (" + (float) characterLocalCoordinates[0] + ", " + (float) characterLocalCoordinates[1] + ")");
+        textList.add("Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
+        textList.add("Game Mode: " + " " + GameMode.getInstance().getGameMode());
+
         glBegin(GL_QUADS);
-
-        String text;
-        text = "FPS: " + fps;
-        renderText(10, 10, text, 2);
-        text = "Num of Entities: " + Scene.getInstance().getListOfEntities().size();
-        renderText(10, 30, text, 2);
-        text = "Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length * Scene.getInstance().getArrayOfTiles()[0].length;
-        renderText(10, 50, text, 2);
-        text = "Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")";
-        renderText(10, 70, text, 2);
-        text = "Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")";
-        renderText(10, 90, text, 2);
-        text = "Game Mode: " + " " + GameMode.getInstance().getGameMode();
-        renderText(10, 110, text, 2);
-
+        for (int i = 0; i < textList.size(); i++) {
+            renderText(leftMargin, i * gapBetweenTexts + topMargin, textList.get(i), textScale);
+        }
         glEnd();
+
+        /** DEBUG LINES **/
+        glDisable(GL_BLEND);
+        glBegin(GL_LINES);
+        glLineWidth(4);
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glVertex2i(Parameters.getInstance().getWindowWidth() / 2, 0);
+        glVertex2i(Parameters.getInstance().getWindowWidth() / 2, Parameters.getInstance().getWindowHeight());
+        glVertex2i(0, Parameters.getInstance().getWindowHeight() / 2);
+        glVertex2i(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight() / 2);
+        glEnd();
+        glEnable(GL_BLEND);
     }
 
     private void renderText(int x, int y, String textToRender, int scale) {
@@ -66,7 +84,7 @@ public class UserInterface {
         int numOfTilesInTileSetY = 6;
         int characterWidth = fontSpriteWhite.getWidth() / numOfTilesInTileSetX;
         int characterHeight = fontSpriteWhite.getHeight() / numOfTilesInTileSetY;
-        int gapBetweenCharacters = 5;
+        int gapBetweenCharacters = 2 * scale;
         String[] characters = textToRender.split("(?!^)");
         for (int i = 0; i < characters.length; i++) {
             int[] characterPosition = getCharacterPosition(characters[i]);
@@ -84,14 +102,14 @@ public class UserInterface {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
-            int location = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
+            int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
+            int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterLocalCoordinates");
             ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
-            ARBShaderObjects.glUniform1fARB(location, (float) GameStatus.RUNTIME);
+            ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.RUNTIME);
 
-            System.out.println("AdriHell:: time is " + ARBShaderObjects.glGetUniformfARB(MyOpenGL.programShader01, location));
-            System.out.println("AdriHell:: time should be " + (float) GameStatus.RUNTIME);
+            double[] characterLocalCoordinates = Character.getInstance().getCoordinates().toLocalCoordinates();
+            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterLocalCoordinates[0], Parameters.getInstance().getWindowHeight() - (float) characterLocalCoordinates[1]});
 
-            glDisable(GL_BLEND);
             glBegin(GL_TRIANGLES);
             double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
             double[] v1 = new double[]{1, 0};
@@ -100,14 +118,16 @@ public class UserInterface {
             v1[1] = - (v2[0] * v1[0]) / v2[1];
             v1 = Utils.normalizeVector(v1);
 
-            float coneWidth = 50;
+            float coneWidth = 150;
+            float coneLength = 500;
 
-            glVertex2f(mouseX + (float) (v1[0] * coneWidth), mouseY + (float) (v1[1] * coneWidth));
-            glVertex2f(mouseX - (float) (v1[0] * coneWidth), mouseY - (float) (v1[1] * coneWidth));
+            glVertex2f((float) characterLocalCoords[0] + (float) (v2[0] * coneLength) + (float) (v1[0] * coneWidth),
+                    (float) characterLocalCoords[1] + (float) (v2[1] * coneLength) + (float) (v1[1] * coneWidth));
+            glVertex2f((float) characterLocalCoords[0] + (float) (v2[0] * coneLength) - (float) (v1[0] * coneWidth),
+                    (float) characterLocalCoords[1] + (float) (v2[1] * coneLength) - (float) (v1[1] * coneWidth));
             glVertex2f((float) characterLocalCoords[0], (float) characterLocalCoords[1]);
 
             glEnd();
-            glEnable(GL_BLEND);
 
             //release the shader
             ARBShaderObjects.glUseProgramObjectARB(0);
