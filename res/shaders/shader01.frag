@@ -4,7 +4,7 @@ uniform vec2 characterLocalCoordinates;
 void main() {
     float mixValue;
     float distanceFromCharacter = distance(characterLocalCoordinates, gl_FragCoord.xy);
-    float maxDistance = 300;
+    float maxDistance = 500;
     float maxValueDistance = 200;
 
     if (distanceFromCharacter > maxValueDistance) {

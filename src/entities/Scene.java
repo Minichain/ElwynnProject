@@ -68,7 +68,7 @@ public class Scene {
         double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
         double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
         double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-        MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale));
+        MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), alpha);
     }
 
     public int[] getTile(int tile) {

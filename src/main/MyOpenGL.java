@@ -13,50 +13,49 @@ public class MyOpenGL {
      */
     public static int programShader01 = 0;
 
-    private static void loadShaders() {
-        int vertShader;
-        int fragShader;
+    private static int loadShader(String shader) {
+        int vertexShader;
+        int fragmentShader;
+        int programShader = ARBShaderObjects.glCreateProgramObjectARB();
 
         try {
-            vertShader = createShader("res/shaders/shader01.vert", ARBVertexShader.GL_VERTEX_SHADER_ARB);
-            fragShader = createShader("res/shaders/shader01.frag", ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
+            vertexShader = createShader("res/shaders/" + shader + ".vert", ARBVertexShader.GL_VERTEX_SHADER_ARB);
+            fragmentShader = createShader("res/shaders/" + shader + ".frag", ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
         } catch (Exception e) {
             e.printStackTrace();
-            return;
+            return 0;
         }
 
-        if (vertShader == 0 || fragShader == 0) return;
-
-        programShader01 = ARBShaderObjects.glCreateProgramObjectARB();
-
-        if (programShader01 == 0) return;
+        if (vertexShader == 0 || fragmentShader == 0 || programShader == 0) return 0;
 
         /*
-         * if the vertex and fragment shaders setup sucessfully,
-         * attach them to the shader program, link the sahder program
-         * (into the GL context I suppose), and validate
+         * If the vertex and fragment shaders setup successfully,
+         * attach them to the shader program, link the shader program,
+         * and validate.
          */
-        ARBShaderObjects.glAttachObjectARB(programShader01, vertShader);
-        ARBShaderObjects.glAttachObjectARB(programShader01, fragShader);
+        ARBShaderObjects.glAttachObjectARB(programShader, vertexShader);
+        ARBShaderObjects.glAttachObjectARB(programShader, fragmentShader);
 
-        ARBShaderObjects.glLinkProgramARB(programShader01);
-        if (ARBShaderObjects.glGetObjectParameteriARB(programShader01, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
-            System.err.println(getLogInfo(programShader01));
-            return;
+        ARBShaderObjects.glLinkProgramARB(programShader);
+        if (ARBShaderObjects.glGetObjectParameteriARB(programShader, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
+            System.err.println(getLogInfo(programShader));
+            return 0;
         }
 
-        ARBShaderObjects.glValidateProgramARB(programShader01);
-        if (ARBShaderObjects.glGetObjectParameteriARB(programShader01, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
-            System.err.println(getLogInfo(programShader01));
-            return;
+        ARBShaderObjects.glValidateProgramARB(programShader);
+        if (ARBShaderObjects.glGetObjectParameteriARB(programShader, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
+            System.err.println(getLogInfo(programShader));
+            return 0;
         }
+
+        return programShader;
     }
 
     public static void prepareOpenGL() {
         GL.createCapabilities();
 
-        //load our shader program and sprite batch
-        loadShaders();
+        //Load shaders
+        programShader01 = loadShader("shader01");
 
         glEnable(GL_TEXTURE_2D);
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -73,7 +72,11 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1.0f);
+    }
+
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, double transparency) {
+        glColor4f(1.0f, 1.0f, 1.0f, (float) transparency);
         glTexCoord2f(u, v);
         glVertex2f(x, y);
         glTexCoord2f(u, v2);
@@ -85,27 +88,19 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight) {
-        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-        glTexCoord2d(u, v);
-        glVertex2f(x, y);
-        glTexCoord2d(u, v2);
-        glVertex2f(x, y + spriteHeight);
-        glTexCoord2d(u2, v2);
-        glVertex2f(x + spriteWidth, y + spriteHeight);
-        glTexCoord2d(u2, v);
-        glVertex2f(x + spriteWidth, y);
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1.0f);
     }
 
-    public static void drawTextureAlpha(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency) {
+    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency) {
         glColor4f(1.0f, 1.0f, 1.0f, (float) transparency);
         glTexCoord2d(u, v);
-        glVertex2f(x, y);
+        glVertex2d(x, y);
         glTexCoord2d(u, v2);
-        glVertex2f(x, y + spriteHeight);
+        glVertex2d(x, y + spriteHeight);
         glTexCoord2d(u2, v2);
-        glVertex2f(x + spriteWidth, y + spriteHeight);
+        glVertex2d(x + spriteWidth, y + spriteHeight);
         glTexCoord2d(u2, v);
-        glVertex2f(x + spriteWidth, y);
+        glVertex2d(x + spriteWidth, y);
     }
 
     /*

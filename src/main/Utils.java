@@ -25,6 +25,12 @@ public class Utils {
         return vectorNormalized;
     }
 
+    public static double[] generateOrthonormalVector(double[] v1) {
+        double[] v2 = new double[]{1, 0};
+        v2[1] = - (v1[0] * v2[0]) / v1[1];
+        return v2;
+    }
+
     public static DirectionFacing checkDirectionFacing(double[] displacementVector) {
         displacementVector = Utils.normalizeVector(displacementVector);
         return checkDirectionFacing(displacementVector[0], displacementVector[1]);

@@ -112,19 +112,18 @@ public class UserInterface {
 
             glBegin(GL_TRIANGLES);
             double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
-            double[] v1 = new double[]{1, 0};
-            double[] v2 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
-            v2 = Utils.normalizeVector(v2);
-            v1[1] = - (v2[0] * v1[0]) / v2[1];
+            double[] v1 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
             v1 = Utils.normalizeVector(v1);
+            double[] v2 = Utils.generateOrthonormalVector(v1);
+            v2 = Utils.normalizeVector(v2);
 
-            float coneWidth = 150;
-            float coneLength = 500;
+            float coneWidth = 300;
+            float coneLength = 1000;
 
-            glVertex2f((float) characterLocalCoords[0] + (float) (v2[0] * coneLength) + (float) (v1[0] * coneWidth),
-                    (float) characterLocalCoords[1] + (float) (v2[1] * coneLength) + (float) (v1[1] * coneWidth));
-            glVertex2f((float) characterLocalCoords[0] + (float) (v2[0] * coneLength) - (float) (v1[0] * coneWidth),
-                    (float) characterLocalCoords[1] + (float) (v2[1] * coneLength) - (float) (v1[1] * coneWidth));
+            glVertex2f((float) characterLocalCoords[0] + (float) (v1[0] * coneLength) + (float) (v2[0] * coneWidth),
+                    (float) characterLocalCoords[1] + (float) (v1[1] * coneLength) + (float) (v2[1] * coneWidth));
+            glVertex2f((float) characterLocalCoords[0] + (float) (v1[0] * coneLength) - (float) (v2[0] * coneWidth),
+                    (float) characterLocalCoords[1] + (float) (v1[1] * coneLength) - (float) (v2[1] * coneWidth));
             glVertex2f((float) characterLocalCoords[0], (float) characterLocalCoords[1]);
 
             glEnd();
