@@ -5,22 +5,29 @@ import main.Texture;
 
 public abstract class DynamicEntity extends Entity {
     private Coordinates previousCoordinates;
-    private double speed;
-    private double[] displacementVector;
-    private Texture texture;
-    private double spriteCoordinateFromTileSheetX;
-    private double spriteCoordinateFromTileSheetY;
-    private int horizontalSprites;
-    private int verticalSprites;
-    private int spriteWidth;
-    private int spriteHeight;
-    private int idleFrames;
-    private int runningFrames;
+
+    /** Variables **/
+    public float HEALTH;
+    public double SPEED;
+    public double[] DISPLACEMENT_VECTOR;
+
+    /** Sprite Attributes **/
+    private Texture spriteSheet;
+    private double spriteCoordinateFromSpriteSheetX;
+    private double spriteCoordinateFromSpriteSheetY;
+    public int X_SPRITES;
+    public int Y_SPRITES;
+    public int SPRITE_WIDTH;
+    public int SPRITE_HEIGHT;
+    public int IDLE_FRAMES;
+    public int RUNNING_FRAMES;
+    public int DYING_FRAMES;
+    public int DEAD_FRAMES;
 
     public DynamicEntity(int x, int y, int prevX, int prevY) {
         super(x, y);
         previousCoordinates = new Coordinates(prevX, prevY);
-        displacementVector = new double[2];
+        DISPLACEMENT_VECTOR = new double[2];
     }
 
     public Coordinates getCurrentCoordinates() {
@@ -31,91 +38,27 @@ public abstract class DynamicEntity extends Entity {
         return previousCoordinates;
     }
 
-    public double getSpeed() {
-        return speed;
+    public Texture getSpriteSheet() {
+        return spriteSheet;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
+    public void setSpriteSheet(Texture spriteSheet) {
+        this.spriteSheet = spriteSheet;
     }
 
-    public double[] getDisplacementVector() {
-        return displacementVector;
+    public double getSpriteCoordinateFromSpriteSheetX() {
+        return spriteCoordinateFromSpriteSheetX;
     }
 
-    public void setDisplacementVector(double[] displacementVector) {
-        this.displacementVector = displacementVector;
+    public void setSpriteCoordinateFromSpriteSheetX(double spriteCoordinateFromSpriteSheetX) {
+        this.spriteCoordinateFromSpriteSheetX = spriteCoordinateFromSpriteSheetX;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public double getSpriteCoordinateFromSpriteSheetY() {
+        return spriteCoordinateFromSpriteSheetY;
     }
 
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public int getSpriteWidth() {
-        return spriteWidth;
-    }
-
-    public void setSpriteWidth(int spriteWidth) {
-        this.spriteWidth = spriteWidth;
-    }
-
-    public int getSpriteHeight() {
-        return spriteHeight;
-    }
-
-    public void setSpriteHeight(int spriteHeight) {
-        this.spriteHeight = spriteHeight;
-    }
-
-    public int getIdleFrames() {
-        return idleFrames;
-    }
-
-    public void setIdleFrames(int idleFrames) {
-        this.idleFrames = idleFrames;
-    }
-
-    public int getRunningFrames() {
-        return runningFrames;
-    }
-
-    public void setRunningFrames(int runningFrames) {
-        this.runningFrames = runningFrames;
-    }
-
-    public int getHorizontalSprites() {
-        return horizontalSprites;
-    }
-
-    public void setHorizontalSprites(int horizontalSprites) {
-        this.horizontalSprites = horizontalSprites;
-    }
-
-    public int getVerticalSprites() {
-        return verticalSprites;
-    }
-
-    public void setVerticalSprites(int verticalSprites) {
-        this.verticalSprites = verticalSprites;
-    }
-
-    public double getSpriteCoordinateFromTileSheetX() {
-        return spriteCoordinateFromTileSheetX;
-    }
-
-    public void setSpriteCoordinateFromTileSheetX(double spriteCoordinateFromTileSheetX) {
-        this.spriteCoordinateFromTileSheetX = spriteCoordinateFromTileSheetX;
-    }
-
-    public double getSpriteCoordinateFromTileSheetY() {
-        return spriteCoordinateFromTileSheetY;
-    }
-
-    public void setSpriteCoordinateFromTileSheetY(double spriteCoordinateFromTileSheetY) {
-        this.spriteCoordinateFromTileSheetY = spriteCoordinateFromTileSheetY;
+    public void setSpriteCoordinateFromSpriteSheetY(double spriteCoordinateFromSpriteSheetY) {
+        this.spriteCoordinateFromSpriteSheetY = spriteCoordinateFromSpriteSheetY;
     }
 }

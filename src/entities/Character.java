@@ -9,7 +9,7 @@ public class Character extends DynamicEntity {
     private static Character instance = null;
 
     public enum Status {
-        IDLE, RUNNING, JUMPING, DYING;
+        IDLE, RUNNING, JUMPING, DYING, DEAD;
     }
 
     private static Status characterStatus;
@@ -32,7 +32,8 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
         getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
-        setSpeed(0.25);
+        HEALTH = 100f;
+        SPEED = 0.25;
         characterStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
     }
@@ -47,13 +48,15 @@ public class Character extends DynamicEntity {
 
     private void loadSprite() {
         String path = "res/sprites/characters/link.png";
-        setTexture(Texture.loadTexture(path));
-        setSpriteWidth(16);
-        setSpriteHeight(26);
-        setIdleFrames(1);
-        setRunningFrames(8);
-        setHorizontalSprites(8);
-        setVerticalSprites(8);
+        setSpriteSheet(Texture.loadTexture(path));
+        SPRITE_WIDTH = 32;
+        SPRITE_HEIGHT = 32;
+        IDLE_FRAMES = 1;
+        RUNNING_FRAMES = 8;
+        DYING_FRAMES = 1;
+        DEAD_FRAMES = 1;
+        X_SPRITES = 8;
+        Y_SPRITES = 10;
     }
 
     public void updateSpriteCoordinatesToDraw() {
@@ -61,45 +64,51 @@ public class Character extends DynamicEntity {
             default:
             case IDLE:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromTileSheetY(0);
+                    setSpriteCoordinateFromSpriteSheetY(0);
                 } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromTileSheetY(3);
+                    setSpriteCoordinateFromSpriteSheetY(3);
                 } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromTileSheetY(1);
+                    setSpriteCoordinateFromSpriteSheetY(1);
                 } else {
-                    setSpriteCoordinateFromTileSheetY(2);
+                    setSpriteCoordinateFromSpriteSheetY(2);
                 }
                 break;
             case RUNNING:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromTileSheetY(4);
+                    setSpriteCoordinateFromSpriteSheetY(4);
                 } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromTileSheetY(7);
+                    setSpriteCoordinateFromSpriteSheetY(7);
                 } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromTileSheetY(5);
+                    setSpriteCoordinateFromSpriteSheetY(5);
                 } else {
-                    setSpriteCoordinateFromTileSheetY(6);
+                    setSpriteCoordinateFromSpriteSheetY(6);
                 }
                 break;
             case JUMPING:
+                break;
+            case DYING:
+                setSpriteCoordinateFromSpriteSheetY(8);
+                break;
+            case DEAD:
+                setSpriteCoordinateFromSpriteSheetY(9);
                 break;
         }
     }
 
     @Override
     public void drawSprite(int x, int y) {
-        getTexture().bind();
+        getSpriteSheet().bind();
 
-        float u = ((1f / getHorizontalSprites()) * (int) getSpriteCoordinateFromTileSheetX());
-        float v = 1f - ((1f / getVerticalSprites()) * (int) getSpriteCoordinateFromTileSheetY());
-        float u2 = u + (1f / getHorizontalSprites());
-        float v2 = v - (1f / getVerticalSprites());
+        float u = ((1f / X_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetX());
+        float v = 1f - ((1f / Y_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetY());
+        float u2 = u + (1f / X_SPRITES);
+        float v2 = v - (1f / Y_SPRITES);
         double scale = Scene.getZoom();
 
         glBegin(GL_QUADS);
-        x -= (getSpriteWidth() / 2) * (int) scale;
-        y -= (getSpriteHeight() / 2) * (int) scale;
-        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (int) (getSpriteWidth() * scale), (int) (getSpriteHeight() * scale));
+        x -= (SPRITE_WIDTH / 2) * (int) scale;
+        y -= (SPRITE_HEIGHT / 2) * (int) scale;
+        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale));
         glEnd();
     }
 
@@ -110,16 +119,16 @@ public class Character extends DynamicEntity {
 
         double[] movement = new double[2];
         if (MyInputListener.sKeyPressed) {
-            movement[1] = movement[1] + timeElapsed * getSpeed();
+            movement[1] = movement[1] + timeElapsed * SPEED;
         }
         if (MyInputListener.aKeyPressed) {
-            movement[0] = movement[0] - timeElapsed * getSpeed();
+            movement[0] = movement[0] - timeElapsed * SPEED;
         }
         if (MyInputListener.wKeyPressed) {
-            movement[1] = movement[1] - timeElapsed * getSpeed();
+            movement[1] = movement[1] - timeElapsed * SPEED;
         }
         if (MyInputListener.dKeyPressed) {
-            movement[0] = movement[0] + timeElapsed * getSpeed();
+            movement[0] = movement[0] + timeElapsed * SPEED;
         }
 
         //Normalize movement. The module of the movement vector must stay close to 1.
@@ -134,19 +143,19 @@ public class Character extends DynamicEntity {
             getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
         }
 
-        setDisplacementVector(new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y});
+        DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
 
-        if (getDisplacementVector()[0] != 0 || getDisplacementVector()[1] != 0) { //If character is moving
-            directionFacing = Utils.checkDirectionFacing(getDisplacementVector());
+        if (DISPLACEMENT_VECTOR[0] != 0 || DISPLACEMENT_VECTOR[1] != 0) { //If character is moving
+            directionFacing = Utils.checkDirectionFacing(DISPLACEMENT_VECTOR);
             characterStatus = Status.RUNNING;
         }
 
-        switch(characterStatus) {
+        switch (characterStatus) {
             case IDLE:
-                setSpriteCoordinateFromTileSheetX((getSpriteCoordinateFromTileSheetX() + (timeElapsed * 0.01)) % getIdleFrames());
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
                 break;
             case RUNNING:
-                setSpriteCoordinateFromTileSheetX((getSpriteCoordinateFromTileSheetX() + (timeElapsed * 0.01)) % getRunningFrames());
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
                 break;
             case JUMPING:
                 break;
