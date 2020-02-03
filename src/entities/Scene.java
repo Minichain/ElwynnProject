@@ -24,7 +24,7 @@ public class Scene {
 
     private Scene() {
         listOfEntities = new ArrayList<>();
-        renderDistance = 1000;  //TODO This should depend on the Window and Camera parameters
+        renderDistance = 1500;  //TODO This should depend on the Window and Camera parameters
         numOfHorizontalTiles = 1000;
         numOfVerticalTiles = 1000;
         arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles];

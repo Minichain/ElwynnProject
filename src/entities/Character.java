@@ -117,24 +117,9 @@ public class Character extends DynamicEntity {
         getPreviousCoordinates().y = getCurrentCoordinates().y;
         characterStatus = Status.IDLE;
 
-        double[] movement = new double[2];
-        if (MyInputListener.sKeyPressed) {
-            movement[1] = movement[1] + timeElapsed * SPEED;
-        }
-        if (MyInputListener.aKeyPressed) {
-            movement[0] = movement[0] - timeElapsed * SPEED;
-        }
-        if (MyInputListener.wKeyPressed) {
-            movement[1] = movement[1] - timeElapsed * SPEED;
-        }
-        if (MyInputListener.dKeyPressed) {
-            movement[0] = movement[0] + timeElapsed * SPEED;
-        }
-
-        //Normalize movement. The module of the movement vector must stay close to 1.
-        if (movement[0] != 0 && movement[1] != 0) {
-            movement[0] *= 0.75;
-            movement[1] *= 0.75;
+        double[] movement = new double[]{0, 0};
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
+            movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
         }
 
         if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))
