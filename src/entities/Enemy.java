@@ -1,8 +1,9 @@
 package entities;
 
+import utils.MathUtils;
 import main.MyOpenGL;
 import main.Texture;
-import main.Utils;
+import utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -58,9 +59,9 @@ public class Enemy extends DynamicEntity{
         movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
         movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
 
-        boolean chasing = (status != Status.DYING && status != Status.DEAD && Utils.module(movement) > 50 && Utils.module(movement) < 500);
+        boolean chasing = (status != Status.DYING && status != Status.DEAD && MathUtils.module(movement) > 50 && MathUtils.module(movement) < 500);
 
-        movement = Utils.normalizeVector(movement);
+        movement = MathUtils.normalizeVector(movement);
 
         //Normalize movement. The module of the movement vector must stay close to 1.
         if (movement[0] != 0 && movement[1] != 0) {

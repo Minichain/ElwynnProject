@@ -1,5 +1,6 @@
 package entities;
 
+import utils.Utils;
 import listeners.MyInputListener;
 import main.*;
 
@@ -154,7 +155,7 @@ public class Character extends DynamicEntity {
 //        double distanceToEntity;
 //        for (int i = 0; i < listOfEntities.size(); i++) {
 //            if (listOfEntities.get(i) != this) {    //Do not check collision with yourself!
-//                distanceToEntity = Utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
+//                distanceToEntity = utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
 //                if (distanceToEntity < 50) {
 //                    return true;
 //                }

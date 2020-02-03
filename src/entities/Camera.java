@@ -4,7 +4,7 @@ import listeners.MyInputListener;
 import main.Coordinates;
 import main.GameMode;
 import main.Parameters;
-import main.Utils;
+import utils.MathUtils;
 
 public class Camera {
     private static Camera instance = null;
@@ -42,8 +42,8 @@ public class Camera {
             double[] cameraVelocityVector = new double[2];
             cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().x - Camera.getInstance().getCoordinates().x;
             cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().y - Camera.getInstance().getCoordinates().y;
-            double cameraSpeed = Utils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
-            cameraVelocityVector = Utils.normalizeVector(cameraVelocityVector);
+            double cameraSpeed = MathUtils.module(cameraVelocityVector) * 0.0025 * timeElapsed;
+            cameraVelocityVector = MathUtils.normalizeVector(cameraVelocityVector);
 
 //            System.out.println("ElwynGraphicsLog:: cameraVelocityVector: " + cameraVelocityVector[0] + ", " + cameraVelocityVector[1]);
 //            System.out.println("ElwynGraphicsLog:: cameraVelocityVector after applying cameraSpeed: " + cameraVelocityVector[0] * cameraSpeed + ", " + cameraVelocityVector[1] * cameraSpeed);

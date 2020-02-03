@@ -3,7 +3,7 @@ package entities;
 import main.Coordinates;
 import main.MyOpenGL;
 import main.Texture;
-import main.Utils;
+import utils.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -204,7 +204,7 @@ public class Scene {
                 double scale = zoom;
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
-                double distanceBetweenCharacterAndTile = Utils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
                 if (distanceBetweenCharacterAndTile < renderDistance) {
                     Scene.getInstance().drawTile(i, j, x, y, scale, (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                 }
@@ -219,7 +219,7 @@ public class Scene {
         List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
-            if (Utils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
+            if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
                 localCoordinates = entity.getCoordinates().toLocalCoordinates();
                 entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1]);
             }

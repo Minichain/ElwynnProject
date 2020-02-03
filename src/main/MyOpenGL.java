@@ -1,5 +1,6 @@
 package main;
 
+import utils.FileUtils;
 import org.lwjgl.opengl.*;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -115,7 +116,7 @@ public class MyOpenGL {
 
             if (shader == 0) return 0;
 
-            ARBShaderObjects.glShaderSourceARB(shader, Utils.readFileAsString(filename));
+            ARBShaderObjects.glShaderSourceARB(shader, FileUtils.readFileAsString(filename));
             ARBShaderObjects.glCompileShaderARB(shader);
 
             if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {

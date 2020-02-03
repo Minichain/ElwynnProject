@@ -1,5 +1,6 @@
 package main;
 
+import utils.MathUtils;
 import entities.*;
 import entities.Character;
 import listeners.MyInputListener;
@@ -112,9 +113,9 @@ public class UserInterface {
 
             double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
             double[] v1 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
-            v1 = Utils.normalizeVector(v1);
-            double[] v2 = Utils.generateOrthonormalVector(v1);
-            v2 = Utils.normalizeVector(v2);
+            v1 = MathUtils.normalizeVector(v1);
+            double[] v2 = MathUtils.generateOrthonormalVector(v1);
+            v2 = MathUtils.normalizeVector(v2);
 
             float coneWidth = 300;
             float coneLength = 1000;
@@ -141,13 +142,11 @@ public class UserInterface {
                 entity = Scene.getInstance().getListOfEntities().get(i);
                 double[] entityLocalCoords = entity.getCoordinates().toLocalCoordinates();
                 if (entity instanceof Enemy
-                        && Utils.isPointInsideTriangle(new double[]{entityLocalCoords[0], entityLocalCoords[1]}, vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(new double[]{entityLocalCoords[0], entityLocalCoords[1]}, vertex1, vertex2, vertex3)) {
 //                    System.out.println("Damage dealt to enemy " + i + ", Health: " + ((Enemy) entity).HEALTH);
                     ((Enemy) entity).HEALTH -= 1f;
                 }
             }
-
-
         } else if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
                 && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
