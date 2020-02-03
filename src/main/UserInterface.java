@@ -1,7 +1,7 @@
 package main;
 
+import entities.*;
 import entities.Character;
-import entities.Scene;
 import listeners.MyInputListener;
 import org.lwjgl.opengl.ARBShaderObjects;
 
@@ -110,7 +110,6 @@ public class UserInterface {
             double[] characterLocalCoordinates = Character.getInstance().getCoordinates().toLocalCoordinates();
             ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterLocalCoordinates[0], Parameters.getInstance().getWindowHeight() - (float) characterLocalCoordinates[1]});
 
-            glBegin(GL_TRIANGLES);
             double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
             double[] v1 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
             v1 = Utils.normalizeVector(v1);
@@ -120,16 +119,35 @@ public class UserInterface {
             float coneWidth = 300;
             float coneLength = 1000;
 
-            glVertex2f((float) characterLocalCoords[0] + (float) (v1[0] * coneLength) + (float) (v2[0] * coneWidth),
-                    (float) characterLocalCoords[1] + (float) (v1[1] * coneLength) + (float) (v2[1] * coneWidth));
-            glVertex2f((float) characterLocalCoords[0] + (float) (v1[0] * coneLength) - (float) (v2[0] * coneWidth),
-                    (float) characterLocalCoords[1] + (float) (v1[1] * coneLength) - (float) (v2[1] * coneWidth));
-            glVertex2f((float) characterLocalCoords[0], (float) characterLocalCoords[1]);
+            double[] vertex1 = new double[]{characterLocalCoords[0] + (v1[0] * coneLength) + (v2[0] * coneWidth),
+                    characterLocalCoords[1] + (v1[1] * coneLength) + (v2[1] * coneWidth)};
+            double[] vertex2 = new double[]{characterLocalCoords[0] + (v1[0] * coneLength) - (v2[0] * coneWidth),
+                    characterLocalCoords[1] + (v1[1] * coneLength) - (v2[1] * coneWidth)};
+            double[] vertex3 = new double[]{characterLocalCoords[0], characterLocalCoords[1]};
+
+            glBegin(GL_TRIANGLES);
+
+            glVertex2d(vertex1[0], vertex1[1]);
+            glVertex2d(vertex2[0], vertex2[1]);
+            glVertex2d(vertex3[0], vertex3[1]);
 
             glEnd();
 
             //release the shader
             ARBShaderObjects.glUseProgramObjectARB(0);
+
+            Entity entity;
+            for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
+                entity = Scene.getInstance().getListOfEntities().get(i);
+                double[] entityLocalCoords = entity.getCoordinates().toLocalCoordinates();
+                if (entity instanceof Enemy
+                        && Utils.isPointInsideTriangle(new double[]{entityLocalCoords[0], entityLocalCoords[1]}, vertex1, vertex2, vertex3)) {
+//                    System.out.println("Damage dealt to enemy " + i + ", Health: " + ((Enemy) entity).HEALTH);
+                    ((Enemy) entity).HEALTH -= 1f;
+                }
+            }
+
+
         } else if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
                 && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {

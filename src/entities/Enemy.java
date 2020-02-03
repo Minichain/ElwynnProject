@@ -50,7 +50,6 @@ public class Enemy extends DynamicEntity{
             status = Status.IDLE;
         }
 
-        HEALTH -= Math.random() / 2;    //FIXME (Remove later) Enemies receive damage over time in order to test death animation.
         if (HEALTH <= 0 && status != Status.DEAD) {
             status = Status.DYING;
         }

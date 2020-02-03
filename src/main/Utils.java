@@ -151,4 +151,22 @@ public class Utils {
 
         return source.toString();
     }
+
+    public static boolean isPointInsideTriangle(double[] point, double[] vertex1, double[] vertex2, double[] vertex3) {
+        double d1, d2, d3;
+        boolean has_neg, has_pos;
+
+        d1 = sign(point, vertex1, vertex2);
+        d2 = sign(point, vertex2, vertex3);
+        d3 = sign(point, vertex3, vertex1);
+
+        has_neg = (d1 < 0) || (d2 < 0) || (d3 < 0);
+        has_pos = (d1 > 0) || (d2 > 0) || (d3 > 0);
+
+        return !(has_neg && has_pos);
+    }
+
+    private static double sign(double[] vertex1, double[] vertex2, double[] vertex3) {
+        return (vertex1[0] - vertex3[0]) * (vertex2[1] - vertex3[1]) - (vertex2[0] - vertex3[0]) * (vertex1[1] - vertex3[1]);
+    }
 }
