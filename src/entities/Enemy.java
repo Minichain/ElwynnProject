@@ -38,8 +38,6 @@ public class Enemy extends DynamicEntity {
         RUNNING_FRAMES = 8;
         DYING_FRAMES = 1;
         DEAD_FRAMES = 1;
-        X_SPRITES = 8;
-        Y_SPRITES = 10;
     }
 
     @Override

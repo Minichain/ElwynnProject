@@ -17,8 +17,6 @@ public abstract class DynamicEntity extends Entity {
     /** Sprite Attributes **/
     private double spriteCoordinateFromSpriteSheetX;
     private double spriteCoordinateFromSpriteSheetY;
-    public int X_SPRITES;
-    public int Y_SPRITES;
     public int SPRITE_WIDTH;
     public int SPRITE_HEIGHT;
     public int IDLE_FRAMES;
@@ -35,10 +33,13 @@ public abstract class DynamicEntity extends Entity {
     public void drawSprite(int x, int y, Texture spriteSheet) {
         spriteSheet.bind();
 
-        float u = ((1f / X_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetX());
-        float v = 1f - ((1f / Y_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetY());
-        float u2 = u + (1f / X_SPRITES);
-        float v2 = v - (1f / Y_SPRITES);
+        float width = spriteSheet.getWidth() / SPRITE_WIDTH;
+        float height = spriteSheet.getHeight() / SPRITE_HEIGHT;
+
+        float u = ((1f / width) * (int) getSpriteCoordinateFromSpriteSheetX());
+        float v = 1f - ((1f / height) * (int) getSpriteCoordinateFromSpriteSheetY());
+        float u2 = u + (1f / width);
+        float v2 = v - (1f / height);
         double scale = Scene.getZoom();
 
         glBegin(GL_QUADS);

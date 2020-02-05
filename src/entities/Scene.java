@@ -13,7 +13,7 @@ import static org.lwjgl.opengl.GL11.*;
 public class Scene {
     private static Scene instance = null;
     private static List<Entity> listOfEntities;
-    private static List<Entity> listOfEntitiesCloseToThePlayer;
+    private static List<Entity> listOfEntitiesToUpdate;
     private static byte[][] arrayOfTiles;
     private static int numOfHorizontalTiles = 1000;
     private static int numOfVerticalTiles = 1000;
@@ -26,7 +26,7 @@ public class Scene {
 
     private Scene() {
         listOfEntities = new ArrayList<>();
-        listOfEntitiesCloseToThePlayer = new ArrayList<>();
+        listOfEntitiesToUpdate = new ArrayList<>();
         arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles];
         for (int i = 0; i < numOfHorizontalTiles; i++) {
             for (int j = 0; j < numOfVerticalTiles; j++) {
@@ -142,12 +142,12 @@ public class Scene {
     }
 
     private void updateAndSortEntities(long timeElapsed) {
-        if (listOfEntities.isEmpty() || listOfEntitiesCloseToThePlayer == null) {
+        if (listOfEntities.isEmpty() || listOfEntitiesToUpdate == null) {
             return;
         }
 
         /** UPDATE ENTITIES **/
-        listOfEntitiesCloseToThePlayer.clear();
+        listOfEntitiesToUpdate.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
             if (currentEntity instanceof Character) {
@@ -156,20 +156,20 @@ public class Scene {
                 ((Enemy) currentEntity).update(timeElapsed);
             }
 
-            if (MathUtils.module(Character.getInstance().getCoordinates(), currentEntity.getCoordinates()) < updateDistance) {
-                listOfEntitiesCloseToThePlayer.add(currentEntity);
+            if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCoordinates()) < updateDistance) {
+                listOfEntitiesToUpdate.add(currentEntity);
             }
         }
 
         /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/
-        int n = listOfEntitiesCloseToThePlayer.size() - 1;
+        int n = listOfEntitiesToUpdate.size() - 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < (n - i); j++) {
-                Entity entity1 = listOfEntitiesCloseToThePlayer.get(j + 1);
-                Entity entity2 = listOfEntitiesCloseToThePlayer.get(j);
+                Entity entity1 = listOfEntitiesToUpdate.get(j + 1);
+                Entity entity2 = listOfEntitiesToUpdate.get(j);
                 if (entity1.getCoordinates().y < entity2.getCoordinates().y) {
-                    listOfEntitiesCloseToThePlayer.set(j + 1, entity2);
-                    listOfEntitiesCloseToThePlayer.set(j, entity1);
+                    listOfEntitiesToUpdate.set(j + 1, entity2);
+                    listOfEntitiesToUpdate.set(j, entity1);
                 }
             }
         }
@@ -182,8 +182,8 @@ public class Scene {
         return listOfEntities;
     }
 
-    public List<Entity> getListOfEntitiesCloseToThePlayer() {
-        return listOfEntitiesCloseToThePlayer;
+    public List<Entity> getListOfEntitiesToUpdate() {
+        return listOfEntitiesToUpdate;
     }
 
     public void initEntities() {
@@ -225,8 +225,8 @@ public class Scene {
     private void renderEntities() {
         double[] localCoordinates;
         Entity entity;
-        for (int i = 0; i < listOfEntitiesCloseToThePlayer.size(); i++) {
-            entity = listOfEntitiesCloseToThePlayer.get(i);
+        for (int i = 0; i < listOfEntitiesToUpdate.size(); i++) {
+            entity = listOfEntitiesToUpdate.get(i);
             if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
                 localCoordinates = entity.getCoordinates().toLocalCoordinates();
                 entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1], entity.getSpriteSheet());
