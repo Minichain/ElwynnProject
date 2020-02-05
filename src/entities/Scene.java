@@ -225,8 +225,8 @@ public class Scene {
     private void renderEntities() {
         double[] localCoordinates;
         Entity entity;
-        for (int i = 0; i < listOfEntities.size(); i++) {
-            entity = listOfEntities.get(i);
+        for (int i = 0; i < listOfEntitiesCloseToThePlayer.size(); i++) {
+            entity = listOfEntitiesCloseToThePlayer.get(i);
             if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
                 localCoordinates = entity.getCoordinates().toLocalCoordinates();
                 entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1], entity.getSpriteSheet());
