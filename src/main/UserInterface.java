@@ -102,7 +102,7 @@ public class UserInterface {
     private void renderCursorUI() {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
             int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
             int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterLocalCoordinates");
             ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);

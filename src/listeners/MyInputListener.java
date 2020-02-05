@@ -20,6 +20,8 @@ public class MyInputListener {
     private static int mousePositionX;
     private static int mousePositionY;
     private static int mouseWheelPosition;
+    public static boolean leftMouseButtonPressed;
+    public static boolean rightMouseButtonPressed;
 
     public static boolean wKeyPressed;
     public static boolean aKeyPressed;
@@ -39,8 +41,18 @@ public class MyInputListener {
         mouseCallback = new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
-                if (button == GLFW_MOUSE_BUTTON_1 && action == GLFW_PRESS) {
-                    processLeftButtonPressed();
+                if (button == GLFW_MOUSE_BUTTON_1) {
+                    if (action == GLFW_PRESS) {
+                        processLeftMouseButtonPressed();
+                    } else if (action == GLFW_RELEASE) {
+                        processLeftMouseButtonReleased();
+                    }
+                } else if (button == GLFW_MOUSE_BUTTON_2) {
+                    if (action == GLFW_PRESS) {
+                        processRightMouseButtonPressed();
+                    } else if (action == GLFW_RELEASE) {
+                        processRightMouseButtonReleased();
+                    }
                 }
             }
         };
@@ -75,12 +87,25 @@ public class MyInputListener {
         glfwSetCursorEnterCallback(window, enterCallback);
     }
 
-    private static void processLeftButtonPressed() {
+    private static void processLeftMouseButtonPressed() {
+        leftMouseButtonPressed = true;
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
             double[] globalCoordinates = new Coordinates(mousePositionX, mousePositionY).toGlobalCoordinates();
             Scene.getInstance().setTile((int) (globalCoordinates[0] / (Scene.getTileWidth() * Scene.getZoom())),
                     (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition() % 10));
         }
+    }
+
+    private static void processLeftMouseButtonReleased() {
+        leftMouseButtonPressed = false;
+    }
+
+    private static void processRightMouseButtonPressed() {
+        rightMouseButtonPressed = true;
+    }
+
+    private static void processRightMouseButtonReleased() {
+        rightMouseButtonPressed = false;
     }
 
     private static void setKeyPressed(int key, boolean pressed) {
