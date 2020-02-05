@@ -229,7 +229,7 @@ public class Scene {
             entity = listOfEntities.get(i);
             if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
                 localCoordinates = entity.getCoordinates().toLocalCoordinates();
-                entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1]);
+                entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1], entity.getSpriteSheet());
             }
         }
     }

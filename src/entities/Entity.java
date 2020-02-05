@@ -1,6 +1,7 @@
 package entities;
 
 import main.Coordinates;
+import main.Texture;
 
 public abstract class Entity {
     private Coordinates coordinates;
@@ -17,5 +18,7 @@ public abstract class Entity {
         this.coordinates = coordinates;
     }
 
-    public abstract void drawSprite(int x, int y);
+    public abstract void drawSprite(int x, int y, Texture spriteSheet);
+
+    public abstract Texture getSpriteSheet();
 }

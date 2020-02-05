@@ -15,7 +15,6 @@ public abstract class DynamicEntity extends Entity {
     public double[] DISPLACEMENT_VECTOR;
 
     /** Sprite Attributes **/
-    private Texture spriteSheet;
     private double spriteCoordinateFromSpriteSheetX;
     private double spriteCoordinateFromSpriteSheetY;
     public int X_SPRITES;
@@ -33,8 +32,8 @@ public abstract class DynamicEntity extends Entity {
         DISPLACEMENT_VECTOR = new double[2];
     }
 
-    public void drawSprite(int x, int y) {
-        getSpriteSheet().bind();
+    public void drawSprite(int x, int y, Texture spriteSheet) {
+        spriteSheet.bind();
 
         float u = ((1f / X_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetX());
         float v = 1f - ((1f / Y_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetY());
@@ -55,14 +54,6 @@ public abstract class DynamicEntity extends Entity {
 
     public Coordinates getPreviousCoordinates() {
         return previousCoordinates;
-    }
-
-    public Texture getSpriteSheet() {
-        return spriteSheet;
-    }
-
-    public void setSpriteSheet(Texture spriteSheet) {
-        this.spriteSheet = spriteSheet;
     }
 
     public double getSpriteCoordinateFromSpriteSheetX() {

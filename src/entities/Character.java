@@ -5,6 +5,7 @@ import listeners.MyInputListener;
 import main.*;
 
 public class Character extends DynamicEntity {
+    private static Texture spriteSheet;
     private static Character instance = null;
 
     public enum Status {
@@ -47,7 +48,7 @@ public class Character extends DynamicEntity {
 
     private void loadSprite() {
         String path = "res/sprites/characters/link.png";
-        setSpriteSheet(Texture.loadTexture(path));
+        if (spriteSheet == null) spriteSheet = Texture.loadTexture(path);
         SPRITE_WIDTH = 32;
         SPRITE_HEIGHT = 32;
         IDLE_FRAMES = 1;
@@ -56,6 +57,11 @@ public class Character extends DynamicEntity {
         DEAD_FRAMES = 1;
         X_SPRITES = 8;
         Y_SPRITES = 10;
+    }
+
+    @Override
+    public Texture getSpriteSheet() {
+        return spriteSheet;
     }
 
     public void updateSpriteCoordinatesToDraw() {
