@@ -152,16 +152,7 @@ public class UserInterface {
                 && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
             Scene.getInstance().bindTileSetTexture();
             glBegin(GL_QUADS);
-            int numOfTilesInTileSetX = 4;
-            int numOfTilesInTileSetY = 4;
-            int[] tileFromTileSet = Scene.getInstance().getTile(MyInputListener.getMouseWheelPosition() % 10);
-            int tileFromTileSetX = tileFromTileSet[0];
-            int tileFromTileSetY = tileFromTileSet[1];
-            double u = ((1.0 / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
-            double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
-            double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
-            double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-            MyOpenGL.drawTexture(mouseX, mouseY, u, v2, u2, v, 32, 32);
+            Scene.getInstance().drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1.0, true);
             glEnd();
         }
     }

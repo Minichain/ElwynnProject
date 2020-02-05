@@ -92,7 +92,7 @@ public class MyInputListener {
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
             double[] globalCoordinates = new Coordinates(mousePositionX, mousePositionY).toGlobalCoordinates();
             Scene.getInstance().setTile((int) (globalCoordinates[0] / (Scene.getTileWidth() * Scene.getZoom())),
-                    (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition() % 10));
+                    (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition()));
         }
     }
 

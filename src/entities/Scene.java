@@ -53,12 +53,17 @@ public class Scene {
         tileSet.bind();
     }
 
-    private void drawTile(int i, int j, int x, int y, double scale, double alpha) {
-        drawTile(arrayOfTiles[i][j], x, y, scale, alpha);
+    public void drawTile(int i, int j, int x, int y, double scale, double alpha) {
+        drawTile(arrayOfTiles[i][j], x, y, scale, alpha, false);
     }
 
-    private void drawTile(int tileType, int x, int y, double scale, double alpha) {
-        double[] localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
+    public void drawTile(int tileType, int x, int y, double scale, double alpha, boolean isLocalCoordinates) {
+        double[] localCoordinates;
+        if (isLocalCoordinates) {
+            localCoordinates = new double[]{x, y};
+        } else {
+            localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
+        }
         int numOfTilesInTileSetX = tileSet.getWidth() / tileWidth;
         int numOfTilesInTileSetY = tileSet.getHeight() / tileHeight;
         int[] tileFromTileSet = getTile(tileType);
@@ -72,49 +77,14 @@ public class Scene {
     }
 
     public int[] getTile(int tile) {
-        int[] tileFromTileSet;
-        switch (tile) {
-            case 0:
-                tileFromTileSet = new int[]{0, 3};
-                return tileFromTileSet;
-            case 1:
-                tileFromTileSet = new int[]{1, 3};
-                return tileFromTileSet;
-            case 2:
-                tileFromTileSet = new int[]{2, 3};
-                return tileFromTileSet;
-            case 3:
-                tileFromTileSet = new int[]{3, 3};
-                return tileFromTileSet;
-            case 4:
-                tileFromTileSet = new int[]{0, 2};
-                return tileFromTileSet;
-            case 5:
-                tileFromTileSet = new int[]{1, 2};
-                return tileFromTileSet;
-            case 6:
-                tileFromTileSet = new int[]{2, 2};
-                return tileFromTileSet;
-            case 7:
-                tileFromTileSet = new int[]{3, 2};
-                return tileFromTileSet;
-            case 8:
-                tileFromTileSet = new int[]{0, 1};
-                return tileFromTileSet;
-            case 9:
-                tileFromTileSet = new int[]{1, 1};
-                return tileFromTileSet;
-            case 10:
-                tileFromTileSet = new int[]{2, 1};
-                return tileFromTileSet;
-            case 11:
-            default:
-                tileFromTileSet = new int[]{3, 1};
-                return tileFromTileSet;
-        }
+        int x = tileSet.getWidth() / tileWidth;
+        int y = tileSet.getHeight() / tileHeight;
+        tile %= (x * y);
+        return new int[]{tile % x, y - 1 - (tile / y)};
     }
 
     public void setTile(int x, int y, byte value) {
+        value %= 64;
         if (0 < x && x < arrayOfTiles.length
                 && 0 < y && y < arrayOfTiles[0].length) {
             arrayOfTiles[x][y] = value;
@@ -215,7 +185,7 @@ public class Scene {
                 int y = (j * (int) (tileHeight * scale));
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
                 if (distanceBetweenCharacterAndTile < renderDistance) {
-                    Scene.getInstance().drawTile(i, j, x, y, scale, (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                    drawTile(i, j, x, y, scale, (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                 }
             }
         }
