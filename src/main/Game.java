@@ -29,9 +29,9 @@ public class Game {
     }
 
     private static void createEnemies() {
-        for (int i = 0; i < 25; i++) {
-            for (int j = 0; j < 25; j++) {
-                int gap = 500;
+        for (int i = 0; i < 70; i++) {
+            for (int j = 0; j < 70; j++) {
+                int gap = 250;
                 new Enemy(3000 + (j * gap), 3000 + (i * gap));
             }
         }

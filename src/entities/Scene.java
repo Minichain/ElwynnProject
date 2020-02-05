@@ -13,20 +13,20 @@ import static org.lwjgl.opengl.GL11.*;
 public class Scene {
     private static Scene instance = null;
     private static List<Entity> listOfEntities;
+    private static List<Entity> listOfEntitiesCloseToThePlayer;
     private static byte[][] arrayOfTiles;
-    private static int numOfHorizontalTiles;
-    private static int numOfVerticalTiles;
+    private static int numOfHorizontalTiles = 1000;
+    private static int numOfVerticalTiles = 1000;
     private static Texture tileSet;
     private static int tileWidth = 16;
     private static int tileHeight = 16;
     private static double zoom = 2;
-    private static int renderDistance;
+    private static int renderDistance = 1750; //TODO This should depend on the Window and Camera parameters
+    private static int updateDistance = 2000; //TODO This should depend on... what?
 
     private Scene() {
         listOfEntities = new ArrayList<>();
-        renderDistance = 1500;  //TODO This should depend on the Window and Camera parameters
-        numOfHorizontalTiles = 1000;
-        numOfVerticalTiles = 1000;
+        listOfEntitiesCloseToThePlayer = new ArrayList<>();
         arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles];
         for (int i = 0; i < numOfHorizontalTiles; i++) {
             for (int j = 0; j < numOfVerticalTiles; j++) {
@@ -138,31 +138,16 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
-        sortAndUpdateEntities(timeElapsed);
+        updateAndSortEntities(timeElapsed);
     }
 
-    private void sortAndUpdateEntities(long timeElapsed) {
-        if (listOfEntities.isEmpty()) {
+    private void updateAndSortEntities(long timeElapsed) {
+        if (listOfEntities.isEmpty() || listOfEntitiesCloseToThePlayer == null) {
             return;
         }
 
-        /** SORT ENTITIES (BUBBLE ALGORITHM) **/
-        int n = listOfEntities.size() - 1;
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < (n - i); j++) {
-                Entity entity1 = listOfEntities.get(j + 1);
-                Entity entity2 = listOfEntities.get(j);
-                if (entity1.getCoordinates().y < entity2.getCoordinates().y) {
-                    listOfEntities.set(j + 1, entity2);
-                    listOfEntities.set(j, entity1);
-                }
-            }
-        }
-
-        //TODO add Insertion Sort Algorithm
-        //TODO add Quick Sort Algorithm
-
         /** UPDATE ENTITIES **/
+        listOfEntitiesCloseToThePlayer.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
             if (currentEntity instanceof Character) {
@@ -170,11 +155,35 @@ public class Scene {
             } else if (currentEntity instanceof Enemy) {
                 ((Enemy) currentEntity).update(timeElapsed);
             }
+
+            if (MathUtils.module(Character.getInstance().getCoordinates(), currentEntity.getCoordinates()) < updateDistance) {
+                listOfEntitiesCloseToThePlayer.add(currentEntity);
+            }
         }
+
+        /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/
+        int n = listOfEntitiesCloseToThePlayer.size() - 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < (n - i); j++) {
+                Entity entity1 = listOfEntitiesCloseToThePlayer.get(j + 1);
+                Entity entity2 = listOfEntitiesCloseToThePlayer.get(j);
+                if (entity1.getCoordinates().y < entity2.getCoordinates().y) {
+                    listOfEntitiesCloseToThePlayer.set(j + 1, entity2);
+                    listOfEntitiesCloseToThePlayer.set(j, entity1);
+                }
+            }
+        }
+
+        //TODO add Insertion Sort Algorithm
+        //TODO add Quick Sort Algorithm
     }
 
     public List<Entity> getListOfEntities() {
         return listOfEntities;
+    }
+
+    public List<Entity> getListOfEntitiesCloseToThePlayer() {
+        return listOfEntitiesCloseToThePlayer;
     }
 
     public void initEntities() {
@@ -216,7 +225,6 @@ public class Scene {
     private void renderEntities() {
         double[] localCoordinates;
         Entity entity;
-        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
         for (int i = 0; i < listOfEntities.size(); i++) {
             entity = listOfEntities.get(i);
             if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {

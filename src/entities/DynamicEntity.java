@@ -1,7 +1,10 @@
 package entities;
 
 import main.Coordinates;
+import main.MyOpenGL;
 import main.Texture;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public abstract class DynamicEntity extends Entity {
     private Coordinates previousCoordinates;
@@ -28,6 +31,22 @@ public abstract class DynamicEntity extends Entity {
         super(x, y);
         previousCoordinates = new Coordinates(prevX, prevY);
         DISPLACEMENT_VECTOR = new double[2];
+    }
+
+    public void drawSprite(int x, int y) {
+        getSpriteSheet().bind();
+
+        float u = ((1f / X_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetX());
+        float v = 1f - ((1f / Y_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetY());
+        float u2 = u + (1f / X_SPRITES);
+        float v2 = v - (1f / Y_SPRITES);
+        double scale = Scene.getZoom();
+
+        glBegin(GL_QUADS);
+        x -= (SPRITE_WIDTH / 2) * (int) scale;
+        y -= (SPRITE_HEIGHT / 2) * (int) scale;
+        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale));
+        glEnd();
     }
 
     public Coordinates getCurrentCoordinates() {

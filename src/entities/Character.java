@@ -4,8 +4,6 @@ import utils.Utils;
 import listeners.MyInputListener;
 import main.*;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public class Character extends DynamicEntity {
     private static Character instance = null;
 
@@ -96,23 +94,6 @@ public class Character extends DynamicEntity {
         }
     }
 
-    @Override
-    public void drawSprite(int x, int y) {
-        getSpriteSheet().bind();
-
-        float u = ((1f / X_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetX());
-        float v = 1f - ((1f / Y_SPRITES) * (int) getSpriteCoordinateFromSpriteSheetY());
-        float u2 = u + (1f / X_SPRITES);
-        float v2 = v - (1f / Y_SPRITES);
-        double scale = Scene.getZoom();
-
-        glBegin(GL_QUADS);
-        x -= (SPRITE_WIDTH / 2) * (int) scale;
-        y -= (SPRITE_HEIGHT / 2) * (int) scale;
-        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale));
-        glEnd();
-    }
-
     public void update(long timeElapsed) {
         getPreviousCoordinates().x = getCurrentCoordinates().x;
         getPreviousCoordinates().y = getCurrentCoordinates().y;
@@ -151,16 +132,7 @@ public class Character extends DynamicEntity {
     }
 
     private boolean checkCollisionWithEntities(int x, int y) {
-//        List<Entity> listOfEntities = Scene.getInstance().getListOfEntities();
-//        double distanceToEntity;
-//        for (int i = 0; i < listOfEntities.size(); i++) {
-//            if (listOfEntities.get(i) != this) {    //Do not check collision with yourself!
-//                distanceToEntity = utils.module(listOfEntities.get(i).getCoordinates(), new Coordinates(x, y));
-//                if (distanceToEntity < 50) {
-//                    return true;
-//                }
-//            }
-//        }
+        //TODO
         return false;
     }
 
