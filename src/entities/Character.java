@@ -145,7 +145,12 @@ public class Character extends DynamicEntity {
         int i = tileCoordinates[0];
         int j = tileCoordinates[1];
         int k = Scene.getNumOfTileLayers() - 1;
-        return (Scene.getInstance().getArrayOfTiles()[i][j][k] == (byte) 1);
+        byte[][][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
+        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
+            return (arrayOfTiles[i][j][k] == (byte) 1);
+        } else {
+            return false;
+        }
     }
 
     public Status getCharacterStatus() {

@@ -189,19 +189,25 @@ public class Scene {
     private void renderSceneBackground() {
         Scene.getInstance().bindTileSetTexture();
         glBegin(GL_QUADS);
-        for (int i = 0; i < getNumOfHorizontalTiles(); i++) {
-            for (int j = 0; j < getNumOfVerticalTiles(); j++) {
+
+        int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
+        int[] cameraGlobalCoordinates = new int[]{(int) Camera.getInstance().getCoordinates().x, (int) Camera.getInstance().getCoordinates().y};
+        int[] topLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance);
+        int[] topRightTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] + oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance);
+        int[] bottomLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] + oneAxisDistance);
+
+        for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
+            for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
                 double scale = zoom;
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                if (distanceBetweenCharacterAndTile < renderDistance) {
-                    for (int k = 0; k < (getNumOfTileLayers() - 1); k++) {
-                        drawTile(i, j, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
-                    }
+                for (int k = 0; k < (getNumOfTileLayers() - 1); k++) {
+                    drawTile(i, j, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                 }
             }
         }
+
         glEnd();
     }
 
