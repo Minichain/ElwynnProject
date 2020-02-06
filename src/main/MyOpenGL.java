@@ -73,11 +73,15 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
-        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1.0f);
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, 1f, 1f, 1f);
     }
 
-    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, double transparency) {
-        glColor4f(1.0f, 1.0f, 1.0f, (float) transparency);
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, float r, float g, float b) {
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, r, g, b);
+    }
+
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
         glTexCoord2f(u, v);
         glVertex2f(x, y);
         glTexCoord2f(u, v2);
@@ -89,11 +93,15 @@ public class MyOpenGL {
     }
 
     public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight) {
-        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1.0f);
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, 1f, 1f, 1f);
     }
 
-    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency) {
-        glColor4f(1.0f, 1.0f, 1.0f, (float) transparency);
+    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, float r, float g, float b) {
+        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, r, g, b);
+    }
+
+    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
         glTexCoord2d(u, v);
         glVertex2d(x, y);
         glTexCoord2d(u, v2);

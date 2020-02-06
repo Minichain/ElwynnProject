@@ -141,8 +141,11 @@ public class Character extends DynamicEntity {
     }
 
     public boolean checkCollision(int x, int y) {
-        //TODO
-        return false;
+        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+        int i = tileCoordinates[0];
+        int j = tileCoordinates[1];
+        int k = Scene.getNumOfTileLayers() - 1;
+        return (Scene.getInstance().getArrayOfTiles()[i][j][k] == (byte) 1);
     }
 
     public Status getCharacterStatus() {

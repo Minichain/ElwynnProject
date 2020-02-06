@@ -55,7 +55,7 @@ public class UserInterface {
 
         textList.add("FPS: " + fps);
         textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
-        textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length * Scene.getInstance().getArrayOfTiles()[0].length);
+        textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length + " x " + Scene.getInstance().getArrayOfTiles()[0].length + " x " + Scene.getInstance().getArrayOfTiles()[0][0].length);
         textList.add("Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
         textList.add("Character Local Coordinates: (" + (float) characterLocalCoordinates[0] + ", " + (float) characterLocalCoordinates[1] + ")");
         textList.add("Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
@@ -152,7 +152,7 @@ public class UserInterface {
                 && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
             Scene.getInstance().bindTileSetTexture();
             glBegin(GL_QUADS);
-            Scene.getInstance().drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1.0, true);
+            Scene.getInstance().drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
             glEnd();
         }
     }

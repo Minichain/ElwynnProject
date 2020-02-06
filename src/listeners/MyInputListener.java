@@ -90,9 +90,8 @@ public class MyInputListener {
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
-            double[] globalCoordinates = new Coordinates(mousePositionX, mousePositionY).toGlobalCoordinates();
-            Scene.getInstance().setTile((int) (globalCoordinates[0] / (Scene.getTileWidth() * Scene.getZoom())),
-                    (int) (globalCoordinates[1] / (Scene.getTileHeight() * Scene.getZoom())), (byte) (MyInputListener.getMouseWheelPosition()));
+            int[] tileCoordinates = Coordinates.localCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], 1, (byte) (MyInputListener.getMouseWheelPosition()));
         }
     }
 
@@ -102,6 +101,12 @@ public class MyInputListener {
 
     private static void processRightMouseButtonPressed() {
         rightMouseButtonPressed = true;
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
+            // Change Tile's collision behaviour
+            int[] tileCoordinates = Coordinates.localCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            boolean collidableTile = Scene.getInstance().getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]][Scene.getNumOfTileLayers() - 1] == (byte) 1;
+            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], Scene.getNumOfTileLayers() - 1, collidableTile ? (byte) 0 : (byte) 1);
+        }
     }
 
     private static void processRightMouseButtonReleased() {

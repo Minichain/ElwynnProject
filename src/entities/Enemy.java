@@ -1,5 +1,6 @@
 package entities;
 
+import main.Coordinates;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -70,7 +71,7 @@ public class Enemy extends DynamicEntity {
             movement[1] *= 0.75;
         }
 
-        if (chasing) {
+        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1])) && chasing) {
             getCurrentCoordinates().x = getCurrentCoordinates().x + (movement[0] * (timeElapsed * SPEED));
             getCurrentCoordinates().y = getCurrentCoordinates().y + (movement[1] * (timeElapsed * SPEED));
         }
@@ -105,6 +106,14 @@ public class Enemy extends DynamicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
+    }
+
+    public boolean checkCollision(int x, int y) {
+        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+        int i = tileCoordinates[0];
+        int j = tileCoordinates[1];
+        int k = Scene.getNumOfTileLayers() - 1;
+        return (Scene.getInstance().getArrayOfTiles()[i][j][k] == (byte) 1);
     }
 
     public void updateSpriteCoordinatesToDraw() {

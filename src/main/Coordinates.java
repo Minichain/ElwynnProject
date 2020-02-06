@@ -1,6 +1,7 @@
 package main;
 
 import entities.Camera;
+import entities.Scene;
 
 public class Coordinates {
     public double x;
@@ -23,5 +24,16 @@ public class Coordinates {
         newCoordinates[0] = (x + Camera.getInstance().getCoordinates().x - ((double) Parameters.getInstance().getWindowWidth() / 2));
         newCoordinates[1] = (y + Camera.getInstance().getCoordinates().y - ((double) Parameters.getInstance().getWindowHeight() / 2));
         return newCoordinates;
+    }
+
+    public static int[] localCoordinatesToTileCoordinates(int x, int y) {
+        double[] globalCoordinates = new Coordinates(x, y).toGlobalCoordinates();
+        return globalCoordinatesToTileCoordinates((int) globalCoordinates[0], (int) globalCoordinates[1]);
+    }
+
+    public static int[] globalCoordinatesToTileCoordinates(int x, int y) {
+        int i = (int) (x / (Scene.getTileWidth() * Scene.getZoom()));
+        int j = (int) (y / (Scene.getTileHeight() * Scene.getZoom()));
+        return new int[]{i, j};
     }
 }
