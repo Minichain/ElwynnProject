@@ -59,10 +59,12 @@ public class Scene {
     }
 
     public void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j][tileLayers - 1] == (byte) 1) { // COLLISION Tile
-            drawTile(arrayOfTiles[i][j][k], x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
-        } else {
-            drawTile(arrayOfTiles[i][j][k], x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
+        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
+            if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j][tileLayers - 1] == (byte) 1) { // COLLISION Tile
+                drawTile(arrayOfTiles[i][j][k], x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
+            } else {
+                drawTile(arrayOfTiles[i][j][k], x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
+            }
         }
     }
 
@@ -179,51 +181,103 @@ public class Scene {
     }
 
     public void render() {
-        /** SCENE BACKGROUND IS DRAWN FIRST **/
-        renderSceneBackground();
-
-        /** ALL ENTITES ARE DRAWN BY ORDER OF DEPTH **/
-        renderEntities();
-    }
-
-    private void renderSceneBackground() {
-        Scene.getInstance().bindTileSetTexture();
-        glBegin(GL_QUADS);
-
+        /** COMPUTE WHICH ARE THE TILES WE ARE GOING TO RENDER **/
         int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
         int[] cameraGlobalCoordinates = new int[]{(int) Camera.getInstance().getCoordinates().x, (int) Camera.getInstance().getCoordinates().y};
-        int[] topLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance);
-        int[] topRightTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] + oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance);
-        int[] bottomLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] + oneAxisDistance);
 
+        int[] topLeftGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance};
+        int[] topLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(topLeftGlobalCoordinates[0], topLeftGlobalCoordinates[1]);
+
+        int[] topRightGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] + oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance};
+        int[] topRightTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(topRightGlobalCoordinates[0], topRightGlobalCoordinates[1]);
+
+        int[] bottomLeftGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] + oneAxisDistance};
+        int[] bottomLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(bottomLeftGlobalCoordinates[0], bottomLeftGlobalCoordinates[1]);
+
+        /** FIRST LAYER OF TILES IS DRAWN FIRST **/
+        renderFirstLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
+
+        /** SECOND LAYER IS DRAWN AT THE SAME TIME AS ENTITIES, BY ORDER OF DEPTH **/
+        renderSecondLayerOfTilesAndEntities(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
+
+        /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
+        renderThirdLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
+    }
+
+    private void renderFirstLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
+        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
+    }
+
+    private void renderSecondLayerOfTilesAndEntities(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
+        double[] entityLocalCoordinates;
+        Entity entity = null;
+        int entityIterator = 0;
+        int firstTileRowToDraw = topLeftTileCoordinates[1];
+        int lastTileRowToDraw = bottomLeftTileCoordinates[1];
+        int tileRowIterator = firstTileRowToDraw;
+        while (tileRowIterator < lastTileRowToDraw) {
+            if (entityIterator < listOfEntitiesToUpdate.size()) {
+                entity = listOfEntitiesToUpdate.get(entityIterator);
+            }
+            if (entity != null && entity.getCoordinates().y < Coordinates.tileCoordinatesToGlobalCoordinates(0, tileRowIterator)[1]) {
+                entityLocalCoordinates = entity.getCoordinates().toLocalCoordinates();
+                entity.drawSprite((int) entityLocalCoordinates[0], (int) entityLocalCoordinates[1], entity.getSpriteSheet());
+                entity = null;
+                entityIterator++;
+            } else {
+                Scene.getInstance().bindTileSetTexture();
+                glBegin(GL_QUADS);
+                for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
+                    int k = 1;
+                    if (0 < i && i < arrayOfTiles.length
+                            && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
+                            && arrayOfTiles[i][tileRowIterator][k] != -1) {
+                        double scale = zoom;
+                        int x = (i * (int) (tileWidth * scale));
+                        int y = (tileRowIterator * (int) (tileHeight * scale));
+                        double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                        drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                    }
+                }
+                glEnd();
+                tileRowIterator++;
+            }
+        }
+    }
+
+    private void renderThirdLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
+        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
+    }
+
+    private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int k) {
+        Scene.getInstance().bindTileSetTexture();
+        glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
                 double scale = zoom;
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                for (int k = 0; k < (getNumOfTileLayers() - 1); k++) {
-                    drawTile(i, j, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
-                }
+                drawTile(i, j, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
             }
         }
-
         glEnd();
     }
 
-    private void renderEntities() {
-        double[] localCoordinates;
-        Entity entity;
-        for (int i = 0; i < listOfEntitiesToUpdate.size(); i++) {
-            entity = listOfEntitiesToUpdate.get(i);
-            if (MathUtils.module(Camera.getInstance().getCoordinates(), entity.getCoordinates()) < renderDistance) {
-                localCoordinates = entity.getCoordinates().toLocalCoordinates();
-                entity.drawSprite((int) localCoordinates[0], (int) localCoordinates[1], entity.getSpriteSheet());
-            }
-        }
+    public static byte[][][] getArrayOfTiles() {
+        return arrayOfTiles;
     }
 
-    public byte[][][] getArrayOfTiles() {
-        return arrayOfTiles;
+    public static boolean checkCollisionWithTile(int x, int y) {
+        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+        int i = tileCoordinates[0];
+        int j = tileCoordinates[1];
+        int k = Scene.getNumOfTileLayers() - 1;
+        byte[][][] arrayOfTiles = getArrayOfTiles();
+        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
+            return (arrayOfTiles[i][j][k] == (byte) 1);
+        } else {
+            return false;
+        }
     }
 }

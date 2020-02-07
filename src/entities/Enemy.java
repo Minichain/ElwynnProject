@@ -71,7 +71,9 @@ public class Enemy extends DynamicEntity {
             movement[1] *= 0.75;
         }
 
-        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1])) && chasing) {
+        int distanceFactor = 2;
+        if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
+                && chasing) {
             getCurrentCoordinates().x = getCurrentCoordinates().x + (movement[0] * (timeElapsed * SPEED));
             getCurrentCoordinates().y = getCurrentCoordinates().y + (movement[1] * (timeElapsed * SPEED));
         }
@@ -106,19 +108,6 @@ public class Enemy extends DynamicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
-    }
-
-    public boolean checkCollision(int x, int y) {
-        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
-        int i = tileCoordinates[0];
-        int j = tileCoordinates[1];
-        int k = Scene.getNumOfTileLayers() - 1;
-        byte[][][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            return (arrayOfTiles[i][j][k] == (byte) 1);
-        } else {
-            return false;
-        }
     }
 
     public void updateSpriteCoordinatesToDraw() {

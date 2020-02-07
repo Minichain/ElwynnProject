@@ -53,13 +53,18 @@ public class UserInterface {
         int leftMargin = 10;
         int gapBetweenTexts = 10 * textScale;
 
+        textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3");
         textList.add("FPS: " + fps);
         textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
         textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length + " x " + Scene.getInstance().getArrayOfTiles()[0].length + " x " + Scene.getInstance().getArrayOfTiles()[0][0].length);
         textList.add("Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
         textList.add("Character Local Coordinates: (" + (float) characterLocalCoordinates[0] + ", " + (float) characterLocalCoordinates[1] + ")");
         textList.add("Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
-        textList.add("Game Mode: " + " " + GameMode.getInstance().getGameMode());
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
+            textList.add("Game Mode: " + GameMode.getInstance().getGameMode() + ", Creative Mode: " + GameMode.getInstance().getCreativeMode());
+        } else {
+            textList.add("Game Mode: " + " " + GameMode.getInstance().getGameMode());
+        }
 
         glBegin(GL_QUADS);
         for (int i = 0; i < textList.size(); i++) {

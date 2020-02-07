@@ -91,7 +91,19 @@ public class MyInputListener {
         leftMouseButtonPressed = true;
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
             int[] tileCoordinates = Coordinates.localCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
-            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], 1, (byte) (MyInputListener.getMouseWheelPosition()));
+            int layer = 0;
+            switch (GameMode.getInstance().getCreativeMode()) {
+                case FIRST_LAYER:
+                    layer = 0;
+                    break;
+                case SECOND_LAYER:
+                    layer = 1;
+                    break;
+                case THIRD_LAYER:
+                    layer = 2;
+                    break;
+            }
+            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], layer, (byte) (MyInputListener.getMouseWheelPosition()));
         }
     }
 
@@ -130,6 +142,12 @@ public class MyInputListener {
             GameMode.getInstance().setGameMode(GameMode.Mode.NORMAL);
         } else if (key == GLFW_KEY_F3 && pressed) {
             GameMode.getInstance().setGameMode(GameMode.Mode.CREATIVE);
+        } else if (key == GLFW_KEY_1 && pressed) {
+            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
+        } else if (key == GLFW_KEY_2 && pressed) {
+            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
+        } else if (key == GLFW_KEY_3 && pressed) {
+            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
         }
     }
 

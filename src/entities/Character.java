@@ -108,8 +108,8 @@ public class Character extends DynamicEntity {
             movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
         }
 
-        if (!checkCollision((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))
-                && !checkCollisionWithEntities((int)(getCurrentCoordinates().x + movement[0]), (int)(getCurrentCoordinates().y + movement[1]))) {
+        int distanceFactor = 4;
+        if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
             getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
             getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
         }
@@ -133,24 +133,6 @@ public class Character extends DynamicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
-    }
-
-    private boolean checkCollisionWithEntities(int x, int y) {
-        //TODO
-        return false;
-    }
-
-    public boolean checkCollision(int x, int y) {
-        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
-        int i = tileCoordinates[0];
-        int j = tileCoordinates[1];
-        int k = Scene.getNumOfTileLayers() - 1;
-        byte[][][] arrayOfTiles = Scene.getInstance().getArrayOfTiles();
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            return (arrayOfTiles[i][j][k] == (byte) 1);
-        } else {
-            return false;
-        }
     }
 
     public Status getCharacterStatus() {

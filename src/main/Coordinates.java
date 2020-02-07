@@ -36,4 +36,10 @@ public class Coordinates {
         int j = (int) (y / (Scene.getTileHeight() * Scene.getZoom()));
         return new int[]{i, j};
     }
+
+    public static int[] tileCoordinatesToGlobalCoordinates(int i, int j) {
+        int x = i * (int) (Scene.getTileWidth() * Scene.getZoom());
+        int y = j * (int) (Scene.getTileHeight() * Scene.getZoom());
+        return new int[]{x, y};
+    }
 }
