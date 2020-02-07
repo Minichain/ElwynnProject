@@ -90,7 +90,7 @@ public class Scene {
         int x = tileSet.getWidth() / tileWidth;
         int y = tileSet.getHeight() / tileHeight;
         tile %= (x * y);
-        return new int[]{tile % x, y - 1 - (tile / y)};
+        return new int[]{tile % x, y - 1 - (tile / x)};
     }
 
     public void setTile(int i, int j, int k, byte value) {
