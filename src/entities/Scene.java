@@ -195,17 +195,13 @@ public class Scene {
         int[] bottomLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(bottomLeftGlobalCoordinates[0], bottomLeftGlobalCoordinates[1]);
 
         /** FIRST LAYER OF TILES IS DRAWN FIRST **/
-        renderFirstLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
+        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
 
         /** SECOND LAYER IS DRAWN AT THE SAME TIME AS ENTITIES, BY ORDER OF DEPTH **/
         renderSecondLayerOfTilesAndEntities(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
 
         /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
-        renderThirdLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
-    }
-
-    private void renderFirstLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
-        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
+        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
     }
 
     private void renderSecondLayerOfTilesAndEntities(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
@@ -245,11 +241,7 @@ public class Scene {
         }
     }
 
-    private void renderThirdLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
-        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
-    }
-
-    private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int k) {
+    private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int layerToRender) {
         Scene.getInstance().bindTileSetTexture();
         glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
@@ -258,7 +250,7 @@ public class Scene {
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                drawTile(i, j, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
             }
         }
         glEnd();

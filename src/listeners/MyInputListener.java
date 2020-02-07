@@ -6,6 +6,7 @@ import main.GameMode;
 import main.GameStatus;
 import main.Parameters;
 import org.lwjgl.glfw.*;
+import utils.MathUtils;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -154,23 +155,22 @@ public class MyInputListener {
     public static double[] computeMovementVector(long timeElapsed, double speed) {
         double[] movement = new double[2];
         if (MyInputListener.sKeyPressed) {
-            movement[1] = movement[1] + timeElapsed * speed;
+            movement[1] = 1;
         }
         if (MyInputListener.aKeyPressed) {
-            movement[0] = movement[0] - timeElapsed * speed;
+            movement[0] = -1;
         }
         if (MyInputListener.wKeyPressed) {
-            movement[1] = movement[1] - timeElapsed * speed;
+            movement[1] = -1;
         }
         if (MyInputListener.dKeyPressed) {
-            movement[0] = movement[0] + timeElapsed * speed;
+            movement[0] = 1;
         }
 
-        //Normalize movement. The module of the movement vector must stay close to 1.
-        if (movement[0] != 0 && movement[1] != 0) {
-            movement[0] *= 0.75;
-            movement[1] *= 0.75;
-        }
+        movement = MathUtils.normalizeVector(movement);
+        movement[0] *= timeElapsed * speed;
+        movement[1] *= timeElapsed * speed;
+
         return movement;
     }
 

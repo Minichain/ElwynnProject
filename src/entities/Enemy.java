@@ -64,18 +64,14 @@ public class Enemy extends DynamicEntity {
         boolean chasing = (status != Status.DYING && status != Status.DEAD && MathUtils.module(movement) > 50 && MathUtils.module(movement) < 500);
 
         movement = MathUtils.normalizeVector(movement);
-
-        //Normalize movement. The module of the movement vector must stay close to 1.
-        if (movement[0] != 0 && movement[1] != 0) {
-            movement[0] *= 0.75;
-            movement[1] *= 0.75;
-        }
+        movement[0] *= timeElapsed * SPEED;
+        movement[1] *= timeElapsed * SPEED;
 
         int distanceFactor = 2;
         if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
                 && chasing) {
-            getCurrentCoordinates().x = getCurrentCoordinates().x + (movement[0] * (timeElapsed * SPEED));
-            getCurrentCoordinates().y = getCurrentCoordinates().y + (movement[1] * (timeElapsed * SPEED));
+            getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+            getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
         }
 
         DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
