@@ -1,7 +1,6 @@
 package main;
 
 import entities.Camera;
-import entities.Enemy;
 import entities.Scene;
 import listeners.MyInputListener;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -23,18 +22,7 @@ public class Game {
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
 
-//        createEnemies(); //TODO Remove this in the future
-
         GameStatus.getInstance().setGameRunning(true);
-    }
-
-    private static void createEnemies() {
-        for (int i = 0; i < 100; i++) {
-            for (int j = 0; j < 100; j++) {
-                int gap = 250;
-                new Enemy(3000 + (j * gap), 3000 + (i * gap));
-            }
-        }
     }
 
     private static void initWindowSizeCallBack() {

@@ -61,7 +61,7 @@ public class Enemy extends DynamicEntity {
         movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
         movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
 
-        boolean chasing = (status != Status.DYING && status != Status.DEAD && MathUtils.module(movement) > 50 && MathUtils.module(movement) < 500);
+        boolean chasing = (status != Status.DYING && status != Status.DEAD && MathUtils.module(movement) > 50 && MathUtils.module(movement) < 2000);
 
         movement = MathUtils.normalizeVector(movement);
         movement[0] *= timeElapsed * SPEED;

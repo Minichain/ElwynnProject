@@ -10,8 +10,14 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class Scene {
     private static Scene instance = null;
-    private static List<Entity> listOfEntities;
+
+    /** ENTITIES **/
     private static List<Entity> listOfEntitiesToUpdate;
+    private static int enemySpawnPeriod = 1000; // In Milliseconds
+    private static long lastEnemySpawnTime;
+
+    /** TILES **/
+    private static List<Entity> listOfEntities;
     private static byte[][][] arrayOfTiles;
     private static int numOfHorizontalTiles = 1000;
     private static int numOfVerticalTiles = 1000;
@@ -19,6 +25,7 @@ public class Scene {
     private static Texture tileSet;
     private static int tileWidth = 16;
     private static int tileHeight = 16;
+
     private static double zoom = 2;
     private static int renderDistance = 1250; //TODO This should depend on the Window and Camera parameters
     private static int updateDistance = 2000; //TODO This should depend on... what?
@@ -128,6 +135,22 @@ public class Scene {
 
     public void update(long timeElapsed) {
         updateAndSortEntities(timeElapsed);
+        updateEnemiesSpawn();
+    }
+
+    private void updateEnemiesSpawn() {
+        long currentTime = System.currentTimeMillis();
+        if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
+            int distance = (int) ((Math.random() * 250) + 1500);
+            double angle = Math.random() * 2 * Math.PI;
+            int x = (int) ((Math.cos(angle) * distance) + Character.getInstance().getCurrentCoordinates().x);
+            int y = (int) ((Math.sin(angle) * distance) + Character.getInstance().getCurrentCoordinates().y);
+            int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+            if (arrayOfTiles[tileCoordinates[0]][tileCoordinates[1]][tileLayers - 1] == 0) {
+                new Enemy(x, y);
+                lastEnemySpawnTime = currentTime;
+            }
+        }
     }
 
     private void updateAndSortEntities(long timeElapsed) {
