@@ -53,7 +53,7 @@ public class UserInterface {
         int leftMargin = 10;
         int gapBetweenTexts = 10 * textScale;
 
-        textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3");
+        textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3, Save World: F5");
         textList.add("FPS: " + fps);
         textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
         textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length + " x " + Scene.getInstance().getArrayOfTiles()[0].length + " x " + Scene.getInstance().getArrayOfTiles()[0][0].length);

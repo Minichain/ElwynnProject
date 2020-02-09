@@ -23,7 +23,7 @@ public class Game {
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
 
-        createEnemies(); //TODO Remove this in the future
+//        createEnemies(); //TODO Remove this in the future
 
         GameStatus.getInstance().setGameRunning(true);
     }

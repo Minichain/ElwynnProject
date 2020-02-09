@@ -1,9 +1,6 @@
 package entities;
 
-import main.Coordinates;
-import main.GameMode;
-import main.MyOpenGL;
-import main.Texture;
+import main.*;
 import utils.MathUtils;
 
 import java.util.ArrayList;
@@ -23,21 +20,13 @@ public class Scene {
     private static int tileWidth = 16;
     private static int tileHeight = 16;
     private static double zoom = 2;
-    private static int renderDistance = 1750; //TODO This should depend on the Window and Camera parameters
+    private static int renderDistance = 1250; //TODO This should depend on the Window and Camera parameters
     private static int updateDistance = 2000; //TODO This should depend on... what?
 
     private Scene() {
         listOfEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
-        arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles][tileLayers];
-        for (int i = 0; i < numOfHorizontalTiles; i++) {
-            for (int j = 0; j < numOfVerticalTiles; j++) {
-                arrayOfTiles[i][j][0] = (byte)((Math.random() * 100) % 4); //Layer 1
-                arrayOfTiles[i][j][1] = (byte) -1;  //Layer 2
-                arrayOfTiles[i][j][2] = (byte) -1;  //Layer 3
-                arrayOfTiles[i][j][3] = (byte) 0;   //Collision layer. 0 -> NO COLLISION, 1 -> COLLISION
-            }
-        }
+        loadWorld();
         loadSprites();
     }
 
@@ -46,6 +35,21 @@ public class Scene {
             instance = new Scene();
         }
         return instance;
+    }
+
+    private void loadWorld() {
+        arrayOfTiles = WorldLoader.loadWorld("world");
+        if (arrayOfTiles == null || arrayOfTiles.length == 0) {
+            arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles][tileLayers];
+            for (int i = 0; i < numOfHorizontalTiles; i++) {
+                for (int j = 0; j < numOfVerticalTiles; j++) {
+                    arrayOfTiles[i][j][0] = (byte) (((Math.random() * 100) % 4) + 1); //Layer 1
+                    arrayOfTiles[i][j][1] = (byte) 0;  //Layer 2
+                    arrayOfTiles[i][j][2] = (byte) 0;  //Layer 3
+                    arrayOfTiles[i][j][3] = (byte) 0;  //Collision layer. 0 -> NO COLLISION, 1 -> COLLISION
+                }
+            }
+        }
     }
 
     private void loadSprites() {
@@ -227,7 +231,7 @@ public class Scene {
                     int k = 1;
                     if (0 < i && i < arrayOfTiles.length
                             && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
-                            && arrayOfTiles[i][tileRowIterator][k] != -1) {
+                            && arrayOfTiles[i][tileRowIterator][k] != 0) {
                         double scale = zoom;
                         int x = (i * (int) (tileWidth * scale));
                         int y = (tileRowIterator * (int) (tileHeight * scale));

@@ -1,10 +1,7 @@
 package listeners;
 
 import entities.Scene;
-import main.Coordinates;
-import main.GameMode;
-import main.GameStatus;
-import main.Parameters;
+import main.*;
 import org.lwjgl.glfw.*;
 import utils.MathUtils;
 
@@ -143,6 +140,8 @@ public class MyInputListener {
             GameMode.getInstance().setGameMode(GameMode.Mode.NORMAL);
         } else if (key == GLFW_KEY_F3 && pressed) {
             GameMode.getInstance().setGameMode(GameMode.Mode.CREATIVE);
+        } else if (key == GLFW_KEY_F5 && pressed) {
+            WorldLoader.saveWorld(Scene.getArrayOfTiles());
         } else if (key == GLFW_KEY_1 && pressed) {
             GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
         } else if (key == GLFW_KEY_2 && pressed) {
