@@ -146,7 +146,11 @@ public class Scene {
             int x = (int) ((Math.cos(angle) * distance) + Character.getInstance().getCurrentCoordinates().x);
             int y = (int) ((Math.sin(angle) * distance) + Character.getInstance().getCurrentCoordinates().y);
             int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
-            if (arrayOfTiles[tileCoordinates[0]][tileCoordinates[1]][tileLayers - 1] == 0) {
+            int i = tileCoordinates[0];
+            int j = tileCoordinates[1];
+            if (0 < i && i < arrayOfTiles.length
+                    && 0 < j && j < arrayOfTiles[0].length
+                    && arrayOfTiles[i][j][tileLayers - 1] == 0) {
                 new Enemy(x, y);
                 lastEnemySpawnTime = currentTime;
             }
