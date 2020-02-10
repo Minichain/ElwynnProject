@@ -45,10 +45,14 @@ public class UserInterface {
             textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3, Save World: F5");
             textList.add("FPS: " + fps);
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
-            textList.add("Num of Tiles: " + Scene.getInstance().getArrayOfTiles().length + " x " + Scene.getInstance().getArrayOfTiles()[0].length + " x " + Scene.getInstance().getArrayOfTiles()[0][0].length);
+            textList.add("Num of Tiles: " + Scene.getArrayOfTiles().length + " x " + Scene.getArrayOfTiles()[0].length + " x " + Scene.getArrayOfTiles()[0][0].length);
+            textList.add("Camera Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
+            textList.add("Camera Zoom: " + (float) Camera.getZoom());
             textList.add("Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
             textList.add("Character Local Coordinates: (" + (float) characterLocalCoordinates[0] + ", " + (float) characterLocalCoordinates[1] + ")");
-            textList.add("Mouse Position: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
+            textList.add("Mouse Local Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
+            double[] mouseGlobalCoordinates = new Coordinates((double) MyInputListener.getMousePositionX(), (double) MyInputListener.getMousePositionY()).toGlobalCoordinates();
+            textList.add("Mouse Global Coordinates: (" + mouseGlobalCoordinates[0] + ", " + mouseGlobalCoordinates[1] + ")");
             if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getInstance().getGameMode() + ", Creative Mode: " + GameMode.getInstance().getCreativeMode());
             } else {
