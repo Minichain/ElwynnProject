@@ -11,6 +11,9 @@ public class Camera {
     private Coordinates coordinates;
     private static double xInitialCoordinate = Parameters.getInstance().getStartingCoordinates().x;
     private static double yInitialCoordinate = Parameters.getInstance().getStartingCoordinates().y;
+    private static int width = 1920;
+    private static int height = 1080;
+    private static double zoom = 2;
 
     public Camera() {
         coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);
@@ -30,6 +33,22 @@ public class Camera {
     public void setCoordinates(double x, double y) {
         coordinates.x = x;
         coordinates.y = y;
+    }
+
+    public static double getZoom() {
+        return zoom;
+    }
+
+    public static double getWidth() {
+        return width / zoom;
+    }
+
+    public static double getHeight() {
+        return height / zoom;
+    }
+
+    public static void setZoom(double zoom) {
+        Camera.zoom = zoom;
     }
 
     public void resetCamera() {

@@ -26,7 +26,6 @@ public class Scene {
     private static int tileWidth = 16;
     private static int tileHeight = 16;
 
-    private static double zoom = 2;
     private static int renderDistance = 1250; //TODO This should depend on the Window and Camera parameters
     private static int updateDistance = 2000; //TODO This should depend on... what?
 
@@ -207,10 +206,6 @@ public class Scene {
         Scene.getInstance().getListOfEntities().add(Character.getInstance());
     }
 
-    public static double getZoom() {
-        return zoom;
-    }
-
     public void render() {
         /** COMPUTE WHICH ARE THE TILES WE ARE GOING TO RENDER **/
         int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
@@ -259,7 +254,7 @@ public class Scene {
                     if (0 < i && i < arrayOfTiles.length
                             && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
                             && arrayOfTiles[i][tileRowIterator][k] != 0) {
-                        double scale = zoom;
+                        double scale = Camera.getZoom();
                         int x = (i * (int) (tileWidth * scale));
                         int y = (tileRowIterator * (int) (tileHeight * scale));
                         double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
@@ -277,7 +272,7 @@ public class Scene {
         glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
-                double scale = zoom;
+                double scale = Camera.getZoom();
                 int x = (i * (int) (tileWidth * scale));
                 int y = (j * (int) (tileHeight * scale));
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));

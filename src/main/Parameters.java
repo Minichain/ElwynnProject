@@ -12,8 +12,8 @@ public class Parameters {
     private Parameters() {
         debugMode = false;
         foregroundFramesPerSecond = 60;
-        windowWidth = 1280;
-        windowHeight = 720;
+        windowWidth = 1920;
+        windowHeight = 1080;
         startingCoordinates = new Coordinates(5000, 5000);
     }
 

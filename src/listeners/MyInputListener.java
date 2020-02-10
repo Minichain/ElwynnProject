@@ -1,5 +1,6 @@
 package listeners;
 
+import entities.Camera;
 import entities.Scene;
 import main.*;
 import org.lwjgl.glfw.*;
@@ -148,6 +149,10 @@ public class MyInputListener {
             GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
         } else if (key == GLFW_KEY_3 && pressed) {
             GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
+        } else if (key == GLFW_KEY_UP && pressed) {
+            Camera.setZoom(Camera.getZoom() + 0.1);
+        } else if (key == GLFW_KEY_DOWN && pressed) {
+            Camera.setZoom(Camera.getZoom() - 0.1);
         }
     }
 

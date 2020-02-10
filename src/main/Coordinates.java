@@ -32,14 +32,14 @@ public class Coordinates {
     }
 
     public static int[] globalCoordinatesToTileCoordinates(int x, int y) {
-        int i = (int) (x / (Scene.getTileWidth() * Scene.getZoom()));
-        int j = (int) (y / (Scene.getTileHeight() * Scene.getZoom()));
+        int i = (int) (x / (Scene.getTileWidth() * Camera.getZoom()));
+        int j = (int) (y / (Scene.getTileHeight() * Camera.getZoom()));
         return new int[]{i, j};
     }
 
     public static int[] tileCoordinatesToGlobalCoordinates(int i, int j) {
-        int x = i * (int) (Scene.getTileWidth() * Scene.getZoom());
-        int y = j * (int) (Scene.getTileHeight() * Scene.getZoom());
+        int x = i * (int) (Scene.getTileWidth() * Camera.getZoom());
+        int y = j * (int) (Scene.getTileHeight() * Camera.getZoom());
         return new int[]{x, y};
     }
 }
