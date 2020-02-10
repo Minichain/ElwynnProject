@@ -1,6 +1,5 @@
 package entities;
 
-import main.Coordinates;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -17,7 +16,6 @@ public class Enemy extends DynamicEntity {
     public Enemy(int x, int y) {
         super(x, y, x, y);
         initEnemy(x, y);
-        loadSprite();
     }
 
     private void initEnemy(int x, int y) {
@@ -30,7 +28,8 @@ public class Enemy extends DynamicEntity {
         Scene.getInstance().getListOfEntities().add(this);
     }
 
-    private void loadSprite() {
+    @Override
+    public void loadSprite() {
         String path = "res/sprites/characters/enemy.png";
         if (spriteSheet == null) spriteSheet = Texture.loadTexture(path);
         SPRITE_WIDTH = 32;
@@ -46,6 +45,7 @@ public class Enemy extends DynamicEntity {
         return spriteSheet;
     }
 
+    @Override
     public void update(long timeElapsed) {
         getPreviousCoordinates().x = getCurrentCoordinates().x;
         getPreviousCoordinates().y = getCurrentCoordinates().y;
@@ -138,5 +138,9 @@ public class Enemy extends DynamicEntity {
                 setSpriteCoordinateFromSpriteSheetY(9);
                 break;
         }
+    }
+
+    public Status getStatus() {
+        return status;
     }
 }

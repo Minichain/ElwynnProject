@@ -7,14 +7,12 @@ import main.*;
 public class Character extends DynamicEntity {
     private static Texture spriteSheet;
     private static Character instance = null;
+    private static Status characterStatus;
+    private static Utils.DirectionFacing directionFacing;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
     }
-
-    private static Status characterStatus;
-    private static Utils.DirectionFacing directionFacing;
-
 
     private Character() {
         super((int) Parameters.getInstance().getStartingCoordinates().x,
@@ -22,7 +20,6 @@ public class Character extends DynamicEntity {
                 (int) Parameters.getInstance().getStartingCoordinates().x,
                 (int) Parameters.getInstance().getStartingCoordinates().y);
         initCharacter();
-        loadSprite();
     }
 
     public void resetCharacter() {
@@ -46,7 +43,8 @@ public class Character extends DynamicEntity {
         return instance;
     }
 
-    private void loadSprite() {
+    @Override
+    public void loadSprite() {
         String path = "res/sprites/characters/link.png";
         if (spriteSheet == null) spriteSheet = Texture.loadTexture(path);
         SPRITE_WIDTH = 32;
@@ -60,6 +58,44 @@ public class Character extends DynamicEntity {
     @Override
     public Texture getSpriteSheet() {
         return spriteSheet;
+    }
+
+    @Override
+    public void update(long timeElapsed) {
+        getPreviousCoordinates().x = getCurrentCoordinates().x;
+        getPreviousCoordinates().y = getCurrentCoordinates().y;
+        characterStatus = Status.IDLE;
+
+        double[] movement = new double[]{0, 0};
+        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
+            movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
+        }
+
+        int distanceFactor = 4;
+        if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
+            getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+            getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
+        }
+
+        DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
+
+        if (DISPLACEMENT_VECTOR[0] != 0 || DISPLACEMENT_VECTOR[1] != 0) { //If character is moving
+            directionFacing = Utils.checkDirectionFacing(DISPLACEMENT_VECTOR);
+            characterStatus = Status.RUNNING;
+        }
+
+        switch (characterStatus) {
+            case IDLE:
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
+                break;
+            case RUNNING:
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
+                break;
+            case JUMPING:
+                break;
+        }
+
+        updateSpriteCoordinatesToDraw();
     }
 
     public void updateSpriteCoordinatesToDraw() {
@@ -98,44 +134,7 @@ public class Character extends DynamicEntity {
         }
     }
 
-    public void update(long timeElapsed) {
-        getPreviousCoordinates().x = getCurrentCoordinates().x;
-        getPreviousCoordinates().y = getCurrentCoordinates().y;
-        characterStatus = Status.IDLE;
-
-        double[] movement = new double[]{0, 0};
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
-            movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
-        }
-
-        int distanceFactor = 4;
-        if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
-            getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
-            getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
-        }
-
-        DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
-
-        if (DISPLACEMENT_VECTOR[0] != 0 || DISPLACEMENT_VECTOR[1] != 0) { //If character is moving
-            directionFacing = Utils.checkDirectionFacing(DISPLACEMENT_VECTOR);
-            characterStatus = Status.RUNNING;
-        }
-
-        switch (characterStatus) {
-            case IDLE:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
-                break;
-            case RUNNING:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
-                break;
-            case JUMPING:
-                break;
-        }
-
-        updateSpriteCoordinatesToDraw();
-    }
-
-    public Status getCharacterStatus() {
+    public Status getStatus() {
         return characterStatus;
     }
 }

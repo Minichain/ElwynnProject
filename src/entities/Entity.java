@@ -8,6 +8,7 @@ public abstract class Entity {
 
     public Entity(int x, int y) {
         coordinates = new Coordinates((double)x, (double)y);
+        loadSprite();
     }
 
     public Coordinates getCoordinates() {
@@ -18,7 +19,11 @@ public abstract class Entity {
         this.coordinates = coordinates;
     }
 
+    public abstract void loadSprite();
+
     public abstract void drawSprite(int x, int y, Texture spriteSheet);
 
     public abstract Texture getSpriteSheet();
+
+    public abstract void update(long timeElapsed);
 }

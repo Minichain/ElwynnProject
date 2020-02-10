@@ -3,7 +3,6 @@ package main;
 public class Parameters {
     private static Parameters instance = null;
     private static int foregroundFramesPerSecond;
-    private static int backgroundFramesPerSecond;
     private static int windowWidth;
     private static int windowHeight;
     private static long window;
@@ -13,7 +12,6 @@ public class Parameters {
     private Parameters() {
         debugMode = false;
         foregroundFramesPerSecond = 60;
-        backgroundFramesPerSecond = 30;
         windowWidth = 1280;
         windowHeight = 720;
         startingCoordinates = new Coordinates(5000, 5000);
@@ -48,14 +46,6 @@ public class Parameters {
 
     public int getForegroundFramesPerSecond() {
         return foregroundFramesPerSecond;
-    }
-
-    public void setBackgroundFramesPerSecond(int fps) {
-        backgroundFramesPerSecond = fps;
-    }
-
-    public int getBackgroundFramesPerSecond() {
-        return backgroundFramesPerSecond;
     }
 
     public void setDebugMode(boolean dm) {
