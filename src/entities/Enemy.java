@@ -22,7 +22,7 @@ public class Enemy extends DynamicEntity {
         getCurrentCoordinates().x = x;
         getCurrentCoordinates().y = y;
         HEALTH = 100f;
-        SPEED = 0.15;
+        SPEED = 0.075;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         Scene.getInstance().getListOfEntities().add(this);

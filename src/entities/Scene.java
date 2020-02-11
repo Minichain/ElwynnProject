@@ -78,9 +78,9 @@ public class Scene {
         }
     }
 
-    public void drawTile(int tileType, int x, int y, double scale, float r, float g, float b, boolean isLocalCoordinates) {
-        double[] localCoordinates = new double[]{x, y};
-        if (!isLocalCoordinates) localCoordinates = (new Coordinates(x, y)).toLocalCoordinates();
+    public void drawTile(int tileType, int x, int y, double scale, float r, float g, float b, boolean isCameraCoordinates) {
+        double[] cameraCoordinates = new double[]{x, y};
+        if (!isCameraCoordinates) cameraCoordinates = (new Coordinates(x, y)).toCameraCoordinates();
 
         int numOfTilesInTileSetX = tileSet.getWidth() / tileWidth;
         int numOfTilesInTileSetY = tileSet.getHeight() / tileHeight;
@@ -93,7 +93,7 @@ public class Scene {
         double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
         double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
 
-        MyOpenGL.drawTexture((int) localCoordinates[0], (int) localCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), r, g, b);
+        MyOpenGL.drawTexture((int) cameraCoordinates[0], (int) cameraCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), r, g, b);
     }
 
     public int[] getTile(int tile) {
@@ -144,7 +144,7 @@ public class Scene {
             double angle = Math.random() * 2 * Math.PI;
             int x = (int) ((Math.cos(angle) * distance) + Character.getInstance().getCurrentCoordinates().x);
             int y = (int) ((Math.sin(angle) * distance) + Character.getInstance().getCurrentCoordinates().y);
-            int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+            int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
             int i = tileCoordinates[0];
             int j = tileCoordinates[1];
             if (0 < i && i < arrayOfTiles.length
@@ -209,16 +209,16 @@ public class Scene {
     public void render() {
         /** COMPUTE WHICH ARE THE TILES WE ARE GOING TO RENDER **/
         int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
-        int[] cameraGlobalCoordinates = new int[]{(int) Camera.getInstance().getCoordinates().x, (int) Camera.getInstance().getCoordinates().y};
+        int[] cameraWorldCoordinates = new int[]{(int) Camera.getInstance().getCoordinates().x, (int) Camera.getInstance().getCoordinates().y};
 
-        int[] topLeftGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance};
-        int[] topLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(topLeftGlobalCoordinates[0], topLeftGlobalCoordinates[1]);
+        int[] topLeftWorldCoordinates = new int[]{cameraWorldCoordinates[0] - oneAxisDistance, cameraWorldCoordinates[1] - oneAxisDistance};
+        int[] topLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topLeftWorldCoordinates[0], topLeftWorldCoordinates[1]);
 
-        int[] topRightGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] + oneAxisDistance, cameraGlobalCoordinates[1] - oneAxisDistance};
-        int[] topRightTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(topRightGlobalCoordinates[0], topRightGlobalCoordinates[1]);
+        int[] topRightWorldCoordinates = new int[]{cameraWorldCoordinates[0] + oneAxisDistance, cameraWorldCoordinates[1] - oneAxisDistance};
+        int[] topRightTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topRightWorldCoordinates[0], topRightWorldCoordinates[1]);
 
-        int[] bottomLeftGlobalCoordinates = new int[]{cameraGlobalCoordinates[0] - oneAxisDistance, cameraGlobalCoordinates[1] + oneAxisDistance};
-        int[] bottomLeftTileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(bottomLeftGlobalCoordinates[0], bottomLeftGlobalCoordinates[1]);
+        int[] bottomLeftWorldCoordinates = new int[]{cameraWorldCoordinates[0] - oneAxisDistance, cameraWorldCoordinates[1] + oneAxisDistance};
+        int[] bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates[0], bottomLeftWorldCoordinates[1]);
 
         /** FIRST LAYER OF TILES IS DRAWN FIRST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
@@ -231,7 +231,7 @@ public class Scene {
     }
 
     private void renderSecondLayerOfTilesAndEntities(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
-        double[] entityLocalCoordinates;
+        double[] entityCameraCoordinates;
         Entity entity = null;
         int entityIterator = 0;
         int firstTileRowToDraw = topLeftTileCoordinates[1];
@@ -241,9 +241,9 @@ public class Scene {
             if (entityIterator < listOfEntitiesToUpdate.size()) {
                 entity = listOfEntitiesToUpdate.get(entityIterator);
             }
-            if (entity != null && entity.getCoordinates().y < Coordinates.tileCoordinatesToGlobalCoordinates(0, tileRowIterator)[1]) {
-                entityLocalCoordinates = entity.getCoordinates().toLocalCoordinates();
-                entity.drawSprite((int) entityLocalCoordinates[0], (int) entityLocalCoordinates[1], entity.getSpriteSheet());
+            if (entity != null && entity.getCoordinates().y < Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator)[1]) {
+                entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
+                entity.drawSprite((int) entityCameraCoordinates[0], (int) entityCameraCoordinates[1], entity.getSpriteSheet());
                 entity = null;
                 entityIterator++;
             } else {
@@ -287,7 +287,7 @@ public class Scene {
     }
 
     public static boolean checkCollisionWithTile(int x, int y) {
-        int[] tileCoordinates = Coordinates.globalCoordinatesToTileCoordinates(x, y);
+        int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
         int i = tileCoordinates[0];
         int j = tileCoordinates[1];
         int k = Scene.getNumOfTileLayers() - 1;

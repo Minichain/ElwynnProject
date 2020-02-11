@@ -33,7 +33,7 @@ public class UserInterface {
         if (Parameters.getInstance().isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
             float fps = 1000 / timeElapsed;
-            double[] characterLocalCoordinates = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
+            double[] characterCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
 
             /** DEBUG TEXT **/
             ArrayList<String> textList = new ArrayList<>();
@@ -46,13 +46,13 @@ public class UserInterface {
             textList.add("FPS: " + fps);
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
             textList.add("Num of Tiles: " + Scene.getArrayOfTiles().length + " x " + Scene.getArrayOfTiles()[0].length + " x " + Scene.getArrayOfTiles()[0][0].length);
-            textList.add("Camera Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
+            textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
             textList.add("Camera Zoom: " + (float) Camera.getZoom());
-            textList.add("Character Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
-            textList.add("Character Local Coordinates: (" + (float) characterLocalCoordinates[0] + ", " + (float) characterLocalCoordinates[1] + ")");
-            textList.add("Mouse Local Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
-            double[] mouseGlobalCoordinates = new Coordinates((double) MyInputListener.getMousePositionX(), (double) MyInputListener.getMousePositionY()).toGlobalCoordinates();
-            textList.add("Mouse Global Coordinates: (" + mouseGlobalCoordinates[0] + ", " + mouseGlobalCoordinates[1] + ")");
+            textList.add("Character World Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
+            textList.add("Character Camera Coordinates: (" + (float) characterCameraCoordinates[0] + ", " + (float) characterCameraCoordinates[1] + ")");
+            textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
+            double[] mouseWorldCoordinates = new Coordinates((double) MyInputListener.getMousePositionX(), (double) MyInputListener.getMousePositionY()).toWorldCoordinates();
+            textList.add("Mouse World Coordinates: (" + mouseWorldCoordinates[0] + ", " + mouseWorldCoordinates[1] + ")");
             if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getInstance().getGameMode() + ", Creative Mode: " + GameMode.getInstance().getCreativeMode());
             } else {
@@ -80,15 +80,15 @@ public class UserInterface {
         int mouseY = MyInputListener.getMousePositionY();
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
             int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
-            int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterLocalCoordinates");
+            int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
             ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
             ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.RUNTIME);
 
-            double[] characterLocalCoordinates = Character.getInstance().getCoordinates().toLocalCoordinates();
-            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterLocalCoordinates[0], Parameters.getInstance().getWindowHeight() - (float) characterLocalCoordinates[1]});
+            double[] characterCameraCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
+            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterCameraCoordinates[0], Parameters.getInstance().getWindowHeight() - (float) characterCameraCoordinates[1]});
 
-            double[] characterLocalCoords = Character.getInstance().getCurrentCoordinates().toLocalCoordinates();
-            double[] v1 = new double[]{mouseX - characterLocalCoords[0], mouseY - characterLocalCoords[1]};
+            double[] characterCameraCoords = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
+            double[] v1 = new double[]{mouseX - characterCameraCoords[0], mouseY - characterCameraCoords[1]};
             v1 = MathUtils.normalizeVector(v1);
             double[] v2 = MathUtils.generateOrthonormalVector(v1);
             v2 = MathUtils.normalizeVector(v2);
@@ -96,11 +96,11 @@ public class UserInterface {
             float coneWidth = 300;
             float coneLength = 1000;
 
-            double[] vertex1 = new double[]{characterLocalCoords[0] + (v1[0] * coneLength) + (v2[0] * coneWidth),
-                    characterLocalCoords[1] + (v1[1] * coneLength) + (v2[1] * coneWidth)};
-            double[] vertex2 = new double[]{characterLocalCoords[0] + (v1[0] * coneLength) - (v2[0] * coneWidth),
-                    characterLocalCoords[1] + (v1[1] * coneLength) - (v2[1] * coneWidth)};
-            double[] vertex3 = new double[]{characterLocalCoords[0], characterLocalCoords[1]};
+            double[] vertex1 = new double[]{characterCameraCoords[0] + (v1[0] * coneLength) + (v2[0] * coneWidth),
+                    characterCameraCoords[1] + (v1[1] * coneLength) + (v2[1] * coneWidth)};
+            double[] vertex2 = new double[]{characterCameraCoords[0] + (v1[0] * coneLength) - (v2[0] * coneWidth),
+                    characterCameraCoords[1] + (v1[1] * coneLength) - (v2[1] * coneWidth)};
+            double[] vertex3 = new double[]{characterCameraCoords[0], characterCameraCoords[1]};
 
             glBegin(GL_TRIANGLES);
 
@@ -116,9 +116,9 @@ public class UserInterface {
             Entity entity;
             for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
                 entity = Scene.getInstance().getListOfEntities().get(i);
-                double[] entityLocalCoords = entity.getCoordinates().toLocalCoordinates();
+                double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
                 if (entity instanceof Enemy
-                        && MathUtils.isPointInsideTriangle(new double[]{entityLocalCoords[0], entityLocalCoords[1]}, vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
 //                    System.out.println("Damage dealt to enemy " + i + ", Health: " + ((Enemy) entity).HEALTH);
                     ((Enemy) entity).HEALTH -= 1f;
                 }

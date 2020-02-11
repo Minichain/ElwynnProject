@@ -89,7 +89,7 @@ public class MyInputListener {
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
-            int[] tileCoordinates = Coordinates.localCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
             int layer = 0;
             switch (GameMode.getInstance().getCreativeMode()) {
                 case FIRST_LAYER:
@@ -114,7 +114,7 @@ public class MyInputListener {
         rightMouseButtonPressed = true;
         if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
-            int[] tileCoordinates = Coordinates.localCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
             boolean collidableTile = Scene.getInstance().getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]][Scene.getNumOfTileLayers() - 1] == (byte) 1;
             Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], Scene.getNumOfTileLayers() - 1, collidableTile ? (byte) 0 : (byte) 1);
         }
@@ -158,7 +158,7 @@ public class MyInputListener {
             int y = 0;
             System.out.println("AdriHell:: world coordinates: " + x + ", " + y);
             double[] cameraCoordinates;
-            cameraCoordinates = new Coordinates(x, y).toLocalCoordinates();
+            cameraCoordinates = new Coordinates(x, y).toCameraCoordinates();
             System.out.println("AdriHell:: camera coordinates: " + cameraCoordinates[0] + ", " + cameraCoordinates[1]);
         } else if (key == GLFW_KEY_F10&& pressed) {
         } else if (key == GLFW_KEY_F11 && pressed) {

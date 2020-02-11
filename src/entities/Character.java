@@ -30,7 +30,7 @@ public class Character extends DynamicEntity {
         getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
         getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
         HEALTH = 100f;
-        SPEED = 0.25;
+        SPEED = 0.125;
         characterStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
     }

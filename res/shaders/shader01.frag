@@ -1,9 +1,9 @@
 varying vec4 vertColor;
-uniform vec2 characterLocalCoordinates;
+uniform vec2 characterCameraCoordinates;
 
 void main() {
     float mixValue;
-    float distanceFromCharacter = distance(characterLocalCoordinates, gl_FragCoord.xy);
+    float distanceFromCharacter = distance(characterCameraCoordinates, gl_FragCoord.xy);
     float maxDistance = 500;
     float maxValueDistance = 200;
 
