@@ -30,7 +30,7 @@ public class UserInterface {
     }
 
     private void renderDebugUI(long timeElapsed) {
-        if (Parameters.getInstance().isDebugMode()) {
+        if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
             float fps = 1000 / timeElapsed;
             double[] characterCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
@@ -52,11 +52,11 @@ public class UserInterface {
             textList.add("Character Camera Coordinates: (" + (float) characterCameraCoordinates[0] + ", " + (float) characterCameraCoordinates[1] + ")");
             textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
             double[] mouseWorldCoordinates = new Coordinates((double) MyInputListener.getMousePositionX(), (double) MyInputListener.getMousePositionY()).toWorldCoordinates();
-            textList.add("Mouse World Coordinates: (" + mouseWorldCoordinates[0] + ", " + mouseWorldCoordinates[1] + ")");
-            if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
-                textList.add("Game Mode: " + GameMode.getInstance().getGameMode() + ", Creative Mode: " + GameMode.getInstance().getCreativeMode());
+            textList.add("Mouse World Coordinates: (" + (float) mouseWorldCoordinates[0] + ", " + (float) mouseWorldCoordinates[1] + ")");
+            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
             } else {
-                textList.add("Game Mode: " + " " + GameMode.getInstance().getGameMode());
+                textList.add("Game Mode: " + " " + GameMode.getGameMode());
             }
 
             TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, textList, textScale);
@@ -66,10 +66,10 @@ public class UserInterface {
             glBegin(GL_LINES);
             glLineWidth(4);
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            glVertex2i(Parameters.getInstance().getWindowWidth() / 2, 0);
-            glVertex2i(Parameters.getInstance().getWindowWidth() / 2, Parameters.getInstance().getWindowHeight());
-            glVertex2i(0, Parameters.getInstance().getWindowHeight() / 2);
-            glVertex2i(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight() / 2);
+            glVertex2i(Parameters.getWindowWidth() / 2, 0);
+            glVertex2i(Parameters.getWindowWidth() / 2, Parameters.getWindowHeight());
+            glVertex2i(0, Parameters.getWindowHeight() / 2);
+            glVertex2i(Parameters.getWindowWidth(), Parameters.getWindowHeight() / 2);
             glEnd();
             glEnable(GL_BLEND);
         }
@@ -78,14 +78,14 @@ public class UserInterface {
     private void renderCursorUI() {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
+        if (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
             int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
             int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
             ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
             ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.RUNTIME);
 
             double[] characterCameraCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
-            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterCameraCoordinates[0], Parameters.getInstance().getWindowHeight() - (float) characterCameraCoordinates[1]});
+            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, new float[]{(float) characterCameraCoordinates[0], Parameters.getWindowHeight() - (float) characterCameraCoordinates[1]});
 
             double[] characterCameraCoords = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
             double[] v1 = new double[]{mouseX - characterCameraCoords[0], mouseY - characterCameraCoords[1]};
@@ -123,9 +123,9 @@ public class UserInterface {
                     ((Enemy) entity).HEALTH -= 1f;
                 }
             }
-        } else if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE
-                && 0 < mouseX && mouseX < Parameters.getInstance().getWindowWidth()
-                && 0 < mouseY && mouseY < Parameters.getInstance().getWindowHeight()) {
+        } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
+                && 0 < mouseX && mouseX < Parameters.getWindowWidth()
+                && 0 < mouseY && mouseY < Parameters.getWindowHeight()) {
             Scene.getInstance().bindTileSetTexture();
             glBegin(GL_QUADS);
             Scene.getInstance().drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);

@@ -1,70 +1,49 @@
 package main;
 
 public class Parameters {
-    private static Parameters instance = null;
-    private static int foregroundFramesPerSecond;
-    private static int windowWidth;
-    private static int windowHeight;
-    private static long window;
-    private static boolean debugMode;
-    private static Coordinates startingCoordinates;
+    private static int framesPerSecond = 60;
+    private static long window = -1;
+    private static int windowWidth = 1280;
+    private static int windowHeight = 720;
+    private static boolean debugMode = false;
 
-    private Parameters() {
-        debugMode = false;
-        foregroundFramesPerSecond = 60;
-        windowWidth = 1280;
-        windowHeight = 720;
-        startingCoordinates = new Coordinates(2600, 2600);
+    public static int getFramesPerSecond() {
+        return framesPerSecond;
     }
 
-    public static Parameters getInstance() {
-        if (instance == null) {
-            instance = new Parameters();
-        }
-        return instance;
+    public static void setFramesPerSecond(int framesPerSecond) {
+        Parameters.framesPerSecond = framesPerSecond;
     }
 
-    public void setWindowWidth(int width) {
-        windowWidth = width;
-    }
-
-    public void setWindowHeight(int height) {
-        windowHeight = height;
-    }
-
-    public int getWindowWidth() {
-        return windowWidth;
-    }
-
-    public int getWindowHeight() {
-        return windowHeight;
-    }
-
-    public void setForegroundFramesPerSecond(int fps) {
-        foregroundFramesPerSecond = fps;
-    }
-
-    public int getForegroundFramesPerSecond() {
-        return foregroundFramesPerSecond;
-    }
-
-    public void setDebugMode(boolean dm) {
-        debugMode = dm;
-    }
-
-    public boolean isDebugMode() {
-        return debugMode;
-    }
-
-    public Coordinates getStartingCoordinates() {
-        return startingCoordinates;
-    }
-
-    public long getWindow() {
+    public static long getWindow() {
         return window;
     }
 
-    public void setWindow(long w) {
-        window = w;
+    public static void setWindow(long WINDOW) {
+        Parameters.window = WINDOW;
+    }
+
+    public static int getWindowWidth() {
+        return windowWidth;
+    }
+
+    public static void setWindowWidth(int windowWidth) {
+        Parameters.windowWidth = windowWidth;
+    }
+
+    public static int getWindowHeight() {
+        return windowHeight;
+    }
+
+    public static void setWindowHeight(int windowHeight) {
+        Parameters.windowHeight = windowHeight;
+    }
+
+    public static boolean isDebugMode() {
+        return debugMode;
+    }
+
+    public static void setDebugMode(boolean debugMode) {
+        Parameters.debugMode = debugMode;
     }
 }

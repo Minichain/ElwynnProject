@@ -15,10 +15,10 @@ public class Character extends DynamicEntity {
     }
 
     private Character() {
-        super((int) Parameters.getInstance().getStartingCoordinates().x,
-                (int) Parameters.getInstance().getStartingCoordinates().y,
-                (int) Parameters.getInstance().getStartingCoordinates().x,
-                (int) Parameters.getInstance().getStartingCoordinates().y);
+        super((int) Scene.getInitialCoordinates().x,
+                (int) Scene.getInitialCoordinates().y,
+                (int) Scene.getInitialCoordinates().x,
+                (int) Scene.getInitialCoordinates().y);
         initCharacter();
     }
 
@@ -27,8 +27,8 @@ public class Character extends DynamicEntity {
     }
 
     private void initCharacter() {
-        getCurrentCoordinates().x = Parameters.getInstance().getStartingCoordinates().x;
-        getCurrentCoordinates().y = Parameters.getInstance().getStartingCoordinates().y;
+        getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
+        getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
         HEALTH = 100f;
         SPEED = 0.125;
         characterStatus = Status.IDLE;
@@ -67,7 +67,7 @@ public class Character extends DynamicEntity {
         characterStatus = Status.IDLE;
 
         double[] movement = new double[]{0, 0};
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.NORMAL) {
+        if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
         }
 

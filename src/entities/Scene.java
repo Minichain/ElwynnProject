@@ -26,12 +26,15 @@ public class Scene {
     private static int tileWidth = 16;
     private static int tileHeight = 16;
 
-    private static int renderDistance = 1250; //TODO This should depend on the Window and Camera parameters
-    private static int updateDistance = 2000; //TODO This should depend on... what?
+    private static int renderDistance = 1000; //TODO This should depend on the Window and Camera parameters
+    private static int updateDistance = 1250; //TODO This should depend on... what?
+
+    private static Coordinates initialCoordinates;
 
     private Scene() {
         listOfEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
+        initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
         loadSprites();
     }
@@ -70,7 +73,7 @@ public class Scene {
 
     public void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
         if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j][tileLayers - 1] == (byte) 1) { // COLLISION Tile
+            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j][tileLayers - 1] == (byte) 1) { // COLLISION Tile
                 drawTile(arrayOfTiles[i][j][k], x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
             } else {
                 drawTile(arrayOfTiles[i][j][k], x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
@@ -197,6 +200,10 @@ public class Scene {
 
     public List<Entity> getListOfEntitiesToUpdate() {
         return listOfEntitiesToUpdate;
+    }
+
+    public static Coordinates getInitialCoordinates() {
+        return initialCoordinates;
     }
 
     public void initEntities() {

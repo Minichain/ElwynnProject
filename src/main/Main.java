@@ -8,7 +8,7 @@ public class Main {
     public static void main(String[] args) {
         long timeElapsed = 0;
         long lastUpdateTime = System.currentTimeMillis();
-        long maxTimeBetweenFrames = 1000 / Parameters.getInstance().getForegroundFramesPerSecond();
+        long maxTimeBetweenFrames = 1000 / Parameters.getFramesPerSecond();
         long timeSpentRendering;
 
         if (!glfwInit()) {
@@ -18,7 +18,7 @@ public class Main {
 
         Game.startGame();
 
-        while(!glfwWindowShouldClose(Parameters.getInstance().getWindow()) && GameStatus.getInstance().isGameRunning()) {
+        while(!glfwWindowShouldClose(Parameters.getWindow()) && GameStatus.getInstance().isGameRunning()) {
             try {
                 //Compute the time elapsed since the last frame
                 GameStatus.RUNTIME += timeElapsed;
@@ -30,7 +30,7 @@ public class Main {
                 Game.update(timeElapsed);
                 Game.render(timeElapsed);
 
-                glfwSwapBuffers(Parameters.getInstance().getWindow());
+                glfwSwapBuffers(Parameters.getWindow());
 
                 timeSpentRendering = System.currentTimeMillis() - lastUpdateTime;
                 //Wait time until processing next frame. FPS locked.

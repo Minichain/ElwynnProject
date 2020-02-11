@@ -12,8 +12,8 @@ public class Game {
     private static GLFWWindowSizeCallback windowSizeCallback;
 
     public static void startGame() {
-        long window = glfwCreateWindow(Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), "ElwynnProject", 0, 0);
-        Parameters.getInstance().setWindow(window);
+        long window = glfwCreateWindow(Parameters.getWindowWidth(), Parameters.getWindowHeight(), "ElwynnProject", 0, 0);
+        Parameters.setWindow(window);
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
         MyOpenGL.prepareOpenGL();
@@ -29,12 +29,12 @@ public class Game {
         windowSizeCallback = new GLFWWindowSizeCallback(){
             @Override
             public void invoke(long window, int width, int height){
-                Parameters.getInstance().setWindowWidth(width);
-                Parameters.getInstance().setWindowHeight(height);
+                Parameters.setWindowWidth(width);
+                Parameters.setWindowHeight(height);
                 glViewport(0, 0, width, height);
             }
         };
-        glfwSetWindowSizeCallback(Parameters.getInstance().getWindow(), windowSizeCallback);
+        glfwSetWindowSizeCallback(Parameters.getWindow(), windowSizeCallback);
     }
 
     public static void update(long timeElapsed) {

@@ -9,12 +9,14 @@ import utils.MathUtils;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MyInputListener {
+    /** CALL BACKS **/
     private static GLFWKeyCallback keyCallback;
     private static GLFWMouseButtonCallback mouseCallback;
     private static GLFWCursorPosCallback mousePosCallback;
     private static GLFWScrollCallback scrollCallback;
     private static GLFWCursorEnterCallback enterCallback;
 
+    /** MOUSE **/
     private static boolean mouseInside;
     private static int mousePositionX;
     private static int mousePositionY;
@@ -22,13 +24,14 @@ public class MyInputListener {
     public static boolean leftMouseButtonPressed;
     public static boolean rightMouseButtonPressed;
 
+    /** KEYBOARD **/
     public static boolean wKeyPressed;
     public static boolean aKeyPressed;
     public static boolean sKeyPressed;
     public static boolean dKeyPressed;
 
     public static void initMyInputListener() {
-        long window = Parameters.getInstance().getWindow();
+        long window = Parameters.getWindow();
 
         keyCallback = new GLFWKeyCallback() {
             @Override
@@ -88,10 +91,10 @@ public class MyInputListener {
 
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
+        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
             int layer = 0;
-            switch (GameMode.getInstance().getCreativeMode()) {
+            switch (GameMode.getCreativeMode()) {
                 case FIRST_LAYER:
                     layer = 0;
                     break;
@@ -112,7 +115,7 @@ public class MyInputListener {
 
     private static void processRightMouseButtonPressed() {
         rightMouseButtonPressed = true;
-        if (GameMode.getInstance().getGameMode() == GameMode.Mode.CREATIVE) {
+        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
             boolean collidableTile = Scene.getInstance().getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]][Scene.getNumOfTileLayers() - 1] == (byte) 1;
@@ -136,32 +139,23 @@ public class MyInputListener {
         } else if (key == GLFW_KEY_ESCAPE && pressed) {
             GameStatus.getInstance().setGameRunning(false);
         } else if (key == GLFW_KEY_F1 && pressed) {
-            Parameters.getInstance().setDebugMode(!Parameters.getInstance().isDebugMode());
+            Parameters.setDebugMode(!Parameters.isDebugMode());
         } else if (key == GLFW_KEY_F2 && pressed) {
-            GameMode.getInstance().setGameMode(GameMode.Mode.NORMAL);
+            GameMode.setGameMode(GameMode.Mode.NORMAL);
         } else if (key == GLFW_KEY_F3 && pressed) {
-            GameMode.getInstance().setGameMode(GameMode.Mode.CREATIVE);
+            GameMode.setGameMode(GameMode.Mode.CREATIVE);
         } else if (key == GLFW_KEY_F5 && pressed) {
             WorldLoader.saveWorld(Scene.getArrayOfTiles());
         } else if (key == GLFW_KEY_1 && pressed) {
-            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
+            GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
         } else if (key == GLFW_KEY_2 && pressed) {
-            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
+            GameMode.setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
         } else if (key == GLFW_KEY_3 && pressed) {
-            GameMode.getInstance().setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
+            GameMode.setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
         } else if (key == GLFW_KEY_UP && pressed) {
             Camera.setZoom(Camera.getZoom() + 0.1);
         } else if (key == GLFW_KEY_DOWN && pressed) {
             Camera.setZoom(Camera.getZoom() - 0.1);
-        } else if (key == GLFW_KEY_F9 && pressed) {
-            int x = 0;
-            int y = 0;
-            System.out.println("AdriHell:: world coordinates: " + x + ", " + y);
-            double[] cameraCoordinates;
-            cameraCoordinates = new Coordinates(x, y).toCameraCoordinates();
-            System.out.println("AdriHell:: camera coordinates: " + cameraCoordinates[0] + ", " + cameraCoordinates[1]);
-        } else if (key == GLFW_KEY_F10&& pressed) {
-        } else if (key == GLFW_KEY_F11 && pressed) {
         }
     }
 

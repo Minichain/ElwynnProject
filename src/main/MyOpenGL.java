@@ -7,7 +7,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class MyOpenGL {
 
-    /*
+    /**
      * program shader, to which is attached a vertex and fragment shaders.
      * They are set to 0 as a check because GL will assign unique int
      * values to each
@@ -29,7 +29,7 @@ public class MyOpenGL {
 
         if (vertexShader == 0 || fragmentShader == 0 || programShader == 0) return 0;
 
-        /*
+        /**
          * If the vertex and fragment shaders setup successfully,
          * attach them to the shader program, link the shader program,
          * and validate.
@@ -66,7 +66,7 @@ public class MyOpenGL {
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, Parameters.getInstance().getWindowWidth(), Parameters.getInstance().getWindowHeight(), 0, 1, -1);
+        glOrtho(0, Parameters.getWindowWidth(), Parameters.getWindowHeight(), 0, 1, -1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glEnable(GL_BLEND);

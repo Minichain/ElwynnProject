@@ -1,9 +1,8 @@
 package main;
 
 public class GameMode {
-    private static GameMode instance;
-    private static Mode gameMode;
-    private static CreativeMode creativeMode;
+    private static Mode gameMode = Mode.NORMAL;
+    private static CreativeMode creativeMode = CreativeMode.FIRST_LAYER;
 
     public enum Mode {
         NORMAL, CREATIVE
@@ -13,32 +12,19 @@ public class GameMode {
         FIRST_LAYER, SECOND_LAYER, THIRD_LAYER
     }
 
-    private GameMode() {
-        gameMode = Mode.NORMAL;
-        creativeMode = CreativeMode.FIRST_LAYER;
-    }
-
-    public static GameMode getInstance() {
-        if (instance == null) {
-            instance = new GameMode();
-        }
-        return instance;
-    }
-
-
-    public Mode getGameMode() {
+    public static Mode getGameMode() {
         return gameMode;
     }
 
-    public void setGameMode(Mode gameMode) {
+    public static void setGameMode(Mode gameMode) {
         GameMode.gameMode = gameMode;
     }
 
-    public CreativeMode getCreativeMode() {
+    public static CreativeMode getCreativeMode() {
         return creativeMode;
     }
 
-    public void setCreativeMode(CreativeMode creativeMode) {
+    public static void setCreativeMode(CreativeMode creativeMode) {
         GameMode.creativeMode = creativeMode;
     }
 }
