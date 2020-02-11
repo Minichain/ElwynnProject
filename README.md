@@ -7,6 +7,7 @@ The sprites I'm using are all extracted from the game A Link To The Past, develo
 - SPRITES: https://www.spriters-resource.com/snes/legendofzeldaalinktothepast/
 
 ## Screenshots
+![Alt text](/screenshots/screenshot01.jpg?raw=true "Optional Title")
 
 ## Social Media
 - LinkedIn: www.linkedin.com/in/adria-cadena-rubio
