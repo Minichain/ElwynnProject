@@ -11,8 +11,8 @@ public class Camera {
     private Coordinates coordinates;
     private static double xInitialCoordinate = Parameters.getInstance().getStartingCoordinates().x;
     private static double yInitialCoordinate = Parameters.getInstance().getStartingCoordinates().y;
-    private static int width = 1920;
-    private static int height = 1080;
+    private static int width = 1720;
+    private static int height = 720;
     private static double zoom = 2;
 
     public Camera() {

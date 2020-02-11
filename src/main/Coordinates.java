@@ -14,15 +14,15 @@ public class Coordinates {
 
     public double[] toLocalCoordinates() {
         double[] newCoordinates = new double[2];
-        newCoordinates[0] = (x - Camera.getInstance().getCoordinates().x + ((double) Parameters.getInstance().getWindowWidth() / 2));
-        newCoordinates[1] = (y - Camera.getInstance().getCoordinates().y + ((double) Parameters.getInstance().getWindowHeight() / 2));
+        newCoordinates[0] = (x - Camera.getInstance().getCoordinates().x + (Camera.getWidth() / 2)) * Camera.getZoom();
+        newCoordinates[1] = (y - Camera.getInstance().getCoordinates().y + (Camera.getHeight() / 2)) * Camera.getZoom();
         return newCoordinates;
     }
 
     public double[] toGlobalCoordinates() {
         double[] newCoordinates = new double[2];
-        newCoordinates[0] = (x + Camera.getInstance().getCoordinates().x - ((double) Parameters.getInstance().getWindowWidth() / 2));
-        newCoordinates[1] = (y + Camera.getInstance().getCoordinates().y - ((double) Parameters.getInstance().getWindowHeight() / 2));
+        newCoordinates[0] = (x + Camera.getInstance().getCoordinates().x - (Camera.getWidth() / 2)) / Camera.getZoom();
+        newCoordinates[1] = (y + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2)) / Camera.getZoom();
         return newCoordinates;
     }
 
@@ -32,14 +32,14 @@ public class Coordinates {
     }
 
     public static int[] globalCoordinatesToTileCoordinates(int x, int y) {
-        int i = (int) (x / (Scene.getTileWidth() * Camera.getZoom()));
-        int j = (int) (y / (Scene.getTileHeight() * Camera.getZoom()));
+        int i = x / (Scene.getTileWidth());
+        int j = y / (Scene.getTileHeight());
         return new int[]{i, j};
     }
 
     public static int[] tileCoordinatesToGlobalCoordinates(int i, int j) {
-        int x = i * (int) (Scene.getTileWidth() * Camera.getZoom());
-        int y = j * (int) (Scene.getTileHeight() * Camera.getZoom());
+        int x = i * Scene.getTileWidth();
+        int y = j * Scene.getTileHeight();
         return new int[]{x, y};
     }
 }

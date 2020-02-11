@@ -153,6 +153,15 @@ public class MyInputListener {
             Camera.setZoom(Camera.getZoom() + 0.1);
         } else if (key == GLFW_KEY_DOWN && pressed) {
             Camera.setZoom(Camera.getZoom() - 0.1);
+        } else if (key == GLFW_KEY_F9 && pressed) {
+            int x = 0;
+            int y = 0;
+            System.out.println("AdriHell:: world coordinates: " + x + ", " + y);
+            double[] cameraCoordinates;
+            cameraCoordinates = new Coordinates(x, y).toLocalCoordinates();
+            System.out.println("AdriHell:: camera coordinates: " + cameraCoordinates[0] + ", " + cameraCoordinates[1]);
+        } else if (key == GLFW_KEY_F10&& pressed) {
+        } else if (key == GLFW_KEY_F11 && pressed) {
         }
     }
 

@@ -255,8 +255,8 @@ public class Scene {
                             && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
                             && arrayOfTiles[i][tileRowIterator][k] != 0) {
                         double scale = Camera.getZoom();
-                        int x = (i * (int) (tileWidth * scale));
-                        int y = (tileRowIterator * (int) (tileHeight * scale));
+                        int x = i * tileWidth;
+                        int y = tileRowIterator * tileHeight;
                         double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
                         drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                     }
@@ -273,8 +273,8 @@ public class Scene {
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
                 double scale = Camera.getZoom();
-                int x = (i * (int) (tileWidth * scale));
-                int y = (j * (int) (tileHeight * scale));
+                int x = i * tileWidth;
+                int y = j * tileHeight;
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
                 drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
             }

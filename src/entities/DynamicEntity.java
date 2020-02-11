@@ -45,7 +45,7 @@ public abstract class DynamicEntity extends Entity {
         glBegin(GL_QUADS);
         x -= (int) ((SPRITE_WIDTH / 2) * scale);
         y -= (int) ((SPRITE_HEIGHT / 2) * scale);
-        MyOpenGL.drawTexture(x, y , u, v, u2, v2, (float) (SPRITE_WIDTH * scale), (float) (SPRITE_HEIGHT * scale));
+        MyOpenGL.drawTexture(x, y, u, v, u2, v2, (float) (SPRITE_WIDTH * scale), (float) (SPRITE_HEIGHT * scale));
         glEnd();
     }
 
