@@ -21,8 +21,8 @@ public class Coordinates {
 
     public double[] toWorldCoordinates() {
         double[] newCoordinates = new double[2];
-        newCoordinates[0] = (x + Camera.getInstance().getCoordinates().x - (Camera.getWidth() / 2)) / Camera.getZoom();
-        newCoordinates[1] = (y + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2)) / Camera.getZoom();
+        newCoordinates[0] = (x / Camera.getZoom() + Camera.getInstance().getCoordinates().x - (Camera.getWidth() / 2));
+        newCoordinates[1] = (y / Camera.getZoom() + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2));
         return newCoordinates;
     }
 
