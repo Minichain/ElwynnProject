@@ -45,7 +45,7 @@ public class UserInterface {
             textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3, Save World: F5");
             textList.add("FPS: " + fps);
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
-            textList.add("Num of Tiles: " + Scene.getArrayOfTiles().length + " x " + Scene.getArrayOfTiles()[0].length + " x " + Scene.getArrayOfTiles()[0][0].length);
+            textList.add("Num of Tiles: " + Scene.getArrayOfTiles().length + " x " + Scene.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
             textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
             textList.add("Camera Zoom: " + (float) Camera.getZoom());
             textList.add("Character World Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");

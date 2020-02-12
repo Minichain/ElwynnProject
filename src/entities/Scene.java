@@ -18,10 +18,9 @@ public class Scene {
 
     /** TILES **/
     private static List<Entity> listOfEntities;
-    private static byte[][][] arrayOfTiles;
+    private static Tile[][] arrayOfTiles;
     private static int numOfHorizontalTiles = 1000;
     private static int numOfVerticalTiles = 1000;
-    private static int tileLayers = 4;
     private static Texture tileSet;
     private static int tileWidth = 16;
     private static int tileHeight = 16;
@@ -47,15 +46,14 @@ public class Scene {
     }
 
     private void loadWorld() {
-        arrayOfTiles = WorldLoader.loadWorld("world");
+        arrayOfTiles = WorldLoader.loadWorld();
+
         if (arrayOfTiles == null || arrayOfTiles.length == 0) {
-            arrayOfTiles = new byte[numOfHorizontalTiles][numOfVerticalTiles][tileLayers];
+            arrayOfTiles = new Tile[numOfHorizontalTiles][numOfVerticalTiles];
             for (int i = 0; i < numOfHorizontalTiles; i++) {
                 for (int j = 0; j < numOfVerticalTiles; j++) {
-                    arrayOfTiles[i][j][0] = (byte) (((Math.random() * 100) % 4) + 1); //Layer 1
-                    arrayOfTiles[i][j][1] = (byte) 0;  //Layer 2
-                    arrayOfTiles[i][j][2] = (byte) 0;  //Layer 3
-                    arrayOfTiles[i][j][3] = (byte) 0;  //Collision layer. 0 -> NO COLLISION, 1 -> COLLISION
+                    arrayOfTiles[i][j] = new Tile();
+                    arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 4) + 1));
                 }
             }
         }
@@ -73,10 +71,10 @@ public class Scene {
 
     public void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
         if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j][tileLayers - 1] == (byte) 1) { // COLLISION Tile
-                drawTile(arrayOfTiles[i][j][k], x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
+            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j].isCollidable()) { // COLLISION Tile
+                drawTile(arrayOfTiles[i][j].getLayerValue(k), x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
             } else {
-                drawTile(arrayOfTiles[i][j][k], x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
+                drawTile(arrayOfTiles[i][j].getLayerValue(k), x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
             }
         }
     }
@@ -111,7 +109,7 @@ public class Scene {
         int y = tileSet.getHeight() / tileHeight;
         value %= (x * y);
         if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            arrayOfTiles[i][j][k] = value;
+            arrayOfTiles[i][j].setLayerValue(k, value);
         }
     }
 
@@ -131,10 +129,6 @@ public class Scene {
         return numOfVerticalTiles;
     }
 
-    public static int getNumOfTileLayers() {
-        return tileLayers;
-    }
-
     public void update(long timeElapsed) {
         updateAndSortEntities(timeElapsed);
         updateEnemiesSpawn();
@@ -152,7 +146,7 @@ public class Scene {
             int j = tileCoordinates[1];
             if (0 < i && i < arrayOfTiles.length
                     && 0 < j && j < arrayOfTiles[0].length
-                    && arrayOfTiles[i][j][tileLayers - 1] == 0) {
+                    && !arrayOfTiles[i][j].isCollidable()) {
                 new Enemy(x, y);
                 lastEnemySpawnTime = currentTime;
             }
@@ -260,7 +254,7 @@ public class Scene {
                     int k = 1;
                     if (0 < i && i < arrayOfTiles.length
                             && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
-                            && arrayOfTiles[i][tileRowIterator][k] != 0) {
+                            && arrayOfTiles[i][tileRowIterator].getLayerValue(k) != 0) {
                         double scale = Camera.getZoom();
                         int x = i * tileWidth;
                         int y = tileRowIterator * tileHeight;
@@ -289,7 +283,7 @@ public class Scene {
         glEnd();
     }
 
-    public static byte[][][] getArrayOfTiles() {
+    public static Tile[][] getArrayOfTiles() {
         return arrayOfTiles;
     }
 
@@ -297,10 +291,9 @@ public class Scene {
         int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
         int i = tileCoordinates[0];
         int j = tileCoordinates[1];
-        int k = Scene.getNumOfTileLayers() - 1;
-        byte[][][] arrayOfTiles = getArrayOfTiles();
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            return (arrayOfTiles[i][j][k] == (byte) 1);
+        Tile[][] arrayOfTiles = getArrayOfTiles();
+        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length && arrayOfTiles[i][j] != null) {
+            return arrayOfTiles[i][j].isCollidable();
         } else {
             return false;
         }

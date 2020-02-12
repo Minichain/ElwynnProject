@@ -118,8 +118,7 @@ public class MyInputListener {
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
-            boolean collidableTile = Scene.getInstance().getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]][Scene.getNumOfTileLayers() - 1] == (byte) 1;
-            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], Scene.getNumOfTileLayers() - 1, collidableTile ? (byte) 0 : (byte) 1);
+            Scene.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
         }
     }
 
@@ -145,7 +144,7 @@ public class MyInputListener {
         } else if (key == GLFW_KEY_F3 && pressed) {
             GameMode.setGameMode(GameMode.Mode.CREATIVE);
         } else if (key == GLFW_KEY_F5 && pressed) {
-            WorldLoader.saveWorld(Scene.getArrayOfTiles());
+            WorldLoader.saveWorld();
         } else if (key == GLFW_KEY_1 && pressed) {
             GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
         } else if (key == GLFW_KEY_2 && pressed) {

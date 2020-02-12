@@ -1,6 +1,7 @@
 package main;
 
 import entities.Scene;
+import entities.Tile;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -9,16 +10,26 @@ import java.io.IOException;
 
 public class WorldLoader {
 
-    public static void saveWorld(byte[][][] arrayOfTiles) {
+    public static void saveWorld() {
+        if (saveWorld(Scene.getArrayOfTiles())) {
+            System.out.println("World saved successfully");
+        } else {
+            System.err.println("World could not be saved");
+        }
+    }
+
+    public static boolean saveWorld(Tile[][] arrayOfTiles) {
         // The array of Tiles is stored into a 1-Dimensional byte array
-        byte[] data = new byte[Scene.getNumOfHorizontalTiles() * Scene.getNumOfVerticalTiles() * Scene.getNumOfTileLayers()];
+        byte[] data = new byte[Scene.getNumOfHorizontalTiles() * Scene.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1)];
         int dataIterator = 0;
         for (int i = 0; i < Scene.getNumOfHorizontalTiles(); i++) {
             for (int j = 0; j < Scene.getNumOfVerticalTiles(); j++) {
-                for (int k = 0; k < Scene.getNumOfTileLayers(); k++) {
-                    data[dataIterator] = arrayOfTiles[i][j][k];
+                for (int k = 0; k < Tile.getNumOfLayers(); k++) {
+                    data[dataIterator] = arrayOfTiles[i][j].getLayerValue(k);
                     dataIterator++;
                 }
+                data[dataIterator] = arrayOfTiles[i][j].isCollidable() ? (byte) 1 : (byte) 0;
+                dataIterator++;
             }
         }
 
@@ -27,12 +38,25 @@ public class WorldLoader {
             dataOutput = new FileOutputStream("world");
             dataOutput.write(data);
             dataOutput.close();
+            return true;   // Success
         } catch (IOException e) {
             e.printStackTrace();
+            return false;   // Something went wrong
         }
     }
 
-    public static byte[][][] loadWorld(String worldFile) {
+    public static Tile[][] loadWorld() {
+        Tile[][] arrayOfTiles = null;
+        try {
+            arrayOfTiles = WorldLoader.loadWorld("world");
+            System.out.println("World loaded successfully");
+        } catch (Exception e) {
+            System.err.println("Error loading World. Reason: " + e);
+        }
+        return arrayOfTiles;
+    }
+
+    public static Tile[][] loadWorld(String worldFile) {
         File file = new File(worldFile);
         FileInputStream fileInputStream;
         byte[] fileData = new byte[(int) file.length()];
@@ -47,12 +71,15 @@ public class WorldLoader {
         }
 
         // The 1-Dimensional byte array is loaded into a 3-Dimensional array of Tiles
-        byte[][][] arrayOfTiles = new byte[Scene.getNumOfHorizontalTiles()][Scene.getNumOfVerticalTiles()][Scene.getNumOfTileLayers()];
-        for (int i = 0; i < fileData.length; i++) {
-            int x = (i / Scene.getNumOfTileLayers()) / Scene.getNumOfVerticalTiles();
-            int y = (i / Scene.getNumOfTileLayers()) % Scene.getNumOfVerticalTiles();
-            int k = i % Scene.getNumOfTileLayers();
-            arrayOfTiles[x][y][k] = fileData[i];
+        Tile[][] arrayOfTiles = new Tile[Scene.getNumOfHorizontalTiles()][Scene.getNumOfVerticalTiles()];
+        for (int i = 0; i < fileData.length; i += 4) {
+            int x = (i / (Tile.getNumOfLayers() + 1)) / Scene.getNumOfVerticalTiles();
+            int y = (i / (Tile.getNumOfLayers() + 1)) % Scene.getNumOfVerticalTiles();
+            arrayOfTiles[x][y] = new Tile();
+            for (int j = 0; j < Tile.getNumOfLayers(); j++) {
+                arrayOfTiles[x][y].setLayerValue(j, fileData[i + j]);
+            }
+            arrayOfTiles[x][y].setCollidable(fileData[i + Tile.getNumOfLayers()] == (byte) 1);
         }
 
         return arrayOfTiles;
