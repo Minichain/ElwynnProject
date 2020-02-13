@@ -1,5 +1,6 @@
 package entities;
 
+import main.FloatingTextEntity;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -57,8 +58,14 @@ public class Enemy extends DynamicEntity {
             boolean closeToPlayer = !(MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000);
             boolean chasing = (status != Status.DYING && status != Status.DEAD && !closeToPlayer);
 
-            if (closeToPlayer) {
+            if (closeToPlayer && Character.getInstance().getStatus() != Character.Status.DEAD) {
                 float damage = 0.02f * timeElapsed;
+                String text = String.valueOf((int) (damage * 100));
+                double[] entityCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
+                int x = (int) entityCameraCoordinates[0];
+                int y = (int) entityCameraCoordinates[1];
+//                    TextRendering.renderText(x, y, text, scale);
+                FloatingTextEntity textEntity = new FloatingTextEntity(x, y, text, true, false, true);
                 Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
             }
 

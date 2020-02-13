@@ -1,7 +1,6 @@
 package main;
 
 import entities.Camera;
-import entities.Scene;
 import entities.TileMap;
 
 public class Coordinates {

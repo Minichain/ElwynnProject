@@ -85,7 +85,7 @@ public class UserInterface {
     private void renderCursorUI(long timeElapsed) {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
-        if (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
+        if (GameMode.getGameMode() == GameMode.Mode.NORMAL && Character.getInstance().getStatus() != Character.Status.DEAD && MyInputListener.leftMouseButtonPressed) {
             int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
             int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
             int cameraZoomUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraZoom");
@@ -130,9 +130,16 @@ public class UserInterface {
                 entity = Scene.getInstance().getListOfEntities().get(i);
                 double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
                 if (entity instanceof Enemy
+                        && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
                     float damage = 0.02f * timeElapsed;
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
+                    String text = String.valueOf((int) (damage * 100));
+                    double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
+                    int x = (int) entityCameraCoordinates[0];
+                    int y = (int) entityCameraCoordinates[1];
+//                    TextRendering.renderText(x, y, text, scale);
+                    new FloatingTextEntity(x, y, text, true, false, false);
                 }
             }
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
@@ -143,5 +150,7 @@ public class UserInterface {
             TileMap.drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
             glEnd();
         }
+
+        FloatingText.renderAndUpdate();
     }
 }
