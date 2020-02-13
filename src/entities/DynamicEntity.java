@@ -10,9 +10,9 @@ public abstract class DynamicEntity extends Entity {
     private Coordinates previousCoordinates;
 
     /** Variables **/
-    public float HEALTH;
-    public double SPEED;
-    public double[] DISPLACEMENT_VECTOR;
+    public float health;
+    public double speed;
+    public double[] displacementVector;
 
     /** Sprite Attributes **/
     private double spriteCoordinateFromSpriteSheetX;
@@ -27,7 +27,7 @@ public abstract class DynamicEntity extends Entity {
     public DynamicEntity(int x, int y, int prevX, int prevY) {
         super(x, y);
         previousCoordinates = new Coordinates(prevX, prevY);
-        DISPLACEMENT_VECTOR = new double[2];
+        displacementVector = new double[2];
     }
 
     public void drawSprite(int x, int y, Texture spriteSheet) {
@@ -71,5 +71,13 @@ public abstract class DynamicEntity extends Entity {
 
     public void setSpriteCoordinateFromSpriteSheetY(double spriteCoordinateFromSpriteSheetY) {
         this.spriteCoordinateFromSpriteSheetY = spriteCoordinateFromSpriteSheetY;
+    }
+
+    public float getHealth() {
+        return health;
+    }
+
+    public void setHealth(float health) {
+        this.health = health;
     }
 }

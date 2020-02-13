@@ -29,8 +29,8 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
         getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
-        HEALTH = 100f;
-        SPEED = 0.125;
+        health = 100f;
+        speed = 0.125;
         characterStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
     }
@@ -64,24 +64,27 @@ public class Character extends DynamicEntity {
     public void update(long timeElapsed) {
         getPreviousCoordinates().x = getCurrentCoordinates().x;
         getPreviousCoordinates().y = getCurrentCoordinates().y;
-        characterStatus = Status.IDLE;
+        if (health > 0)  {
+            characterStatus = Status.IDLE;
+            double[] movement = new double[]{0, 0};
+            if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                movement = MyInputListener.computeMovementVector(timeElapsed, speed);
+            }
 
-        double[] movement = new double[]{0, 0};
-        if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            movement = MyInputListener.computeMovementVector(timeElapsed, SPEED);
-        }
+            int distanceFactor = 4;
+            if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
+                getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+                getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
+            }
 
-        int distanceFactor = 4;
-        if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
-            getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
-            getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
-        }
+            displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
 
-        DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
-
-        if (DISPLACEMENT_VECTOR[0] != 0 || DISPLACEMENT_VECTOR[1] != 0) { //If character is moving
-            directionFacing = Utils.checkDirectionFacing(DISPLACEMENT_VECTOR);
-            characterStatus = Status.RUNNING;
+            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
+                directionFacing = Utils.checkDirectionFacing(displacementVector);
+                characterStatus = Status.RUNNING;
+            }
+        } else if (characterStatus != Status.DEAD) {
+            characterStatus = Status.DYING;
         }
 
         switch (characterStatus) {
@@ -92,6 +95,17 @@ public class Character extends DynamicEntity {
                 setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
                 break;
             case JUMPING:
+                break;
+            case DYING:
+                double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
+                if (frame > 1) {
+                    characterStatus = Status.DEAD;
+                } else {
+                    setSpriteCoordinateFromSpriteSheetX(frame % DYING_FRAMES);
+                }
+                break;
+            case DEAD:
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % DEAD_FRAMES);
                 break;
         }
 

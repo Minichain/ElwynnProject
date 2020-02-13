@@ -21,8 +21,8 @@ public class Enemy extends DynamicEntity {
     private void initEnemy(int x, int y) {
         getCurrentCoordinates().x = x;
         getCurrentCoordinates().y = y;
-        HEALTH = 100f;
-        SPEED = 0.075;
+        health = 100f;
+        speed = 0.075;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         Scene.getInstance().getListOfEntities().add(this);
@@ -53,19 +53,23 @@ public class Enemy extends DynamicEntity {
             status = Status.IDLE;
         }
 
-        if (HEALTH <= 0 && status != Status.DEAD) {
+        if (health <= 0 && status != Status.DEAD) {
             status = Status.DYING;
         }
 
         double[] movement = new double[2];
         movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
         movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
+        boolean closeToPlayer = !(MathUtils.module(movement) > 50 && MathUtils.module(movement) < 2000);
+        boolean chasing = (status != Status.DYING && status != Status.DEAD && !closeToPlayer);
 
-        boolean chasing = (status != Status.DYING && status != Status.DEAD && MathUtils.module(movement) > 50 && MathUtils.module(movement) < 2000);
+        if (closeToPlayer) {
+            Character.getInstance().setHealth(Character.getInstance().getHealth() - 1f);
+        }
 
         movement = MathUtils.normalizeVector(movement);
-        movement[0] *= timeElapsed * SPEED;
-        movement[1] *= timeElapsed * SPEED;
+        movement[0] *= timeElapsed * speed;
+        movement[1] *= timeElapsed * speed;
 
         int distanceFactor = 2;
         if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
@@ -74,10 +78,10 @@ public class Enemy extends DynamicEntity {
             getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
         }
 
-        DISPLACEMENT_VECTOR = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
+        displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
 
-        if (DISPLACEMENT_VECTOR[0] != 0 || DISPLACEMENT_VECTOR[1] != 0) { //If character is moving
-            directionFacing = Utils.checkDirectionFacing(DISPLACEMENT_VECTOR);
+        if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
+            directionFacing = Utils.checkDirectionFacing(displacementVector);
             status = Status.RUNNING;
         }
 

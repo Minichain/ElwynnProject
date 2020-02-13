@@ -143,6 +143,8 @@ public class MyInputListener {
             GameMode.setGameMode(GameMode.Mode.NORMAL);
         } else if (key == GLFW_KEY_F3 && pressed) {
             GameMode.setGameMode(GameMode.Mode.CREATIVE);
+        } else if (key == GLFW_KEY_F4 && pressed) {
+            Scene.getInstance().initEntities();
         } else if (key == GLFW_KEY_F5 && pressed) {
             WorldLoader.saveWorld();
         } else if (key == GLFW_KEY_1 && pressed) {

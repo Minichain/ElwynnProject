@@ -50,6 +50,7 @@ public class UserInterface {
             textList.add("Camera Zoom: " + (float) Camera.getZoom());
             textList.add("Character World Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
             textList.add("Character Camera Coordinates: (" + (float) characterCameraCoordinates[0] + ", " + (float) characterCameraCoordinates[1] + ")");
+            textList.add("Character Health: " + Character.getInstance().getHealth());
             textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
             double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMousePositionX(), MyInputListener.getMousePositionY()).toWorldCoordinates();
             textList.add("Mouse World Coordinates: (" + (float) mouseWorldCoordinates[0] + ", " + (float) mouseWorldCoordinates[1] + ")");
@@ -72,6 +73,10 @@ public class UserInterface {
             glVertex2i(Parameters.getWindowWidth(), Parameters.getWindowHeight() / 2);
             glEnd();
             glEnable(GL_BLEND);
+        }
+
+        if (Character.getInstance().getStatus() == Character.Status.DEAD) {
+            TextRendering.renderText(450, 450, "U dead u piece of shit", 2);
         }
     }
 
@@ -124,8 +129,7 @@ public class UserInterface {
                 double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
                 if (entity instanceof Enemy
                         && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
-//                    System.out.println("Damage dealt to enemy " + i + ", Health: " + ((Enemy) entity).HEALTH);
-                    ((Enemy) entity).HEALTH -= 1f;
+                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - 1f);
                 }
             }
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
