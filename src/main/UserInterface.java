@@ -25,7 +25,7 @@ public class UserInterface {
     }
 
     public void render(long timeElapsed) {
-        renderCursorUI();
+        renderCursorUI(timeElapsed);
         renderDebugUI(timeElapsed);
     }
 
@@ -76,11 +76,13 @@ public class UserInterface {
         }
 
         if (Character.getInstance().getStatus() == Character.Status.DEAD) {
-            TextRendering.renderText(450, 450, "U dead u piece of shit", 2);
+            String text = "YOU DIED";
+            int scale = 4;
+            TextRendering.renderText((Parameters.getWindowWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
         }
     }
 
-    private void renderCursorUI() {
+    private void renderCursorUI(long timeElapsed) {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed) {
@@ -129,7 +131,8 @@ public class UserInterface {
                 double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
                 if (entity instanceof Enemy
                         && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
-                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - 1f);
+                    float damage = 0.02f * timeElapsed;
+                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 }
             }
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE

@@ -7,6 +7,8 @@ import static org.lwjgl.opengl.GL11.*;
 public class TextRendering {
     public static TextRendering instance = null;
     public static Texture fontSpriteWhite;
+    public static int CHARACTER_WIDTH = 7;
+    public static int CHARACTER_HEIGHT = 9;
 
     public static void init() {
         loadFontSprite();
@@ -45,9 +47,6 @@ public class TextRendering {
 
         int numOfTilesInTileSetX = 18;
         int numOfTilesInTileSetY = 6;
-        int characterWidth = fontSpriteWhite.getWidth() / numOfTilesInTileSetX;
-        int characterHeight = fontSpriteWhite.getHeight() / numOfTilesInTileSetY;
-        int gapBetweenCharacters = 2 * scale;
         String[] characters = textToRender.split("(?!^)");
         for (int i = 0; i < characters.length; i++) {
             int[] characterPosition = getCharacterPosition(characters[i]);
@@ -57,7 +56,7 @@ public class TextRendering {
             double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
             double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
             double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-            MyOpenGL.drawTexture(x + (i * (characterWidth + gapBetweenCharacters)), y, u, v2, u2, v, characterWidth * scale, characterHeight * scale);
+            MyOpenGL.drawTexture(x + (i * CHARACTER_WIDTH * scale), y, u, v2, u2, v, CHARACTER_WIDTH * scale, CHARACTER_HEIGHT * scale);
         }
 
         if (!isTextureBoundAndOpenGlBegun) {
