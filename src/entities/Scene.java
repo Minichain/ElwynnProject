@@ -12,18 +12,10 @@ public class Scene {
     private static Scene instance = null;
 
     /** ENTITIES **/
+    private static List<Entity> listOfEntities;
     private static List<Entity> listOfEntitiesToUpdate;
     private static int enemySpawnPeriod = 1000; // In Milliseconds
     private static long lastEnemySpawnTime;
-
-    /** TILES **/
-    private static List<Entity> listOfEntities;
-    private static Tile[][] arrayOfTiles;
-    private static int numOfHorizontalTiles = 1000;
-    private static int numOfVerticalTiles = 1000;
-    private static Texture tileSet;
-    private static int tileWidth = 16;
-    private static int tileHeight = 16;
 
     private static int renderDistance = 1000; //TODO This should depend on the Window and Camera parameters
     private static int updateDistance = 1250; //TODO This should depend on... what?
@@ -46,87 +38,11 @@ public class Scene {
     }
 
     private void loadWorld() {
-        arrayOfTiles = WorldLoader.loadWorld();
-
-        if (arrayOfTiles == null || arrayOfTiles.length == 0) {
-            arrayOfTiles = new Tile[numOfHorizontalTiles][numOfVerticalTiles];
-            for (int i = 0; i < numOfHorizontalTiles; i++) {
-                for (int j = 0; j < numOfVerticalTiles; j++) {
-                    arrayOfTiles[i][j] = new Tile();
-                    arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 4) + 1));
-                }
-            }
-        }
+        TileMap.loadMap();
     }
 
     private void loadSprites() {
-        String path;
-        path = "res/sprites/tiles/tileset.png";
-        tileSet = Texture.loadTexture(path);
-    }
-
-    public void bindTileSetTexture() {
-        tileSet.bind();
-    }
-
-    public void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE && arrayOfTiles[i][j].isCollidable()) { // COLLISION Tile
-                drawTile(arrayOfTiles[i][j].getLayerValue(k), x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
-            } else {
-                drawTile(arrayOfTiles[i][j].getLayerValue(k), x, y, scale, distanceFactor, distanceFactor, distanceFactor, false);
-            }
-        }
-    }
-
-    public void drawTile(int tileType, int x, int y, double scale, float r, float g, float b, boolean isCameraCoordinates) {
-        double[] cameraCoordinates = new double[]{x, y};
-        if (!isCameraCoordinates) cameraCoordinates = (new Coordinates(x, y)).toCameraCoordinates();
-
-        int numOfTilesInTileSetX = tileSet.getWidth() / tileWidth;
-        int numOfTilesInTileSetY = tileSet.getHeight() / tileHeight;
-        int[] tileFromTileSet = getTile(tileType);
-        int tileFromTileSetX = tileFromTileSet[0];
-        int tileFromTileSetY = tileFromTileSet[1];
-
-        double u = ((1.0 / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
-        double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
-        double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
-        double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-
-        MyOpenGL.drawTexture((int) cameraCoordinates[0], (int) cameraCoordinates[1], u, v2, u2, v, (int) (tileWidth * scale), (int) (tileHeight * scale), r, g, b);
-    }
-
-    public int[] getTile(int tile) {
-        int x = tileSet.getWidth() / tileWidth;
-        int y = tileSet.getHeight() / tileHeight;
-        tile %= (x * y);
-        return new int[]{tile % x, y - 1 - (tile / x)};
-    }
-
-    public void setTile(int i, int j, int k, byte value) {
-        int x = tileSet.getWidth() / tileWidth;
-        int y = tileSet.getHeight() / tileHeight;
-        value %= (x * y);
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
-            arrayOfTiles[i][j].setLayerValue(k, value);
-        }
-    }
-
-    public static int getTileWidth() {
-        return tileWidth;
-    }
-
-    public static int getTileHeight() {
-        return tileHeight;
-    }
-
-    public static int getNumOfHorizontalTiles() {
-        return numOfHorizontalTiles;
-    }
-
-    public static int getNumOfVerticalTiles() {
-        return numOfVerticalTiles;
+        TileMap.loadSprites();
     }
 
     public void update(long timeElapsed) {
@@ -144,9 +60,9 @@ public class Scene {
             int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
             int i = tileCoordinates[0];
             int j = tileCoordinates[1];
-            if (0 < i && i < arrayOfTiles.length
-                    && 0 < j && j < arrayOfTiles[0].length
-                    && !arrayOfTiles[i][j].isCollidable()) {
+            if (0 < i && i < TileMap.getArrayOfTiles().length
+                    && 0 < j && j < TileMap.getArrayOfTiles()[0].length
+                    && !TileMap.getArrayOfTiles()[i][j].isCollidable()) {
                 new Enemy(x, y);
                 lastEnemySpawnTime = currentTime;
             }
@@ -248,18 +164,18 @@ public class Scene {
                 entity = null;
                 entityIterator++;
             } else {
-                Scene.getInstance().bindTileSetTexture();
+                TileMap.bindTileSetTexture();
                 glBegin(GL_QUADS);
                 for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
                     int k = 1;
-                    if (0 < i && i < arrayOfTiles.length
-                            && 0 < tileRowIterator && tileRowIterator < arrayOfTiles[0].length
-                            && arrayOfTiles[i][tileRowIterator].getLayerValue(k) != 0) {
+                    if (0 < i && i < TileMap.getArrayOfTiles().length
+                            && 0 < tileRowIterator && tileRowIterator < TileMap.getArrayOfTiles()[0].length
+                            && TileMap.getArrayOfTiles()[i][tileRowIterator].getLayerValue(k) != 0) {
                         double scale = Camera.getZoom();
-                        int x = i * tileWidth;
-                        int y = tileRowIterator * tileHeight;
+                        int x = i * TileMap.TILE_WIDTH;
+                        int y = tileRowIterator * TileMap.TILE_HEIGHT;
                         double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                        drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
                     }
                 }
                 glEnd();
@@ -269,33 +185,17 @@ public class Scene {
     }
 
     private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int layerToRender) {
-        Scene.getInstance().bindTileSetTexture();
+        TileMap.bindTileSetTexture();
         glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
                 double scale = Camera.getZoom();
-                int x = i * tileWidth;
-                int y = j * tileHeight;
+                int x = i * TileMap.TILE_WIDTH;
+                int y = j * TileMap.TILE_HEIGHT;
                 double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
             }
         }
         glEnd();
-    }
-
-    public static Tile[][] getArrayOfTiles() {
-        return arrayOfTiles;
-    }
-
-    public static boolean checkCollisionWithTile(int x, int y) {
-        int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
-        int i = tileCoordinates[0];
-        int j = tileCoordinates[1];
-        Tile[][] arrayOfTiles = getArrayOfTiles();
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length && arrayOfTiles[i][j] != null) {
-            return arrayOfTiles[i][j].isCollidable();
-        } else {
-            return false;
-        }
     }
 }

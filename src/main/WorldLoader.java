@@ -1,7 +1,7 @@
 package main;
 
-import entities.Scene;
 import entities.Tile;
+import entities.TileMap;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -11,7 +11,7 @@ import java.io.IOException;
 public class WorldLoader {
 
     public static void saveWorld() {
-        if (saveWorld(Scene.getArrayOfTiles())) {
+        if (saveWorld(TileMap.getArrayOfTiles())) {
             System.out.println("World saved successfully");
         } else {
             System.err.println("World could not be saved");
@@ -20,10 +20,10 @@ public class WorldLoader {
 
     public static boolean saveWorld(Tile[][] arrayOfTiles) {
         // The array of Tiles is stored into a 1-Dimensional byte array
-        byte[] data = new byte[Scene.getNumOfHorizontalTiles() * Scene.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1)];
+        byte[] data = new byte[TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1)];
         int dataIterator = 0;
-        for (int i = 0; i < Scene.getNumOfHorizontalTiles(); i++) {
-            for (int j = 0; j < Scene.getNumOfVerticalTiles(); j++) {
+        for (int i = 0; i < TileMap.getNumOfHorizontalTiles(); i++) {
+            for (int j = 0; j < TileMap.getNumOfVerticalTiles(); j++) {
                 for (int k = 0; k < Tile.getNumOfLayers(); k++) {
                     data[dataIterator] = arrayOfTiles[i][j].getLayerValue(k);
                     dataIterator++;
@@ -71,10 +71,10 @@ public class WorldLoader {
         }
 
         // The 1-Dimensional byte array is loaded into a 3-Dimensional array of Tiles
-        Tile[][] arrayOfTiles = new Tile[Scene.getNumOfHorizontalTiles()][Scene.getNumOfVerticalTiles()];
+        Tile[][] arrayOfTiles = new Tile[TileMap.getNumOfHorizontalTiles()][TileMap.getNumOfVerticalTiles()];
         for (int i = 0; i < fileData.length; i += 4) {
-            int x = (i / (Tile.getNumOfLayers() + 1)) / Scene.getNumOfVerticalTiles();
-            int y = (i / (Tile.getNumOfLayers() + 1)) % Scene.getNumOfVerticalTiles();
+            int x = (i / (Tile.getNumOfLayers() + 1)) / TileMap.getNumOfVerticalTiles();
+            int y = (i / (Tile.getNumOfLayers() + 1)) % TileMap.getNumOfVerticalTiles();
             arrayOfTiles[x][y] = new Tile();
             for (int j = 0; j < Tile.getNumOfLayers(); j++) {
                 arrayOfTiles[x][y].setLayerValue(j, fileData[i + j]);

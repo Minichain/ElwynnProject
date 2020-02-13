@@ -2,6 +2,7 @@ package main;
 
 import entities.Camera;
 import entities.Scene;
+import entities.TileMap;
 
 public class Coordinates {
     public double x;
@@ -32,14 +33,14 @@ public class Coordinates {
     }
 
     public static int[] worldCoordinatesToTileCoordinates(int x, int y) {
-        int i = x / (Scene.getTileWidth());
-        int j = y / (Scene.getTileHeight());
+        int i = x / TileMap.TILE_WIDTH;
+        int j = y / TileMap.TILE_HEIGHT;
         return new int[]{i, j};
     }
 
     public static int[] tileCoordinatesToWorldCoordinates(int i, int j) {
-        int x = i * Scene.getTileWidth();
-        int y = j * Scene.getTileHeight();
+        int x = i * TileMap.TILE_WIDTH;
+        int y = j * TileMap.TILE_HEIGHT;
         return new int[]{x, y};
     }
 }

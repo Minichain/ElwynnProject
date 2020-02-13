@@ -54,7 +54,7 @@ public class Enemy extends DynamicEntity {
             double[] movement = new double[2];
             movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
             movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
-            boolean closeToPlayer = !(MathUtils.module(movement) > 50 && MathUtils.module(movement) < 2000);
+            boolean closeToPlayer = !(MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000);
             boolean chasing = (status != Status.DYING && status != Status.DEAD && !closeToPlayer);
 
             if (closeToPlayer) {
@@ -67,7 +67,7 @@ public class Enemy extends DynamicEntity {
             movement[1] *= timeElapsed * speed;
 
             int distanceFactor = 2;
-            if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
+            if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
                     && chasing) {
                 getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
                 getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];

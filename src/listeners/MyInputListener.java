@@ -2,6 +2,7 @@ package listeners;
 
 import entities.Camera;
 import entities.Scene;
+import entities.TileMap;
 import main.*;
 import org.lwjgl.glfw.*;
 import utils.MathUtils;
@@ -105,7 +106,7 @@ public class MyInputListener {
                     layer = 2;
                     break;
             }
-            Scene.getInstance().setTile(tileCoordinates[0], tileCoordinates[1], layer, (byte) (MyInputListener.getMouseWheelPosition()));
+            TileMap.setTile(tileCoordinates[0], tileCoordinates[1], layer, (byte) (MyInputListener.getMouseWheelPosition()));
         }
     }
 
@@ -118,7 +119,7 @@ public class MyInputListener {
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
-            Scene.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
+            TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
         }
     }
 

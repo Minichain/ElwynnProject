@@ -72,7 +72,7 @@ public class Character extends DynamicEntity {
             }
 
             int distanceFactor = 4;
-            if (!Scene.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
+            if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
                 getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
                 getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
             }
