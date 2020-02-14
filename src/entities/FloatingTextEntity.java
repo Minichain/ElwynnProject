@@ -1,4 +1,6 @@
-package main;
+package entities;
+
+import main.Coordinates;
 
 public class FloatingTextEntity {
     public String text;

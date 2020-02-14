@@ -78,11 +78,7 @@ public class Scene {
         listOfEntitiesToUpdate.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
-            if (currentEntity instanceof Character) {
-                ((Character) currentEntity).update(timeElapsed);
-            } else if (currentEntity instanceof Enemy) {
-                ((Enemy) currentEntity).update(timeElapsed);
-            }
+            currentEntity.update(timeElapsed);
 
             if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCoordinates()) < updateDistance) {
                 listOfEntitiesToUpdate.add(currentEntity);

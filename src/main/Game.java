@@ -45,6 +45,7 @@ public class Game {
     public static void render(long timeElapsed) {
         MyOpenGL.prepareFrame();
         Scene.getInstance().render();
+        SpecialEffects.render();
         UserInterface.getInstance().render(timeElapsed);
     }
 }

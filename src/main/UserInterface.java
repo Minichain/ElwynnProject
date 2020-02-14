@@ -1,10 +1,8 @@
 package main;
 
-import utils.MathUtils;
 import entities.*;
 import entities.Character;
 import listeners.MyInputListener;
-import org.lwjgl.opengl.ARBShaderObjects;
 
 import java.util.ArrayList;
 
@@ -85,64 +83,7 @@ public class UserInterface {
     private void renderCursorUI(long timeElapsed) {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
-        if (GameMode.getGameMode() == GameMode.Mode.NORMAL && Character.getInstance().getStatus() != Character.Status.DEAD && MyInputListener.leftMouseButtonPressed) {
-            int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
-            int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
-            int cameraZoomUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraZoom");
-            ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
-            ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.RUNTIME);
-
-            double[] characterCameraCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
-            float[] characterCoordinatesUniform = new float[]{(float) characterCameraCoordinates[0], Parameters.getWindowHeight() - (float) characterCameraCoordinates[1]};
-
-            ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, characterCoordinatesUniform);
-            ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());
-
-            double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMousePositionX(), MyInputListener.getMousePositionY()).toWorldCoordinates();
-            double[] v1 = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
-                    mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
-            v1 = MathUtils.normalizeVector(v1);
-            double[] v2 = MathUtils.generateOrthonormalVector(v1);
-            v2 = MathUtils.normalizeVector(v2);
-
-            float coneWidth = 50;
-            float coneLength = 200;
-
-            double[] vertex1 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + (v1[0] * coneLength) + (v2[0] * coneWidth),
-                    Character.getInstance().getCurrentCoordinates().y + (v1[1] * coneLength) + (v2[1] * coneWidth)).toCameraCoordinates();
-            double[] vertex2 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + (v1[0] * coneLength) - (v2[0] * coneWidth),
-                    Character.getInstance().getCurrentCoordinates().y + (v1[1] * coneLength) - (v2[1] * coneWidth)).toCameraCoordinates();
-            double[] vertex3 = new Coordinates(Character.getInstance().getCurrentCoordinates().x, Character.getInstance().getCurrentCoordinates().y).toCameraCoordinates();
-
-            glBegin(GL_TRIANGLES);
-
-            glVertex2d(vertex1[0], vertex1[1]);
-            glVertex2d(vertex2[0], vertex2[1]);
-            glVertex2d(vertex3[0], vertex3[1]);
-
-            glEnd();
-
-            //release the shader
-            ARBShaderObjects.glUseProgramObjectARB(0);
-
-            Entity entity;
-            for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
-                entity = Scene.getInstance().getListOfEntities().get(i);
-                double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
-                if (entity instanceof Enemy
-                        && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
-                    float damage = 0.02f * timeElapsed;
-                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
-                    String text = String.valueOf((int) (damage * 100));
-                    double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
-                    int x = (int) entityCameraCoordinates[0];
-                    int y = (int) entityCameraCoordinates[1];
-//                    TextRendering.renderText(x, y, text, scale);
-                    new FloatingTextEntity(x, y, text, true, false, false);
-                }
-            }
-        } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
+        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getWindowWidth()
                 && 0 < mouseY && mouseY < Parameters.getWindowHeight()) {
             TileMap.bindTileSetTexture();

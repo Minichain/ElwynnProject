@@ -1,6 +1,5 @@
 package entities;
 
-import main.FloatingTextEntity;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -9,6 +8,9 @@ public class Enemy extends DynamicEntity {
     private static Texture spriteSheet;
     private Utils.DirectionFacing directionFacing;
     private Status status;
+    private static int attackPeriod = 500;
+    private int attackCoolDown = 0;
+    private float attackPower = 0.2f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -59,14 +61,7 @@ public class Enemy extends DynamicEntity {
             boolean chasing = (status != Status.DYING && status != Status.DEAD && !closeToPlayer);
 
             if (closeToPlayer && Character.getInstance().getStatus() != Character.Status.DEAD) {
-                float damage = 0.02f * timeElapsed;
-                String text = String.valueOf((int) (damage * 100));
-                double[] entityCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
-                int x = (int) entityCameraCoordinates[0];
-                int y = (int) entityCameraCoordinates[1];
-//                    TextRendering.renderText(x, y, text, scale);
-                FloatingTextEntity textEntity = new FloatingTextEntity(x, y, text, true, false, true);
-                Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
+                attack(timeElapsed);
             }
 
             movement = MathUtils.normalizeVector(movement);
@@ -151,5 +146,20 @@ public class Enemy extends DynamicEntity {
 
     public Status getStatus() {
         return status;
+    }
+
+    private void attack(long timeElapsed) {
+        if (attackCoolDown > 0) {
+            attackCoolDown -= timeElapsed;
+            return;
+        }
+        float damage = attackPower * timeElapsed;
+        String text = String.valueOf((int) damage);
+        double[] entityCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
+        int x = (int) entityCameraCoordinates[0];
+        int y = (int) entityCameraCoordinates[1];
+        FloatingTextEntity textEntity = new FloatingTextEntity(x, y, text, true, false, true);
+        Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
+        attackCoolDown = attackPeriod;
     }
 }

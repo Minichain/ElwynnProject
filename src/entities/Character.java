@@ -1,5 +1,6 @@
 package entities;
 
+import utils.MathUtils;
 import utils.Utils;
 import listeners.MyInputListener;
 import main.*;
@@ -9,6 +10,13 @@ public class Character extends DynamicEntity {
     private static Character instance = null;
     private static Status characterStatus;
     private static Utils.DirectionFacing directionFacing;
+
+    /** ATTACK **/
+    private boolean attacking = false;
+    private static int attackPeriod = 100;
+    private int attackCoolDown = 0;
+    private float attackPower = 0.2f;
+    private ConeAttack coneAttack;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -29,7 +37,7 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
         getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
-        health = 100f;
+        health = 1000f;
         speed = 0.125;
         characterStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
@@ -66,6 +74,10 @@ public class Character extends DynamicEntity {
         getPreviousCoordinates().y = getCurrentCoordinates().y;
         if (health > 0)  {
             characterStatus = Status.IDLE;
+
+            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
+            attack(timeElapsed);
+
             double[] movement = new double[]{0, 0};
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 movement = MyInputListener.computeMovementVector(timeElapsed, speed);
@@ -150,5 +162,42 @@ public class Character extends DynamicEntity {
 
     public Status getStatus() {
         return characterStatus;
+    }
+
+    private void attack(long timeElapsed) {
+        double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMousePositionX(), MyInputListener.getMousePositionY()).toWorldCoordinates();
+        double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
+                mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
+        coneAttack = new ConeAttack(pointingVector, 50, 200);
+
+        if (!attacking || attackCoolDown > 0) {
+            attackCoolDown -= timeElapsed;
+            return;
+        }
+
+        Entity entity;
+        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
+            entity = Scene.getInstance().getListOfEntities().get(i);
+            double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
+            if (entity instanceof Enemy
+                    && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
+                    && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, coneAttack.getVertex1(), coneAttack.getVertex2(), coneAttack.getVertex3())) {
+                float damage = attackPower * timeElapsed;
+                ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
+                String text = String.valueOf((int) damage);
+                double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
+                int x = (int) entityCameraCoordinates[0];
+                int y = (int) entityCameraCoordinates[1];
+                new FloatingTextEntity(x, y, text, true, false, false);
+            }
+        }
+
+        attackCoolDown = attackPeriod;
+    }
+
+    public void drawAttackFX() {
+        if (attacking && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            if (coneAttack != null) coneAttack.render();
+        }
     }
 }

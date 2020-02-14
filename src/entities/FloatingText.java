@@ -1,4 +1,7 @@
-package main;
+package entities;
+
+import main.Coordinates;
+import main.TextRendering;
 
 import java.util.ArrayList;
 
