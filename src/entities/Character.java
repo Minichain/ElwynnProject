@@ -15,7 +15,7 @@ public class Character extends DynamicEntity {
     private boolean attacking = false;
     private static int attackPeriod = 100;
     private int attackCoolDown = 0;
-    private float attackPower = 0.2f;
+    private float attackPower = 2f;
     private ConeAttack coneAttack;
 
     public enum Status {
@@ -37,7 +37,7 @@ public class Character extends DynamicEntity {
     private void initCharacter() {
         getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
         getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
-        health = 1000f;
+        health = 5000f;
         speed = 0.125;
         characterStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
@@ -182,7 +182,7 @@ public class Character extends DynamicEntity {
             if (entity instanceof Enemy
                     && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
                     && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, coneAttack.getVertex1(), coneAttack.getVertex2(), coneAttack.getVertex3())) {
-                float damage = attackPower * timeElapsed;
+                float damage = (float) (attackPower * timeElapsed + Math.random() % 100);
                 ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 String text = String.valueOf((int) damage);
                 double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
