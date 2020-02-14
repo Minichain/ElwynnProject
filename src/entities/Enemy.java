@@ -1,5 +1,6 @@
 package entities;
 
+import main.MyOpenAL;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -160,6 +161,7 @@ public class Enemy extends DynamicEntity {
         int y = (int) entityCameraCoordinates[1];
         FloatingTextEntity textEntity = new FloatingTextEntity(x, y, text, true, false, true);
         Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
+        MyOpenAL.playSound(MyOpenAL.SOUND_LINK_HURT);
         attackCoolDown = attackPeriod;
     }
 }

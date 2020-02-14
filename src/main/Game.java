@@ -17,12 +17,14 @@ public class Game {
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
         MyOpenGL.prepareOpenGL();
+        MyOpenAL.prepareOpenAL();
         glfwPollEvents();
 
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
 
         GameStatus.getInstance().setGameRunning(true);
+        MyOpenAL.playSound(MyOpenAL.SOUND_OVERWORLD);
     }
 
     private static void initWindowSizeCallBack() {
@@ -47,6 +49,10 @@ public class Game {
         Scene.getInstance().render();
         SpecialEffects.render();
         UserInterface.getInstance().render(timeElapsed);
+    }
+
+    public static void stopGame() {
+        MyOpenAL.destroy();
     }
 }
 

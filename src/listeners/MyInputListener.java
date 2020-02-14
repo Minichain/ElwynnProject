@@ -148,6 +148,8 @@ public class MyInputListener {
             Scene.getInstance().initEntities();
         } else if (key == GLFW_KEY_F5 && pressed) {
             WorldLoader.saveWorld();
+        } else if (key == GLFW_KEY_F6 && pressed) {
+
         } else if (key == GLFW_KEY_1 && pressed) {
             GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
         } else if (key == GLFW_KEY_2 && pressed) {

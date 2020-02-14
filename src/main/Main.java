@@ -47,6 +47,7 @@ public class Main {
     }
 
     public static void exit(int status) {
+        Game.stopGame();
         MyInputListener.release();
         glfwTerminate();
         System.exit(status);
