@@ -13,9 +13,9 @@ public class Character extends DynamicEntity {
 
     /** ATTACK **/
     private boolean attacking = false;
-    private static int attackPeriod = 100;
+    private static int attackPeriod = 250;
     private int attackCoolDown = 0;
-    private float attackPower = 2f;
+    private float attackPower = 4.5f;
     private ConeAttack coneAttack;
 
     public enum Status {
@@ -95,7 +95,8 @@ public class Character extends DynamicEntity {
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
                 characterStatus = Status.RUNNING;
             }
-        } else if (characterStatus != Status.DEAD) {
+        } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
+            MyOpenAL.playSound(MyOpenAL.SOUND_LINK_DYING);
             characterStatus = Status.DYING;
         }
 
@@ -192,6 +193,7 @@ public class Character extends DynamicEntity {
             }
         }
 
+        MyOpenAL.playSound(MyOpenAL.SOUND_LINK_DASH);
         attackCoolDown = attackPeriod;
     }
 

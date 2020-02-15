@@ -18,6 +18,8 @@ public class MyOpenAL {
     /** SOUNDS **/
     public static int SOUND_SECRET;
     public static int SOUND_LINK_HURT;
+    public static int SOUND_LINK_DASH;
+    public static int SOUND_LINK_DYING;
     public static int SOUND_OVERWORLD;
 
     public static void prepareOpenAL() {
@@ -41,6 +43,8 @@ public class MyOpenAL {
     private static void loadSounds() {
         SOUND_SECRET = loadSound("secret");
         SOUND_LINK_HURT = loadSound("link_hurt");
+        SOUND_LINK_DASH = loadSound("link_dash");
+        SOUND_LINK_DYING = loadSound("link_dying");
         SOUND_OVERWORLD = loadSound("overworld");
     }
 
