@@ -98,7 +98,7 @@ public class UserInterface {
                     TileMap.drawTile(currentTile, x, y, 2.5, 1f, 1f, 1f, true);
                 } else {
                     TileMap.drawTile(currentTile, x + 5, y + 5, 2, 0f, 0f, 0f, true);
-                    TileMap.drawTile(currentTile, x, y, 2, 1f, 0.5f, 0.5f, true);
+                    TileMap.drawTile(currentTile, x, y, 2, 0.5f, 0.5f, 0.5f, true);
                 }
             }
             glEnd();
