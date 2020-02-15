@@ -73,10 +73,35 @@ public class UserInterface {
             glEnable(GL_BLEND);
         }
 
+        /** YOU DIED **/
         if (Character.getInstance().getStatus() == Character.Status.DEAD) {
             String text = "YOU DIED";
             int scale = 4;
             TextRendering.renderText((Parameters.getWindowWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
+        }
+
+        /** CREATIVE MODE UI **/
+        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+            int previousTilesToShow = 5;
+            int currentTile;
+            int x;
+            int y;
+
+            TileMap.bindTileSetTexture();
+            glBegin(GL_QUADS);
+            for (int i = 0; i < 25; i++) {
+                currentTile = MyInputListener.getMouseWheelPosition() + i - previousTilesToShow;
+                x = 20 + i * 64;
+                y = Parameters.getWindowHeight() - 100;
+                if (currentTile == MyInputListener.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                    TileMap.drawTile(currentTile, x + 5, y + 5, 2.5, 0f, 0f, 0f, true);
+                    TileMap.drawTile(currentTile, x, y, 2.5, 1f, 1f, 1f, true);
+                } else {
+                    TileMap.drawTile(currentTile, x + 5, y + 5, 2, 0f, 0f, 0f, true);
+                    TileMap.drawTile(currentTile, x, y, 2, 1f, 0.5f, 0.5f, true);
+                }
+            }
+            glEnd();
         }
     }
 
