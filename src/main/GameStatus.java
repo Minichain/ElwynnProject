@@ -1,34 +1,26 @@
 package main;
 
 public class GameStatus {
-    private static GameStatus instance = null;
-    private boolean gameRunning;
-    private boolean gamePaused;
-    public static long RUNTIME = 0;
+    private static Status status;
+    private static long RUNTIME = 0;
 
-    private GameStatus() {
+    public enum Status {
+        RUNNING, PAUSED, STOPPED
     }
 
-    public static GameStatus getInstance() {
-        if (instance == null) {
-            instance = new GameStatus();
-        }
-        return instance;
+    public static Status getStatus() {
+        return status;
     }
 
-    public void setGameRunning(boolean running) {
-        gameRunning = running;
+    public static void setStatus(Status status) {
+        GameStatus.status = status;
     }
 
-    public boolean isGameRunning() {
-        return gameRunning;
+    public static long getRuntime() {
+        return RUNTIME;
     }
 
-    public void setGamePaused(boolean paused) {
-        gamePaused = paused;
-    }
-
-    public boolean isGamePaused() {
-        return gamePaused;
+    public static void setRuntime(long runtime) {
+        GameStatus.RUNTIME = runtime;
     }
 }

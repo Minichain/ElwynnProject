@@ -23,8 +23,7 @@ public class Game {
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
 
-        GameStatus.getInstance().setGameRunning(true);
-        MyOpenAL.playSound(MyOpenAL.SOUND_OVERWORLD);
+        GameStatus.setStatus(GameStatus.Status.RUNNING);
     }
 
     private static void initWindowSizeCallBack() {
@@ -40,7 +39,9 @@ public class Game {
     }
 
     public static void update(long timeElapsed) {
-        Scene.getInstance().update(timeElapsed);
+        if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
+            Scene.getInstance().update(timeElapsed);
+        }
         Camera.getInstance().update(timeElapsed);
     }
 

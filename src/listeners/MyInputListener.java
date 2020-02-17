@@ -26,10 +26,10 @@ public class MyInputListener {
     public static boolean rightMouseButtonPressed;
 
     /** KEYBOARD **/
-    public static boolean wKeyPressed;
-    public static boolean aKeyPressed;
-    public static boolean sKeyPressed;
-    public static boolean dKeyPressed;
+    private static boolean W_KEY_PRESSED;
+    private static boolean A_KEY_PRESSED;
+    private static boolean S_KEY_PRESSED;
+    private static boolean D_KEY_PRESSED;
 
     public static void initMyInputListener() {
         long window = Parameters.getWindow();
@@ -127,54 +127,110 @@ public class MyInputListener {
         rightMouseButtonPressed = false;
     }
 
-    private static void setKeyPressed(int key, boolean pressed) {
-        if (key == GLFW_KEY_W) {
-            wKeyPressed = pressed;
-        } else if (key == GLFW_KEY_A) {
-            aKeyPressed = pressed;
-        } else if (key == GLFW_KEY_S) {
-            sKeyPressed = pressed;
-        } else if (key == GLFW_KEY_D) {
-            dKeyPressed = pressed;
-        } else if (key == GLFW_KEY_ESCAPE && pressed) {
-            GameStatus.getInstance().setGameRunning(false);
-        } else if (key == GLFW_KEY_F1 && pressed) {
-            Parameters.setDebugMode(!Parameters.isDebugMode());
-        } else if (key == GLFW_KEY_F2 && pressed) {
-            GameMode.setGameMode(GameMode.Mode.NORMAL);
-        } else if (key == GLFW_KEY_F3 && pressed) {
-            GameMode.setGameMode(GameMode.Mode.CREATIVE);
-        } else if (key == GLFW_KEY_F4 && pressed) {
-            Scene.getInstance().initEntities();
-        } else if (key == GLFW_KEY_F5 && pressed) {
-            WorldLoader.saveWorld();
-        } else if (key == GLFW_KEY_F6 && pressed) {
+    public static boolean isKeyPressed(int key) {
+        switch (key) {
+            case GLFW_KEY_W:
+                return W_KEY_PRESSED;
+            case GLFW_KEY_A:
+                return A_KEY_PRESSED;
+            case GLFW_KEY_S:
+                return S_KEY_PRESSED;
+            case GLFW_KEY_D:
+                return D_KEY_PRESSED;
+        }
+        return false;
+    }
 
-        } else if (key == GLFW_KEY_1 && pressed) {
-            GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
-        } else if (key == GLFW_KEY_2 && pressed) {
-            GameMode.setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
-        } else if (key == GLFW_KEY_3 && pressed) {
-            GameMode.setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
-        } else if (key == GLFW_KEY_UP && pressed) {
-            Camera.setZoom(Camera.getZoom() + 0.1);
-        } else if (key == GLFW_KEY_DOWN && pressed) {
-            Camera.setZoom(Camera.getZoom() - 0.1);
+    private static void setKeyPressed(int key, boolean pressed) {
+        switch(key) {
+            case GLFW_KEY_W:
+                W_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_A:
+                A_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_S:
+                S_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_D:
+                D_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_ESCAPE:
+                if (pressed) GameStatus.setStatus(GameStatus.Status.STOPPED);
+                break;
+            case GLFW_KEY_F1:
+                if (pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
+                break;
+            case GLFW_KEY_F2:
+                if (pressed) {
+                    if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
+                        GameStatus.setStatus(GameStatus.Status.PAUSED);
+                    } else if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
+                        GameStatus.setStatus(GameStatus.Status.RUNNING);
+                    }
+                }
+                break;
+            case GLFW_KEY_F3:
+                if (pressed) {
+                    if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                        GameMode.setGameMode(GameMode.Mode.CREATIVE);
+                    } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                        GameMode.setGameMode(GameMode.Mode.NORMAL);
+                    }
+                }
+                break;
+            case GLFW_KEY_F4:
+                if (pressed) Scene.getInstance().initEntities();
+                break;
+            case GLFW_KEY_F5:
+                if (pressed) WorldLoader.saveWorld();
+                break;
+            case GLFW_KEY_F6:
+                break;
+            case GLFW_KEY_F7:
+                break;
+            case GLFW_KEY_F8:
+                break;
+            case GLFW_KEY_F9:
+                break;
+            case GLFW_KEY_F10:
+                break;
+            case GLFW_KEY_F11:
+                break;
+            case GLFW_KEY_F12:
+                break;
+            case GLFW_KEY_1:
+                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
+                break;
+            case GLFW_KEY_2:
+                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
+                break;
+            case GLFW_KEY_3:
+                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
+                break;
+            case GLFW_KEY_4:
+                break;
+            case GLFW_KEY_UP:
+                if (pressed) Camera.setZoom(Camera.getZoom() + 0.1);
+                break;
+            case GLFW_KEY_DOWN:
+                if (pressed) Camera.setZoom(Camera.getZoom() - 0.1);
+                break;
         }
     }
 
     public static double[] computeMovementVector(long timeElapsed, double speed) {
         double[] movement = new double[2];
-        if (MyInputListener.sKeyPressed) {
+        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
             movement[1] = 1;
         }
-        if (MyInputListener.aKeyPressed) {
+        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
             movement[0] = -1;
         }
-        if (MyInputListener.wKeyPressed) {
+        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
             movement[1] = -1;
         }
-        if (MyInputListener.dKeyPressed) {
+        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
             movement[0] = 1;
         }
 

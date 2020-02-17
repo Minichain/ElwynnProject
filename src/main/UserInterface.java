@@ -40,7 +40,11 @@ public class UserInterface {
             int leftMargin = 10;
             int gapBetweenTexts = 10 * textScale;
 
-            textList.add("Show/Hide Debug Info: F1, Normal Mode: F2, Creative Mode: F3, Save World: F5");
+            textList.add("Show/Hide Debug Info: F1");
+            textList.add("Pause/Resume Game: F2");
+            textList.add("Creative/Normal Mode: F3");
+            textList.add("Reset Game: F4");
+            textList.add("Save World: F5");
             textList.add("FPS: " + fps);
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
             textList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
@@ -56,6 +60,9 @@ public class UserInterface {
                 textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
             } else {
                 textList.add("Game Mode: " + " " + GameMode.getGameMode());
+            }
+            if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
+                textList.add("GAME PAUSED");
             }
 
             TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, textList, textScale);

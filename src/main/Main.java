@@ -18,10 +18,10 @@ public class Main {
 
         Game.startGame();
 
-        while(!glfwWindowShouldClose(Parameters.getWindow()) && GameStatus.getInstance().isGameRunning()) {
+        while(!glfwWindowShouldClose(Parameters.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
             try {
                 //Compute the time elapsed since the last frame
-                GameStatus.RUNTIME += timeElapsed;
+                GameStatus.setRuntime(GameStatus.getRuntime() + timeElapsed);
                 timeElapsed = System.currentTimeMillis() - lastUpdateTime;
                 lastUpdateTime = System.currentTimeMillis();
 

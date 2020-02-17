@@ -28,6 +28,7 @@ public class Scene {
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
         loadSprites();
+        MyOpenAL.playSound(MyOpenAL.SOUND_OVERWORLD);
     }
 
     public static Scene getInstance() {
