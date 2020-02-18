@@ -112,6 +112,18 @@ public class MyOpenGL {
         glVertex2d(x + spriteWidth, y);
     }
 
+    public static void drawRectangle(int x, int y, float width, float height) {
+        drawRectangle(x, y, width, height, 1.0, 1f, 1f, 1f);
+    }
+
+    public static void drawRectangle(int x, int y, float width, float height, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
+        glVertex2d(x, y);
+        glVertex2d(x, y + height);
+        glVertex2d(x + width, y + height);
+        glVertex2d(x + width, y);
+    }
+
     /*
      * With the exception of syntax, setting up vertex and fragment shaders
      * is the same.

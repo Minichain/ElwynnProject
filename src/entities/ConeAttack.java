@@ -1,9 +1,6 @@
 package entities;
 
-import main.Coordinates;
-import main.GameStatus;
-import main.MyOpenGL;
-import main.Parameters;
+import main.*;
 import org.lwjgl.opengl.ARBShaderObjects;
 import utils.MathUtils;
 
@@ -45,8 +42,12 @@ public class ConeAttack {
         ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
         ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
 
-        double[] characterCameraCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
-        float[] characterCoordinatesUniform = new float[]{(float) characterCameraCoordinates[0], Parameters.getResolutionHeight() - (float) characterCameraCoordinates[1]};
+        double[] cameraWindowScale = new double[]{((double) Window.getWidth() / (double) Parameters.getResolutionWidth()),
+                ((double) Window.getHeight() / (double) Parameters.getResolutionHeight())};
+        double[] characterWindowCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
+        characterWindowCoordinates[0] *= cameraWindowScale[0];
+        characterWindowCoordinates[1] *= cameraWindowScale[1];
+        float[] characterCoordinatesUniform = new float[]{(float) characterWindowCoordinates[0], Window.getHeight() - (float) characterWindowCoordinates[1]};
 
         ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, characterCoordinatesUniform);
         ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());

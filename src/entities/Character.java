@@ -187,6 +187,8 @@ public class Character extends DynamicEntity {
                 ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 String text = String.valueOf((int) damage);
                 double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
+                //entityCameraCoordinates[0] *= ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
+                //entityCameraCoordinates[1] *= ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
                 int x = (int) entityCameraCoordinates[0];
                 int y = (int) entityCameraCoordinates[1];
                 new FloatingTextEntity(x, y, text, true, false, false);

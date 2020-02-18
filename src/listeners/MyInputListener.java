@@ -63,8 +63,9 @@ public class MyInputListener {
         mousePosCallback = new GLFWCursorPosCallback() {
             @Override
             public void invoke(long window, double x, double y) {
-                mousePositionX = (int) x;
-                mousePositionY = (int) y;
+                // Transform from window coordinates to camera coordinates
+                mousePositionX = (int) (x / ((double) Window.getWidth() / (double) Parameters.getResolutionWidth()));
+                mousePositionY = (int) (y / ((double) Window.getHeight() / (double) Parameters.getResolutionHeight()));
             }
         };
 

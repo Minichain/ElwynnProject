@@ -86,7 +86,7 @@ public class UserInterface {
         if (Character.getInstance().getStatus() == Character.Status.DEAD) {
             String text = "YOU DIED";
             int scale = 4;
-            TextRendering.renderText((Window.getWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
+            TextRendering.renderText((Parameters.getResolutionWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
         }
 
         /** CREATIVE MODE UI **/
@@ -110,6 +110,13 @@ public class UserInterface {
                     TileMap.drawTile(currentTile, x, y, 2, 0.5f, 0.5f, 0.5f, true);
                 }
             }
+            glEnd();
+        }
+
+        /** MENU **/
+        if (true) {
+            glBegin(GL_QUADS);
+            MyOpenGL.drawRectangle(10, 10, 500, 300, 0.7, 0.5f, 0.5f, 0.5f);
             glEnd();
         }
     }
