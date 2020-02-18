@@ -32,7 +32,7 @@ public class MyInputListener {
     private static boolean D_KEY_PRESSED;
 
     public static void initMyInputListener() {
-        long window = Parameters.getWindow();
+        long window = Window.getWindow();
 
         keyCallback = new GLFWKeyCallback() {
             @Override
@@ -186,6 +186,7 @@ public class MyInputListener {
                 if (pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
+                if (pressed) Window.setFullScreen(!Parameters.isFullScreen());
                 break;
             case GLFW_KEY_F7:
                 break;

@@ -18,7 +18,7 @@ public class Main {
 
         Game.startGame();
 
-        while(!glfwWindowShouldClose(Parameters.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
+        while(!glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
             try {
                 //Compute the time elapsed since the last frame
                 GameStatus.setRuntime(GameStatus.getRuntime() + timeElapsed);
@@ -30,7 +30,7 @@ public class Main {
                 Game.update(timeElapsed);
                 Game.render(timeElapsed);
 
-                glfwSwapBuffers(Parameters.getWindow());
+                glfwSwapBuffers(Window.getWindow());
 
                 timeSpentRendering = System.currentTimeMillis() - lastUpdateTime;
                 //Wait time until processing next frame. FPS locked.

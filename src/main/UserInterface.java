@@ -47,7 +47,7 @@ public class UserInterface {
             textList.add("Save World: F5");
             textList.add("FPS: " + fps);
             textList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
-            textList.add("Window Size: " + Parameters.getWindowWidth() + " x " + Parameters.getWindowHeight());
+            textList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
             textList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
             textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
@@ -86,7 +86,7 @@ public class UserInterface {
         if (Character.getInstance().getStatus() == Character.Status.DEAD) {
             String text = "YOU DIED";
             int scale = 4;
-            TextRendering.renderText((Parameters.getWindowWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
+            TextRendering.renderText((Window.getWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
         }
 
         /** CREATIVE MODE UI **/
