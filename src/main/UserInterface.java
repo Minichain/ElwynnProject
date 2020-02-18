@@ -46,6 +46,8 @@ public class UserInterface {
             textList.add("Reset Game: F4");
             textList.add("Save World: F5");
             textList.add("FPS: " + fps);
+            textList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
+            textList.add("Window Size: " + Parameters.getWindowWidth() + " x " + Parameters.getWindowHeight());
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
             textList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
             textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
@@ -72,10 +74,10 @@ public class UserInterface {
             glBegin(GL_LINES);
             glLineWidth(4);
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            glVertex2i(Parameters.getWindowWidth() / 2, 0);
-            glVertex2i(Parameters.getWindowWidth() / 2, Parameters.getWindowHeight());
-            glVertex2i(0, Parameters.getWindowHeight() / 2);
-            glVertex2i(Parameters.getWindowWidth(), Parameters.getWindowHeight() / 2);
+            glVertex2i(Parameters.getResolutionWidth() / 2, 0);
+            glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());
+            glVertex2i(0, Parameters.getResolutionHeight() / 2);
+            glVertex2i(Parameters.getResolutionWidth(), Parameters.getResolutionHeight() / 2);
             glEnd();
             glEnable(GL_BLEND);
         }
@@ -99,7 +101,7 @@ public class UserInterface {
             for (int i = 0; i < 25; i++) {
                 currentTile = MyInputListener.getMouseWheelPosition() + i - previousTilesToShow;
                 x = 20 + i * 64;
-                y = Parameters.getWindowHeight() - 100;
+                y = Parameters.getResolutionHeight() - 100;
                 if (currentTile == MyInputListener.getMouseWheelPosition()) {   // Highlight the tile we have selected
                     TileMap.drawTile(currentTile, x + 5, y + 5, 2.5, 0f, 0f, 0f, true);
                     TileMap.drawTile(currentTile, x, y, 2.5, 1f, 1f, 1f, true);
@@ -116,8 +118,8 @@ public class UserInterface {
         int mouseX = MyInputListener.getMousePositionX();
         int mouseY = MyInputListener.getMousePositionY();
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
-                && 0 < mouseX && mouseX < Parameters.getWindowWidth()
-                && 0 < mouseY && mouseY < Parameters.getWindowHeight()) {
+                && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
+                && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
             TileMap.bindTileSetTexture();
             glBegin(GL_QUADS);
             TileMap.drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);

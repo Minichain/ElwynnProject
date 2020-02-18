@@ -46,7 +46,7 @@ public class ConeAttack {
         ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
 
         double[] characterCameraCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
-        float[] characterCoordinatesUniform = new float[]{(float) characterCameraCoordinates[0], Parameters.getWindowHeight() - (float) characterCameraCoordinates[1]};
+        float[] characterCoordinatesUniform = new float[]{(float) characterCameraCoordinates[0], Parameters.getResolutionHeight() - (float) characterCameraCoordinates[1]};
 
         ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, characterCoordinatesUniform);
         ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());

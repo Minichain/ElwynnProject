@@ -42,14 +42,14 @@ public class Camera {
      * Amount of pixels we are able to see in the X axis.
      * */
     public static double getWidth() {
-        return Parameters.getWindowWidth() / zoom;
+        return Parameters.getResolutionWidth() / zoom;
     }
 
     /**
      * Amount of pixels we are able to see in the Y axis.
      * */
     public static double getHeight() {
-        return Parameters.getWindowHeight() / zoom;
+        return Parameters.getResolutionHeight() / zoom;
     }
 
     public static double getZoom() {

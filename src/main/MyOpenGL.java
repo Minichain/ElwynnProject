@@ -66,7 +66,7 @@ public class MyOpenGL {
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();
-        glOrtho(0, Parameters.getWindowWidth(), Parameters.getWindowHeight(), 0, 1, -1);
+        glOrtho(0, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), 0, 1, -1);
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glEnable(GL_BLEND);
