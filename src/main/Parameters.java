@@ -3,8 +3,8 @@ package main;
 public class Parameters {
     private static int framesPerSecond = 60;
     private static boolean fullScreen = false;
-    private static int resolutionWidth = 1280;
-    private static int resolutionHeight = 720;
+    private static int resolutionWidth = 1920;
+    private static int resolutionHeight = 1080;
     private static boolean debugMode = false;
 
     public static int getFramesPerSecond() {

@@ -166,7 +166,7 @@ public class Character extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
-        double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMousePositionX(), MyInputListener.getMousePositionY()).toWorldCoordinates();
+        double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
         coneAttack = new ConeAttack(pointingVector, 50, 200);
@@ -187,8 +187,6 @@ public class Character extends DynamicEntity {
                 ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 String text = String.valueOf((int) damage);
                 double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
-                //entityCameraCoordinates[0] *= ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
-                //entityCameraCoordinates[1] *= ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
                 int x = (int) entityCameraCoordinates[0];
                 int y = (int) entityCameraCoordinates[1];
                 new FloatingTextEntity(x, y, text, true, false, false);

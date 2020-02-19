@@ -55,9 +55,10 @@ public class UserInterface {
             textList.add("Character World Coordinates: (" + (float) Character.getInstance().getCurrentCoordinates().x + ", " + (float) Character.getInstance().getCurrentCoordinates().y + ")");
             textList.add("Character Camera Coordinates: (" + (float) characterCameraCoordinates[0] + ", " + (float) characterCameraCoordinates[1] + ")");
             textList.add("Character Health: " + Character.getInstance().getHealth());
-            textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMousePositionX() + ", " + (float) MyInputListener.getMousePositionY() + ")");
-            double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMousePositionX(), MyInputListener.getMousePositionY()).toWorldCoordinates();
+            textList.add("Mouse Camera Coordinates: (" + MyInputListener.getMouseCameraCoordinates()[0] + ", " + MyInputListener.getMouseCameraCoordinates()[1] + ")");
+            double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
             textList.add("Mouse World Coordinates: (" + (float) mouseWorldCoordinates[0] + ", " + (float) mouseWorldCoordinates[1] + ")");
+            textList.add("Mouse Window Coordinates: (" + MyInputListener.getMouseWindowCoordinates()[0] + ", " + MyInputListener.getMouseWindowCoordinates()[1] + ")");
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
             } else {
@@ -122,8 +123,8 @@ public class UserInterface {
     }
 
     private void renderCursorUI(long timeElapsed) {
-        int mouseX = MyInputListener.getMousePositionX();
-        int mouseY = MyInputListener.getMousePositionY();
+        int mouseX = MyInputListener.getMouseCameraCoordinates()[0];
+        int mouseY = MyInputListener.getMouseCameraCoordinates()[1];
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
                 && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {

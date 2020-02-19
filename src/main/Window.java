@@ -30,6 +30,7 @@ public class Window {
         MyInputListener.initMyInputListener();
         initWindowSizeCallBack();
         updateWindowPosition();
+        updateWindowSize();
     }
 
     private static void updateWindowPosition() {
@@ -39,13 +40,20 @@ public class Window {
         positionY = tempY[0];
     }
 
+    private static void updateWindowSize() {
+        int[] tempWidth = new int[1], tempHeight = new int[1];
+        glfwGetWindowSize(window, tempWidth, tempHeight);
+        setWidth(tempWidth[0]);
+        setHeight(tempHeight[0]);
+    }
+
     private static void initWindowSizeCallBack() {
-        windowSizeCallback = new GLFWWindowSizeCallback(){
+        windowSizeCallback = new GLFWWindowSizeCallback() {
             @Override
-            public void invoke(long window, int width, int height){
+            public void invoke(long window, int width, int height) {
+                glViewport(0, 0, width, height);
                 Window.setWidth(width);
                 Window.setHeight(height);
-                glViewport(0, 0, width, height);
             }
         };
         glfwSetWindowSizeCallback(getWindow(), windowSizeCallback);

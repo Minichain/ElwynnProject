@@ -42,4 +42,20 @@ public class Coordinates {
         int y = j * TileMap.TILE_HEIGHT;
         return new int[]{x, y};
     }
+
+    public static int[] cameraToWindowCoordinates(double x, double y) {
+        double xScaleFactor = ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
+        double yScaleFactor = ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
+        int windowX = (int) (x * xScaleFactor);
+        int windowY = (int) (y * yScaleFactor);
+        return new int[]{windowX, windowY};
+    }
+
+    public static int[] windowToCameraCoordinates(double x, double y) {
+        double xScaleFactor = ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
+        double yScaleFactor = ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
+        int cameraX = (int) (x / xScaleFactor);
+        int cameraY = (int) (y / yScaleFactor);
+        return new int[]{cameraX, cameraY};
+    }
 }

@@ -19,8 +19,8 @@ public class MyInputListener {
 
     /** MOUSE **/
     private static boolean mouseInside;
-    private static int mousePositionX;
-    private static int mousePositionY;
+    private static int[] mouseWindowCoordinates = new int[2];
+    private static int[] mouseCameraCoordinates = new int[2];
     private static int mouseWheelPosition;
     public static boolean leftMouseButtonPressed;
     public static boolean rightMouseButtonPressed;
@@ -64,8 +64,11 @@ public class MyInputListener {
             @Override
             public void invoke(long window, double x, double y) {
                 // Transform from window coordinates to camera coordinates
-                mousePositionX = (int) (x / ((double) Window.getWidth() / (double) Parameters.getResolutionWidth()));
-                mousePositionY = (int) (y / ((double) Window.getHeight() / (double) Parameters.getResolutionHeight()));
+                mouseWindowCoordinates[0] = (int) x;
+                mouseWindowCoordinates[1] = (int) y;
+                int[] cameraCoordinates = Coordinates.windowToCameraCoordinates(x, y);
+                mouseCameraCoordinates[0] = cameraCoordinates[0];
+                mouseCameraCoordinates[1] = cameraCoordinates[1];
             }
         };
 
@@ -94,7 +97,7 @@ public class MyInputListener {
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
             int layer = 0;
             switch (GameMode.getCreativeMode()) {
                 case FIRST_LAYER:
@@ -119,7 +122,7 @@ public class MyInputListener {
         rightMouseButtonPressed = true;
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
-            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mousePositionX, mousePositionY);
+            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
             TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
         }
     }
@@ -251,12 +254,12 @@ public class MyInputListener {
         enterCallback.free();
     }
 
-    public static int getMousePositionX() {
-        return mousePositionX;
+    public static int[] getMouseCameraCoordinates() {
+        return mouseCameraCoordinates;
     }
 
-    public static int getMousePositionY() {
-        return mousePositionY;
+    public static int[] getMouseWindowCoordinates() {
+        return mouseWindowCoordinates;
     }
 
     public static int getMouseWheelPosition() {
