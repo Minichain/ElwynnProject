@@ -171,7 +171,7 @@ public class Character extends DynamicEntity {
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
         coneAttack = new ConeAttack(pointingVector, 50, 200);
 
-        if (!attacking || attackCoolDown > 0) {
+        if (!attacking || attackCoolDown > 0 || characterStatus == Status.DEAD) {
             attackCoolDown -= timeElapsed;
             return;
         }

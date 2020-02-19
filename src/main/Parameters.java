@@ -6,6 +6,7 @@ public class Parameters {
     private static int resolutionWidth = 1920;
     private static int resolutionHeight = 1080;
     private static boolean debugMode = false;
+    private static float soundLevel = 0.1f;
 
     public static int getFramesPerSecond() {
         return framesPerSecond;
@@ -45,5 +46,13 @@ public class Parameters {
 
     public static void setDebugMode(boolean debugMode) {
         Parameters.debugMode = debugMode;
+    }
+
+    public static float getSoundLevel() {
+        return soundLevel;
+    }
+
+    public static void setSoundLevel(float soundLevel) {
+        Parameters.soundLevel = soundLevel;
     }
 }

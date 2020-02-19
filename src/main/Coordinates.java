@@ -44,18 +44,14 @@ public class Coordinates {
     }
 
     public static int[] cameraToWindowCoordinates(double x, double y) {
-        double xScaleFactor = ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
-        double yScaleFactor = ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
-        int windowX = (int) (x * xScaleFactor);
-        int windowY = (int) (y * yScaleFactor);
+        int windowX = (int) (x * Window.getCameraWindowScaleFactor()[0]);
+        int windowY = (int) (y * Window.getCameraWindowScaleFactor()[1]);
         return new int[]{windowX, windowY};
     }
 
     public static int[] windowToCameraCoordinates(double x, double y) {
-        double xScaleFactor = ((double) Window.getWidth() / (double) Parameters.getResolutionWidth());
-        double yScaleFactor = ((double) Window.getHeight() / (double) Parameters.getResolutionHeight());
-        int cameraX = (int) (x / xScaleFactor);
-        int cameraY = (int) (y / yScaleFactor);
+        int cameraX = (int) (x / Window.getCameraWindowScaleFactor()[0]);
+        int cameraY = (int) (y / Window.getCameraWindowScaleFactor()[1]);
         return new int[]{cameraX, cameraY};
     }
 }

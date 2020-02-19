@@ -1,10 +1,12 @@
 varying vec4 vertColor;
 uniform vec2 characterCameraCoordinates;
+uniform vec2 cameraWindowRatio;
 uniform float cameraZoom;
 
 void main() {
     float mixValue;
-    float distanceFromCharacter = distance(characterCameraCoordinates, gl_FragCoord.xy) / cameraZoom;
+    vec2 distanceFromCharacterVector = vec2((characterCameraCoordinates.x - gl_FragCoord.x) / cameraWindowRatio.x, (characterCameraCoordinates.y - gl_FragCoord.y) / cameraWindowRatio.y);
+    float distanceFromCharacter = length(distanceFromCharacterVector) / cameraZoom;
     float maxDistance = 100;
     float maxValueDistance = 100;
 

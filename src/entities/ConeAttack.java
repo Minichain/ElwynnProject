@@ -39,18 +39,18 @@ public class ConeAttack {
         int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
         int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
         int cameraZoomUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraZoom");
+        int cameraWindowRatioUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraWindowRatio");
         ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
         ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
 
-        double[] cameraWindowScale = new double[]{((double) Window.getWidth() / (double) Parameters.getResolutionWidth()),
-                ((double) Window.getHeight() / (double) Parameters.getResolutionHeight())};
         double[] characterWindowCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
-        characterWindowCoordinates[0] *= cameraWindowScale[0];
-        characterWindowCoordinates[1] *= cameraWindowScale[1];
+        characterWindowCoordinates[0] *= Window.getCameraWindowScaleFactor()[0];
+        characterWindowCoordinates[1] *= Window.getCameraWindowScaleFactor()[1];
         float[] characterCoordinatesUniform = new float[]{(float) characterWindowCoordinates[0], Window.getHeight() - (float) characterWindowCoordinates[1]};
 
         ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, characterCoordinatesUniform);
         ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());
+        ARBShaderObjects.glUniform2fvARB(cameraWindowRatioUniformLocation, Window.getCameraWindowScaleFactor());
 
         glBegin(GL_TRIANGLES);
 

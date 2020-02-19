@@ -17,6 +17,7 @@ public class Window {
     private static int positionY;
     private static int widthFullScreen;
     private static int heightFullScreen;
+    private static float[] cameraWindowScaleFactor;
 
     public static void start() {
         long window = glfwCreateWindow(Window.getWidth(), Window.getHeight(), "ElwynnProject", 0, 0);
@@ -45,6 +46,7 @@ public class Window {
         glfwGetWindowSize(window, tempWidth, tempHeight);
         setWidth(tempWidth[0]);
         setHeight(tempHeight[0]);
+        cameraWindowScaleFactor = new float[]{(float) tempWidth[0] / (float) Parameters.getResolutionWidth(), (float) tempHeight[0] / (float) Parameters.getResolutionHeight()};
     }
 
     private static void initWindowSizeCallBack() {
@@ -52,8 +54,7 @@ public class Window {
             @Override
             public void invoke(long window, int width, int height) {
                 glViewport(0, 0, width, height);
-                Window.setWidth(width);
-                Window.setHeight(height);
+                updateWindowSize();
             }
         };
         glfwSetWindowSizeCallback(getWindow(), windowSizeCallback);
@@ -108,5 +109,9 @@ public class Window {
         } else {
             Window.height = windowHeight;
         }
+    }
+
+    public static float[] getCameraWindowScaleFactor() {
+        return cameraWindowScaleFactor;
     }
 }

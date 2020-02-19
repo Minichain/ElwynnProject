@@ -91,6 +91,7 @@ public class MyOpenAL {
 
         //Assign our buffer to the source
         alSourcei(sourcePointer, AL_BUFFER, soundBuffer);
+        alSourcef(sourcePointer, AL_GAIN, Parameters.getSoundLevel());
         alSourcePlay(sourcePointer);
     }
 
