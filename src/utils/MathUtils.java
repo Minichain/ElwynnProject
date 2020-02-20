@@ -1,5 +1,6 @@
 package utils;
 
+import listeners.MyInputListener;
 import main.Coordinates;
 
 public class MathUtils {
@@ -53,5 +54,10 @@ public class MathUtils {
 
     private static double sign(double[] vertex1, double[] vertex2, double[] vertex3) {
         return (vertex1[0] - vertex3[0]) * (vertex2[1] - vertex3[1]) - (vertex2[0] - vertex3[0]) * (vertex1[1] - vertex3[1]);
+    }
+
+    public static boolean isMouseInsideRectangle(int x, int y, int x2, int y2) {
+        int[] mouseCameraCoordinates = MyInputListener.getMouseCameraCoordinates();
+        return x < mouseCameraCoordinates[0] && mouseCameraCoordinates[0] < x2 && y < mouseCameraCoordinates[1] && mouseCameraCoordinates[1] < y2;
     }
 }

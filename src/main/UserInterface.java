@@ -115,10 +115,8 @@ public class UserInterface {
         }
 
         /** MENU **/
-        if (true) {
-            glBegin(GL_QUADS);
-            MyOpenGL.drawRectangle(10, 10, 500, 300, 0.7, 0.5f, 0.5f, 0.5f);
-            glEnd();
+        if (Menu.getInstance().isShowing()) {
+            Menu.getInstance().render();
         }
     }
 

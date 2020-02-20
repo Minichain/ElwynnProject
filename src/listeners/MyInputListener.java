@@ -160,7 +160,7 @@ public class MyInputListener {
                 D_KEY_PRESSED = pressed;
                 break;
             case GLFW_KEY_ESCAPE:
-                if (pressed) GameStatus.setStatus(GameStatus.Status.STOPPED);
+                if (pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
                 break;
             case GLFW_KEY_F1:
                 if (pressed) Parameters.setDebugMode(!Parameters.isDebugMode());

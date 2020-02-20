@@ -57,9 +57,6 @@ public class MyOpenGL {
 
         //Load shaders
         programShader01 = loadShader("shader01");
-
-        glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public static void prepareFrame() {
@@ -70,6 +67,8 @@ public class MyOpenGL {
         glMatrixMode(GL_MODELVIEW);
         glLoadIdentity();
         glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
@@ -116,12 +115,20 @@ public class MyOpenGL {
         drawRectangle(x, y, width, height, 1.0, 1f, 1f, 1f);
     }
 
+    public static void drawRectangle(int x, int y, float width, float height, float greyValue) {
+        drawRectangle(x, y, width, height, 1.0, greyValue, greyValue, greyValue);
+    }
+
+    public static void drawRectangle(int x, int y, float width, float height, double transparency, float greyValue) {
+        drawRectangle(x, y, width, height, transparency, greyValue, greyValue, greyValue);
+    }
+
     public static void drawRectangle(int x, int y, float width, float height, double transparency, float r, float g, float b) {
         glColor4f(r, g, b, (float) transparency);
-        glVertex2d(x, y);
-        glVertex2d(x, y + height);
-        glVertex2d(x + width, y + height);
-        glVertex2d(x + width, y);
+        glVertex2f(x, y);
+        glVertex2f(x, y + height);
+        glVertex2f(x + width, y + height);
+        glVertex2f(x + width, y);
     }
 
     /*

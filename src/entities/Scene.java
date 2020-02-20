@@ -186,11 +186,13 @@ public class Scene {
         glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
-                double scale = Camera.getZoom();
-                int x = i * TileMap.TILE_WIDTH;
-                int y = j * TileMap.TILE_HEIGHT;
-                double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                if (TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {
+                    double scale = Camera.getZoom();
+                    int x = i * TileMap.TILE_WIDTH;
+                    int y = j * TileMap.TILE_HEIGHT;
+                    double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                    TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                }
             }
         }
         glEnd();
