@@ -11,14 +11,19 @@ public class Menu {
     private static Menu instance = null;
     private ArrayList<MenuComponent> listOfMenuComponents;
     private boolean showing;
+    private int gapBetweenButtons = 50;
 
     public Menu() {
         listOfMenuComponents = new ArrayList<MenuComponent>();
-        listOfMenuComponents.add(new MenuComponent("Button 01"));
-        listOfMenuComponents.add(new MenuComponent("Button 02"));
-        listOfMenuComponents.add(new MenuComponent("Button 03"));
-        listOfMenuComponents.add(new MenuComponent("Button 04"));
-        listOfMenuComponents.add(new MenuComponent("Button 05"));
+        MenuComponent resumeGame = new MenuComponent("Resume");
+        resumeGame.setButtonAction(MenuComponent.ButtonAction.LEAVE_MENU);
+        listOfMenuComponents.add(resumeGame);
+        MenuComponent exitGame = new MenuComponent("Exit Game");
+        exitGame.setButtonAction(MenuComponent.ButtonAction.EXIT_GAME);
+        listOfMenuComponents.add(exitGame);
+        MenuComponent audioSettings = new MenuComponent("Audio Settings");
+        audioSettings.setButtonAction(MenuComponent.ButtonAction.EXIT_GAME);
+        listOfMenuComponents.add(audioSettings);
     }
 
     public static Menu getInstance() {
@@ -33,6 +38,8 @@ public class Menu {
     }
 
     public void setShowing(boolean showing) {
+        if (showing) GameStatus.setStatus(GameStatus.Status.PAUSED);
+        else GameStatus.setStatus(GameStatus.Status.RUNNING);
         this.showing = showing;
     }
 
@@ -41,32 +48,30 @@ public class Menu {
     }
 
     public void render() {
+        for (int i = 0; i < listOfMenuComponents.size(); i++) {
+            listOfMenuComponents.get(i).update(i, gapBetweenButtons);
+        }
+
         glDisable(GL_TEXTURE_2D);
         glBegin(GL_QUADS);
-        int width = 400;
-        int height = 50;
-        int gapBetweenButtons = 50;
-        int x = Parameters.getResolutionWidth() / 2 - width / 2;
-        int y = Parameters.getResolutionHeight() / 2 - height / 2;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            if (MathUtils.isMouseInsideRectangle(x, y, x + width, y + height)) {
-                MyOpenGL.drawRectangle(x, y, width, height, 0.6, 0.7f);
+            MenuComponent component = listOfMenuComponents.get(i);
+            if (component.isPressed()) {
+                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.7, 0.9f);
+            } else if (component.isMouseOver()) {
+                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.6, 0.7f);
             } else {
-                MyOpenGL.drawRectangle(x, y, width, height, 0.5, 0.5f);
+                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.5, 0.5f);
             }
-            y += height + gapBetweenButtons;
         }
         glEnd();
 
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
         glBegin(GL_QUADS);
-
-        x = Parameters.getResolutionWidth() / 2 - width / 2;
-        y = Parameters.getResolutionHeight() / 2 - height / 2;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            TextRendering.renderText(x, y, listOfMenuComponents.get(i).getText(), 2, true);
-            y += height + gapBetweenButtons;
+            MenuComponent component = listOfMenuComponents.get(i);
+            TextRendering.renderText(component.x, component.y, listOfMenuComponents.get(i).getText(), 2, true);
         }
         glEnd();
     }
