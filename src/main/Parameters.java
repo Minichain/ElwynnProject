@@ -2,7 +2,7 @@ package main;
 
 public class Parameters {
     private static int framesPerSecond = 60;
-    private static boolean fullScreen = false;
+    private static boolean fullScreen = true;
     private static int resolutionWidth = 1920;
     private static int resolutionHeight = 1080;
     private static boolean debugMode = false;
@@ -53,6 +53,7 @@ public class Parameters {
     }
 
     public static void setSoundLevel(float soundLevel) {
+        MyOpenAL.onSoundLevelChange();
         Parameters.soundLevel = soundLevel;
     }
 }

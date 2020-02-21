@@ -167,13 +167,6 @@ public class MyInputListener {
                 if (pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
                 break;
             case GLFW_KEY_F2:
-                if (pressed) {
-                    if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
-                        GameStatus.setStatus(GameStatus.Status.PAUSED);
-                    } else if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
-                        GameStatus.setStatus(GameStatus.Status.RUNNING);
-                    }
-                }
                 break;
             case GLFW_KEY_F3:
                 if (pressed) {

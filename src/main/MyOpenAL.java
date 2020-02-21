@@ -95,6 +95,10 @@ public class MyOpenAL {
         alSourcePlay(sourcePointer);
     }
 
+    public static void onSoundLevelChange() {
+        //TODO
+    }
+
     public static void destroy() {
         alcDestroyContext(context);
         alcCloseDevice(device);

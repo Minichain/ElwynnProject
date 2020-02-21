@@ -15,8 +15,8 @@ public class Window {
     private static int height = Parameters.getResolutionHeight();
     private static int positionX;
     private static int positionY;
-    private static int widthFullScreen;
-    private static int heightFullScreen;
+    private static int widthFullScreen = Parameters.getResolutionWidth();
+    private static int heightFullScreen = Parameters.getResolutionHeight();
     private static float[] cameraWindowScaleFactor;
 
     public static void start() {
@@ -32,6 +32,8 @@ public class Window {
         initWindowSizeCallBack();
         updateWindowPosition();
         updateWindowSize();
+
+        setFullScreen(Parameters.isFullScreen());
     }
 
     private static void updateWindowPosition() {
