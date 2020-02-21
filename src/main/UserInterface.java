@@ -3,6 +3,7 @@ package main;
 import entities.*;
 import entities.Character;
 import listeners.MyInputListener;
+import menu.Menu;
 
 import java.util.ArrayList;
 

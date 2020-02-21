@@ -9,7 +9,7 @@ public class Main {
         long timeElapsed = 0;
         long lastUpdateTime = System.currentTimeMillis();
         long maxTimeBetweenFrames = 1000 / Parameters.getFramesPerSecond();
-        long timeSpentRendering;
+        long timeSpentUpdatingAndRendering;
 
         if (!glfwInit()) {
             System.err.println("GLFW Failed to initialize!");
@@ -32,10 +32,10 @@ public class Main {
 
                 glfwSwapBuffers(Window.getWindow());
 
-                timeSpentRendering = System.currentTimeMillis() - lastUpdateTime;
+                timeSpentUpdatingAndRendering = System.currentTimeMillis() - lastUpdateTime;
                 //Wait time until processing next frame. FPS locked.
-                if (timeSpentRendering < maxTimeBetweenFrames) {
-                    Thread.sleep(maxTimeBetweenFrames - timeSpentRendering);
+                if (timeSpentUpdatingAndRendering < maxTimeBetweenFrames) {
+                    Thread.sleep(maxTimeBetweenFrames - timeSpentUpdatingAndRendering);
                 }
             } catch (InterruptedException e) {
                 System.out.println(e);

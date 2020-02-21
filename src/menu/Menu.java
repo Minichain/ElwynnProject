@@ -1,6 +1,8 @@
-package main;
+package menu;
 
-import utils.MathUtils;
+import main.GameStatus;
+import main.MyOpenGL;
+import main.TextRendering;
 
 import java.util.ArrayList;
 
@@ -14,16 +16,15 @@ public class Menu {
     private int gapBetweenButtons = 50;
 
     public Menu() {
-        listOfMenuComponents = new ArrayList<MenuComponent>();
-        MenuComponent resumeGame = new MenuComponent("Resume");
-        resumeGame.setButtonAction(MenuComponent.ButtonAction.LEAVE_MENU);
+        listOfMenuComponents = new ArrayList<>();
+        MenuButton resumeGame = new MenuButton("Resume");
+        resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
         listOfMenuComponents.add(resumeGame);
-        MenuComponent exitGame = new MenuComponent("Exit Game");
-        exitGame.setButtonAction(MenuComponent.ButtonAction.EXIT_GAME);
+        MenuButton exitGame = new MenuButton("Exit Game");
+        exitGame.setButtonAction(MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
-        MenuComponent audioSettings = new MenuComponent("Audio Settings");
-        audioSettings.setButtonAction(MenuComponent.ButtonAction.EXIT_GAME);
-        listOfMenuComponents.add(audioSettings);
+        MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
+        listOfMenuComponents.add(audioLevel);
     }
 
     public static Menu getInstance() {
@@ -56,13 +57,7 @@ public class Menu {
         glBegin(GL_QUADS);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             MenuComponent component = listOfMenuComponents.get(i);
-            if (component.isPressed()) {
-                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.7, 0.9f);
-            } else if (component.isMouseOver()) {
-                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.6, 0.7f);
-            } else {
-                MyOpenGL.drawRectangle(component.x, component.y, component.width, component.height, 0.5, 0.5f);
-            }
+            component.renderBackground();
         }
         glEnd();
 
@@ -71,7 +66,7 @@ public class Menu {
         glBegin(GL_QUADS);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             MenuComponent component = listOfMenuComponents.get(i);
-            TextRendering.renderText(component.x, component.y, listOfMenuComponents.get(i).getText(), 2, true);
+            component.renderInfo();
         }
         glEnd();
     }
