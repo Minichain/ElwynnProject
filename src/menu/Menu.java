@@ -1,8 +1,6 @@
 package menu;
 
-import main.GameStatus;
-import main.MyOpenGL;
-import main.TextRendering;
+import main.*;
 
 import java.util.ArrayList;
 
@@ -14,8 +12,10 @@ public class Menu {
     private ArrayList<MenuComponent> listOfMenuComponents;
     private boolean showing;
     private int gapBetweenButtons = 50;
+    private Coordinates coordinates;
 
     public Menu() {
+        coordinates = new Coordinates(Parameters.getResolutionWidth() / 2, 500f / Window.getCameraWindowScaleFactor()[1]);
         listOfMenuComponents = new ArrayList<>();
         MenuButton resumeGame = new MenuButton("Resume");
         resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
@@ -69,5 +69,9 @@ public class Menu {
             component.renderInfo();
         }
         glEnd();
+    }
+
+    public Coordinates getCoordinates() {
+        return coordinates;
     }
 }

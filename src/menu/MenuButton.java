@@ -3,7 +3,6 @@ package menu;
 import listeners.MyInputListener;
 import main.GameStatus;
 import main.MyOpenGL;
-import main.Parameters;
 import main.TextRendering;
 import utils.MathUtils;
 
@@ -20,8 +19,8 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void update(int position, int gapBetweenButtons) {
-        x = Parameters.getResolutionWidth() / 2 - width / 2;
-        y = 500 + (height + gapBetweenButtons) * position;
+        x = (int) Menu.getInstance().getCoordinates().x - width / 2;
+        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenButtons) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             setPressed(true);

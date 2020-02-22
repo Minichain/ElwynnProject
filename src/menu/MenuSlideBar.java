@@ -15,8 +15,8 @@ public class MenuSlideBar extends MenuComponent {
 
     @Override
     public void update(int position, int gapBetweenButtons) {
-        x = Parameters.getResolutionWidth() / 2 - width / 2;
-        y = 500 + (height + gapBetweenButtons) * position;
+        x = (int) Menu.getInstance().getCoordinates().x - width / 2;
+        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenButtons) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             progress = (double) (MyInputListener.getMouseCameraCoordinates()[0] - x) / (double) width;
