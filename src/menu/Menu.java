@@ -16,13 +16,21 @@ public class Menu {
 
     public Menu() {
         coordinates = new Coordinates(Parameters.getResolutionWidth() / 2, 500f / Window.getCameraWindowScaleFactor()[1]);
+
         listOfMenuComponents = new ArrayList<>();
-        MenuButton resumeGame = new MenuButton("Resume");
+
+        MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen");
+        fullScreen.setButtonAction(MenuButton.ButtonAction.FULL_SCREEN);
+        listOfMenuComponents.add(fullScreen);
+
+        MenuButton resumeGame = new MenuButton("Resume Game");
         resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
         listOfMenuComponents.add(resumeGame);
+
         MenuButton exitGame = new MenuButton("Exit Game");
         exitGame.setButtonAction(MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
+
         MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
         listOfMenuComponents.add(audioLevel);
     }

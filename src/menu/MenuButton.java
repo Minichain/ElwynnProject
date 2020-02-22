@@ -1,16 +1,14 @@
 package menu;
 
 import listeners.MyInputListener;
-import main.GameStatus;
-import main.MyOpenGL;
-import main.TextRendering;
+import main.*;
 import utils.MathUtils;
 
 public class MenuButton extends MenuComponent {
     private ButtonAction buttonAction = ButtonAction.NONE;
 
     public enum ButtonAction {
-        NONE, LEAVE_MENU, EXIT_GAME
+        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN
     }
 
     public MenuButton(String text) {
@@ -51,6 +49,9 @@ public class MenuButton extends MenuComponent {
 
     private static void performAction(ButtonAction buttonAction) {
         switch (buttonAction) {
+            case FULL_SCREEN:
+                Window.setFullScreen(!Parameters.isFullScreen());
+                break;
             case LEAVE_MENU:
                 Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
                 break;
