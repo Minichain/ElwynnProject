@@ -127,8 +127,21 @@ public class MyOpenGL {
         glColor4f(r, g, b, (float) transparency);
         glVertex2f(x, y);
         glVertex2f(x, y + height);
-        glVertex2f(x + width, y + height);
         glVertex2f(x + width, y);
+        glVertex2f(x + width, y);
+        glVertex2f(x, y + height);
+        glVertex2f(x + width, y + height);
+    }
+
+    public static void drawTriangle(int[] vertex1, int[] vertex2, int[] vertex3, double transparency, float greyValue) {
+        drawTriangle(vertex1, vertex2, vertex3, transparency, greyValue, greyValue, greyValue);
+    }
+
+    public static void drawTriangle(int[] vertex1, int[] vertex2, int[] vertex3, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
+        glVertex2f(vertex1[0], vertex1[1]);
+        glVertex2f(vertex2[0], vertex2[1]);
+        glVertex2f(vertex3[0], vertex3[1]);
     }
 
     /*

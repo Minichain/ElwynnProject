@@ -38,6 +38,14 @@ public class MathUtils {
                 + Math.pow(coordinates1.y - coordinates2.y, 2));
     }
 
+    public static boolean isPointInsideTriangle(int[] point, int[] vertex1, int[] vertex2, int[] vertex3) {
+        return isPointInsideTriangle(
+                new double[]{(double) point[0], (double) point[1]},
+                new double[]{(double) vertex1[0], (double) vertex1[1]},
+                new double[]{(double) vertex2[0], (double) vertex2[1]},
+                new double[]{(double) vertex3[0], (double) vertex3[1]});
+    }
+
     public static boolean isPointInsideTriangle(double[] point, double[] vertex1, double[] vertex2, double[] vertex3) {
         double d1, d2, d3;
         boolean has_neg, has_pos;

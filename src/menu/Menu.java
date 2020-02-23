@@ -36,6 +36,9 @@ public class Menu {
         MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
         listOfMenuComponents.add(audioLevel);
 
+        MenuSelector resolutionSelector = new MenuSelector("Resolution");
+        listOfMenuComponents.add(resolutionSelector);
+
         float menuHeight = 0f;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             if (i > 0) menuHeight += gapBetweenComponents;
@@ -72,7 +75,7 @@ public class Menu {
         }
 
         glDisable(GL_TEXTURE_2D);
-        glBegin(GL_QUADS);
+        glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             MenuComponent component = listOfMenuComponents.get(i);
             component.renderBackground();

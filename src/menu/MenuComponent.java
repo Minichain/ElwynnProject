@@ -1,7 +1,6 @@
 package menu;
 
 public abstract class MenuComponent {
-
     private String text;
     private boolean mouseOver = false;
     private boolean pressed = false;
