@@ -97,7 +97,7 @@ public class MyInputListener {
 
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
-        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
             int layer = 0;
             switch (GameMode.getCreativeMode()) {
@@ -121,7 +121,7 @@ public class MyInputListener {
 
     private static void processRightMouseButtonPressed() {
         rightMouseButtonPressed = true;
-        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             // Change Tile's collision behaviour
             int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
             TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();

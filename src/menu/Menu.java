@@ -11,17 +11,19 @@ public class Menu {
     private static Menu instance = null;
     private ArrayList<MenuComponent> listOfMenuComponents;
     private boolean showing;
-    private int gapBetweenButtons = 50;
+    private int gapBetweenComponents = 30;
     private Coordinates coordinates;
 
     public Menu() {
-        coordinates = new Coordinates(Parameters.getResolutionWidth() / 2, 500f / Window.getCameraWindowScaleFactor()[1]);
-
         listOfMenuComponents = new ArrayList<>();
 
         MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen");
         fullScreen.setButtonAction(MenuButton.ButtonAction.FULL_SCREEN);
         listOfMenuComponents.add(fullScreen);
+
+        MenuButton creativeMode = new MenuButton("Enable/Disable Creative Mode");
+        creativeMode.setButtonAction(MenuButton.ButtonAction.CREATIVE_MODE);
+        listOfMenuComponents.add(creativeMode);
 
         MenuButton resumeGame = new MenuButton("Resume Game");
         resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
@@ -33,6 +35,14 @@ public class Menu {
 
         MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
         listOfMenuComponents.add(audioLevel);
+
+        float menuHeight = 0f;
+        for (int i = 0; i < listOfMenuComponents.size(); i++) {
+            if (i > 0) menuHeight += gapBetweenComponents;
+            menuHeight += listOfMenuComponents.get(i).height;
+        }
+
+        coordinates = new Coordinates((float) Parameters.getResolutionWidth() / 2, (float) Parameters.getResolutionHeight() / 2 - menuHeight / 2);
     }
 
     public static Menu getInstance() {
@@ -58,7 +68,7 @@ public class Menu {
 
     public void render() {
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            listOfMenuComponents.get(i).update(i, gapBetweenButtons);
+            listOfMenuComponents.get(i).update(i, gapBetweenComponents);
         }
 
         glDisable(GL_TEXTURE_2D);

@@ -8,7 +8,7 @@ public class MenuButton extends MenuComponent {
     private ButtonAction buttonAction = ButtonAction.NONE;
 
     public enum ButtonAction {
-        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN
+        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE
     }
 
     public MenuButton(String text) {
@@ -16,9 +16,9 @@ public class MenuButton extends MenuComponent {
     }
 
     @Override
-    public void update(int position, int gapBetweenButtons) {
+    public void update(int position, int gapBetweenComponents) {
         x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenButtons) * position;
+        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             setPressed(true);
@@ -51,6 +51,13 @@ public class MenuButton extends MenuComponent {
         switch (buttonAction) {
             case FULL_SCREEN:
                 Window.setFullScreen(!Parameters.isFullScreen());
+                break;
+            case CREATIVE_MODE:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    GameMode.setGameMode(GameMode.Mode.CREATIVE);
+                } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                    GameMode.setGameMode(GameMode.Mode.NORMAL);
+                }
                 break;
             case LEAVE_MENU:
                 Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
