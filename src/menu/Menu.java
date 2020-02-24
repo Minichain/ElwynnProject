@@ -17,6 +17,10 @@ public class Menu {
     public Menu() {
         listOfMenuComponents = new ArrayList<>();
 
+        MenuButton resumeGame = new MenuButton("Resume Game");
+        resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
+        listOfMenuComponents.add(resumeGame);
+
         MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen");
         fullScreen.setButtonAction(MenuButton.ButtonAction.FULL_SCREEN);
         listOfMenuComponents.add(fullScreen);
@@ -25,27 +29,15 @@ public class Menu {
         creativeMode.setButtonAction(MenuButton.ButtonAction.CREATIVE_MODE);
         listOfMenuComponents.add(creativeMode);
 
-        MenuButton resumeGame = new MenuButton("Resume Game");
-        resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
-        listOfMenuComponents.add(resumeGame);
-
-        MenuButton exitGame = new MenuButton("Exit Game");
-        exitGame.setButtonAction(MenuButton.ButtonAction.EXIT_GAME);
-        listOfMenuComponents.add(exitGame);
-
         MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
         listOfMenuComponents.add(audioLevel);
 
         MenuSelector resolutionSelector = new MenuSelector("Resolution");
         listOfMenuComponents.add(resolutionSelector);
 
-        float menuHeight = 0f;
-        for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            if (i > 0) menuHeight += gapBetweenComponents;
-            menuHeight += listOfMenuComponents.get(i).height;
-        }
-
-        coordinates = new Coordinates((float) Parameters.getResolutionWidth() / 2, (float) Parameters.getResolutionHeight() / 2 - menuHeight / 2);
+        MenuButton exitGame = new MenuButton("Exit Game");
+        exitGame.setButtonAction(MenuButton.ButtonAction.EXIT_GAME);
+        listOfMenuComponents.add(exitGame);
     }
 
     public static Menu getInstance() {
@@ -70,6 +62,14 @@ public class Menu {
     }
 
     public void render() {
+        float menuHeight = 0f;
+        for (int i = 0; i < listOfMenuComponents.size(); i++) {
+            if (i > 0) menuHeight += gapBetweenComponents;
+            menuHeight += listOfMenuComponents.get(i).height;
+        }
+
+        coordinates = new Coordinates((float) Parameters.getResolutionWidth() / 2, (float) Parameters.getResolutionHeight() / 2 - menuHeight / 2);
+
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             listOfMenuComponents.get(i).update(i, gapBetweenComponents);
         }

@@ -24,6 +24,7 @@ public class MenuSlideBar extends MenuComponent {
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
+                // Do nothing
             }
             setPressed(false);
         }

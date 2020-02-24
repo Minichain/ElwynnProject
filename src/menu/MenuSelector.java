@@ -2,6 +2,7 @@ package menu;
 
 import listeners.MyInputListener;
 import main.MyOpenGL;
+import main.Parameters;
 import main.TextRendering;
 import utils.MathUtils;
 
@@ -9,70 +10,36 @@ public class MenuSelector extends MenuComponent {
     private Selector previousSelector;
     private Selector nextSelector;
     private int selectedValue;
-    private SelectedResolution selectedResolution;
-
-    private enum SelectedResolution {
-        RESOLUTION_640_480 (0), RESOLUTION_1280_720 (1), RESOLUTION_1920_1080 (2);
-
-        int resolutionValue;
-
-        SelectedResolution(int resolutionValue) {
-            this.resolutionValue = resolutionValue;
-        }
-
-        public int getResolutionValue() {
-            return resolutionValue;
-        }
-
-        public SelectedResolution getResolution(int width, int height) {
-            switch (height) {
-                case 480:
-                    return RESOLUTION_640_480;
-                case 720:
-                    return RESOLUTION_1280_720;
-                case 1080:
-                default:
-                    return RESOLUTION_1920_1080;
-            }
-        }
-
-        public String toString() {
-            switch (this) {
-                case RESOLUTION_640_480:
-                    return "640x480";
-                case RESOLUTION_1280_720:
-                    return "1280x720";
-                case RESOLUTION_1920_1080:
-                default:
-                    return "1920x1080";
-
-            }
-        }
-    }
+    private Resolution selectedResolution;
 
     public MenuSelector(String text) {
         setText(text);
-        previousSelector = new Selector(new int[]{x + 20, y + height / 2}, 14, true);
-        nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 14, false);
-        selectedResolution = SelectedResolution.RESOLUTION_1920_1080;
+        previousSelector = new Selector(new int[]{x + 20, y + height / 2}, 18, true);
+        nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18, false);
+        selectedResolution = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
+        selectedValue = selectedResolution.getResolutionValue();
     }
 
     @Override
     public void update(int position, int gapBetweenComponents) {
         x = (int) Menu.getInstance().getCoordinates().x - width / 2;
         y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+
         previousSelector.recenter(new int[]{x + 20, y + height / 2});
-        previousSelector.update();
         nextSelector.recenter(new int[]{x + width - 20, y + height / 2});
-        nextSelector.update();
+
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
+                // Do nothing
             }
             setPressed(false);
         }
+
+        previousSelector.update();
+        nextSelector.update();
     }
 
     @Override
@@ -109,16 +76,7 @@ public class MenuSelector extends MenuComponent {
         public Selector(int[] center, int size, boolean leftOriented) {
             this.leftOriented = leftOriented;
             this.size = size;
-            int halfSize = size / 2;
-            if (leftOriented) {
-                this.vertex1 = new int[]{center[0] - halfSize, center[1]};
-                this.vertex2 = new int[]{center[0] + halfSize, center[1] + halfSize};
-                this.vertex3 = new int[]{center[0] + halfSize, center[1] - halfSize};
-            } else {
-                this.vertex1 = new int[]{center[0] + halfSize, center[1]};
-                this.vertex2 = new int[]{center[0] - halfSize, center[1] + halfSize};
-                this.vertex3 = new int[]{center[0] - halfSize, center[1] - halfSize};
-            }
+            recenter(center);
         }
 
         public void update() {
@@ -127,13 +85,16 @@ public class MenuSelector extends MenuComponent {
                 pressed = true;
             } else {
                 if (pressed && mouseOver) {
-                    if (leftOriented && selectedValue > 0) {
-                        selectedValue--;
+                    if (leftOriented) {
+                        if (selectedValue > 0) {
+                            selectedValue--;
+                        }
                     } else {
                         selectedValue++;
                     }
-                    selectedValue = selectedValue % 3;
-                    selectedResolution = SelectedResolution.values()[selectedValue];
+                    selectedValue = selectedValue % Resolution.values().length;
+                    selectedResolution = Resolution.values()[selectedValue];
+                    Parameters.setResolution(selectedResolution);
                 }
                 pressed = false;
             }
@@ -160,7 +121,6 @@ public class MenuSelector extends MenuComponent {
                 this.vertex2 = new int[]{center[0] - halfSize, center[1] + halfSize};
                 this.vertex3 = new int[]{center[0] - halfSize, center[1] - halfSize};
             }
-
         }
     }
 }

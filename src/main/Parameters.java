@@ -1,10 +1,11 @@
 package main;
 
+import menu.Resolution;
+
 public class Parameters {
     private static int framesPerSecond = 60;
     private static boolean fullScreen = true;
-    private static int resolutionWidth = 1920;
-    private static int resolutionHeight = 1080;
+    private static Resolution resolution = Resolution.RESOLUTION_1920_1080;
     private static boolean debugMode = false;
     private static float soundLevel = 0.1f;
 
@@ -17,19 +18,16 @@ public class Parameters {
     }
 
     public static int getResolutionWidth() {
-        return resolutionWidth;
-    }
-
-    public static void setResolutionWidth(int resolutionWidth) {
-        Parameters.resolutionWidth = resolutionWidth;
+        return resolution.getResolution()[0];
     }
 
     public static int getResolutionHeight() {
-        return resolutionHeight;
+        return resolution.getResolution()[1];
     }
 
-    public static void setResolutionHeight(int resolutionHeight) {
-        Parameters.resolutionHeight = resolutionHeight;
+    public static void setResolution(Resolution resolution) {
+        Parameters.resolution = resolution;
+        Window.setWindowSize(resolution.getResolution()[0], resolution.getResolution()[1]);
     }
 
     public static boolean isFullScreen() {
