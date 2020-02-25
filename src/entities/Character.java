@@ -182,7 +182,7 @@ public class Character extends DynamicEntity {
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(pointingVector, 50, 200, attacking);
+            coneAttack = new ConeAttack(pointingVector, Math.PI / 6.0, 200, attacking);
         } else {
             coneAttack.update(pointingVector, timeElapsed, attacking);
         }

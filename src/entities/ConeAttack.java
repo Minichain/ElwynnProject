@@ -11,12 +11,13 @@ public class ConeAttack {
     private double[] vertex1;
     private double[] vertex2;
     private double[] vertex3;
-    private float width;
+    private double angle;
     private float length;
     private ArrayList<Particle> listOfParticles;
+    private boolean attacking;
 
-    public ConeAttack(double[] pointingVector, float coneWidth, float coneLength, boolean attacking) {
-        this.width = coneWidth;
+    public ConeAttack(double[] pointingVector, double angle, float coneLength, boolean attacking) {
+        this.angle = angle;
         this.length = coneLength;
         this.listOfParticles = new ArrayList<>();
         update(pointingVector, 0, attacking);
@@ -35,15 +36,15 @@ public class ConeAttack {
     }
 
     public void update(double[] pointingVector, long timeElapsed, boolean attacking) {
+        this.attacking = attacking;
         pointingVector = MathUtils.normalizeVector(pointingVector);
-        double[] v2 = MathUtils.generateOrthonormalVector(pointingVector);
-        v2 = MathUtils.normalizeVector(v2);
+        double[] rotatedVector;
 
-        vertex1 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + (pointingVector[0] * length) + (v2[0] * width),
-                Character.getInstance().getCurrentCoordinates().y + (pointingVector[1] * length) + (v2[1] * width)).toCameraCoordinates();
-        vertex2 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + (pointingVector[0] * length) - (v2[0] * width),
-                Character.getInstance().getCurrentCoordinates().y + (pointingVector[1] * length) - (v2[1] * width)).toCameraCoordinates();
-        vertex3 = new Coordinates(Character.getInstance().getCurrentCoordinates().x, Character.getInstance().getCurrentCoordinates().y).toCameraCoordinates();
+        vertex1 = new Coordinates(Character.getInstance().getCurrentCoordinates().x, Character.getInstance().getCurrentCoordinates().y).toCameraCoordinates();
+        rotatedVector = MathUtils.rotateVector(pointingVector, angle / 2.0);
+        vertex2 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + rotatedVector[0] * length, Character.getInstance().getCurrentCoordinates().y + rotatedVector[1] * length).toCameraCoordinates();
+        rotatedVector = MathUtils.rotateVector(pointingVector, - angle / 2.0);
+        vertex3 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + rotatedVector[0] * length, Character.getInstance().getCurrentCoordinates().y + rotatedVector[1] * length).toCameraCoordinates();
 
         Particle particle;
 
@@ -52,14 +53,15 @@ public class ConeAttack {
             Coordinates characterCoordinates = Character.getInstance().getCurrentCoordinates();
             Coordinates particleCoordinates;
             double amountOfParticles = 0.1;
+            double randomAngle;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
-                double randomAngle = Math.random() * Math.PI / 4.0;
-                double[] vector = MathUtils.rotateVector(MathUtils.rotateVector(pointingVector, - Math.PI / 8.0), randomAngle);
+                randomAngle = Math.random() * angle;
+                rotatedVector = MathUtils.rotateVector(MathUtils.rotateVector(pointingVector, - angle / 2.0), randomAngle);
                 double distanceFromCharacter = 40;
                 particleCoordinates = new Coordinates(
-                        characterCoordinates.x + vector[0] * Math.random() * distanceFromCharacter,
-                        characterCoordinates.y + vector[1] * Math.random() * distanceFromCharacter);
-                particle = new Particle(particleCoordinates, vector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
+                        characterCoordinates.x + rotatedVector[0] * Math.random() * distanceFromCharacter,
+                        characterCoordinates.y + rotatedVector[1] * Math.random() * distanceFromCharacter);
+                particle = new Particle(particleCoordinates, rotatedVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
                 listOfParticles.add(particle);
             }
         }
@@ -76,6 +78,23 @@ public class ConeAttack {
 
     public void render() {
         glDisable(GL_TEXTURE_2D);
+
+        /** DEBUG LINES **/
+        if (attacking && Parameters.isDebugMode()) {
+            glDisable(GL_BLEND);
+            glBegin(GL_LINES);
+            glLineWidth(4);
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            glVertex2d(vertex1[0], vertex1[1]);
+            glVertex2d(vertex2[0], vertex2[1]);
+            glVertex2d(vertex2[0], vertex2[1]);
+            glVertex2d(vertex3[0], vertex3[1]);
+            glVertex2d(vertex3[0], vertex3[1]);
+            glVertex2d(vertex1[0], vertex1[1]);
+            glEnd();
+            glEnable(GL_BLEND);
+        }
+
         glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfParticles.size(); i++) {
             listOfParticles.get(i).render();

@@ -25,13 +25,14 @@ public class Particle {
 
     public void update(long timeElapsed) {
         this.timeLiving += timeElapsed;
-        center.x += velocityVector[0] * timeElapsed * movingSpeed;
-        center.y += velocityVector[1] * timeElapsed * movingSpeed;
+        this.center.x += velocityVector[0] * timeElapsed * movingSpeed;
+        this.center.y += velocityVector[1] * timeElapsed * movingSpeed;
     }
 
     public void render() {
         float halfSize = size / 2;
         double[] centerCameraCoordinates = center.toCameraCoordinates();
+        float size = (float) (timeLiving / timeToLive) * this.size;
         MyOpenGL.drawRectangle((int) (centerCameraCoordinates[0] - halfSize), (int) (centerCameraCoordinates[1] - halfSize), size, size, 1.0 - timeLiving / timeToLive, r, g, b);
     }
 
