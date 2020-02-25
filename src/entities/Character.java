@@ -75,11 +75,16 @@ public class Character extends DynamicEntity {
         if (health > 0)  {
             characterStatus = Status.IDLE;
 
+            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
             attack(timeElapsed);
 
             double[] movement = new double[]{0, 0};
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                movement = MyInputListener.computeMovementVector(timeElapsed, speed);
+                if (attacking) {
+                    movement = MyInputListener.computeMovementVector(timeElapsed, speed * 0.5);
+                } else {
+                    movement = MyInputListener.computeMovementVector(timeElapsed, speed);
+                }
             }
 
             int distanceFactor = 4;
@@ -89,9 +94,17 @@ public class Character extends DynamicEntity {
             }
 
             displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
+            facingVector = null;
+            if (attacking) {
+                double[] characterCameraCoordinates = getCurrentCoordinates().toCameraCoordinates();
+                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates()[0] - characterCameraCoordinates[0],
+                        MyInputListener.getMouseCameraCoordinates()[1] - characterCameraCoordinates[1]};
+                directionFacing = Utils.checkDirectionFacing(facingVector);
+            } else if (displacementVector[0] != 0 || displacementVector[1] != 0) {
+                directionFacing = Utils.checkDirectionFacing(displacementVector);
+            }
 
             if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
-                directionFacing = Utils.checkDirectionFacing(displacementVector);
                 characterStatus = Status.RUNNING;
             }
         } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
@@ -165,7 +178,6 @@ public class Character extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
-        attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
         double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};

@@ -100,6 +100,7 @@ public class UserInterface {
             int y;
 
             TileMap.bindTileSetTexture();
+            glEnable(GL_TEXTURE_2D);
             glBegin(GL_QUADS);
             for (int i = 0; i < 25; i++) {
                 currentTile = MyInputListener.getMouseWheelPosition() + i - previousTilesToShow;
@@ -129,6 +130,7 @@ public class UserInterface {
                 && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
                 && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
             TileMap.bindTileSetTexture();
+            glEnable(GL_TEXTURE_2D);
             glBegin(GL_QUADS);
             TileMap.drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
             glEnd();

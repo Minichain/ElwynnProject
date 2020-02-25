@@ -13,6 +13,7 @@ public abstract class DynamicEntity extends Entity {
     public float health;
     public double speed;
     public double[] displacementVector;
+    public double[] facingVector;
 
     /** Sprite Attributes **/
     private double spriteCoordinateFromSpriteSheetX;

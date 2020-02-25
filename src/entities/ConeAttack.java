@@ -51,7 +51,7 @@ public class ConeAttack {
         if (attacking) {
             Coordinates characterCoordinates = Character.getInstance().getCurrentCoordinates();
             Coordinates particleCoordinates;
-            double amountOfParticles = 0.25;
+            double amountOfParticles = 0.1;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
                 double randomAngle = Math.random() * Math.PI / 4.0;
                 double[] vector = MathUtils.rotateVector(MathUtils.rotateVector(pointingVector, - Math.PI / 8.0), randomAngle);
