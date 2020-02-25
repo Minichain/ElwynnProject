@@ -61,7 +61,7 @@ public class MenuSelector extends MenuComponent {
         int scale = 2;
         int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2);
         int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
-        TextRendering.renderText(textX, textY, textInfo, scale);
+        TextRendering.renderText(textX, textY, textInfo, scale, true);
     }
 
     public class Selector {

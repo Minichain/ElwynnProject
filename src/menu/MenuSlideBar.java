@@ -44,10 +44,10 @@ public class MenuSlideBar extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        String textWithPercentage = getText() + " (" + (int) (progress * 100) + "%)";
+        String textInfo = getText() + " (" + (int) (progress * 100) + "%)";
         int scale = 2;
-        int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textWithPercentage.length() / 2);
+        int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2);
         int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
-        TextRendering.renderText(textX, textY, textWithPercentage, scale);
+        TextRendering.renderText(textX, textY, textInfo, scale, true);
     }
 }

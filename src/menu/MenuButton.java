@@ -44,7 +44,7 @@ public class MenuButton extends MenuComponent {
         int scale = 2;
         int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2);
         int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
-        TextRendering.renderText(textX, textY, getText(), scale);
+        TextRendering.renderText(textX, textY, getText(), scale, true);
     }
 
     private static void performAction(ButtonAction buttonAction) {
