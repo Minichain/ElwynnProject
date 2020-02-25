@@ -11,7 +11,7 @@ public class Enemy extends DynamicEntity {
     private Status status;
     private static int attackPeriod = 500;
     private int attackCoolDown = 0;
-    private float attackPower = 2f;
+    private float attackPower = 30f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -154,7 +154,7 @@ public class Enemy extends DynamicEntity {
             attackCoolDown -= timeElapsed;
             return;
         }
-        float damage = (float) (attackPower * timeElapsed + Math.random() % 100);
+        float damage = (float) (attackPower + (Math.random() * 10));
         String text = String.valueOf((int) damage);
         double[] entityCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
         int x = (int) entityCameraCoordinates[0];

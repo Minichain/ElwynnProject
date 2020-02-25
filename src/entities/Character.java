@@ -15,7 +15,7 @@ public class Character extends DynamicEntity {
     private boolean attacking = false;
     private static int attackPeriod = 250;
     private int attackCoolDown = 0;
-    private float attackPower = 4.5f;
+    private float attackPower = 40f;
     private ConeAttack coneAttack;
 
     public enum Status {
@@ -75,7 +75,6 @@ public class Character extends DynamicEntity {
         if (health > 0)  {
             characterStatus = Status.IDLE;
 
-            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
             attack(timeElapsed);
 
             double[] movement = new double[]{0, 0};
@@ -166,10 +165,15 @@ public class Character extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
+        attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
         double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
-        coneAttack = new ConeAttack(pointingVector, 50, 200);
+        if (coneAttack == null) {
+            coneAttack = new ConeAttack(pointingVector, 50, 200, attacking);
+        } else {
+            coneAttack.update(pointingVector, timeElapsed, attacking);
+        }
 
         if (!attacking || attackCoolDown > 0 || characterStatus == Status.DEAD) {
             attackCoolDown -= timeElapsed;
@@ -183,7 +187,7 @@ public class Character extends DynamicEntity {
             if (entity instanceof Enemy
                     && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
                     && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, coneAttack.getVertex1(), coneAttack.getVertex2(), coneAttack.getVertex3())) {
-                float damage = (float) (attackPower * timeElapsed + Math.random() % 100);
+                float damage = (float) (attackPower + (Math.random() * 10));
                 ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 String text = String.valueOf((int) damage);
                 double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
@@ -198,8 +202,8 @@ public class Character extends DynamicEntity {
     }
 
     public void drawAttackFX() {
-        if (attacking && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (coneAttack != null) coneAttack.render();
+        if (coneAttack != null) {
+            coneAttack.render();
         }
     }
 }

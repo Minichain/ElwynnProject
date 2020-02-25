@@ -20,6 +20,7 @@ public class FloatingText {
     public static void renderAndUpdate() {
         FloatingTextEntity entity;
         TextRendering.fontSpriteWhite.bind();
+        glEnable(GL_TEXTURE_2D);
         glBegin(GL_QUADS);
         for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
             entity = listOfFloatingTextEntities.get(i);

@@ -69,6 +69,7 @@ public class UserInterface {
                 textList.add("GAME PAUSED");
             }
 
+            glEnable(GL_TEXTURE_2D);
             TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, textList, textScale);
 
             /** DEBUG LINES **/

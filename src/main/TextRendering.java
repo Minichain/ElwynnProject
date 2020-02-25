@@ -5,20 +5,12 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 
 public class TextRendering {
-    public static TextRendering instance = null;
     public static Texture fontSpriteWhite;
     public static int CHARACTER_WIDTH = 7;
     public static int CHARACTER_HEIGHT = 9;
 
     public static void init() {
         loadFontSprite();
-    }
-
-    public static TextRendering getInstance() {
-        if (instance == null) {
-            instance = new TextRendering();
-        }
-        return instance;
     }
 
     private static void loadFontSprite() {
@@ -79,7 +71,7 @@ public class TextRendering {
         }
     }
 
-    public static int[] getCharacterPosition(String character) {
+    private static int[] getCharacterPosition(String character) {
         int[] tileFromTileSet;
         switch (character) {
             case "z":

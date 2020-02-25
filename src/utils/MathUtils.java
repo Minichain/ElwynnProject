@@ -68,4 +68,8 @@ public class MathUtils {
         int[] mouseCameraCoordinates = MyInputListener.getMouseCameraCoordinates();
         return x < mouseCameraCoordinates[0] && mouseCameraCoordinates[0] < x2 && y < mouseCameraCoordinates[1] && mouseCameraCoordinates[1] < y2;
     }
+
+    public static double[] rotateVector(double[] vector, double angle) {
+        return new double[]{Math.cos(angle) * vector[0] - Math.sin(angle) * vector[1], Math.sin(angle) * vector[0] + Math.cos(angle) * vector[1]};
+    }
 }
