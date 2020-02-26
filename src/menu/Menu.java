@@ -17,26 +17,25 @@ public class Menu {
     public Menu() {
         listOfMenuComponents = new ArrayList<>();
 
-        MenuButton resumeGame = new MenuButton("Resume Game");
-        resumeGame.setButtonAction(MenuButton.ButtonAction.LEAVE_MENU);
+        MenuButton resumeGame = new MenuButton("Resume Game", MenuButton.ButtonAction.LEAVE_MENU);
         listOfMenuComponents.add(resumeGame);
 
-        MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen");
-        fullScreen.setButtonAction(MenuButton.ButtonAction.FULL_SCREEN);
+        MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen", MenuButton.ButtonAction.FULL_SCREEN);
         listOfMenuComponents.add(fullScreen);
 
-        MenuButton creativeMode = new MenuButton("Enable/Disable Creative Mode");
-        creativeMode.setButtonAction(MenuButton.ButtonAction.CREATIVE_MODE);
+        MenuButton creativeMode = new MenuButton("Enable/Disable Creative Mode", MenuButton.ButtonAction.CREATIVE_MODE);
         listOfMenuComponents.add(creativeMode);
 
-        MenuSlideBar audioLevel = new MenuSlideBar("Audio Level");
-        listOfMenuComponents.add(audioLevel);
+        MenuSlideBar effectSoundLevel = new MenuSlideBar("Sound Effects", MenuSlideBar.SliderAction.EFFECT_SOUND_LEVEL);
+        listOfMenuComponents.add(effectSoundLevel);
+
+        MenuSlideBar musicSoundLevel = new MenuSlideBar("Music", MenuSlideBar.SliderAction.MUSIC_SOUND_LEVEL);
+        listOfMenuComponents.add(musicSoundLevel);
 
         MenuSelector resolutionSelector = new MenuSelector("Resolution");
         listOfMenuComponents.add(resolutionSelector);
 
-        MenuButton exitGame = new MenuButton("Exit Game");
-        exitGame.setButtonAction(MenuButton.ButtonAction.EXIT_GAME);
+        MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
     }
 

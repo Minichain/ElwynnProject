@@ -4,11 +4,17 @@ import audio.OpenALManager;
 import menu.Resolution;
 
 public class Parameters {
-    private static int framesPerSecond = 60;
-    private static boolean fullScreen = true;
-    private static Resolution resolution = Resolution.RESOLUTION_1920_1080;
     private static boolean debugMode = false;
-    private static float soundLevel = 0.1f;
+
+    /** GRAPHIC/DISPLAY SETTINGS **/
+    private static int framesPerSecond = 60;
+    private static boolean fullScreen = false;
+    private static Resolution resolution = Resolution.RESOLUTION_1280_720;
+
+    /** AUDIO PARAMETERS **/
+    private static float musicSoundLevel = 0.5f;
+    private static float effectSoundLevel = 0.5f;
+    private static float ambienceSoundLevel = 0.5f;
 
     public static int getFramesPerSecond() {
         return framesPerSecond;
@@ -47,12 +53,30 @@ public class Parameters {
         Parameters.debugMode = debugMode;
     }
 
-    public static float getSoundLevel() {
-        return soundLevel;
+    public static float getMusicSoundLevel() {
+        return musicSoundLevel;
     }
 
-    public static void setSoundLevel(float soundLevel) {
-        OpenALManager.onSoundLevelChange(soundLevel);
-        Parameters.soundLevel = soundLevel;
+    public static void setMusicSoundLevel(float soundLevel) {
+        OpenALManager.onMusicLevelChange(soundLevel);
+        Parameters.musicSoundLevel = soundLevel;
+    }
+
+    public static float getEffectSoundLevel() {
+        return effectSoundLevel;
+    }
+
+    public static void setEffectSoundLevel(float soundLevel) {
+        OpenALManager.onEffectLevelChange(soundLevel);
+        Parameters.effectSoundLevel = soundLevel;
+    }
+
+    public static float getAmbienceSoundLevel() {
+        return ambienceSoundLevel;
+    }
+
+    public static void setAmbienceSoundLevel(float soundLevel) {
+        OpenALManager.onEffectLevelChange(soundLevel);
+        Parameters.ambienceSoundLevel = soundLevel;
     }
 }

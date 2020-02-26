@@ -1,5 +1,6 @@
 package audio;
 
+import main.Parameters;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.*;
 
@@ -57,19 +58,19 @@ public class OpenALManager {
     private static void loadSounds() {
         listOfSounds = new ArrayList<>();
 
-        SOUND_LINK_DASH = new Sound(loadSound("link_dash"), 0);
+        SOUND_LINK_DASH = new Sound(loadSound("link_dash"), 0, Sound.SoundType.EFFECT);
         listOfSounds.add(SOUND_LINK_DASH);
 
-        SOUND_OVERWORLD = new Sound(loadSound("overworld"), 1);
+        SOUND_OVERWORLD = new Sound(loadSound("overworld"), 1, Sound.SoundType.MUSIC);
         listOfSounds.add(SOUND_OVERWORLD);
 
-        SOUND_SECRET = new Sound(loadSound("secret"), 2);
+        SOUND_SECRET = new Sound(loadSound("secret"), 2, Sound.SoundType.EFFECT);
         listOfSounds.add(SOUND_SECRET);
 
-        SOUND_LINK_HURT = new Sound(loadSound("link_hurt"), 3);
+        SOUND_LINK_HURT = new Sound(loadSound("link_hurt"), 3, Sound.SoundType.EFFECT);
         listOfSounds.add(SOUND_LINK_HURT);
 
-        SOUND_LINK_DYING = new Sound(loadSound("link_dying"), 4);
+        SOUND_LINK_DYING = new Sound(loadSound("link_dying"), 4, Sound.SoundType.EFFECT);
         listOfSounds.add(SOUND_LINK_DYING);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
@@ -113,19 +114,32 @@ public class OpenALManager {
         return bufferPointer;
     }
 
-    public static void setupSources() {
+    private static void setupSources() {
         alGenSources(source);
         for (int i = 0; i < listOfSounds.size(); i++) {
-            setupSource(listOfSounds.get(i).getBuffer(), listOfSounds.get(i).getIndex());
+            float gain;
+            switch (listOfSounds.get(i).getType()) {
+                case EFFECT:
+                    gain = Parameters.getEffectSoundLevel();
+                    break;
+                case MUSIC:
+                    gain = Parameters.getMusicSoundLevel();
+                    break;
+                case AMBIENCE:
+                default:
+                    gain = Parameters.getAmbienceSoundLevel();
+                    break;
+            }
+            setupSource(listOfSounds.get(i).getBuffer(), listOfSounds.get(i).getIndex(), gain);
         }
     }
 
-    public static void setupSource(int soundBuffer, int index) {
+    private static void setupSource(int soundBuffer, int index, float gain) {
         alSourcei(source.get(index), AL_BUFFER, soundBuffer);
-        alSourcef(source.get(index), AL_GAIN, 1f);
+        alSourcef(source.get(index), AL_GAIN, gain);
     }
 
-    public static void setupListener() {
+    private static void setupListener() {
         alListenerfv(AL_POSITION, listenerPos);
     }
 
@@ -133,9 +147,19 @@ public class OpenALManager {
         alSourcePlay(source.get(soundBuffer.getIndex()));
     }
 
-    public static void onSoundLevelChange(float soundLevel) {
-        for (int i = 0; i < listOfSounds.size(); i++) {
-            alSourcef(source.get(listOfSounds.get(i).getIndex()), AL_GAIN, soundLevel);
+    public static void onMusicLevelChange(float soundLevel) {
+        for (Sound listOfSound : listOfSounds) {
+            if (listOfSound.getType() == Sound.SoundType.MUSIC) {
+                alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            }
+        }
+    }
+
+    public static void onEffectLevelChange(float soundLevel) {
+        for (Sound listOfSound : listOfSounds) {
+            if (listOfSound.getType() == Sound.SoundType.EFFECT) {
+                alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            }
         }
     }
 

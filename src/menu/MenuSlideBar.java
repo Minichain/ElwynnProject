@@ -8,9 +8,15 @@ import utils.MathUtils;
 
 public class MenuSlideBar extends MenuComponent {
     private double progress = 0.5;    // From 0.0 to 1.0
+    private SliderAction sliderAction;
 
-    public MenuSlideBar(String text) {
+    public enum SliderAction {
+        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL
+    }
+
+    public MenuSlideBar(String text, SliderAction sliderAction) {
         setText(text);
+        this.sliderAction = sliderAction;
     }
 
     @Override
@@ -20,7 +26,7 @@ public class MenuSlideBar extends MenuComponent {
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             progress = (double) (MyInputListener.getMouseCameraCoordinates()[0] - x) / (double) width;
-            Parameters.setSoundLevel((float) progress);
+            performAction(sliderAction);
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
@@ -49,5 +55,20 @@ public class MenuSlideBar extends MenuComponent {
         int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2);
         int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
         TextRendering.renderText(textX, textY, textInfo, scale, true);
+    }
+
+    private void performAction(SliderAction buttonAction) {
+        switch (buttonAction) {
+            case EFFECT_SOUND_LEVEL:
+                Parameters.setEffectSoundLevel((float) progress);
+                break;
+            case MUSIC_SOUND_LEVEL:
+                Parameters.setMusicSoundLevel((float) progress);
+                break;
+            case AMBIENCE_SOUND_LEVEL:
+            case NONE:
+            default:
+                break;
+        }
     }
 }

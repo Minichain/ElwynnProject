@@ -5,14 +5,15 @@ import main.*;
 import utils.MathUtils;
 
 public class MenuButton extends MenuComponent {
-    private ButtonAction buttonAction = ButtonAction.NONE;
+    private ButtonAction buttonAction;
 
     public enum ButtonAction {
         NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE
     }
 
-    public MenuButton(String text) {
+    public MenuButton(String text, ButtonAction buttonAction) {
         setText(text);
+        this.buttonAction = buttonAction;
     }
 
     @Override
@@ -23,7 +24,9 @@ public class MenuButton extends MenuComponent {
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
             setPressed(true);
         } else {
-            if (isPressed() && isMouseOver()) performAction(buttonAction);
+            if (isPressed() && isMouseOver()) {
+                performAction(buttonAction);
+            }
             setPressed(false);
         }
     }
@@ -47,7 +50,7 @@ public class MenuButton extends MenuComponent {
         TextRendering.renderText(textX, textY, getText(), scale, true);
     }
 
-    private static void performAction(ButtonAction buttonAction) {
+    private void performAction(ButtonAction buttonAction) {
         switch (buttonAction) {
             case FULL_SCREEN:
                 Window.setFullScreen(!Parameters.isFullScreen());
@@ -69,13 +72,5 @@ public class MenuButton extends MenuComponent {
             default:
                 break;
         }
-    }
-
-    public ButtonAction getButtonAction() {
-        return buttonAction;
-    }
-
-    public void setButtonAction(ButtonAction buttonAction) {
-        this.buttonAction = buttonAction;
     }
 }
