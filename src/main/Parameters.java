@@ -1,5 +1,6 @@
 package main;
 
+import audio.OpenALManager;
 import menu.Resolution;
 
 public class Parameters {
@@ -51,7 +52,7 @@ public class Parameters {
     }
 
     public static void setSoundLevel(float soundLevel) {
-        MyOpenAL.onSoundLevelChange();
+        OpenALManager.onSoundLevelChange(soundLevel);
         Parameters.soundLevel = soundLevel;
     }
 }

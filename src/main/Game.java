@@ -1,5 +1,6 @@
 package main;
 
+import audio.OpenALManager;
 import entities.Camera;
 import entities.Scene;
 
@@ -24,7 +25,7 @@ public class Game {
     }
 
     public static void stopGame() {
-        MyOpenAL.destroy();
+        OpenALManager.destroy();
     }
 }
 

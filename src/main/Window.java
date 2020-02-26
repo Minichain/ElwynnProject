@@ -1,5 +1,6 @@
 package main;
 
+import audio.OpenALManager;
 import listeners.MyInputListener;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowPosCallback;
@@ -26,7 +27,7 @@ public class Window {
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
         MyOpenGL.prepareOpenGL();
-        MyOpenAL.prepareOpenAL();
+        OpenALManager.prepareOpenAL();
         glfwPollEvents();
 
         /** INPUT LISTENER **/

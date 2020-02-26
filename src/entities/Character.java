@@ -1,5 +1,6 @@
 package entities;
 
+import audio.OpenALManager;
 import utils.MathUtils;
 import utils.Utils;
 import listeners.MyInputListener;
@@ -108,7 +109,7 @@ public class Character extends DynamicEntity {
                 characterStatus = Status.RUNNING;
             }
         } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
-            MyOpenAL.playSound(MyOpenAL.SOUND_LINK_DYING);
+            OpenALManager.playSound(OpenALManager.SOUND_LINK_DYING);
             characterStatus = Status.DYING;
         }
 
@@ -209,7 +210,7 @@ public class Character extends DynamicEntity {
             }
         }
 
-        MyOpenAL.playSound(MyOpenAL.SOUND_LINK_DASH);
+        OpenALManager.playSound(OpenALManager.SOUND_LINK_DASH);
         attackCoolDown = attackPeriod;
     }
 

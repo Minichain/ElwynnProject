@@ -1,5 +1,6 @@
 package entities;
 
+import audio.OpenALManager;
 import main.*;
 import utils.MathUtils;
 
@@ -28,7 +29,7 @@ public class Scene {
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
         loadSprites();
-        MyOpenAL.playSound(MyOpenAL.SOUND_OVERWORLD);
+        OpenALManager.playSound(OpenALManager.SOUND_OVERWORLD);
     }
 
     public static Scene getInstance() {
