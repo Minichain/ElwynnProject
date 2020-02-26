@@ -9,10 +9,10 @@ public class Parameters {
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond = 60;
     private static boolean fullScreen = false;
-    private static Resolution resolution = Resolution.RESOLUTION_1280_720;
+    private static Resolution resolution = Resolution.RESOLUTION_1600_900;
 
     /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.5f;
+    private static float musicSoundLevel = 0f;
     private static float effectSoundLevel = 0.5f;
     private static float ambienceSoundLevel = 0.5f;
 

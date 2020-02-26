@@ -17,7 +17,7 @@ public class FloatingText {
         listOfFloatingTextEntities.add(floatingTextEntity);
     }
 
-    public static void renderAndUpdate() {
+    public static void renderAndUpdate(long timeElapsed) {
         FloatingTextEntity entity;
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
@@ -25,13 +25,14 @@ public class FloatingText {
         for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
             entity = listOfFloatingTextEntities.get(i);
             double alpha = 1.0 - entity.timeLiving / entity.timeToLive;
+            double[] entityCameraCoordinates = entity.coordinates.toCameraCoordinates();
             if (entity.isDangerText()) {
-                TextRendering.renderText((int) entity.coordinates.x, (int) entity.coordinates.y, entity.text, 2, true, alpha, 1f, 0f, 0f);
+                TextRendering.renderText((int) entityCameraCoordinates[0], (int) entityCameraCoordinates[1], entity.text, 2, true, alpha, 1f, 0f, 0f);
             } else {
-                TextRendering.renderText((int) entity.coordinates.x, (int) entity.coordinates.y, entity.text, 2, true, alpha);
+                TextRendering.renderText((int) entityCameraCoordinates[0], (int) entityCameraCoordinates[1], entity.text, 2, true, alpha);
             }
             if (entity.timeLiving < entity.timeToLive) {
-                entity.timeLiving += 1;
+                entity.timeLiving += timeElapsed;
                 entity.coordinates = new Coordinates(entity.coordinates.x, entity.coordinates.y - entity.movingSpeed);
             } else {
                 listOfFloatingTextEntities.remove(entity);

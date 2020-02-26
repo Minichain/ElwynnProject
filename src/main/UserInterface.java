@@ -85,6 +85,9 @@ public class UserInterface {
             glEnable(GL_BLEND);
         }
 
+        /** FLOATING TEXT **/
+        FloatingText.renderAndUpdate(timeElapsed);
+
         /** YOU DIED **/
         if (Character.getInstance().getStatus() == Character.Status.DEAD) {
             String text = "YOU DIED";
@@ -135,7 +138,5 @@ public class UserInterface {
             TileMap.drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
             glEnd();
         }
-
-        FloatingText.renderAndUpdate();
     }
 }

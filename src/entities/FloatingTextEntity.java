@@ -5,13 +5,13 @@ import main.Coordinates;
 public class FloatingTextEntity {
     public String text;
     public Coordinates coordinates;
-    public double movingSpeed = 5;
+    public double movingSpeed = 2.0;
     public double timeLiving = 0;
-    public double timeToLive = 50;
+    public double timeToLive = 800; // milliseconds
     public boolean dangerText = false;
 
-    public FloatingTextEntity(int x, int y, String text, boolean xAxisRandomness, boolean yAxisRandomness, boolean dangerText) {
-        int randomness = 100;
+    public FloatingTextEntity(double x, double y, String text, boolean xAxisRandomness, boolean yAxisRandomness, boolean dangerText) {
+        int randomness = 10;
         if (xAxisRandomness) {
             x = x - (randomness / 2) + (int) (Math.random() * randomness);
         }
@@ -21,7 +21,7 @@ public class FloatingTextEntity {
         new FloatingTextEntity(x, y, text, dangerText);
     }
 
-    public FloatingTextEntity(int x, int y, String text, boolean dangerText) {
+    public FloatingTextEntity(double x, double y, String text, boolean dangerText) {
         this.text = text;
         this.coordinates = new Coordinates(x, y);
         this.dangerText = dangerText;

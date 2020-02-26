@@ -7,7 +7,7 @@ import main.TextRendering;
 import utils.MathUtils;
 
 public class MenuSlideBar extends MenuComponent {
-    private double progress = 0.5;    // From 0.0 to 1.0
+    private float progress;    // From 0 to 1
     private SliderAction sliderAction;
 
     public enum SliderAction {
@@ -16,6 +16,21 @@ public class MenuSlideBar extends MenuComponent {
 
     public MenuSlideBar(String text, SliderAction sliderAction) {
         setText(text);
+        switch (sliderAction) {
+            case EFFECT_SOUND_LEVEL:
+                progress = Parameters.getEffectSoundLevel();
+                break;
+            case MUSIC_SOUND_LEVEL:
+                progress = Parameters.getMusicSoundLevel();
+                break;
+            case AMBIENCE_SOUND_LEVEL:
+                progress = Parameters.getAmbienceSoundLevel();
+                break;
+            case NONE:
+            default:
+                progress = 0f;
+                break;
+        }
         this.sliderAction = sliderAction;
     }
 
@@ -25,7 +40,7 @@ public class MenuSlideBar extends MenuComponent {
         y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
-            progress = (double) (MyInputListener.getMouseCameraCoordinates()[0] - x) / (double) width;
+            progress = (float) (MyInputListener.getMouseCameraCoordinates()[0] - x) / (float) width;
             performAction(sliderAction);
             setPressed(true);
         } else {

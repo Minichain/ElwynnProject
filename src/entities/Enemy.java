@@ -156,10 +156,9 @@ public class Enemy extends DynamicEntity {
         }
         float damage = (float) (attackPower + (Math.random() * 10));
         String text = String.valueOf((int) damage);
-        double[] entityCameraCoordinates = Character.getInstance().getCurrentCoordinates().toCameraCoordinates();
-        int x = (int) entityCameraCoordinates[0];
-        int y = (int) entityCameraCoordinates[1];
-        FloatingTextEntity textEntity = new FloatingTextEntity(x, y, text, true, false, true);
+        double x = Character.getInstance().getCurrentCoordinates().x;
+        double y = Character.getInstance().getCurrentCoordinates().y;
+        new FloatingTextEntity(x, y, text, true, true, true);
         Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
         OpenALManager.playSound(OpenALManager.SOUND_LINK_HURT);
         attackCoolDown = attackPeriod;

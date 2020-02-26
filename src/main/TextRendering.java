@@ -49,6 +49,7 @@ public class TextRendering {
     public static void renderText(int x, int y, String textToRender, int scale, boolean isTextureBoundAndOpenGlBegun, double alpha, float r, float g, float b) {
         if (!isTextureBoundAndOpenGlBegun) {
             fontSpriteWhite.bind();
+            glEnable(GL_TEXTURE_2D);
             glBegin(GL_QUADS);
         }
 
@@ -67,6 +68,7 @@ public class TextRendering {
         }
 
         if (!isTextureBoundAndOpenGlBegun) {
+            glDisable(GL_TEXTURE_2D);
             glEnd();
         }
     }

@@ -203,10 +203,7 @@ public class Character extends DynamicEntity {
                 float damage = (float) (attackPower + (Math.random() * 10));
                 ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                 String text = String.valueOf((int) damage);
-                double[] entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
-                int x = (int) entityCameraCoordinates[0];
-                int y = (int) entityCameraCoordinates[1];
-                new FloatingTextEntity(x, y, text, true, false, false);
+                new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
             }
         }
 
