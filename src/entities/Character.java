@@ -1,7 +1,6 @@
 package entities;
 
 import audio.OpenALManager;
-import utils.MathUtils;
 import utils.Utils;
 import listeners.MyInputListener;
 import main.*;
@@ -14,10 +13,11 @@ public class Character extends DynamicEntity {
 
     /** ATTACK **/
     private boolean attacking = false;
-    private static int attackPeriod = 250;
+    private int attackPeriod = 250;
     private int attackCoolDown = 0;
     private float attackPower = 40f;
     private ConeAttack coneAttack;
+    private float coneAttackLength = 200f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -182,33 +182,14 @@ public class Character extends DynamicEntity {
         double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
+
+        attacking = attacking && characterStatus != Character.Status.DEAD;
+
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(pointingVector, Math.PI / 6.0, 200, attacking);
+            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
         } else {
-            coneAttack.update(pointingVector, timeElapsed, attacking);
+            coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
         }
-
-        if (!attacking || attackCoolDown > 0 || characterStatus == Status.DEAD) {
-            attackCoolDown -= timeElapsed;
-            return;
-        }
-
-        Entity entity;
-        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
-            entity = Scene.getInstance().getListOfEntities().get(i);
-            double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
-            if (entity instanceof Enemy
-                    && ((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                    && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, coneAttack.getVertex1(), coneAttack.getVertex2(), coneAttack.getVertex3())) {
-                float damage = (float) (attackPower + (Math.random() * 10));
-                ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
-                String text = String.valueOf((int) damage);
-                new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
-            }
-        }
-
-        OpenALManager.playSound(OpenALManager.SOUND_LINK_DASH);
-        attackCoolDown = attackPeriod;
     }
 
     public void drawAttackFX() {

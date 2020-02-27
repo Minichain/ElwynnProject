@@ -4,7 +4,7 @@ import main.Coordinates;
 import main.MyOpenGL;
 
 public class Particle {
-    public Coordinates center;
+    private Coordinates center;
     private double[] velocityVector;
     private float size;
     private double movingSpeed = 0.25;

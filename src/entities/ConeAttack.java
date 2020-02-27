@@ -1,5 +1,6 @@
 package entities;
 
+import audio.OpenALManager;
 import main.*;
 import utils.MathUtils;
 
@@ -15,12 +16,21 @@ public class ConeAttack {
     private float length;
     private ArrayList<Particle> listOfParticles;
     private boolean attacking;
+    private int attackPeriod;
+    private int attackCoolDown;
+    private float attackPower;
+    private boolean enemyAttack;
 
-    public ConeAttack(double[] pointingVector, double angle, float coneLength, boolean attacking) {
+
+    public ConeAttack(Coordinates initialParticleCoordinates, double[] pointingVector, double angle, float coneLength, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
         this.angle = angle;
         this.length = coneLength;
+        this.attackPeriod = attackPeriod;
+        this.attackCoolDown = attackCoolDown;
+        this.attackPower = attackPower;
         this.listOfParticles = new ArrayList<>();
-        update(pointingVector, 0, attacking);
+        this.enemyAttack = enemyAttack;
+        update(initialParticleCoordinates, pointingVector, 0, attacking);
     }
 
     public double[] getVertex1() {
@@ -35,33 +45,36 @@ public class ConeAttack {
         return vertex3;
     }
 
-    public void update(double[] pointingVector, long timeElapsed, boolean attacking) {
+    public void update(Coordinates initialParticleCoordinates, double[] pointingVector, long timeElapsed, boolean attacking) {
         this.attacking = attacking;
         pointingVector = MathUtils.normalizeVector(pointingVector);
         double[] rotatedVector;
 
-        vertex1 = new Coordinates(Character.getInstance().getCurrentCoordinates().x, Character.getInstance().getCurrentCoordinates().y).toCameraCoordinates();
+        vertex1 = new Coordinates(initialParticleCoordinates.x, initialParticleCoordinates.y).toCameraCoordinates();
         rotatedVector = MathUtils.rotateVector(pointingVector, angle / 2.0);
-        vertex2 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + rotatedVector[0] * length, Character.getInstance().getCurrentCoordinates().y + rotatedVector[1] * length).toCameraCoordinates();
+        vertex2 = new Coordinates(initialParticleCoordinates.x + rotatedVector[0] * length, initialParticleCoordinates.y + rotatedVector[1] * length).toCameraCoordinates();
         rotatedVector = MathUtils.rotateVector(pointingVector, - angle / 2.0);
-        vertex3 = new Coordinates(Character.getInstance().getCurrentCoordinates().x + rotatedVector[0] * length, Character.getInstance().getCurrentCoordinates().y + rotatedVector[1] * length).toCameraCoordinates();
+        vertex3 = new Coordinates(initialParticleCoordinates.x + rotatedVector[0] * length, initialParticleCoordinates.y + rotatedVector[1] * length).toCameraCoordinates();
 
         Particle particle;
 
         /** GENERATE NEW PARTICLES **/
         if (attacking) {
-            Coordinates characterCoordinates = Character.getInstance().getCurrentCoordinates();
             Coordinates particleCoordinates;
             double amountOfParticles = 0.1;
             double randomAngle;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
                 randomAngle = Math.random() * angle;
                 rotatedVector = MathUtils.rotateVector(MathUtils.rotateVector(pointingVector, - angle / 2.0), randomAngle);
-                double distanceFromCharacter = 40;
+                double distanceFromEntity = 40;
                 particleCoordinates = new Coordinates(
-                        characterCoordinates.x + rotatedVector[0] * Math.random() * distanceFromCharacter,
-                        characterCoordinates.y + rotatedVector[1] * Math.random() * distanceFromCharacter);
-                particle = new Particle(particleCoordinates, rotatedVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
+                        initialParticleCoordinates.x + rotatedVector[0] * Math.random() * distanceFromEntity,
+                        initialParticleCoordinates.y + rotatedVector[1] * Math.random() * distanceFromEntity);
+                if (enemyAttack) {
+                    particle = new Particle(particleCoordinates, rotatedVector, (int) (4 * Camera.getZoom()), 1f, 0f, 0f);
+                } else {
+                    particle = new Particle(particleCoordinates, rotatedVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
+                }
                 listOfParticles.add(particle);
             }
         }
@@ -74,6 +87,38 @@ public class ConeAttack {
                 listOfParticles.remove(particle);
             }
         }
+
+        /** DEAL DAMAGE **/
+        if (!attacking || attackCoolDown > 0) {
+            attackCoolDown -= timeElapsed;
+            return;
+        }
+
+        Entity entity;
+        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
+            entity = Scene.getInstance().getListOfEntities().get(i);
+            double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
+            float damage = (float) (attackPower + (Math.random() * 10));
+
+            if (entity instanceof Enemy && !enemyAttack) {
+                if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
+                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
+                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
+                    String text = String.valueOf((int) damage);
+                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
+                }
+            } else if (entity instanceof Character && enemyAttack) {
+                if (((Character) entity).getStatus() != Character.Status.DEAD
+                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
+                    ((Character) entity).setHealth(((Character) entity).getHealth() - damage);
+                    String text = String.valueOf((int) damage);
+                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
+                }
+            }
+        }
+
+        OpenALManager.playSound(OpenALManager.SOUND_LINK_DASH);
+        attackCoolDown = attackPeriod;
     }
 
     public void render() {
@@ -84,7 +129,11 @@ public class ConeAttack {
             glDisable(GL_BLEND);
             glBegin(GL_LINES);
             glLineWidth(4);
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            if (enemyAttack) {
+                glColor4f(1.0f, 0f, 0f, 1.0f);
+            } else {
+                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            }
             glVertex2d(vertex1[0], vertex1[1]);
             glVertex2d(vertex2[0], vertex2[1]);
             glVertex2d(vertex2[0], vertex2[1]);

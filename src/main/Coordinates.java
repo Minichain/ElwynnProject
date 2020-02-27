@@ -54,4 +54,8 @@ public class Coordinates {
         int cameraY = (int) (y / Window.getCameraWindowScaleFactor()[1]);
         return new int[]{cameraX, cameraY};
     }
+
+    public String toString() {
+        return "(" + this.x + ", " + this.y + ")";
+    }
 }

@@ -1,6 +1,9 @@
 package entities;
 
 import audio.OpenALManager;
+import listeners.MyInputListener;
+import main.Coordinates;
+import main.GameMode;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -9,9 +12,14 @@ public class Enemy extends DynamicEntity {
     private static Texture spriteSheet;
     private Utils.DirectionFacing directionFacing;
     private Status status;
-    private static int attackPeriod = 500;
+
+    /** ATTACK **/
+    private boolean attacking = false;
+    private int attackPeriod = 500;
     private int attackCoolDown = 0;
-    private float attackPower = 30f;
+    private float attackPower = 20f;
+    private ConeAttack coneAttack;
+    private float coneAttackLength = 75;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -58,16 +66,18 @@ public class Enemy extends DynamicEntity {
             double[] movement = new double[2];
             movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
             movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
-            boolean closeToPlayer = !(MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000);
-            boolean chasing = (status != Status.DYING && status != Status.DEAD && !closeToPlayer);
-
-            if (closeToPlayer && Character.getInstance().getStatus() != Character.Status.DEAD) {
-                attack(timeElapsed);
-            }
+            attacking = MathUtils.module(movement) < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
+            boolean chasing = (status != Status.DYING && status != Status.DEAD && (MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000));
+            attack(timeElapsed);
 
             movement = MathUtils.normalizeVector(movement);
-            movement[0] *= timeElapsed * speed;
-            movement[1] *= timeElapsed * speed;
+            if (attacking) {
+                movement[0] *= timeElapsed * speed * 0.5;
+                movement[1] *= timeElapsed * speed * 0.5;
+            } else {
+                movement[0] *= timeElapsed * speed;
+                movement[1] *= timeElapsed * speed;
+            }
 
             int distanceFactor = 2;
             if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
@@ -150,17 +160,21 @@ public class Enemy extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
-        if (attackCoolDown > 0) {
-            attackCoolDown -= timeElapsed;
-            return;
+        double[] pointingVector = new double[]{Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
+                Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
+
+        attacking = attacking && status != Status.DEAD;
+
+        if (coneAttack == null) {
+            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, true, attacking);
+        } else {
+            coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
         }
-        float damage = (float) (attackPower + (Math.random() * 10));
-        String text = String.valueOf((int) damage);
-        double x = Character.getInstance().getCurrentCoordinates().x;
-        double y = Character.getInstance().getCurrentCoordinates().y;
-        new FloatingTextEntity(x, y, text, true, true, true);
-        Character.getInstance().setHealth(Character.getInstance().getHealth() - damage);
-        OpenALManager.playSound(OpenALManager.SOUND_LINK_HURT);
-        attackCoolDown = attackPeriod;
+    }
+
+    public void drawAttackFX() {
+        if (coneAttack != null) {
+            coneAttack.render();
+        }
     }
 }
