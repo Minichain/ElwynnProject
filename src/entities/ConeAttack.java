@@ -21,7 +21,6 @@ public class ConeAttack {
     private float attackPower;
     private boolean enemyAttack;
 
-
     public ConeAttack(Coordinates initialParticleCoordinates, double[] pointingVector, double angle, float coneLength, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
         this.angle = angle;
         this.length = coneLength;
@@ -31,18 +30,6 @@ public class ConeAttack {
         this.listOfParticles = new ArrayList<>();
         this.enemyAttack = enemyAttack;
         update(initialParticleCoordinates, pointingVector, 0, attacking);
-    }
-
-    public double[] getVertex1() {
-        return vertex1;
-    }
-
-    public double[] getVertex2() {
-        return vertex2;
-    }
-
-    public double[] getVertex3() {
-        return vertex3;
     }
 
     public void update(Coordinates initialParticleCoordinates, double[] pointingVector, long timeElapsed, boolean attacking) {

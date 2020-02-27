@@ -1,6 +1,7 @@
 package listeners;
 
 import entities.Camera;
+import entities.CircleAttack;
 import entities.Scene;
 import entities.TileMap;
 import main.*;
@@ -121,10 +122,17 @@ public class MyInputListener {
 
     private static void processRightMouseButtonPressed() {
         rightMouseButtonPressed = true;
-        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-            // Change Tile's collision behaviour
-            int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
-            TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
+        if (!Menu.getInstance().isShowing() ) {
+            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                // Change Tile's collision behaviour
+                int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
+                TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
+            } else if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
+                CircleAttack circleAttack = new CircleAttack(new Coordinates(mouseWorldCoordinates[0], mouseWorldCoordinates[1]),
+                        100, 500, 0, 500, true, true);
+                Scene.listOfCircleAttacks.add(circleAttack);
+            }
         }
     }
 
@@ -169,13 +177,6 @@ public class MyInputListener {
             case GLFW_KEY_F2:
                 break;
             case GLFW_KEY_F3:
-                if (pressed) {
-                    if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                        GameMode.setGameMode(GameMode.Mode.CREATIVE);
-                    } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                        GameMode.setGameMode(GameMode.Mode.NORMAL);
-                    }
-                }
                 break;
             case GLFW_KEY_F4:
                 if (pressed) Scene.getInstance().initEntities();
@@ -184,7 +185,6 @@ public class MyInputListener {
                 if (pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
-                if (pressed) Window.setFullScreen(!Parameters.isFullScreen());
                 break;
             case GLFW_KEY_F7:
                 break;

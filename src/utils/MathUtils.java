@@ -33,9 +33,22 @@ public class MathUtils {
         return Math.sqrt(sum);
     }
 
+    public static double module(double[] coordinates1, double[] coordinates2) {
+        return Math.sqrt(Math.pow(coordinates1[0] - coordinates2[0], 2)
+                + Math.pow(coordinates1[1] - coordinates2[1], 2));
+    }
+
     public static double module(Coordinates coordinates1, Coordinates coordinates2) {
         return Math.sqrt(Math.pow(coordinates1.x - coordinates2.x, 2)
                 + Math.pow(coordinates1.y - coordinates2.y, 2));
+    }
+
+    public static boolean isPointInsideCircle(Coordinates point, Coordinates center, double radius) {
+        return module(point, center) <= radius;
+    }
+
+    public static boolean isPointInsideCircle(double[] point, double[] center, double radius) {
+        return module(point, center) <= radius;
     }
 
     public static boolean isPointInsideTriangle(int[] point, int[] vertex1, int[] vertex2, int[] vertex3) {

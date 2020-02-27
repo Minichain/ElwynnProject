@@ -42,8 +42,6 @@ public class UserInterface {
             int gapBetweenTexts = 10 * textScale;
 
             textList.add("Show/Hide Debug Info: F1");
-            textList.add("Pause/Resume Game: F2");
-            textList.add("Creative/Normal Mode: F3");
             textList.add("Reset Game: F4");
             textList.add("Save World: F5");
             textList.add("FPS: " + fps);

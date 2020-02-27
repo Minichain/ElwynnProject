@@ -1,9 +1,7 @@
 package main;
 
+import entities.*;
 import entities.Character;
-import entities.Enemy;
-import entities.Entity;
-import entities.Scene;
 
 public class SpecialEffects {
     public static void render() {
@@ -13,6 +11,10 @@ public class SpecialEffects {
             } else if (entity instanceof Character) {
                 ((Character) entity).drawAttackFX();
             }
+        }
+
+        for (CircleAttack circleAttack : Scene.listOfCircleAttacks) {
+            circleAttack.render();
         }
     }
 }

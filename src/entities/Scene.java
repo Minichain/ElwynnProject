@@ -13,8 +13,8 @@ public class Scene {
     private static Scene instance = null;
 
     /** ENTITIES **/
-    private static List<Entity> listOfEntities;
-    private static List<Entity> listOfEntitiesToUpdate;
+    private static ArrayList<Entity> listOfEntities;
+    private static ArrayList<Entity> listOfEntitiesToUpdate;
     private static int enemySpawnPeriod = 1000; // In Milliseconds
     private static long lastEnemySpawnTime;
 
@@ -23,9 +23,12 @@ public class Scene {
 
     private static Coordinates initialCoordinates;
 
+    public static ArrayList<CircleAttack> listOfCircleAttacks;
+
     private Scene() {
         listOfEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
+        listOfCircleAttacks = new ArrayList<>();
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
         loadSprites();
@@ -50,6 +53,9 @@ public class Scene {
     public void update(long timeElapsed) {
         updateAndSortEntities(timeElapsed);
         updateEnemiesSpawn();
+        for (CircleAttack circleAttack : Scene.listOfCircleAttacks) {
+            circleAttack.update(timeElapsed, true);
+        }
     }
 
     private void updateEnemiesSpawn() {
