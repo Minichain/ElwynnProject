@@ -32,7 +32,7 @@ public class Scene {
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
         loadSprites();
-        OpenALManager.playSound(OpenALManager.SOUND_OVERWORLD);
+        OpenALManager.playSound(OpenALManager.SOUND_MUSIC_O1);
     }
 
     public static Scene getInstance() {
@@ -125,6 +125,7 @@ public class Scene {
         Character.getInstance().resetCharacter();
         Camera.getInstance().resetCamera();
         Scene.getInstance().getListOfEntities().add(Character.getInstance());
+        listOfCircleAttacks.clear();
     }
 
     public void render() {

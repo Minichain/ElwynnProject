@@ -23,10 +23,10 @@ public class OpenALManager {
     private static ArrayList<Sound> listOfSounds;
 
     public static Sound SOUND_SECRET;
-    public static Sound SOUND_LINK_HURT;
-    public static Sound SOUND_LINK_DASH;
-    public static Sound SOUND_LINK_DYING;
-    public static Sound SOUND_OVERWORLD;
+    public static Sound SOUND_PLAYER_HURT_01;
+    public static Sound SOUND_ATTACK_01;
+    public static Sound SOUND_PLAYER_DYING_01;
+    public static Sound SOUND_MUSIC_O1;
 
     /** Sources are points emitting sound. */
     private static IntBuffer source;
@@ -58,20 +58,17 @@ public class OpenALManager {
     private static void loadSounds() {
         listOfSounds = new ArrayList<>();
 
-        SOUND_LINK_DASH = new Sound(loadSound("link_dash"), 0, Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_LINK_DASH);
+        SOUND_ATTACK_01 = new Sound(loadSound("link_dash"), 0, Sound.SoundType.EFFECT);
+        listOfSounds.add(SOUND_ATTACK_01);
 
-        SOUND_OVERWORLD = new Sound(loadSound("overworld"), 1, Sound.SoundType.MUSIC);
-        listOfSounds.add(SOUND_OVERWORLD);
+        SOUND_MUSIC_O1 = new Sound(loadSound("minecraft_music_01"), 1, Sound.SoundType.MUSIC);
+        listOfSounds.add(SOUND_MUSIC_O1);
 
-        SOUND_SECRET = new Sound(loadSound("secret"), 2, Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_SECRET);
+        SOUND_PLAYER_HURT_01 = new Sound(loadSound("minecraft_player_hurt"), 3, Sound.SoundType.EFFECT);
+        listOfSounds.add(SOUND_PLAYER_HURT_01);
 
-        SOUND_LINK_HURT = new Sound(loadSound("link_hurt"), 3, Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_LINK_HURT);
-
-        SOUND_LINK_DYING = new Sound(loadSound("link_dying"), 4, Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_LINK_DYING);
+        SOUND_PLAYER_DYING_01 = new Sound(loadSound("minecraft_player_die"), 4, Sound.SoundType.EFFECT);
+        listOfSounds.add(SOUND_PLAYER_DYING_01);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
     }

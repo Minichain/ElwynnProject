@@ -98,13 +98,14 @@ public class ConeAttack {
                 if (((Character) entity).getStatus() != Character.Status.DEAD
                         && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
                     ((Character) entity).setHealth(((Character) entity).getHealth() - damage);
+                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
                 }
             }
         }
 
-        OpenALManager.playSound(OpenALManager.SOUND_LINK_DASH);
+        OpenALManager.playSound(OpenALManager.SOUND_ATTACK_01);
         attackCoolDown = attackPeriod;
     }
 

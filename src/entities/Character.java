@@ -109,7 +109,7 @@ public class Character extends DynamicEntity {
                 characterStatus = Status.RUNNING;
             }
         } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
-            OpenALManager.playSound(OpenALManager.SOUND_LINK_DYING);
+            OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             characterStatus = Status.DYING;
         }
 

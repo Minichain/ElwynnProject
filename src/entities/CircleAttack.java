@@ -11,11 +11,10 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glEnd;
 
 public class CircleAttack {
-    private Coordinates[] vertices;
-    private int numberOfVertices = 16;
     private Coordinates center;
     private double radius;
-    private double angleStep = Math.PI / ((double) numberOfVertices / 2.0);
+    private int numberOfVertices = 16;
+    private double angleStep = 2.0 * Math.PI / (double) numberOfVertices;
     private ArrayList<Particle> listOfParticles;
     private boolean attacking;
     private int attackPeriod;
@@ -24,7 +23,6 @@ public class CircleAttack {
     private boolean enemyAttack;
 
     public CircleAttack(Coordinates center, double radius, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
-        vertices = new Coordinates[numberOfVertices];
         this.center = center;
         this.radius = radius;
         this.enemyAttack = enemyAttack;
@@ -37,16 +35,6 @@ public class CircleAttack {
 
     public void update(long timeElapsed, boolean attacking) {
         this.attacking = attacking;
-
-        /** CIRCLE OUTLINE **/
-        double angle = 0;
-        for (int i = 0; i < numberOfVertices; i++) {
-            double x = (Math.cos(angle) * radius) + this.center.x;
-            double y = (Math.sin(angle) * radius) + this.center.y;
-            vertices[i] = new Coordinates(x, y);
-            angle += angleStep;
-        }
-
         Particle particle;
         double[] velocityVector;
 
@@ -65,7 +53,7 @@ public class CircleAttack {
                 if (enemyAttack) {
                     particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 0f, 0f);
                 } else {
-                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
+                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 255f, 0f, 0f);
                 }
                 listOfParticles.add(particle);
             }
@@ -91,7 +79,7 @@ public class CircleAttack {
             entity = Scene.getInstance().getListOfEntities().get(i);
             double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
             float damage = (float) (attackPower + (Math.random() * 10));
-
+            double radius = this.radius * Camera.getZoom();
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideCircle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, this.center.toCameraCoordinates(), radius)) {
@@ -103,13 +91,14 @@ public class CircleAttack {
                 if (((Character) entity).getStatus() != Character.Status.DEAD
                         && MathUtils.isPointInsideCircle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, this.center.toCameraCoordinates(), radius)) {
                     ((Character) entity).setHealth(((Character) entity).getHealth() - damage);
+                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
                 }
             }
         }
 
-        OpenALManager.playSound(OpenALManager.SOUND_LINK_DASH);
+        OpenALManager.playSound(OpenALManager.SOUND_ATTACK_01);
         attackCoolDown = attackPeriod;
     }
 
@@ -127,9 +116,18 @@ public class CircleAttack {
                 glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             }
 
-            for (int i = 1; i < vertices.length; i++) {
-                glVertex2d(vertices[i - 1].x, vertices[i - 1].y);
-                glVertex2d(vertices[i].x, vertices[i].y);
+            /** CIRCLE OUTLINE **/
+            double angle = 0;
+            double[] centerCameraCoordinates = center.toCameraCoordinates();
+            for (int i = 0; i < numberOfVertices; i++) {
+                double radius = this.radius * Camera.getZoom();
+                double x1 = (Math.cos(angle) * radius) + centerCameraCoordinates[0];
+                double y1 = (Math.sin(angle) * radius) + centerCameraCoordinates[1];
+                double x2 = (Math.cos(angle + angleStep) * radius) + centerCameraCoordinates[0];
+                double y2 = (Math.sin(angle + angleStep) * radius) + centerCameraCoordinates[1];
+                glVertex2d(x1, y1);
+                glVertex2d(x2, y2);
+                angle += angleStep;
             }
 
             glEnd();

@@ -130,7 +130,7 @@ public class MyInputListener {
             } else if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
                 CircleAttack circleAttack = new CircleAttack(new Coordinates(mouseWorldCoordinates[0], mouseWorldCoordinates[1]),
-                        100, 500, 0, 500, true, true);
+                        100, 500, 0, 500, false, true);
                 Scene.listOfCircleAttacks.add(circleAttack);
             }
         }
