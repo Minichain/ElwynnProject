@@ -53,7 +53,7 @@ public class CircleAttack {
                 if (enemyAttack) {
                     particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 0f, 0f);
                 } else {
-                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 255f, 0f, 0f);
+                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
                 }
                 listOfParticles.add(particle);
             }
