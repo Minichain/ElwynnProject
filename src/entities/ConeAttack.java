@@ -14,7 +14,6 @@ public class ConeAttack {
     private double[] vertex3;
     private double angle;
     private float length;
-    private ArrayList<Particle> listOfParticles;
     private boolean attacking;
     private int attackPeriod;
     private int attackCoolDown;
@@ -27,7 +26,6 @@ public class ConeAttack {
         this.attackPeriod = attackPeriod;
         this.attackCoolDown = attackCoolDown;
         this.attackPower = attackPower;
-        this.listOfParticles = new ArrayList<>();
         this.enemyAttack = enemyAttack;
         update(initialParticleCoordinates, pointingVector, 0, attacking);
     }
@@ -62,16 +60,7 @@ public class ConeAttack {
                 } else {
                     particle = new Particle(particleCoordinates, rotatedVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
                 }
-                listOfParticles.add(particle);
-            }
-        }
-
-        /** UPDATE PARTICLES **/
-        for (int i = 0; i < listOfParticles.size(); i++) {
-            particle = listOfParticles.get(i);
-            particle.update(timeElapsed);
-            if (particle.isDead()) {
-                listOfParticles.remove(particle);
+                ParticleManager.getInstance().addParticle(particle);
             }
         }
 
@@ -131,12 +120,6 @@ public class ConeAttack {
             glEnd();
             glEnable(GL_BLEND);
         }
-
-        glBegin(GL_TRIANGLES);
-        for (int i = 0; i < listOfParticles.size(); i++) {
-            listOfParticles.get(i).render();
-        }
-        glEnd();
     }
 
     /*

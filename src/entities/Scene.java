@@ -15,7 +15,7 @@ public class Scene {
     /** ENTITIES **/
     private static ArrayList<Entity> listOfEntities;
     private static ArrayList<Entity> listOfEntitiesToUpdate;
-    private static int enemySpawnPeriod = 1000; // In Milliseconds
+    private static int enemySpawnPeriod = 5000; // In Milliseconds
     private static long lastEnemySpawnTime;
 
     private static int renderDistance = 1000; //TODO This should depend on the Window and Camera parameters
@@ -53,9 +53,13 @@ public class Scene {
     public void update(long timeElapsed) {
         updateAndSortEntities(timeElapsed);
         updateEnemiesSpawn();
-        for (CircleAttack circleAttack : Scene.listOfCircleAttacks) {
-            circleAttack.update(timeElapsed, true);
+        for (int i = 0; i < listOfCircleAttacks.size(); i++) {
+            listOfCircleAttacks.get(i).update(timeElapsed, true);
+            if (listOfCircleAttacks.get(i).isDead()) {
+                listOfCircleAttacks.remove(listOfCircleAttacks.get(i));
+            }
         }
+        ParticleManager.getInstance().updateParticles(timeElapsed);
     }
 
     private void updateEnemiesSpawn() {

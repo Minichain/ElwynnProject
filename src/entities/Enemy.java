@@ -17,7 +17,7 @@ public class Enemy extends DynamicEntity {
     private boolean attacking = false;
     private int attackPeriod = 500;
     private int attackCoolDown = 0;
-    private float attackPower = 20f;
+    private float attackPower = 100f;
     private ConeAttack coneAttack;
     private float coneAttackLength = 75;
 

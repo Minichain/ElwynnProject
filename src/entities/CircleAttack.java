@@ -15,12 +15,13 @@ public class CircleAttack {
     private double radius;
     private int numberOfVertices = 16;
     private double angleStep = 2.0 * Math.PI / (double) numberOfVertices;
-    private ArrayList<Particle> listOfParticles;
     private boolean attacking;
     private int attackPeriod;
     private int attackCoolDown;
     private float attackPower;
     private boolean enemyAttack;
+    private double timeLiving = 0;
+    private double timeToLive = 5000;
 
     public CircleAttack(Coordinates center, double radius, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
         this.center = center;
@@ -29,11 +30,11 @@ public class CircleAttack {
         this.attackPeriod = attackPeriod;
         this.attackCoolDown = attackCoolDown;
         this.attackPower = attackPower;
-        this.listOfParticles = new ArrayList<>();
         update(0, attacking);
     }
 
     public void update(long timeElapsed, boolean attacking) {
+        timeLiving += timeElapsed;
         this.attacking = attacking;
         Particle particle;
         double[] velocityVector;
@@ -55,16 +56,7 @@ public class CircleAttack {
                 } else {
                     particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
                 }
-                listOfParticles.add(particle);
-            }
-        }
-
-        /** UPDATE PARTICLES **/
-        for (int i = 0; i < listOfParticles.size(); i++) {
-            particle = listOfParticles.get(i);
-            particle.update(timeElapsed);
-            if (particle.isDead()) {
-                listOfParticles.remove(particle);
+                ParticleManager.getInstance().addParticle(particle);
             }
         }
 
@@ -133,12 +125,10 @@ public class CircleAttack {
             glEnd();
             glEnable(GL_BLEND);
         }
+    }
 
-        glBegin(GL_TRIANGLES);
-        for (int i = 0; i < listOfParticles.size(); i++) {
-            listOfParticles.get(i).render();
-        }
-        glEnd();
+    public boolean isDead() {
+        return timeLiving > timeToLive;
     }
 }
 
