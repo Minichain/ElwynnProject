@@ -90,7 +90,6 @@ public class CircleAttack {
             }
         }
 
-        OpenALManager.playSound(OpenALManager.SOUND_ATTACK_01);
         attackCoolDown = attackPeriod;
     }
 

@@ -111,6 +111,8 @@ public class Character extends DynamicEntity {
         } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             characterStatus = Status.DYING;
+        } else {
+            attacking = false;
         }
 
         switch (characterStatus) {
@@ -193,7 +195,7 @@ public class Character extends DynamicEntity {
     }
 
     public void drawAttackFX() {
-        if (coneAttack != null) {
+        if (coneAttack != null && attacking) {
             coneAttack.render();
         }
     }

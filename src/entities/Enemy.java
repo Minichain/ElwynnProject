@@ -1,9 +1,6 @@
 package entities;
 
-import audio.OpenALManager;
-import listeners.MyInputListener;
 import main.Coordinates;
-import main.GameMode;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -15,11 +12,17 @@ public class Enemy extends DynamicEntity {
 
     /** ATTACK **/
     private boolean attacking = false;
-    private int attackPeriod = 500;
-    private int attackCoolDown = 0;
-    private float attackPower = 100f;
+
     private ConeAttack coneAttack;
+    private int coneAttackPeriod = 500;
+    private int coneAttackCoolDown = 0;
+    private float coneAttackPower = 100f;
     private float coneAttackLength = 75;
+
+    private CircleAttack circleAttack;
+    private int circleAttackPeriod = 10000;
+    private int circleAttackCoolDown = 0;
+    private float circleAttackPower = 100f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -94,6 +97,8 @@ public class Enemy extends DynamicEntity {
             }
         } else if (status != Status.DEAD) {
             status = Status.DYING;
+        } else {
+            attacking = false;
         }
 
         switch (status) {
@@ -163,17 +168,26 @@ public class Enemy extends DynamicEntity {
         double[] pointingVector = new double[]{Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
                 Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
 
-        attacking = attacking && status != Status.DEAD;
-
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, true, attacking);
+            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
         } else {
             coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
         }
+
+
+        if (circleAttackCoolDown <= 0) {
+            circleAttack = new CircleAttack(new Coordinates(getCurrentCoordinates().x - 100 + Math.random() * 200, getCurrentCoordinates().y - 100 + Math.random() * 200),
+                    50, 500, 0, 500, true, true);
+            Scene.listOfCircleAttacks.add(circleAttack);
+            circleAttackCoolDown = circleAttackPeriod;
+        } else {
+            circleAttackCoolDown -= timeElapsed;
+        }
+
     }
 
     public void drawAttackFX() {
-        if (coneAttack != null) {
+        if (coneAttack != null && attacking) {
             coneAttack.render();
         }
     }
