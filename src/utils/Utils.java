@@ -1,5 +1,7 @@
 package utils;
 
+import java.util.Arrays;
+
 public class Utils {
     public enum DirectionFacing {
         LEFT, RIGHT, UP, DOWN;
@@ -43,5 +45,25 @@ public class Utils {
             }
         }
         return directionFacing;
+    }
+
+    public static void printArray(int[] array) {
+        System.out.println(Arrays.toString(array));
+    }
+
+    public static void printArray(int[][] array) {
+        for (int i = 0; i < array[0].length; i++) {
+            printArray(array[i]);
+        }
+    }
+
+    public static void printArray(boolean[] array) {
+        System.out.println(Arrays.toString(array));
+    }
+
+    public static void printArray(boolean[][] array) {
+        for (int i = 0; i < array[0].length; i++) {
+            printArray(array[i]);
+        }
     }
 }

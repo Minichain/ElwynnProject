@@ -1,6 +1,7 @@
 package entities;
 
 import main.Coordinates;
+import main.PathFindingAlgorithm;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
@@ -71,6 +72,11 @@ public class Enemy extends DynamicEntity {
             movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
             attacking = MathUtils.module(movement) < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
             boolean chasing = (status != Status.DYING && status != Status.DEAD && (MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000));
+
+            if (chasing) {
+                findPath();
+            }
+
             attack(timeElapsed);
 
             movement = MathUtils.normalizeVector(movement);
@@ -124,6 +130,11 @@ public class Enemy extends DynamicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
+    }
+
+    private void findPath() {
+        PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
+        pathFindingAlgorithm.computeBestPath();
     }
 
     public void updateSpriteCoordinatesToDraw() {

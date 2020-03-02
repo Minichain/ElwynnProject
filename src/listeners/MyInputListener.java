@@ -4,6 +4,7 @@ import entities.Camera;
 import entities.CircleAttack;
 import entities.Scene;
 import entities.TileMap;
+import entities.Character;
 import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;
@@ -185,6 +186,10 @@ public class MyInputListener {
                 if (pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
+                if (pressed) {
+                    PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(Character.getInstance().getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
+                    pathFindingAlgorithm.computeBestPath();
+                }
                 break;
             case GLFW_KEY_F7:
                 break;
