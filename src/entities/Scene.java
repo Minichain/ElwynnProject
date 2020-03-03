@@ -67,8 +67,8 @@ public class Scene {
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
             int distance = (int) ((Math.random() * 250) + 1500);
             double angle = Math.random() * 2 * Math.PI;
-            int x = (int) ((Math.cos(angle) * distance) + Character.getInstance().getCurrentCoordinates().x);
-            int y = (int) ((Math.sin(angle) * distance) + Character.getInstance().getCurrentCoordinates().y);
+            int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getCurrentCoordinates().x);
+            int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getCurrentCoordinates().y);
             int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
             int i = tileCoordinates[0];
             int j = tileCoordinates[1];
@@ -126,9 +126,9 @@ public class Scene {
 
     public void initEntities() {
         Scene.getInstance().getListOfEntities().clear();
-        Character.getInstance().resetCharacter();
-        Camera.getInstance().resetCamera();
-        Scene.getInstance().getListOfEntities().add(Character.getInstance());
+        Player.getInstance().reset();
+        Camera.getInstance().reset();
+        Scene.getInstance().getListOfEntities().add(Player.getInstance());
         listOfCircleAttacks.clear();
     }
 
@@ -183,8 +183,8 @@ public class Scene {
                         double scale = Camera.getZoom();
                         int x = i * TileMap.TILE_WIDTH;
                         int y = tileRowIterator * TileMap.TILE_HEIGHT;
-                        double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                        double distanceBetweenPlayerAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
                     }
                 }
                 glEnd();
@@ -202,8 +202,8 @@ public class Scene {
                     double scale = Camera.getZoom();
                     int x = i * TileMap.TILE_WIDTH;
                     int y = j * TileMap.TILE_HEIGHT;
-                    double distanceBetweenCharacterAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                    TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenCharacterAndTile) / renderDistance);
+                    double distanceBetweenPlayerAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
+                    TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
                 }
             }
         }

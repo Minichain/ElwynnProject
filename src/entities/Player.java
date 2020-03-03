@@ -8,10 +8,10 @@ import main.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Character extends DynamicEntity {
+public class Player extends DynamicEntity {
     private static Texture spriteSheet;
-    private static Character instance = null;
-    private static Status characterStatus;
+    private static Player instance = null;
+    private static Status playerStatus;
     private static Utils.DirectionFacing directionFacing;
 
     /** ATTACK **/
@@ -26,30 +26,30 @@ public class Character extends DynamicEntity {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
     }
 
-    private Character() {
+    private Player() {
         super((int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y,
                 (int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y);
-        initCharacter();
+        init();
     }
 
-    public void resetCharacter() {
-        initCharacter();
+    public void reset() {
+        init();
     }
 
-    private void initCharacter() {
+    private void init() {
         getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
         getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
         health = 5000f;
         speed = 0.125;
-        characterStatus = Status.IDLE;
+        playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
     }
 
-    public static Character getInstance() {
+    public static Player getInstance() {
         if (instance == null) {
-            instance = new Character();
+            instance = new Player();
             Scene.getInstance().getListOfEntities().add(instance);
         }
         return instance;
@@ -77,7 +77,7 @@ public class Character extends DynamicEntity {
         getPreviousCoordinates().x = getCurrentCoordinates().x;
         getPreviousCoordinates().y = getCurrentCoordinates().y;
         if (health > 0)  {
-            characterStatus = Status.IDLE;
+            playerStatus = Status.IDLE;
 
             attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
             attack(timeElapsed);
@@ -96,25 +96,25 @@ public class Character extends DynamicEntity {
             displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
             facingVector = null;
             if (attacking) {
-                double[] characterCameraCoordinates = getCurrentCoordinates().toCameraCoordinates();
-                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates()[0] - characterCameraCoordinates[0],
-                        MyInputListener.getMouseCameraCoordinates()[1] - characterCameraCoordinates[1]};
+                double[] playerCameraCoordinates = getCurrentCoordinates().toCameraCoordinates();
+                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates()[0] - playerCameraCoordinates[0],
+                        MyInputListener.getMouseCameraCoordinates()[1] - playerCameraCoordinates[1]};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
             } else if (displacementVector[0] != 0 || displacementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
             }
 
-            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
-                characterStatus = Status.RUNNING;
+            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If player is moving
+                playerStatus = Status.RUNNING;
             }
-        } else if (characterStatus != Status.DEAD && characterStatus != Status.DYING) {
+        } else if (playerStatus != Status.DEAD && playerStatus != Status.DYING) {
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
-            characterStatus = Status.DYING;
+            playerStatus = Status.DYING;
         } else {
             attacking = false;
         }
 
-        switch (characterStatus) {
+        switch (playerStatus) {
             case IDLE:
                 setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
                 break;
@@ -126,7 +126,7 @@ public class Character extends DynamicEntity {
             case DYING:
                 double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
                 if (frame > 1) {
-                    characterStatus = Status.DEAD;
+                    playerStatus = Status.DEAD;
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % DYING_FRAMES);
                 }
@@ -165,7 +165,7 @@ public class Character extends DynamicEntity {
     }
 
     public void updateSpriteCoordinatesToDraw() {
-        switch (characterStatus) {
+        switch (playerStatus) {
             default:
             case IDLE:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
@@ -201,15 +201,15 @@ public class Character extends DynamicEntity {
     }
 
     public Status getStatus() {
-        return characterStatus;
+        return playerStatus;
     }
 
     private void attack(long timeElapsed) {
         double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
-        double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Character.getInstance().getCurrentCoordinates().x,
-                mouseWorldCoordinates[1] - Character.getInstance().getCurrentCoordinates().y};
+        double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Player.getInstance().getCurrentCoordinates().x,
+                mouseWorldCoordinates[1] - Player.getInstance().getCurrentCoordinates().y};
 
-        attacking = attacking && characterStatus != Character.Status.DEAD;
+        attacking = attacking && playerStatus != Player.Status.DEAD;
 
         if (coneAttack == null) {
             coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);

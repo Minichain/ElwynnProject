@@ -63,16 +63,16 @@ public class Camera {
         Camera.zoom = zoom;
     }
 
-    public void resetCamera() {
-        this.setCoordinates((int) Character.getInstance().getCurrentCoordinates().x,
-                (int) Character.getInstance().getCurrentCoordinates().y);
+    public void reset() {
+        this.setCoordinates((int) Player.getInstance().getCurrentCoordinates().x,
+                (int) Player.getInstance().getCurrentCoordinates().y);
     }
 
     public void update(long timeElapsed) {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             double[] cameraVelocityVector = new double[2];
-            cameraVelocityVector[0] = Character.getInstance().getCurrentCoordinates().x - Camera.getInstance().getCoordinates().x;
-            cameraVelocityVector[1] = Character.getInstance().getCurrentCoordinates().y - Camera.getInstance().getCoordinates().y;
+            cameraVelocityVector[0] = Player.getInstance().getCurrentCoordinates().x - Camera.getInstance().getCoordinates().x;
+            cameraVelocityVector[1] = Player.getInstance().getCurrentCoordinates().y - Camera.getInstance().getCoordinates().y;
             double cameraSpeed = MathUtils.module(cameraVelocityVector) * followingSpeed * timeElapsed;
             cameraVelocityVector = MathUtils.normalizeVector(cameraVelocityVector);
 

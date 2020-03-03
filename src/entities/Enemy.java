@@ -33,10 +33,10 @@ public class Enemy extends DynamicEntity {
 
     public Enemy(int x, int y) {
         super(x, y, x, y);
-        initEnemy(x, y);
+        init(x, y);
     }
 
-    private void initEnemy(int x, int y) {
+    private void init(int x, int y) {
         getCurrentCoordinates().x = x;
         getCurrentCoordinates().y = y;
         health = 1000f;
@@ -69,8 +69,8 @@ public class Enemy extends DynamicEntity {
         getPreviousCoordinates().y = getCurrentCoordinates().y;
         if (health > 0) {
             status = Status.IDLE;
-            distanceToPlayer = MathUtils.module(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
-            attacking = distanceToPlayer < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
+            distanceToPlayer = MathUtils.module(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
+            attacking = distanceToPlayer < coneAttackLength && Player.getInstance().getStatus() != Player.Status.DEAD;
 
             double[] movement = computeMovementVector(timeElapsed, speed);
             attack(timeElapsed);
@@ -83,7 +83,7 @@ public class Enemy extends DynamicEntity {
 
             displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
 
-            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If character is moving
+            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If Player is moving
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
                 status = Status.RUNNING;
             }
@@ -131,8 +131,8 @@ public class Enemy extends DynamicEntity {
         if (useDijkstraAlgorithm) {
             movement = findPath();
         } else {
-            movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
-            movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
+            movement[0] = (Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
+            movement[1] = (Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
         }
 
         movement = MathUtils.normalizeVector(movement);
@@ -149,7 +149,7 @@ public class Enemy extends DynamicEntity {
 
 
     private double[] findPath() {
-        PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
+        PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
         int[] bestPath = pathFindingAlgorithm.computeBestPath();
         return new double[]{bestPath[0], bestPath[1]};
     }
@@ -193,8 +193,8 @@ public class Enemy extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
-        double[] pointingVector = new double[]{Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
-                Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
+        double[] pointingVector = new double[]{Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
+                Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
 
         if (coneAttack == null) {
             coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);

@@ -4,8 +4,6 @@ import audio.OpenALManager;
 import main.*;
 import utils.MathUtils;
 
-import java.util.ArrayList;
-
 import static org.lwjgl.opengl.GL11.*;
 
 public class ConeAttack {
@@ -83,10 +81,10 @@ public class ConeAttack {
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
                 }
-            } else if (entity instanceof Character && enemyAttack) {
-                if (((Character) entity).getStatus() != Character.Status.DEAD
+            } else if (entity instanceof Player && enemyAttack) {
+                if (((Player) entity).getStatus() != Player.Status.DEAD
                         && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
-                    ((Character) entity).setHealth(((Character) entity).getHealth() - damage);
+                    ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
@@ -131,7 +129,7 @@ public class ConeAttack {
         ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
         ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
 
-        double[] characterWindowCoordinates = Character.getInstance().getCoordinates().toCameraCoordinates();
+        double[] characterWindowCoordinates = Player.getInstance().getCoordinates().toCameraCoordinates();
         characterWindowCoordinates[0] *= Window.getCameraWindowScaleFactor()[0];
         characterWindowCoordinates[1] *= Window.getCameraWindowScaleFactor()[1];
         float[] characterCoordinatesUniform = new float[]{(float) characterWindowCoordinates[0], Window.getHeight() - (float) characterWindowCoordinates[1]};
