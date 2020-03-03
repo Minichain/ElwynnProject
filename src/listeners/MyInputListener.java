@@ -186,10 +186,6 @@ public class MyInputListener {
                 if (pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
-                if (pressed) {
-                    PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(Character.getInstance().getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
-                    pathFindingAlgorithm.computeBestPath();
-                }
                 break;
             case GLFW_KEY_F7:
                 break;

@@ -73,13 +73,14 @@ public class Enemy extends DynamicEntity {
             attacking = MathUtils.module(movement) < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
             boolean chasing = (status != Status.DYING && status != Status.DEAD && (MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000));
 
+            int[] nextStep = new int[]{0, 0};
             if (chasing) {
-                //findPath();
+                nextStep = findPath();
             }
 
             attack(timeElapsed);
 
-            movement = MathUtils.normalizeVector(movement);
+            movement = MathUtils.normalizeVector(new double[]{nextStep[0], nextStep[1]});
             if (attacking) {
                 movement[0] *= timeElapsed * speed * 0.5;
                 movement[1] *= timeElapsed * speed * 0.5;
@@ -132,9 +133,9 @@ public class Enemy extends DynamicEntity {
         updateSpriteCoordinatesToDraw();
     }
 
-    private void findPath() {
+    private int[] findPath() {
         PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
-        pathFindingAlgorithm.computeBestPath();
+        return pathFindingAlgorithm.computeBestPath();
     }
 
     public void updateSpriteCoordinatesToDraw() {
