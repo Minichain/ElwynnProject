@@ -75,9 +75,13 @@ public class Enemy extends DynamicEntity {
             double[] movement = computeMovementVector(timeElapsed, speed);
             attack(timeElapsed);
 
-            int distanceFactor = 2;
-            if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
+            int distanceFactor = 4;
+            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y));
+            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor));
+            if (!horizontalCollision) {
                 getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+            }
+            if (!verticalCollision) {
                 getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
             }
 
