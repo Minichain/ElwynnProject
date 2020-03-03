@@ -63,10 +63,6 @@ public class Scene {
     }
 
     private void updateEnemiesSpawn() {
-        if (listOfEntities.size() < 2) {
-            new Enemy(2840, 2290);
-        }
-        /*
         long currentTime = System.currentTimeMillis();
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
             int distance = (int) ((Math.random() * 250) + 1500);
@@ -83,7 +79,6 @@ public class Scene {
                 lastEnemySpawnTime = currentTime;
             }
         }
-        */
     }
 
     private void updateAndSortEntities(long timeElapsed) {

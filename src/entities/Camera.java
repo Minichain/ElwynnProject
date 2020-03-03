@@ -6,6 +6,9 @@ import main.GameMode;
 import main.Parameters;
 import utils.MathUtils;
 
+import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
+
 public class Camera {
     private static Camera instance = null;
     private Coordinates coordinates;
@@ -82,9 +85,31 @@ public class Camera {
             Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (cameraVelocityVector[0] * cameraSpeed)),
                     (Camera.getInstance().getCoordinates().y + (cameraVelocityVector[1] * cameraSpeed)));
         } else {
-            double[] movement = MyInputListener.computeMovementVector(timeElapsed, freeCameraSpeed);
+            double[] movement = computeMovementVector(timeElapsed, freeCameraSpeed);
             Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (movement[0])),
                     (Camera.getInstance().getCoordinates().y + (movement[1])));
         }
+    }
+
+    public double[] computeMovementVector(long timeElapsed, double speed) {
+        double[] movement = new double[2];
+        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
+            movement[1] = 1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
+            movement[0] = -1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
+            movement[1] = -1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
+            movement[0] = 1;
+        }
+
+        movement = MathUtils.normalizeVector(movement);
+        movement[0] *= timeElapsed * speed;
+        movement[1] *= timeElapsed * speed;
+
+        return movement;
     }
 }

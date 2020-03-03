@@ -25,6 +25,8 @@ public class Enemy extends DynamicEntity {
     private int circleAttackCoolDown = 0;
     private float circleAttackPower = 100f;
 
+    private double distanceToPlayer;
+
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
     }
@@ -67,31 +69,14 @@ public class Enemy extends DynamicEntity {
         getPreviousCoordinates().y = getCurrentCoordinates().y;
         if (health > 0) {
             status = Status.IDLE;
-            double[] movement = new double[2];
-            movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
-            movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
-            attacking = MathUtils.module(movement) < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
-            boolean chasing = (status != Status.DYING && status != Status.DEAD && (MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000));
+            distanceToPlayer = MathUtils.module(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
+            attacking = distanceToPlayer < coneAttackLength && Character.getInstance().getStatus() != Character.Status.DEAD;
 
-            int[] nextStep = new int[]{0, 0};
-            if (chasing) {
-                nextStep = findPath();
-            }
-
+            double[] movement = computeMovementVector(timeElapsed, speed);
             attack(timeElapsed);
 
-            movement = MathUtils.normalizeVector(new double[]{nextStep[0], nextStep[1]});
-            if (attacking) {
-                movement[0] *= timeElapsed * speed * 0.5;
-                movement[1] *= timeElapsed * speed * 0.5;
-            } else {
-                movement[0] *= timeElapsed * speed;
-                movement[1] *= timeElapsed * speed;
-            }
-
             int distanceFactor = 2;
-            if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))
-                    && chasing) {
+            if (!TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor))) {
                 getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
                 getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
             }
@@ -133,9 +118,40 @@ public class Enemy extends DynamicEntity {
         updateSpriteCoordinatesToDraw();
     }
 
-    private int[] findPath() {
+    public double[] computeMovementVector(long timeElapsed, double speed) {
+        boolean useDijkstraAlgorithm = true;
+        boolean chasing = status != Status.DYING && status != Status.DEAD && distanceToPlayer > 25 && distanceToPlayer < 2000;
+
+        if (!chasing) {
+            return new double[]{0 ,0};
+        }
+
+        double[] movement = new double[2];
+
+        if (useDijkstraAlgorithm) {
+            movement = findPath();
+        } else {
+            movement[0] = (Character.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
+            movement[1] = (Character.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
+        }
+
+        movement = MathUtils.normalizeVector(movement);
+
+        if (attacking) {
+            speed *= 0.5;
+        }
+
+        movement[0] *= timeElapsed * speed;
+        movement[1] *= timeElapsed * speed;
+
+        return movement;
+    }
+
+
+    private double[] findPath() {
         PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Character.getInstance().getCurrentCoordinates());
-        return pathFindingAlgorithm.computeBestPath();
+        int[] bestPath = pathFindingAlgorithm.computeBestPath();
+        return new double[]{bestPath[0], bestPath[1]};
     }
 
     public void updateSpriteCoordinatesToDraw() {

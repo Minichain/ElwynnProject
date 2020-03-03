@@ -4,11 +4,9 @@ import entities.Camera;
 import entities.CircleAttack;
 import entities.Scene;
 import entities.TileMap;
-import entities.Character;
 import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;
-import utils.MathUtils;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -217,28 +215,6 @@ public class MyInputListener {
                 if (pressed) Camera.setZoom(Camera.getZoom() - 0.1);
                 break;
         }
-    }
-
-    public static double[] computeMovementVector(long timeElapsed, double speed) {
-        double[] movement = new double[2];
-        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
-            movement[1] = 1;
-        }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
-            movement[0] = -1;
-        }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
-            movement[1] = -1;
-        }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
-            movement[0] = 1;
-        }
-
-        movement = MathUtils.normalizeVector(movement);
-        movement[0] *= timeElapsed * speed;
-        movement[1] *= timeElapsed * speed;
-
-        return movement;
     }
 
     public static void release() {

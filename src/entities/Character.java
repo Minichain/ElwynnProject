@@ -1,9 +1,12 @@
 package entities;
 
 import audio.OpenALManager;
+import utils.MathUtils;
 import utils.Utils;
 import listeners.MyInputListener;
 import main.*;
+
+import static org.lwjgl.glfw.GLFW.*;
 
 public class Character extends DynamicEntity {
     private static Texture spriteSheet;
@@ -81,11 +84,7 @@ public class Character extends DynamicEntity {
 
             double[] movement = new double[]{0, 0};
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                if (attacking) {
-                    movement = MyInputListener.computeMovementVector(timeElapsed, speed * 0.5);
-                } else {
-                    movement = MyInputListener.computeMovementVector(timeElapsed, speed);
-                }
+                movement = computeMovementVector(timeElapsed, speed);
             }
 
             int distanceFactor = 4;
@@ -138,6 +137,31 @@ public class Character extends DynamicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
+    }
+
+    public double[] computeMovementVector(long timeElapsed, double speed) {
+        double[] movement = new double[2];
+        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
+            movement[1] = 1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
+            movement[0] = -1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
+            movement[1] = -1;
+        }
+        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
+            movement[0] = 1;
+        }
+
+        movement = MathUtils.normalizeVector(movement);
+        if (attacking) {
+            speed *= 0.5;
+        }
+        movement[0] *= timeElapsed * speed;
+        movement[1] *= timeElapsed * speed;
+
+        return movement;
     }
 
     public void updateSpriteCoordinatesToDraw() {
