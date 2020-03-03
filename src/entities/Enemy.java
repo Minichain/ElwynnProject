@@ -74,7 +74,7 @@ public class Enemy extends DynamicEntity {
             boolean chasing = (status != Status.DYING && status != Status.DEAD && (MathUtils.module(movement) > 25 && MathUtils.module(movement) < 2000));
 
             if (chasing) {
-                findPath();
+                //findPath();
             }
 
             attack(timeElapsed);

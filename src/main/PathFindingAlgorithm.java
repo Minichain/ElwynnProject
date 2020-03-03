@@ -17,6 +17,7 @@ public class PathFindingAlgorithm {
     private int[] goalNode = new int[2];
     private boolean[][] costAssignedNodes;
     private boolean[][] visitedNodes;
+    private boolean[][] collidableNodes;
     private int[][] costG;
     private int[][] costH;
     private int[][] costF;
@@ -28,12 +29,14 @@ public class PathFindingAlgorithm {
 
     private boolean pathComputationTerminated = false;
 
-    public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
-        this.initialWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) initialWorldCoordinates.x, (int) initialWorldCoordinates.y);
-        this.goalWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) goalWorldCoordinates.x, (int) goalWorldCoordinates.y);
+    private ArrayList<int[]> nodesToVisitNext = new ArrayList<>();
 
-//        this.initialWorldCoordinates = new int[]{2, 2};
-//        this.goalWorldCoordinates = new int[]{15, 15};
+    public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
+        //this.initialWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) initialWorldCoordinates.x, (int) initialWorldCoordinates.y);
+        //this.goalWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) goalWorldCoordinates.x, (int) goalWorldCoordinates.y);
+
+        this.initialWorldCoordinates = new int[]{0, 0};
+        this.goalWorldCoordinates = new int[]{15, 5};
 
         if (this.initialWorldCoordinates[0] < this.goalWorldCoordinates[0]) {
             this.width = this.goalWorldCoordinates[0] - this.initialWorldCoordinates[0] + 1;
@@ -59,6 +62,20 @@ public class PathFindingAlgorithm {
 
         costAssignedNodes = new boolean[width][height];
         visitedNodes = new boolean[width][height];
+        collidableNodes = new boolean[width][height];
+
+        collidableNodes[5][0] = true;
+        collidableNodes[5][1] = true;
+        collidableNodes[5][2] = true;
+        collidableNodes[5][3] = true;
+        collidableNodes[5][4] = true;
+
+        collidableNodes[10][5] = true;
+        collidableNodes[10][4] = true;
+        collidableNodes[10][3] = true;
+        collidableNodes[10][2] = true;
+
+
         costG = new int[width][height];
         costH = new int[width][height];
         costF = new int[width][height];
@@ -73,6 +90,7 @@ public class PathFindingAlgorithm {
         Utils.printArray(costAssignedNodes);
 
         ArrayList<int[]> path = findPath();
+
         System.out.println("The path is:");
         for (int i = 0; i < path.size(); i++) {
             System.out.println("Step " + i + " : " + path.get(i)[0] + ", " + path.get(i)[1]);
@@ -89,59 +107,56 @@ public class PathFindingAlgorithm {
     }
 
     private void computeCostsSurroundingNode(int x, int y) {
-        ArrayList<int[]> nodesToVisitNext = new ArrayList<>();
-        int cost = -1;
-        int newCost = -1;
+        //System.out.println("computeCostsSurroundingNode " + x + ", " + y);
         for (int j = y - 1; j <= (y + 1); j++) {
             for (int i = x - 1; i <= (x + 1); i++) {
-                newCost = setNodeCost(i, j);
-                if (!setNodeCostsTerminated && newCost != -1) {
-                    if (cost == -1 || newCost <= cost) {
-                        cost = newCost;
-//                        System.out.println("nodesToVisitNext.add (i, j): " + i + ", " + j);
-                        nodesToVisitNext.add(new int[]{i, j});
-                    }
+                if (i == x && j == y) {
+                    // Ignore
+                } else if (!setNodeCostsTerminated && setNodeCost(i, j) != -1) {
+                    nodesToVisitNext.add(new int[]{i, j});
                 }
             }
         }
 
-        if (newCost != -1) {
-            for (int i = 0; i < nodesToVisitNext.size(); i++) {
-                int[] node = nodesToVisitNext.get(i);
-                if (!setNodeCostsTerminated && costF[node[0]][node[1]] > newCost) {
-                    nodesToVisitNext.remove(node);
+        if (!setNodeCostsTerminated && !nodesToVisitNext.isEmpty()) {
+            int[] nodeWithLessCost = new int[]{-1, -1};
+            int previousNodeCost = -1;
+            for (int[] node : nodesToVisitNext) {
+                if (previousNodeCost == -1 || costF[node[0]][node[1]] < previousNodeCost) {
+                    nodeWithLessCost = node;
+                    previousNodeCost = costF[node[0]][node[1]];
                 }
             }
-        }
-
-        for (int[] node : nodesToVisitNext) {
-            if (!setNodeCostsTerminated) {
-                computeCostsSurroundingNode(node[0], node[1]);
-            }
+            nodesToVisitNext.remove(nodeWithLessCost);
+            computeCostsSurroundingNode(nodeWithLessCost[0], nodeWithLessCost[1]);
         }
     }
 
     private int setNodeCost(int i, int j) {
-//        System.out.println("AdriHell:: setNodeCost " + i + ", " + j);
         if (i >= 0 && i < width
                 && j >= 0 && j < height
                 && !costAssignedNodes[i][j]) {
             costAssignedNodes[i][j] = true;
 
             if (i == goalNode[0] && j == goalNode[1]) {
+                System.out.println("Node Costs Terminated at node " + i + ", " + j);
                 setNodeCostsTerminated = true;
             }
 
-            //TODO costs should be infinity if it is a collidable tile
+            int G, H, F;
+            if (collidableNodes[i][j]) {
+                G = -1;
+                H = -1;
+                F = -1;
+            } else {
+                G = (int) (Math.sqrt(Math.pow(i - initialNode[0], 2.0) + Math.pow(j - initialNode[1], 2.0)) * 10.0);
+                H = (int) (Math.sqrt(Math.pow(i - goalNode[0], 2.0) + Math.pow(j - goalNode[1], 2.0)) * 10.0);
+                F = G + H;
+            }
 
-            int G = (int) (Math.sqrt(Math.pow(i - initialNode[0], 2.0) + Math.pow(j - initialNode[1], 2.0)) * 10.0);
-            int H = (int) (Math.sqrt(Math.pow(i - goalNode[0], 2.0) + Math.pow(j - goalNode[1], 2.0)) * 10.0);
-            int F = G + H;
             costG[i][j] = G;
             costH[i][j] = H;
             costF[i][j] = F;
-
-//            System.out.println("AdriHell:: setNodeCost " + i + ", " + j + " to " + F);
 
             return F;
         }
