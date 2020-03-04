@@ -15,7 +15,7 @@ public class Scene {
     /** ENTITIES **/
     private static ArrayList<Entity> listOfEntities;
     private static ArrayList<Entity> listOfEntitiesToUpdate;
-    private static int enemySpawnPeriod = 5000; // In Milliseconds
+    private static int enemySpawnPeriod = 20000; // In Milliseconds
     private static long lastEnemySpawnTime;
 
     private static int renderDistance = 1000; //TODO This should depend on the Window and Camera parameters

@@ -235,19 +235,18 @@ public class Enemy extends DynamicEntity {
         if (coneAttack != null && attacking) {
             coneAttack.render();
         }
-        if (Parameters.isDebugMode() && pathFindingAlgorithm != null && pathFindingAlgorithm.getPath() != null) {
+        if (Parameters.isDebugMode() && status != Status.DEAD && pathFindingAlgorithm != null && pathFindingAlgorithm.getPath() != null) {
             glDisable(GL_TEXTURE_2D);
             glColor4f(1f, 1f, 1f, 0.5f);
             glBegin(GL_LINES);
 
-            Coordinates startingCoordinates = getCameraCoordinates();
+            Coordinates startingCoordinates = pathFindingAlgorithm.initialCoordinates.toCameraCoordinates();
             int start = pathFindingAlgorithm.getPath().size() - 1;
             for (int i = start; i >= 0; i--) {
                 glVertex2d(startingCoordinates.x, startingCoordinates.y);
-                glVertex2d(getCameraCoordinates().x + pathFindingAlgorithm.getPath().get(i)[0] * TileMap.TILE_WIDTH * Camera.getZoom(),
-                        getCameraCoordinates().y + pathFindingAlgorithm.getPath().get(i)[1] * TileMap.TILE_HEIGHT * Camera.getZoom());
                 startingCoordinates.x += pathFindingAlgorithm.getPath().get(i)[0] * TileMap.TILE_WIDTH * Camera.getZoom();
                 startingCoordinates.y += pathFindingAlgorithm.getPath().get(i)[1] * TileMap.TILE_HEIGHT * Camera.getZoom();
+                glVertex2d(startingCoordinates.x, startingCoordinates.y);
             }
 
             glEnd();
