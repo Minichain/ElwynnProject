@@ -12,9 +12,7 @@ public class Game {
     }
 
     public static void update(long timeElapsed) {
-        if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
-            Scene.getInstance().update(timeElapsed);
-        }
+        Scene.getInstance().update(timeElapsed);
         Camera.getInstance().update(timeElapsed);
         InputListenerManager.updateMouseWorldCoordinates();
     }

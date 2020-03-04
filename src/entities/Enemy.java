@@ -1,10 +1,13 @@
 package entities;
 
 import main.Coordinates;
+import main.Parameters;
 import main.PathFindingAlgorithm;
 import utils.MathUtils;
 import main.Texture;
 import utils.Utils;
+
+import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends DynamicEntity {
     private static Texture spriteSheet;
@@ -231,6 +234,25 @@ public class Enemy extends DynamicEntity {
     public void drawAttackFX() {
         if (coneAttack != null && attacking) {
             coneAttack.render();
+        }
+        if (Parameters.isDebugMode() && pathFindingAlgorithm != null && pathFindingAlgorithm.getPath() != null) {
+            glDisable(GL_TEXTURE_2D);
+            glColor4f(1f, 1f, 1f, 0.5f);
+            glBegin(GL_LINES);
+
+            Coordinates startingCoordinates = getCameraCoordinates();
+            int start = pathFindingAlgorithm.getPath().size() - 1;
+            for (int i = start; i >= 0; i--) {
+                glVertex2d(startingCoordinates.x, startingCoordinates.y);
+                glVertex2d(getCameraCoordinates().x + pathFindingAlgorithm.getPath().get(i)[0] * TileMap.TILE_WIDTH * Camera.getZoom(),
+                        getCameraCoordinates().y + pathFindingAlgorithm.getPath().get(i)[1] * TileMap.TILE_HEIGHT * Camera.getZoom());
+                startingCoordinates.x += pathFindingAlgorithm.getPath().get(i)[0] * TileMap.TILE_WIDTH * Camera.getZoom();
+                startingCoordinates.y += pathFindingAlgorithm.getPath().get(i)[1] * TileMap.TILE_HEIGHT * Camera.getZoom();
+            }
+
+            glEnd();
+
+            glEnable(GL_TEXTURE_2D);
         }
     }
 }

@@ -71,7 +71,6 @@ public class UserInterface {
             /** DEBUG LINES **/
             glDisable(GL_BLEND);
             glBegin(GL_LINES);
-            glLineWidth(4);
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             glVertex2i(Parameters.getResolutionWidth() / 2, 0);
             glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());

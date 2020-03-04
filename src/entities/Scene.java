@@ -52,6 +52,10 @@ public class Scene {
 
     public void update(long timeElapsed) {
         updateAndSortEntities(timeElapsed);
+
+        if (GameStatus.getStatus() != GameStatus.Status.RUNNING) {
+            return;
+        }
         updateEnemiesSpawn();
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
@@ -90,7 +94,9 @@ public class Scene {
         listOfEntitiesToUpdate.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
-            currentEntity.update(timeElapsed);
+            if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
+                currentEntity.update(timeElapsed);
+            }
             currentEntity.updateCoordinates();
 
             if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getWorldCoordinates()) < updateDistance) {

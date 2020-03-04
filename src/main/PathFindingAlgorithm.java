@@ -5,13 +5,14 @@ import entities.TileMap;
 import java.util.ArrayList;
 
 public class PathFindingAlgorithm {
-    private Coordinates initialWorldCoordinates;
-    private Coordinates goalWorldCoordinates;
+    public Coordinates initialCoordinates;
+    private Coordinates initialTileCoordinates;
+    private Coordinates goalTileCoordinates;
 
     private int tilesInXAxis;
     private int tilesInYAxis;
-    private int marginX = 5;   //TODO rename this variable
-    private int marginY = 5;   //TODO rename this variable
+    private int marginX = 5;
+    private int marginY = 5;
 
     private int[] initialNode = new int[2];
     private int[] goalNode = new int[2];
@@ -26,33 +27,34 @@ public class PathFindingAlgorithm {
     private ArrayList<int[]> path = new ArrayList<>();
 
     public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
-        this.initialWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
-        this.goalWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
+        this.initialCoordinates = initialWorldCoordinates;
+        this.initialTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
+        this.goalTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
 
         int[] toTileMapCoordinates = new int[2];
 
-        if (this.initialWorldCoordinates.x < this.goalWorldCoordinates.x) {
-            tilesInXAxis = (int) this.goalWorldCoordinates.x - (int) this.initialWorldCoordinates.x + 1 + (marginX * 2);
+        if (this.initialTileCoordinates.x < this.goalTileCoordinates.x) {
+            tilesInXAxis = (int) this.goalTileCoordinates.x - (int) this.initialTileCoordinates.x + 1 + (marginX * 2);
             initialNode[0] = marginX;
             goalNode[0] = tilesInXAxis - 1 - marginX;
-            toTileMapCoordinates[0] = (int) this.initialWorldCoordinates.x - marginX;
+            toTileMapCoordinates[0] = (int) this.initialTileCoordinates.x - marginX;
         } else {
-            tilesInXAxis = (int) this.initialWorldCoordinates.x - (int) this.goalWorldCoordinates.x + 1 + (marginX * 2);
+            tilesInXAxis = (int) this.initialTileCoordinates.x - (int) this.goalTileCoordinates.x + 1 + (marginX * 2);
             goalNode[0] = marginX;
             initialNode[0] = tilesInXAxis - 1 - marginX;
-            toTileMapCoordinates[0] = (int) this.goalWorldCoordinates.x - marginX;
+            toTileMapCoordinates[0] = (int) this.goalTileCoordinates.x - marginX;
         }
 
-        if (this.initialWorldCoordinates.y < this.goalWorldCoordinates.y) {
-            tilesInYAxis = (int) this.goalWorldCoordinates.y - (int) this.initialWorldCoordinates.y + 1 + (marginY * 2);
+        if (this.initialTileCoordinates.y < this.goalTileCoordinates.y) {
+            tilesInYAxis = (int) this.goalTileCoordinates.y - (int) this.initialTileCoordinates.y + 1 + (marginY * 2);
             initialNode[1] = marginY;
             goalNode[1] = tilesInYAxis - 1 - marginY;
-            toTileMapCoordinates[1] = (int) this.initialWorldCoordinates.y - marginY;
+            toTileMapCoordinates[1] = (int) this.initialTileCoordinates.y - marginY;
         } else {
-            tilesInYAxis = (int) this.initialWorldCoordinates.y - (int) this.goalWorldCoordinates.y + 1 + (marginY * 2);
+            tilesInYAxis = (int) this.initialTileCoordinates.y - (int) this.goalTileCoordinates.y + 1 + (marginY * 2);
             goalNode[1] = marginY;
             initialNode[1] = tilesInYAxis - 1 - marginY;
-            toTileMapCoordinates[1] = (int) this.goalWorldCoordinates.y - marginY;
+            toTileMapCoordinates[1] = (int) this.goalTileCoordinates.y - marginY;
         }
 
         visitedNodes = new boolean[tilesInXAxis][tilesInYAxis];
@@ -80,6 +82,10 @@ public class PathFindingAlgorithm {
             return step;
         }
         return new int[]{0, 0};
+    }
+
+    public ArrayList<int[]> getPath() {
+        return path;
     }
 
     private void computeNodeCosts() {
