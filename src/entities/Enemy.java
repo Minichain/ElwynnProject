@@ -25,7 +25,12 @@ public class Enemy extends DynamicEntity {
     private int circleAttackCoolDown = 0;
     private float circleAttackPower = 100f;
 
+    /** PATH FINDING **/
+    boolean useDijkstraAlgorithm = true;
+    private PathFindingAlgorithm pathFindingAlgorithm;
     private double distanceToPlayer;
+    private int computePathPeriod = 500;
+    private int computePathCoolDown = 0;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -123,7 +128,6 @@ public class Enemy extends DynamicEntity {
     }
 
     public double[] computeMovementVector(long timeElapsed, double speed) {
-        boolean useDijkstraAlgorithm = true;
         boolean chasing = status != Status.DYING && status != Status.DEAD && distanceToPlayer > 25 && distanceToPlayer < 2000;
 
         if (!chasing) {
@@ -133,7 +137,13 @@ public class Enemy extends DynamicEntity {
         double[] movement = new double[2];
 
         if (useDijkstraAlgorithm) {
-            movement = findPath();
+            if (computePathCoolDown <= 0) {
+                computePath();
+                computePathCoolDown = computePathPeriod;
+            }
+            int[] step = pathFindingAlgorithm.getNextStep();
+            movement = new double[]{step[0], step[1]};
+            computePathCoolDown -= timeElapsed;
         } else {
             movement[0] = (Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
             movement[1] = (Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
@@ -152,10 +162,9 @@ public class Enemy extends DynamicEntity {
     }
 
 
-    private double[] findPath() {
-        PathFindingAlgorithm pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
-        int[] bestPath = pathFindingAlgorithm.computeBestPath();
-        return new double[]{bestPath[0], bestPath[1]};
+    private void computePath() {
+        pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
+        pathFindingAlgorithm.computeBestPath();
     }
 
     public void updateSpriteCoordinatesToDraw() {
@@ -197,6 +206,7 @@ public class Enemy extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
+        /** CONE ATTACK **/
         double[] pointingVector = new double[]{Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
                 Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
 
@@ -206,16 +216,16 @@ public class Enemy extends DynamicEntity {
             coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
         }
 
-
+        /** CIRCLE ATTACK **/
         if (circleAttackCoolDown <= 0) {
             circleAttack = new CircleAttack(new Coordinates(getCurrentCoordinates().x - 100 + Math.random() * 200, getCurrentCoordinates().y - 100 + Math.random() * 200),
-                    50, 500, 0, 500, true, true);
+                    50, 500, circleAttackPower, true, true);
             Scene.listOfCircleAttacks.add(circleAttack);
             circleAttackCoolDown = circleAttackPeriod;
-        } else {
+        }
+        if (circleAttackCoolDown > 0) {
             circleAttackCoolDown -= timeElapsed;
         }
-
     }
 
     public void drawAttackFX() {

@@ -18,9 +18,14 @@ public class Player extends DynamicEntity {
     private boolean attacking = false;
     private int attackPeriod = 250;
     private int attackCoolDown = 0;
-    private float attackPower = 40f;
+    private float attackPower = 100f;
     private ConeAttack coneAttack;
     private float coneAttackLength = 200f;
+
+    private CircleAttack circleAttack;
+    private int circleAttackPeriod = 10000;
+    private int circleAttackCoolDown = 0;
+    private float circleAttackPower = 100f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -210,6 +215,8 @@ public class Player extends DynamicEntity {
 
     private void attack(long timeElapsed) {
         double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
+
+        /** CONE ATTACK **/
         double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Player.getInstance().getCurrentCoordinates().x,
                 mouseWorldCoordinates[1] - Player.getInstance().getCurrentCoordinates().y};
 
@@ -219,6 +226,19 @@ public class Player extends DynamicEntity {
             coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
         } else {
             coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
+        }
+
+        /** CIRCLE ATTACK **/
+        if (MyInputListener.rightMouseButtonPressed) {
+            if (circleAttackCoolDown <= 0) {
+                circleAttack = new CircleAttack(new Coordinates(mouseWorldCoordinates[0], mouseWorldCoordinates[1]),
+                        100, 500, circleAttackPower, false, true);
+                Scene.listOfCircleAttacks.add(circleAttack);
+                circleAttackCoolDown = circleAttackPeriod;
+            }
+        }
+        if (circleAttackCoolDown > 0) {
+            circleAttackCoolDown -= timeElapsed;
         }
     }
 

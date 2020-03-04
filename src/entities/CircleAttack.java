@@ -21,13 +21,13 @@ public class CircleAttack {
     private double timeLiving = 0;
     private double timeToLive = 5000;
 
-    public CircleAttack(Coordinates center, double radius, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
+    public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking) {
         this.center = center;
         this.radius = radius;
         this.enemyAttack = enemyAttack;
         this.attackPeriod = attackPeriod;
-        this.attackCoolDown = attackCoolDown;
         this.attackPower = attackPower;
+        this.attackCoolDown = 0;
         update(0, attacking);
     }
 

@@ -198,7 +198,9 @@ public class Scene {
         glBegin(GL_QUADS);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
-                if (TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {
+                if (0 < i && i < TileMap.getArrayOfTiles().length
+                        && 0 < j && j < TileMap.getArrayOfTiles()[0].length
+                        && TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {
                     double scale = Camera.getZoom();
                     int x = i * TileMap.TILE_WIDTH;
                     int y = j * TileMap.TILE_HEIGHT;

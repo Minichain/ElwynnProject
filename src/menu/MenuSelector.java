@@ -1,5 +1,6 @@
 package menu;
 
+import enums.Resolution;
 import listeners.MyInputListener;
 import main.MyOpenGL;
 import main.Parameters;

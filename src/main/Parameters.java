@@ -1,7 +1,7 @@
 package main;
 
 import audio.OpenALManager;
-import menu.Resolution;
+import enums.Resolution;
 
 public class Parameters {
     private static boolean debugMode = false;

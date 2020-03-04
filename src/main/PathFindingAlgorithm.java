@@ -68,14 +68,17 @@ public class PathFindingAlgorithm {
         cost = new int[tilesInXAxis][tilesInYAxis];
     }
 
-    public int[] computeBestPath() {
+    public void computeBestPath() {
         computeNodeCosts();
         findPath();
+    }
 
+    public int[] getNextStep() {
         if (!path.isEmpty()) {
-            return path.get(path.size() - 1);
+            int index = path.size() - 1;
+            int[] step = path.get(index);
+            return step;
         }
-
         return new int[]{0, 0};
     }
 
@@ -153,6 +156,5 @@ public class PathFindingAlgorithm {
             path.add(new int[]{parent[0] - parentNode[0], parent[1] - parentNode[1]});
             findStep(parentNode);
         }
-        return;
     }
 }

@@ -3,6 +3,7 @@ package main;
 import audio.OpenALManager;
 import entities.Camera;
 import entities.Scene;
+import listeners.MyInputListener;
 
 public class Game {
     public static void startGame() {
@@ -26,6 +27,7 @@ public class Game {
 
     public static void stopGame() {
         OpenALManager.destroy();
+        MyInputListener.release();
     }
 }
 

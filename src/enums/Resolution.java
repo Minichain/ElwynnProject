@@ -1,4 +1,4 @@
-package menu;
+package enums;
 
 public enum Resolution {
     /**

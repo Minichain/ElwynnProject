@@ -7,7 +7,7 @@ public abstract class Entity {
     private Coordinates coordinates;
 
     public Entity(int x, int y) {
-        coordinates = new Coordinates((double)x, (double)y);
+        coordinates = new Coordinates(x, y);
         loadSprite();
     }
 

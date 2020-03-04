@@ -1,7 +1,6 @@
 package listeners;
 
 import entities.Camera;
-import entities.CircleAttack;
 import entities.Scene;
 import entities.TileMap;
 import main.*;
@@ -126,11 +125,6 @@ public class MyInputListener {
                 // Change Tile's collision behaviour
                 int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates[0], mouseCameraCoordinates[1]);
                 TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
-            } else if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
-                CircleAttack circleAttack = new CircleAttack(new Coordinates(mouseWorldCoordinates[0], mouseWorldCoordinates[1]),
-                        100, 500, 0, 500, false, true);
-                Scene.listOfCircleAttacks.add(circleAttack);
             }
         }
     }
