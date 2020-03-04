@@ -3,7 +3,7 @@ package main;
 import audio.OpenALManager;
 import entities.Camera;
 import entities.Scene;
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 
 public class Game {
     public static void startGame() {
@@ -16,11 +16,11 @@ public class Game {
             Scene.getInstance().update(timeElapsed);
         }
         Camera.getInstance().update(timeElapsed);
-        MyInputListener.updateMouseWorldCoordinates();
+        InputListenerManager.updateMouseWorldCoordinates();
     }
 
     public static void render(long timeElapsed) {
-        MyOpenGL.prepareFrame();
+        OpenGLManager.prepareFrame();
         Scene.getInstance().render();
         SpecialEffects.render();
         UserInterface.getInstance().render(timeElapsed);
@@ -28,7 +28,7 @@ public class Game {
 
     public static void stopGame() {
         OpenALManager.destroy();
-        MyInputListener.release();
+        InputListenerManager.release();
     }
 }
 

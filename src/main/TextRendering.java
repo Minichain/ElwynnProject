@@ -64,7 +64,7 @@ public class TextRendering {
             double v = ((1.0 / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
             double u2 = u + (1.0 / (float) numOfTilesInTileSetX);
             double v2 = v + (1.0 / (float) numOfTilesInTileSetY);
-            MyOpenGL.drawTexture(x + (i * CHARACTER_WIDTH * scale), y, u, v2, u2, v, CHARACTER_WIDTH * scale, CHARACTER_HEIGHT * scale, alpha, r, g, b);
+            OpenGLManager.drawTexture(x + (i * CHARACTER_WIDTH * scale), y, u, v2, u2, v, CHARACTER_WIDTH * scale, CHARACTER_HEIGHT * scale, alpha, r, g, b);
         }
 
         if (!isTextureBoundAndOpenGlBegun) {

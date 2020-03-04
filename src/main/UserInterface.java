@@ -2,7 +2,7 @@ package main;
 
 import entities.*;
 import entities.Player;
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import menu.Menu;
 
 import java.util.ArrayList;
@@ -53,9 +53,9 @@ public class UserInterface {
             textList.add("Player World Coordinates: (" + (float) Player.getInstance().getWorldCoordinates().x + ", " + (float) Player.getInstance().getWorldCoordinates().y + ")");
             textList.add("Player Camera Coordinates: (" + (float) Player.getInstance().getCameraCoordinates().x + ", " + (float) Player.getInstance().getCameraCoordinates().y + ")");
             textList.add("Player Health: " + Player.getInstance().getHealth());
-            textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMouseCameraCoordinates().x + ", " + (float) MyInputListener.getMouseCameraCoordinates().y + ")");
-            textList.add("Mouse World Coordinates: (" + (float) MyInputListener.getMouseWorldCoordinates().x + ", " + (float) MyInputListener.getMouseWorldCoordinates().y + ")");
-            textList.add("Mouse Window Coordinates: (" + MyInputListener.getMouseWindowCoordinates().x + ", " + MyInputListener.getMouseWindowCoordinates().y + ")");
+            textList.add("Mouse Camera Coordinates: (" + (float) InputListenerManager.getMouseCameraCoordinates().x + ", " + (float) InputListenerManager.getMouseCameraCoordinates().y + ")");
+            textList.add("Mouse World Coordinates: (" + (float) InputListenerManager.getMouseWorldCoordinates().x + ", " + (float) InputListenerManager.getMouseWorldCoordinates().y + ")");
+            textList.add("Mouse Window Coordinates: (" + InputListenerManager.getMouseWindowCoordinates().x + ", " + InputListenerManager.getMouseWindowCoordinates().y + ")");
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
             } else {
@@ -102,10 +102,10 @@ public class UserInterface {
             glEnable(GL_TEXTURE_2D);
             glBegin(GL_QUADS);
             for (int i = 0; i < 25; i++) {
-                currentTile = MyInputListener.getMouseWheelPosition() + i - previousTilesToShow;
+                currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
                 x = 20 + i * 64;
                 y = Parameters.getResolutionHeight() - 100;
-                if (currentTile == MyInputListener.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                if (currentTile == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
                     TileMap.drawTile(currentTile, x + 5, y + 5, 2.5, 0f, 0f, 0f, true);
                     TileMap.drawTile(currentTile, x, y, 2.5, 1f, 1f, 1f, true);
                 } else {
@@ -123,15 +123,15 @@ public class UserInterface {
     }
 
     private void renderCursorUI(long timeElapsed) {
-        double mouseX = MyInputListener.getMouseCameraCoordinates().x;
-        double mouseY = MyInputListener.getMouseCameraCoordinates().y;
+        double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
+        double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
                 && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
             TileMap.bindTileSetTexture();
             glEnable(GL_TEXTURE_2D);
             glBegin(GL_QUADS);
-            TileMap.drawTile(MyInputListener.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
+            TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
             glEnd();
         }
     }

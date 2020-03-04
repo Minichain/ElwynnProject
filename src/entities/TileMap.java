@@ -95,7 +95,7 @@ public class TileMap {
             height++;
         }
 
-        MyOpenGL.drawTexture((int) cameraCoordinates.x, (int) cameraCoordinates.y, u, v2, u2, v, width, height, r, g, b);
+        OpenGLManager.drawTexture((int) cameraCoordinates.x, (int) cameraCoordinates.y, u, v2, u2, v, width, height, r, g, b);
     }
 
     public static int[] getTile(int tile) {

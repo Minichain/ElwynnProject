@@ -9,7 +9,7 @@ import org.lwjgl.glfw.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class MyInputListener {
+public class InputListenerManager {
     /** CALL BACKS **/
     private static GLFWKeyCallback keyCallback;
     private static GLFWMouseButtonCallback mouseCallback;
@@ -108,7 +108,7 @@ public class MyInputListener {
                     layer = 2;
                     break;
             }
-            TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (MyInputListener.getMouseWheelPosition()));
+            TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
         }
     }
 

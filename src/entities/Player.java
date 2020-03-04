@@ -3,7 +3,7 @@ package entities;
 import audio.OpenALManager;
 import utils.MathUtils;
 import utils.Utils;
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import main.*;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -84,7 +84,7 @@ public class Player extends DynamicEntity {
         if (health > 0)  {
             playerStatus = Status.IDLE;
 
-            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && MyInputListener.leftMouseButtonPressed);
+            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && InputListenerManager.leftMouseButtonPressed);
             attack(timeElapsed);
 
             double[] movement = new double[]{0, 0};
@@ -105,8 +105,8 @@ public class Player extends DynamicEntity {
             displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};
             facingVector = null;
             if (attacking) {
-                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates().x - getCameraCoordinates().x,
-                        MyInputListener.getMouseCameraCoordinates().y - getCameraCoordinates().y};
+                facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCameraCoordinates().x,
+                        InputListenerManager.getMouseCameraCoordinates().y - getCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
             } else if (displacementVector[0] != 0 || displacementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
@@ -149,16 +149,16 @@ public class Player extends DynamicEntity {
 
     public double[] computeMovementVector(long timeElapsed, double speed) {
         double[] movement = new double[2];
-        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
             movement[1] = 1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
             movement[0] = -1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
             movement[1] = -1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
             movement[0] = 1;
         }
 
@@ -214,8 +214,8 @@ public class Player extends DynamicEntity {
 
     private void attack(long timeElapsed) {
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{MyInputListener.getMouseWorldCoordinates().x - Player.getInstance().getWorldCoordinates().x,
-                MyInputListener.getMouseWorldCoordinates().y - Player.getInstance().getWorldCoordinates().y};
+        double[] pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getWorldCoordinates().x,
+                InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getWorldCoordinates().y};
 
         attacking = attacking && playerStatus != Player.Status.DEAD;
 
@@ -226,9 +226,9 @@ public class Player extends DynamicEntity {
         }
 
         /** CIRCLE ATTACK **/
-        if (MyInputListener.rightMouseButtonPressed) {
+        if (InputListenerManager.rightMouseButtonPressed) {
             if (circleAttackCoolDown <= 0) {
-                circleAttack = new CircleAttack(new Coordinates(MyInputListener.getMouseWorldCoordinates().x, MyInputListener.getMouseWorldCoordinates().y),
+                circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
                         100, 500, circleAttackPower, false, true);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;

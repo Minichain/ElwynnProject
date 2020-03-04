@@ -5,7 +5,7 @@ import org.lwjgl.opengl.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class MyOpenGL {
+public class OpenGLManager {
 
     /**
      * program shader, to which is attached a vertex and fragment shaders.

@@ -1,6 +1,6 @@
 package menu;
 
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import main.*;
 import utils.MathUtils;
 
@@ -21,7 +21,7 @@ public class MenuButton extends MenuComponent {
         x = (int) Menu.getInstance().getCoordinates().x - width / 2;
         y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
-        if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
+        if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
@@ -34,11 +34,11 @@ public class MenuButton extends MenuComponent {
     @Override
     public void renderBackground() {
         if (isPressed()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.8, 0.2f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.8, 0.2f);
         } else if (isMouseOver()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.65, 0.4f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.65, 0.4f);
         } else {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.5, 0.6f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.6f);
         }
     }
 

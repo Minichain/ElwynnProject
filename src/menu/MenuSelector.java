@@ -1,9 +1,9 @@
 package menu;
 
 import enums.Resolution;
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import main.Coordinates;
-import main.MyOpenGL;
+import main.OpenGLManager;
 import main.Parameters;
 import main.TextRendering;
 import utils.MathUtils;
@@ -31,7 +31,7 @@ public class MenuSelector extends MenuComponent {
         nextSelector.recenter(new int[]{x + width - 20, y + height / 2});
 
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
-        if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
+        if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
@@ -47,11 +47,11 @@ public class MenuSelector extends MenuComponent {
     @Override
     public void renderBackground() {
         if (isPressed()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.65, 0.4f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.65, 0.4f);
         } else if (isMouseOver()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.65, 0.4f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.65, 0.4f);
         } else {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.5, 0.6f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.6f);
         }
         previousSelector.render();
         nextSelector.render();
@@ -82,8 +82,8 @@ public class MenuSelector extends MenuComponent {
         }
 
         public void update() {
-            mouseOver = MathUtils.isPointInsideTriangle(MyInputListener.getMouseCameraCoordinates(), vertex1, vertex2, vertex3);
-            if (mouseOver && MyInputListener.leftMouseButtonPressed) {
+            mouseOver = MathUtils.isPointInsideTriangle(InputListenerManager.getMouseCameraCoordinates(), vertex1, vertex2, vertex3);
+            if (mouseOver && InputListenerManager.leftMouseButtonPressed) {
                 pressed = true;
             } else {
                 if (pressed && mouseOver) {
@@ -104,11 +104,11 @@ public class MenuSelector extends MenuComponent {
 
         public void render() {
             if (pressed) {
-                MyOpenGL.drawTriangle(vertex1, vertex2, vertex3, 1.0, 0.2f);
+                OpenGLManager.drawTriangle(vertex1, vertex2, vertex3, 1.0, 0.2f);
             } else if (mouseOver) {
-                MyOpenGL.drawTriangle(vertex1, vertex2, vertex3, 1.0, 0.8f);
+                OpenGLManager.drawTriangle(vertex1, vertex2, vertex3, 1.0, 0.8f);
             } else {
-                MyOpenGL.drawTriangle(vertex1, vertex2, vertex3, 1.0, 1f);
+                OpenGLManager.drawTriangle(vertex1, vertex2, vertex3, 1.0, 1f);
             }
         }
 

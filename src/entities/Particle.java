@@ -1,7 +1,7 @@
 package entities;
 
 import main.Coordinates;
-import main.MyOpenGL;
+import main.OpenGLManager;
 
 public class Particle {
     private Coordinates center;
@@ -33,7 +33,7 @@ public class Particle {
         float halfSize = size / 2;
         Coordinates centerCameraCoordinates = center.toCameraCoordinates();
         float size = (float) (timeLiving / timeToLive) * this.size;
-        MyOpenGL.drawRectangle((int) (centerCameraCoordinates.x - halfSize), (int) (centerCameraCoordinates.y - halfSize), size, size, 1.0 - timeLiving / timeToLive, r, g, b);
+        OpenGLManager.drawRectangle((int) (centerCameraCoordinates.x - halfSize), (int) (centerCameraCoordinates.y - halfSize), size, size, 1.0 - timeLiving / timeToLive, r, g, b);
     }
 
     public boolean isDead() {

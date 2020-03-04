@@ -1,6 +1,6 @@
 package entities;
 
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import main.Coordinates;
 import main.GameMode;
 import main.Parameters;
@@ -93,16 +93,16 @@ public class Camera {
 
     public double[] computeMovementVector(long timeElapsed, double speed) {
         double[] movement = new double[2];
-        if (MyInputListener.isKeyPressed(GLFW_KEY_S)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
             movement[1] = 1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_A)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
             movement[0] = -1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_W)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
             movement[1] = -1;
         }
-        if (MyInputListener.isKeyPressed(GLFW_KEY_D)) {
+        if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
             movement[0] = 1;
         }
 

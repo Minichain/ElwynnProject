@@ -1,7 +1,7 @@
 package menu;
 
-import listeners.MyInputListener;
-import main.MyOpenGL;
+import listeners.InputListenerManager;
+import main.OpenGLManager;
 import main.Parameters;
 import main.TextRendering;
 import utils.MathUtils;
@@ -39,8 +39,8 @@ public class MenuSlideBar extends MenuComponent {
         x = (int) Menu.getInstance().getCoordinates().x - width / 2;
         y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
-        if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
-            progress = (float) (MyInputListener.getMouseCameraCoordinates().x - x) / (float) width;
+        if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
+            progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - x) / (float) width;
             performAction(sliderAction);
             setPressed(true);
         } else {
@@ -54,13 +54,13 @@ public class MenuSlideBar extends MenuComponent {
     @Override
     public void renderBackground() {
         if (isPressed()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.8, 0.2f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.8, 0.2f);
         } else if (isMouseOver()) {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.65, 0.4f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.65, 0.4f);
         } else {
-            MyOpenGL.drawRectangle(x, y, width, height, 0.5, 0.6f);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.6f);
         }
-        MyOpenGL.drawRectangle(x, y, width * (float) progress, height, 0.8, 0.8f);
+        OpenGLManager.drawRectangle(x, y, width * (float) progress, height, 0.8, 0.8f);
     }
 
     @Override

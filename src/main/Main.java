@@ -1,7 +1,5 @@
 package main;
 
-import listeners.MyInputListener;
-
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {

@@ -1,7 +1,7 @@
 package main;
 
 import audio.OpenALManager;
-import listeners.MyInputListener;
+import listeners.InputListenerManager;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowPosCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
@@ -26,12 +26,12 @@ public class Window {
         setWindow(window);
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
-        MyOpenGL.prepareOpenGL();
+        OpenGLManager.prepareOpenGL();
         OpenALManager.prepareOpenAL();
         glfwPollEvents();
 
         /** INPUT LISTENER **/
-        MyInputListener.initMyInputListener();
+        InputListenerManager.initMyInputListener();
         setFullScreen(Parameters.isFullScreen());
 
         /** CALLBACKS **/
