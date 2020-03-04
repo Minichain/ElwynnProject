@@ -149,7 +149,10 @@ public class PathFindingAlgorithm {
             return;
         }
         int[] parentNode = this.parentNode[parent[0]][parent[1]];
-        path.add(new int[]{parent[0] - parentNode[0], parent[1] - parentNode[1]});
-        findStep(parentNode);
+        if (parent[0] != parentNode[0] || parent[1] != parentNode[1]) {
+            path.add(new int[]{parent[0] - parentNode[0], parent[1] - parentNode[1]});
+            findStep(parentNode);
+        }
+        return;
     }
 }
