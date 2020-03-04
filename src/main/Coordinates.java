@@ -12,47 +12,35 @@ public class Coordinates {
         this.y = y;
     }
 
-    public double[] toCameraCoordinates() {
-        double[] newCoordinates = new double[2];
-        newCoordinates[0] = (x - Camera.getInstance().getCoordinates().x + (Camera.getWidth() / 2)) * Camera.getZoom();
-        newCoordinates[1] = (y - Camera.getInstance().getCoordinates().y + (Camera.getHeight() / 2)) * Camera.getZoom();
-        return newCoordinates;
+    public Coordinates toCameraCoordinates() {
+        return new Coordinates((x - Camera.getInstance().getCoordinates().x + (Camera.getWidth() / 2)) * Camera.getZoom(),
+                (y - Camera.getInstance().getCoordinates().y + (Camera.getHeight() / 2)) * Camera.getZoom());
     }
 
-    public double[] toWorldCoordinates() {
-        double[] newCoordinates = new double[2];
-        newCoordinates[0] = (x / Camera.getZoom() + Camera.getInstance().getCoordinates().x - (Camera.getWidth() / 2));
-        newCoordinates[1] = (y / Camera.getZoom() + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2));
-        return newCoordinates;
+    public Coordinates toWorldCoordinates() {
+        return new Coordinates(x / Camera.getZoom() + Camera.getInstance().getCoordinates().x - (Camera.getWidth() / 2),
+                y / Camera.getZoom() + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2));
     }
 
-    public static int[] cameraCoordinatesToTileCoordinates(int x, int y) {
-        double[] worldCoordinates = new Coordinates(x, y).toWorldCoordinates();
-        return worldCoordinatesToTileCoordinates((int) worldCoordinates[0], (int) worldCoordinates[1]);
+    public static Coordinates cameraCoordinatesToTileCoordinates(double x, double y) {
+        Coordinates worldCoordinates = new Coordinates(x, y).toWorldCoordinates();
+        return worldCoordinatesToTileCoordinates(worldCoordinates.x, worldCoordinates.y);
     }
 
-    public static int[] worldCoordinatesToTileCoordinates(int x, int y) {
-        int i = x / TileMap.TILE_WIDTH;
-        int j = y / TileMap.TILE_HEIGHT;
-        return new int[]{i, j};
+    public static Coordinates worldCoordinatesToTileCoordinates(double x, double y) {
+        return new Coordinates(x / TileMap.TILE_WIDTH, y / TileMap.TILE_HEIGHT);
     }
 
-    public static int[] tileCoordinatesToWorldCoordinates(int i, int j) {
-        int x = i * TileMap.TILE_WIDTH;
-        int y = j * TileMap.TILE_HEIGHT;
-        return new int[]{x, y};
+    public static Coordinates tileCoordinatesToWorldCoordinates(int i, int j) {
+        return new Coordinates(i * TileMap.TILE_WIDTH, j * TileMap.TILE_HEIGHT);
     }
 
-    public static int[] cameraToWindowCoordinates(double x, double y) {
-        int windowX = (int) (x * Window.getCameraWindowScaleFactor()[0]);
-        int windowY = (int) (y * Window.getCameraWindowScaleFactor()[1]);
-        return new int[]{windowX, windowY};
+    public static Coordinates cameraToWindowCoordinates(double x, double y) {
+        return new Coordinates(x * Window.getCameraWindowScaleFactor()[0], y * Window.getCameraWindowScaleFactor()[1]);
     }
 
-    public static int[] windowToCameraCoordinates(double x, double y) {
-        int cameraX = (int) (x / Window.getCameraWindowScaleFactor()[0]);
-        int cameraY = (int) (y / Window.getCameraWindowScaleFactor()[1]);
-        return new int[]{cameraX, cameraY};
+    public static Coordinates windowToCameraCoordinates(double x, double y) {
+        return new Coordinates(x / Window.getCameraWindowScaleFactor()[0], y / Window.getCameraWindowScaleFactor()[1]);
     }
 
     public String toString() {

@@ -44,8 +44,8 @@ public class Player extends DynamicEntity {
     }
 
     private void init() {
-        getCurrentCoordinates().x = Scene.getInitialCoordinates().x;
-        getCurrentCoordinates().y = Scene.getInitialCoordinates().y;
+        getWorldCoordinates().x = Scene.getInitialCoordinates().x;
+        getWorldCoordinates().y = Scene.getInitialCoordinates().y;
         health = 5000f;
         speed = 0.125;
         playerStatus = Status.IDLE;
@@ -79,8 +79,8 @@ public class Player extends DynamicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        getPreviousCoordinates().x = getCurrentCoordinates().x;
-        getPreviousCoordinates().y = getCurrentCoordinates().y;
+        getPreviousWorldCoordinates().x = getWorldCoordinates().x;
+        getPreviousWorldCoordinates().y = getWorldCoordinates().y;
         if (health > 0)  {
             playerStatus = Status.IDLE;
 
@@ -93,21 +93,20 @@ public class Player extends DynamicEntity {
             }
 
             int distanceFactor = 4;
-            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y));
-            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor));
+            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x + movement[0] * distanceFactor), (int)(getWorldCoordinates().y));
+            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x), (int)(getWorldCoordinates().y + movement[1] * distanceFactor));
             if (!horizontalCollision) {
-                getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+                getWorldCoordinates().x = getWorldCoordinates().x + movement[0];
             }
             if (!verticalCollision) {
-                getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
+                getWorldCoordinates().y = getWorldCoordinates().y + movement[1];
             }
 
-            displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
+            displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};
             facingVector = null;
             if (attacking) {
-                double[] playerCameraCoordinates = getCurrentCoordinates().toCameraCoordinates();
-                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates()[0] - playerCameraCoordinates[0],
-                        MyInputListener.getMouseCameraCoordinates()[1] - playerCameraCoordinates[1]};
+                facingVector = new double[]{MyInputListener.getMouseCameraCoordinates().x - getCameraCoordinates().x,
+                        MyInputListener.getMouseCameraCoordinates().y - getCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
             } else if (displacementVector[0] != 0 || displacementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
@@ -214,24 +213,22 @@ public class Player extends DynamicEntity {
     }
 
     private void attack(long timeElapsed) {
-        double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
-
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{mouseWorldCoordinates[0] - Player.getInstance().getCurrentCoordinates().x,
-                mouseWorldCoordinates[1] - Player.getInstance().getCurrentCoordinates().y};
+        double[] pointingVector = new double[]{MyInputListener.getMouseWorldCoordinates().x - Player.getInstance().getWorldCoordinates().x,
+                MyInputListener.getMouseWorldCoordinates().y - Player.getInstance().getWorldCoordinates().y};
 
         attacking = attacking && playerStatus != Player.Status.DEAD;
 
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
+            coneAttack = new ConeAttack(getWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
         } else {
-            coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getWorldCoordinates(), pointingVector, timeElapsed, attacking);
         }
 
         /** CIRCLE ATTACK **/
         if (MyInputListener.rightMouseButtonPressed) {
             if (circleAttackCoolDown <= 0) {
-                circleAttack = new CircleAttack(new Coordinates(mouseWorldCoordinates[0], mouseWorldCoordinates[1]),
+                circleAttack = new CircleAttack(new Coordinates(MyInputListener.getMouseWorldCoordinates().x, MyInputListener.getMouseWorldCoordinates().y),
                         100, 500, circleAttackPower, false, true);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;

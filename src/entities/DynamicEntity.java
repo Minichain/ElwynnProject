@@ -7,7 +7,7 @@ import main.Texture;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class DynamicEntity extends Entity {
-    private Coordinates previousCoordinates;
+    private Coordinates previousWorldCoordinates;
 
     /** Variables **/
     public float health;
@@ -27,7 +27,7 @@ public abstract class DynamicEntity extends Entity {
 
     public DynamicEntity(int x, int y, int prevX, int prevY) {
         super(x, y);
-        previousCoordinates = new Coordinates(prevX, prevY);
+        previousWorldCoordinates = new Coordinates(prevX, prevY);
         displacementVector = new double[2];
     }
 
@@ -50,12 +50,8 @@ public abstract class DynamicEntity extends Entity {
         glEnd();
     }
 
-    public Coordinates getCurrentCoordinates() {
-        return getCoordinates();
-    }
-
-    public Coordinates getPreviousCoordinates() {
-        return previousCoordinates;
+    public Coordinates getPreviousWorldCoordinates() {
+        return previousWorldCoordinates;
     }
 
     public double getSpriteCoordinateFromSpriteSheetX() {

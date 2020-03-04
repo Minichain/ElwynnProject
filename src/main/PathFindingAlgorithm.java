@@ -5,8 +5,8 @@ import entities.TileMap;
 import java.util.ArrayList;
 
 public class PathFindingAlgorithm {
-    private int[] initialWorldCoordinates;
-    private int[] goalWorldCoordinates;
+    private Coordinates initialWorldCoordinates;
+    private Coordinates goalWorldCoordinates;
 
     private int tilesInXAxis;
     private int tilesInYAxis;
@@ -26,33 +26,33 @@ public class PathFindingAlgorithm {
     private ArrayList<int[]> path = new ArrayList<>();
 
     public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
-        this.initialWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) initialWorldCoordinates.x, (int) initialWorldCoordinates.y);
-        this.goalWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates((int) goalWorldCoordinates.x, (int) goalWorldCoordinates.y);
+        this.initialWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
+        this.goalWorldCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
 
         int[] toTileMapCoordinates = new int[2];
 
-        if (this.initialWorldCoordinates[0] < this.goalWorldCoordinates[0]) {
-            tilesInXAxis = this.goalWorldCoordinates[0] - this.initialWorldCoordinates[0] + 1 + (marginX * 2);
+        if (this.initialWorldCoordinates.x < this.goalWorldCoordinates.x) {
+            tilesInXAxis = (int) this.goalWorldCoordinates.x - (int) this.initialWorldCoordinates.x + 1 + (marginX * 2);
             initialNode[0] = marginX;
             goalNode[0] = tilesInXAxis - 1 - marginX;
-            toTileMapCoordinates[0] = this.initialWorldCoordinates[0] - marginX;
+            toTileMapCoordinates[0] = (int) this.initialWorldCoordinates.x - marginX;
         } else {
-            tilesInXAxis = this.initialWorldCoordinates[0] - this.goalWorldCoordinates[0] + 1 + (marginX * 2);
+            tilesInXAxis = (int) this.initialWorldCoordinates.x - (int) this.goalWorldCoordinates.x + 1 + (marginX * 2);
             goalNode[0] = marginX;
             initialNode[0] = tilesInXAxis - 1 - marginX;
-            toTileMapCoordinates[0] = this.goalWorldCoordinates[0] - marginX;
+            toTileMapCoordinates[0] = (int) this.goalWorldCoordinates.x - marginX;
         }
 
-        if (this.initialWorldCoordinates[1] < this.goalWorldCoordinates[1]) {
-            tilesInYAxis = this.goalWorldCoordinates[1] - this.initialWorldCoordinates[1] + 1 + (marginY * 2);
+        if (this.initialWorldCoordinates.y < this.goalWorldCoordinates.y) {
+            tilesInYAxis = (int) this.goalWorldCoordinates.y - (int) this.initialWorldCoordinates.y + 1 + (marginY * 2);
             initialNode[1] = marginY;
             goalNode[1] = tilesInYAxis - 1 - marginY;
-            toTileMapCoordinates[1] = this.initialWorldCoordinates[1] - marginY;
+            toTileMapCoordinates[1] = (int) this.initialWorldCoordinates.y - marginY;
         } else {
-            tilesInYAxis = this.initialWorldCoordinates[1] - this.goalWorldCoordinates[1] + 1 + (marginY * 2);
+            tilesInYAxis = (int) this.initialWorldCoordinates.y - (int) this.goalWorldCoordinates.y + 1 + (marginY * 2);
             goalNode[1] = marginY;
             initialNode[1] = tilesInYAxis - 1 - marginY;
-            toTileMapCoordinates[1] = this.goalWorldCoordinates[1] - marginY;
+            toTileMapCoordinates[1] = (int) this.goalWorldCoordinates.y - marginY;
         }
 
         visitedNodes = new boolean[tilesInXAxis][tilesInYAxis];

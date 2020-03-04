@@ -67,23 +67,22 @@ public class CircleAttack {
         Entity entity;
         for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
             entity = Scene.getInstance().getListOfEntities().get(i);
-            double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
             float damage = (float) (attackPower + (Math.random() * 10));
             double radius = this.radius * Camera.getZoom();
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                        && MathUtils.isPointInsideCircle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, this.center.toCameraCoordinates(), radius)) {
+                        && MathUtils.isPointInsideCircle(entity.getCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
+                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
-                        && MathUtils.isPointInsideCircle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, this.center.toCameraCoordinates(), radius)) {
+                        && MathUtils.isPointInsideCircle(entity.getCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
+                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, true);
                 }
             }
         }
@@ -107,13 +106,13 @@ public class CircleAttack {
 
             /** CIRCLE OUTLINE **/
             double angle = 0;
-            double[] centerCameraCoordinates = center.toCameraCoordinates();
+            Coordinates centerCameraCoordinates = center.toCameraCoordinates();
             for (int i = 0; i < numberOfVertices; i++) {
                 double radius = this.radius * Camera.getZoom();
-                double x1 = (Math.cos(angle) * radius) + centerCameraCoordinates[0];
-                double y1 = (Math.sin(angle) * radius) + centerCameraCoordinates[1];
-                double x2 = (Math.cos(angle + angleStep) * radius) + centerCameraCoordinates[0];
-                double y2 = (Math.sin(angle + angleStep) * radius) + centerCameraCoordinates[1];
+                double x1 = (Math.cos(angle) * radius) + centerCameraCoordinates.x;
+                double y1 = (Math.sin(angle) * radius) + centerCameraCoordinates.y;
+                double x2 = (Math.cos(angle + angleStep) * radius) + centerCameraCoordinates.x;
+                double y2 = (Math.sin(angle + angleStep) * radius) + centerCameraCoordinates.y;
                 glVertex2d(x1, y1);
                 glVertex2d(x2, y2);
                 angle += angleStep;

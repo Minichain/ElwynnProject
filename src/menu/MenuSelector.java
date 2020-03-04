@@ -2,6 +2,7 @@ package menu;
 
 import enums.Resolution;
 import listeners.MyInputListener;
+import main.Coordinates;
 import main.MyOpenGL;
 import main.Parameters;
 import main.TextRendering;
@@ -66,9 +67,9 @@ public class MenuSelector extends MenuComponent {
     }
 
     public class Selector {
-        int[] vertex1;
-        int[] vertex2;
-        int[] vertex3;
+        Coordinates vertex1;
+        Coordinates vertex2;
+        Coordinates vertex3;
         boolean pressed;
         boolean mouseOver;
         int size;
@@ -114,13 +115,13 @@ public class MenuSelector extends MenuComponent {
         public void recenter(int[] center) {
             int halfSize = size / 2;
             if (leftOriented) {
-                this.vertex1 = new int[]{center[0] - halfSize, center[1]};
-                this.vertex2 = new int[]{center[0] + halfSize, center[1] + halfSize};
-                this.vertex3 = new int[]{center[0] + halfSize, center[1] - halfSize};
+                this.vertex1 = new Coordinates(center[0] - halfSize, center[1]);
+                this.vertex2 = new Coordinates(center[0] + halfSize, center[1] + halfSize);
+                this.vertex3 = new Coordinates(center[0] + halfSize, center[1] - halfSize);
             } else {
-                this.vertex1 = new int[]{center[0] + halfSize, center[1]};
-                this.vertex2 = new int[]{center[0] - halfSize, center[1] + halfSize};
-                this.vertex3 = new int[]{center[0] - halfSize, center[1] - halfSize};
+                this.vertex1 = new Coordinates(center[0] + halfSize, center[1]);
+                this.vertex2 = new Coordinates(center[0] - halfSize, center[1] + halfSize);
+                this.vertex3 = new Coordinates(center[0] - halfSize, center[1] - halfSize);
             }
         }
     }

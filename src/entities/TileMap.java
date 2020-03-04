@@ -73,9 +73,9 @@ public class TileMap {
         drawTile(tileType, x, y, scale, lightIntensity, lightIntensity, lightIntensity, isCameraCoordinates);
     }
 
-    public static void drawTile(int tileType, int x, int y, double scale, float r, float g, float b, boolean isCameraCoordinates) {
-        double[] cameraCoordinates = new double[]{x, y};
-        if (!isCameraCoordinates) cameraCoordinates = (new Coordinates(x, y)).toCameraCoordinates();
+    public static void drawTile(int tileType, double x, double y, double scale, float r, float g, float b, boolean isCameraCoordinates) {
+        Coordinates cameraCoordinates = new Coordinates(x, y);
+        if (!isCameraCoordinates) cameraCoordinates = cameraCoordinates.toCameraCoordinates();
 
         int[] tileFromTileSet = getTile(tileType);
         int tileFromTileSetX = tileFromTileSet[0];
@@ -95,7 +95,7 @@ public class TileMap {
             height++;
         }
 
-        MyOpenGL.drawTexture((int) cameraCoordinates[0], (int) cameraCoordinates[1], u, v2, u2, v, width, height, r, g, b);
+        MyOpenGL.drawTexture((int) cameraCoordinates.x, (int) cameraCoordinates.y, u, v2, u2, v, width, height, r, g, b);
     }
 
     public static int[] getTile(int tile) {
@@ -115,8 +115,8 @@ public class TileMap {
     }
 
     public static boolean checkCollisionWithTile(int x, int y) {
-        int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
-        int i = tileCoordinates[0], j = tileCoordinates[1];
+        Coordinates tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
+        int i = (int) tileCoordinates.x, j = (int) tileCoordinates.y;
         if (0 < i && i < getArrayOfTiles().length && 0 < j && j < getArrayOfTiles()[0].length && getArrayOfTiles()[i][j] != null) {
             return getArrayOfTiles()[i][j].isCollidable();
         } else {

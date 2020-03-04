@@ -133,6 +133,14 @@ public class MyOpenGL {
         glVertex2f(x + width, y + height);
     }
 
+    public static void drawTriangle(Coordinates vertex1, Coordinates vertex2, Coordinates vertex3, double transparency, float greyValue) {
+        drawTriangle(
+                new int[]{(int) vertex1.x, (int) vertex1.y},
+                new int[]{(int) vertex2.x, (int) vertex2.y},
+                new int[]{(int) vertex3.x, (int) vertex3.y},
+                transparency, greyValue, greyValue, greyValue);
+    }
+
     public static void drawTriangle(int[] vertex1, int[] vertex2, int[] vertex3, double transparency, float greyValue) {
         drawTriangle(vertex1, vertex2, vertex3, transparency, greyValue, greyValue, greyValue);
     }

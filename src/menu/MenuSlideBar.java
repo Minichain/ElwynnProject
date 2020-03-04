@@ -40,7 +40,7 @@ public class MenuSlideBar extends MenuComponent {
         y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && MyInputListener.leftMouseButtonPressed) {
-            progress = (float) (MyInputListener.getMouseCameraCoordinates()[0] - x) / (float) width;
+            progress = (float) (MyInputListener.getMouseCameraCoordinates().x - x) / (float) width;
             performAction(sliderAction);
             setPressed(true);
         } else {

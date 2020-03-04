@@ -51,15 +51,7 @@ public class MathUtils {
         return module(point, center) <= radius;
     }
 
-    public static boolean isPointInsideTriangle(int[] point, int[] vertex1, int[] vertex2, int[] vertex3) {
-        return isPointInsideTriangle(
-                new double[]{(double) point[0], (double) point[1]},
-                new double[]{(double) vertex1[0], (double) vertex1[1]},
-                new double[]{(double) vertex2[0], (double) vertex2[1]},
-                new double[]{(double) vertex3[0], (double) vertex3[1]});
-    }
-
-    public static boolean isPointInsideTriangle(double[] point, double[] vertex1, double[] vertex2, double[] vertex3) {
+    public static boolean isPointInsideTriangle(Coordinates point, Coordinates vertex1, Coordinates vertex2, Coordinates vertex3) {
         double d1, d2, d3;
         boolean has_neg, has_pos;
 
@@ -73,13 +65,13 @@ public class MathUtils {
         return !(has_neg && has_pos);
     }
 
-    private static double sign(double[] vertex1, double[] vertex2, double[] vertex3) {
-        return (vertex1[0] - vertex3[0]) * (vertex2[1] - vertex3[1]) - (vertex2[0] - vertex3[0]) * (vertex1[1] - vertex3[1]);
+    private static double sign(Coordinates vertex1, Coordinates vertex2, Coordinates vertex3) {
+        return (vertex1.x - vertex3.x) * (vertex2.y - vertex3.y) - (vertex2.x - vertex3.x) * (vertex1.y - vertex3.y);
     }
 
     public static boolean isMouseInsideRectangle(int x, int y, int x2, int y2) {
-        int[] mouseCameraCoordinates = MyInputListener.getMouseCameraCoordinates();
-        return x < mouseCameraCoordinates[0] && mouseCameraCoordinates[0] < x2 && y < mouseCameraCoordinates[1] && mouseCameraCoordinates[1] < y2;
+        Coordinates mouseCameraCoordinates = MyInputListener.getMouseCameraCoordinates();
+        return x < mouseCameraCoordinates.x && mouseCameraCoordinates.x < x2 && y < mouseCameraCoordinates.y && mouseCameraCoordinates.y < y2;
     }
 
     public static double[] rotateVector(double[] vector, double angle) {

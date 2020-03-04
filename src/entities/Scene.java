@@ -67,11 +67,11 @@ public class Scene {
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
             int distance = (int) ((Math.random() * 250) + 1500);
             double angle = Math.random() * 2 * Math.PI;
-            int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getCurrentCoordinates().x);
-            int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getCurrentCoordinates().y);
-            int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
-            int i = tileCoordinates[0];
-            int j = tileCoordinates[1];
+            int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getWorldCoordinates().x);
+            int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getWorldCoordinates().y);
+            Coordinates tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
+            int i = (int) tileCoordinates.x;
+            int j = (int) tileCoordinates.y;
             if (0 < i && i < TileMap.getArrayOfTiles().length
                     && 0 < j && j < TileMap.getArrayOfTiles()[0].length
                     && !TileMap.getArrayOfTiles()[i][j].isCollidable()) {
@@ -91,8 +91,9 @@ public class Scene {
         for (int i = 0; i < listOfEntities.size(); i++) {
             Entity currentEntity = listOfEntities.get(i);
             currentEntity.update(timeElapsed);
+            currentEntity.updateCoordinates();
 
-            if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCoordinates()) < updateDistance) {
+            if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getWorldCoordinates()) < updateDistance) {
                 listOfEntitiesToUpdate.add(currentEntity);
             }
         }
@@ -104,7 +105,7 @@ public class Scene {
             for (int j = 0; j < (n - i); j++) {
                 Entity entity1 = listOfEntitiesToUpdate.get(j + 1);
                 Entity entity2 = listOfEntitiesToUpdate.get(j);
-                if (entity1.getCoordinates().y < entity2.getCoordinates().y) {
+                if (entity1.getWorldCoordinates().y < entity2.getWorldCoordinates().y) {
                     listOfEntitiesToUpdate.set(j + 1, entity2);
                     listOfEntitiesToUpdate.set(j, entity1);
                 }
@@ -135,16 +136,15 @@ public class Scene {
     public void render() {
         /** COMPUTE WHICH ARE THE TILES WE ARE GOING TO RENDER **/
         int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
-        int[] cameraWorldCoordinates = new int[]{(int) Camera.getInstance().getCoordinates().x, (int) Camera.getInstance().getCoordinates().y};
 
-        int[] topLeftWorldCoordinates = new int[]{cameraWorldCoordinates[0] - oneAxisDistance, cameraWorldCoordinates[1] - oneAxisDistance};
-        int[] topLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topLeftWorldCoordinates[0], topLeftWorldCoordinates[1]);
+        Coordinates topLeftWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x - oneAxisDistance, Camera.getInstance().getCoordinates().y - oneAxisDistance);
+        Coordinates topLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topLeftWorldCoordinates.x, topLeftWorldCoordinates.y);
 
-        int[] topRightWorldCoordinates = new int[]{cameraWorldCoordinates[0] + oneAxisDistance, cameraWorldCoordinates[1] - oneAxisDistance};
-        int[] topRightTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topRightWorldCoordinates[0], topRightWorldCoordinates[1]);
+        Coordinates topRightWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x + oneAxisDistance, Camera.getInstance().getCoordinates().y - oneAxisDistance);
+        Coordinates topRightTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topRightWorldCoordinates.x, topRightWorldCoordinates.y);
 
-        int[] bottomLeftWorldCoordinates = new int[]{cameraWorldCoordinates[0] - oneAxisDistance, cameraWorldCoordinates[1] + oneAxisDistance};
-        int[] bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates[0], bottomLeftWorldCoordinates[1]);
+        Coordinates bottomLeftWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x - oneAxisDistance, Camera.getInstance().getCoordinates().y + oneAxisDistance);
+        Coordinates bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates.x, bottomLeftWorldCoordinates.y);
 
         /** FIRST LAYER OF TILES IS DRAWN FIRST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
@@ -156,26 +156,25 @@ public class Scene {
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
     }
 
-    private void renderSecondLayerOfTilesAndEntities(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
-        double[] entityCameraCoordinates;
+    private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
+        Coordinates entityCameraCoordinates;
         Entity entity = null;
         int entityIterator = 0;
-        int firstTileRowToDraw = topLeftTileCoordinates[1];
-        int lastTileRowToDraw = bottomLeftTileCoordinates[1];
+        int firstTileRowToDraw = (int) topLeftTileCoordinates.y;
+        int lastTileRowToDraw = (int) bottomLeftTileCoordinates.y;
         int tileRowIterator = firstTileRowToDraw;
         while (tileRowIterator < lastTileRowToDraw) {
             if (entityIterator < listOfEntitiesToUpdate.size()) {
                 entity = listOfEntitiesToUpdate.get(entityIterator);
             }
-            if (entity != null && entity.getCoordinates().y < Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator)[1]) {
-                entityCameraCoordinates = entity.getCoordinates().toCameraCoordinates();
-                entity.drawSprite((int) entityCameraCoordinates[0], (int) entityCameraCoordinates[1], entity.getSpriteSheet());
+            if (entity != null && entity.getWorldCoordinates().y < Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator).y) {
+                entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y, entity.getSpriteSheet());
                 entity = null;
                 entityIterator++;
             } else {
                 TileMap.bindTileSetTexture();
                 glBegin(GL_QUADS);
-                for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
+                for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
                     int k = 1;
                     if (0 < i && i < TileMap.getArrayOfTiles().length
                             && 0 < tileRowIterator && tileRowIterator < TileMap.getArrayOfTiles()[0].length
@@ -193,11 +192,11 @@ public class Scene {
         }
     }
 
-    private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int layerToRender) {
+    private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
         TileMap.bindTileSetTexture();
         glBegin(GL_QUADS);
-        for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
-            for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
+        for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
+            for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
                 if (0 < i && i < TileMap.getArrayOfTiles().length
                         && 0 < j && j < TileMap.getArrayOfTiles()[0].length
                         && TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {

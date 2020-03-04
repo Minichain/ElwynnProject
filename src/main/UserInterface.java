@@ -32,7 +32,6 @@ public class UserInterface {
         if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
             float fps = 1000 / timeElapsed;
-            double[] playerCameraCoordinates = Player.getInstance().getCurrentCoordinates().toCameraCoordinates();
 
             /** DEBUG TEXT **/
             ArrayList<String> textList = new ArrayList<>();
@@ -51,13 +50,12 @@ public class UserInterface {
             textList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
             textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
             textList.add("Camera Zoom: " + (float) Camera.getZoom());
-            textList.add("Player World Coordinates: (" + (float) Player.getInstance().getCurrentCoordinates().x + ", " + (float) Player.getInstance().getCurrentCoordinates().y + ")");
-            textList.add("Player Camera Coordinates: (" + playerCameraCoordinates[0] + ", " + playerCameraCoordinates[1] + ")");
+            textList.add("Player World Coordinates: (" + (float) Player.getInstance().getWorldCoordinates().x + ", " + (float) Player.getInstance().getWorldCoordinates().y + ")");
+            textList.add("Player Camera Coordinates: (" + (float) Player.getInstance().getCameraCoordinates().x + ", " + (float) Player.getInstance().getCameraCoordinates().y + ")");
             textList.add("Player Health: " + Player.getInstance().getHealth());
-            textList.add("Mouse Camera Coordinates: (" + MyInputListener.getMouseCameraCoordinates()[0] + ", " + MyInputListener.getMouseCameraCoordinates()[1] + ")");
-            double[] mouseWorldCoordinates = new Coordinates(MyInputListener.getMouseCameraCoordinates()[0], MyInputListener.getMouseCameraCoordinates()[1]).toWorldCoordinates();
-            textList.add("Mouse World Coordinates: (" + (float) mouseWorldCoordinates[0] + ", " + (float) mouseWorldCoordinates[1] + ")");
-            textList.add("Mouse Window Coordinates: (" + MyInputListener.getMouseWindowCoordinates()[0] + ", " + MyInputListener.getMouseWindowCoordinates()[1] + ")");
+            textList.add("Mouse Camera Coordinates: (" + (float) MyInputListener.getMouseCameraCoordinates().x + ", " + (float) MyInputListener.getMouseCameraCoordinates().y + ")");
+            textList.add("Mouse World Coordinates: (" + (float) MyInputListener.getMouseWorldCoordinates().x + ", " + (float) MyInputListener.getMouseWorldCoordinates().y + ")");
+            textList.add("Mouse Window Coordinates: (" + MyInputListener.getMouseWindowCoordinates().x + ", " + MyInputListener.getMouseWindowCoordinates().y + ")");
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
             } else {
@@ -125,8 +123,8 @@ public class UserInterface {
     }
 
     private void renderCursorUI(long timeElapsed) {
-        int mouseX = MyInputListener.getMouseCameraCoordinates()[0];
-        int mouseY = MyInputListener.getMouseCameraCoordinates()[1];
+        double mouseX = MyInputListener.getMouseCameraCoordinates().x;
+        double mouseY = MyInputListener.getMouseCameraCoordinates().y;
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
                 && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
                 && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {

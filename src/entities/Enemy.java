@@ -42,8 +42,8 @@ public class Enemy extends DynamicEntity {
     }
 
     private void init(int x, int y) {
-        getCurrentCoordinates().x = x;
-        getCurrentCoordinates().y = y;
+        getWorldCoordinates().x = x;
+        getWorldCoordinates().y = y;
         health = 1000f;
         speed = 0.075;
         status = Status.IDLE;
@@ -70,27 +70,27 @@ public class Enemy extends DynamicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        getPreviousCoordinates().x = getCurrentCoordinates().x;
-        getPreviousCoordinates().y = getCurrentCoordinates().y;
+        getPreviousWorldCoordinates().x = getWorldCoordinates().x;
+        getPreviousWorldCoordinates().y = getWorldCoordinates().y;
         if (health > 0) {
             status = Status.IDLE;
-            distanceToPlayer = MathUtils.module(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
+            distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
             attacking = distanceToPlayer < coneAttackLength && Player.getInstance().getStatus() != Player.Status.DEAD;
 
             double[] movement = computeMovementVector(timeElapsed, speed);
             attack(timeElapsed);
 
             int distanceFactor = 4;
-            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x + movement[0] * distanceFactor), (int)(getCurrentCoordinates().y));
-            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getCurrentCoordinates().x), (int)(getCurrentCoordinates().y + movement[1] * distanceFactor));
+            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x + movement[0] * distanceFactor), (int)(getWorldCoordinates().y));
+            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x), (int)(getWorldCoordinates().y + movement[1] * distanceFactor));
             if (!horizontalCollision) {
-                getCurrentCoordinates().x = getCurrentCoordinates().x + movement[0];
+                getWorldCoordinates().x = getWorldCoordinates().x + movement[0];
             }
             if (!verticalCollision) {
-                getCurrentCoordinates().y = getCurrentCoordinates().y + movement[1];
+                getWorldCoordinates().y = getWorldCoordinates().y + movement[1];
             }
 
-            displacementVector = new double[]{getCurrentCoordinates().x - getPreviousCoordinates().x, getCurrentCoordinates().y - getPreviousCoordinates().y};
+            displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};
 
             if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If Player is moving
                 directionFacing = Utils.checkDirectionFacing(displacementVector);
@@ -145,8 +145,8 @@ public class Enemy extends DynamicEntity {
             movement = new double[]{step[0], step[1]};
             computePathCoolDown -= timeElapsed;
         } else {
-            movement[0] = (Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x);
-            movement[1] = (Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y);
+            movement[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
+            movement[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
         }
 
         movement = MathUtils.normalizeVector(movement);
@@ -163,7 +163,7 @@ public class Enemy extends DynamicEntity {
 
 
     private void computePath() {
-        pathFindingAlgorithm = new PathFindingAlgorithm(getCurrentCoordinates(), Player.getInstance().getCurrentCoordinates());
+        pathFindingAlgorithm = new PathFindingAlgorithm(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
         pathFindingAlgorithm.computeBestPath();
     }
 
@@ -207,18 +207,18 @@ public class Enemy extends DynamicEntity {
 
     private void attack(long timeElapsed) {
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{Player.getInstance().getCurrentCoordinates().x - getCurrentCoordinates().x,
-                Player.getInstance().getCurrentCoordinates().y - getCurrentCoordinates().y};
+        double[] pointingVector = new double[]{Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x,
+                Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y};
 
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(getCurrentCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
+            coneAttack = new ConeAttack(getWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
         } else {
-            coneAttack.update(getCurrentCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getWorldCoordinates(), pointingVector, timeElapsed, attacking);
         }
 
         /** CIRCLE ATTACK **/
         if (circleAttackCoolDown <= 0) {
-            circleAttack = new CircleAttack(new Coordinates(getCurrentCoordinates().x - 100 + Math.random() * 200, getCurrentCoordinates().y - 100 + Math.random() * 200),
+            circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
                     50, 500, circleAttackPower, true, true);
             Scene.listOfCircleAttacks.add(circleAttack);
             circleAttackCoolDown = circleAttackPeriod;

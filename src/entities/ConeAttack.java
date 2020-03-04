@@ -7,9 +7,9 @@ import utils.MathUtils;
 import static org.lwjgl.opengl.GL11.*;
 
 public class ConeAttack {
-    private double[] vertex1;
-    private double[] vertex2;
-    private double[] vertex3;
+    private Coordinates vertex1;
+    private Coordinates vertex2;
+    private Coordinates vertex3;
     private double angle;
     private float length;
     private boolean attacking;
@@ -71,23 +71,22 @@ public class ConeAttack {
         Entity entity;
         for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
             entity = Scene.getInstance().getListOfEntities().get(i);
-            double[] entityCameraCoords = entity.getCoordinates().toCameraCoordinates();
             float damage = (float) (attackPower + (Math.random() * 10));
 
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(entity.getCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, false);
+                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
-                        && MathUtils.isPointInsideTriangle(new double[]{entityCameraCoords[0], entityCameraCoords[1]}, vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(entity.getCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCoordinates().x, entity.getCoordinates().y, text, true, true, true);
+                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, true);
                 }
             }
         }
@@ -109,12 +108,12 @@ public class ConeAttack {
             } else {
                 glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             }
-            glVertex2d(vertex1[0], vertex1[1]);
-            glVertex2d(vertex2[0], vertex2[1]);
-            glVertex2d(vertex2[0], vertex2[1]);
-            glVertex2d(vertex3[0], vertex3[1]);
-            glVertex2d(vertex3[0], vertex3[1]);
-            glVertex2d(vertex1[0], vertex1[1]);
+            glVertex2d(vertex1.x, vertex1.y);
+            glVertex2d(vertex2.x, vertex2.y);
+            glVertex2d(vertex2.x, vertex2.y);
+            glVertex2d(vertex3.x, vertex3.y);
+            glVertex2d(vertex3.x, vertex3.y);
+            glVertex2d(vertex1.x, vertex1.y);
             glEnd();
             glEnable(GL_BLEND);
         }

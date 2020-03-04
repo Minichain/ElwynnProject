@@ -31,9 +31,9 @@ public class Particle {
 
     public void render() {
         float halfSize = size / 2;
-        double[] centerCameraCoordinates = center.toCameraCoordinates();
+        Coordinates centerCameraCoordinates = center.toCameraCoordinates();
         float size = (float) (timeLiving / timeToLive) * this.size;
-        MyOpenGL.drawRectangle((int) (centerCameraCoordinates[0] - halfSize), (int) (centerCameraCoordinates[1] - halfSize), size, size, 1.0 - timeLiving / timeToLive, r, g, b);
+        MyOpenGL.drawRectangle((int) (centerCameraCoordinates.x - halfSize), (int) (centerCameraCoordinates.y - halfSize), size, size, 1.0 - timeLiving / timeToLive, r, g, b);
     }
 
     public boolean isDead() {
