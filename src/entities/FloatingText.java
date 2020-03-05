@@ -1,6 +1,7 @@
 package entities;
 
 import main.Coordinates;
+import main.OpenGLManager;
 import main.TextRendering;
 
 import java.util.ArrayList;
@@ -21,7 +22,7 @@ public class FloatingText {
         FloatingTextEntity entity;
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
-        glBegin(GL_QUADS);
+        OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
             entity = listOfFloatingTextEntities.get(i);
             double alpha = 1.0 - entity.timeLiving / entity.timeToLive;

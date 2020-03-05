@@ -2,6 +2,7 @@ package entities;
 
 import audio.OpenALManager;
 import main.Coordinates;
+import main.OpenGLManager;
 import main.Parameters;
 import utils.MathUtils;
 
@@ -96,7 +97,7 @@ public class CircleAttack {
         /** DEBUG LINES **/
         if (attacking && Parameters.isDebugMode()) {
             glDisable(GL_BLEND);
-            glBegin(GL_LINES);
+            OpenGLManager.glBegin(GL_LINES);
             if (enemyAttack) {
                 glColor4f(1.0f, 0f, 0f, 1.0f);
             } else {

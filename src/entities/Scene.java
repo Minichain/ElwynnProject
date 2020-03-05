@@ -179,7 +179,7 @@ public class Scene {
                 entityIterator++;
             } else {
                 TileMap.bindTileSetTexture();
-                glBegin(GL_QUADS);
+                OpenGLManager.glBegin(GL_QUADS);
                 for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
                     int k = 1;
                     if (0 < i && i < TileMap.getArrayOfTiles().length
@@ -200,7 +200,7 @@ public class Scene {
 
     private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
         TileMap.bindTileSetTexture();
-        glBegin(GL_QUADS);
+        OpenGLManager.glBegin(GL_QUADS);
         for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
             for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
                 if (0 < i && i < TileMap.getArrayOfTiles().length

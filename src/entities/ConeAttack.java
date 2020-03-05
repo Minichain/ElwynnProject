@@ -101,7 +101,7 @@ public class ConeAttack {
         /** DEBUG LINES **/
         if (attacking && Parameters.isDebugMode()) {
             glDisable(GL_BLEND);
-            glBegin(GL_LINES);
+            OpenGLManager.glBegin(GL_LINES);
             if (enemyAttack) {
                 glColor4f(1.0f, 0f, 0f, 1.0f);
             } else {

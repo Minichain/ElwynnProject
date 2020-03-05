@@ -1,5 +1,7 @@
 package entities;
 
+import main.OpenGLManager;
+
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -36,7 +38,7 @@ public class ParticleManager {
 
     public void renderParticles() {
         glDisable(GL_TEXTURE_2D);
-        glBegin(GL_TRIANGLES);
+        OpenGLManager.glBegin(GL_TRIANGLES);
         for (Particle particle : listOfParticles) {
             particle.render();
         }

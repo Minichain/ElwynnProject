@@ -25,7 +25,7 @@ public class HeadUpDisplay {
             float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
 
             glDisable(GL_TEXTURE_2D);
-            glBegin(GL_TRIANGLES);
+            OpenGLManager.glBegin(GL_TRIANGLES);
             OpenGLManager.drawRectangle(x, y, width, height, 0.5, 1f, 0.25f, 0.25f);
             OpenGLManager.drawRectangle(x, y, width * healthPercentage, height, 1.0, 1f, 0.25f, 0.25f);
 
@@ -42,7 +42,7 @@ public class HeadUpDisplay {
 
             TileMap.bindTileSetTexture();
             glEnable(GL_TEXTURE_2D);
-            glBegin(GL_QUADS);
+            OpenGLManager.glBegin(GL_QUADS);
             for (int i = 0; i < 25; i++) {
                 currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
                 x = (int) (20f * relativeWidth + i * 128f * relativeWidth);
@@ -72,7 +72,7 @@ public class HeadUpDisplay {
                 && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
             TileMap.bindTileSetTexture();
             glEnable(GL_TEXTURE_2D);
-            glBegin(GL_QUADS);
+            OpenGLManager.glBegin(GL_QUADS);
             TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX + 5, mouseY + 5, 2.5, 0f, 0f, 0f, true);
             TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2.5, 1f, 1f, 1f, true);
             glEnd();

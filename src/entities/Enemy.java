@@ -1,10 +1,7 @@
 package entities;
 
-import main.Coordinates;
-import main.Parameters;
-import main.PathFindingAlgorithm;
+import main.*;
 import utils.MathUtils;
-import main.Texture;
 import utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -238,7 +235,7 @@ public class Enemy extends DynamicEntity {
         if (Parameters.isDebugMode() && status != Status.DEAD && pathFindingAlgorithm != null && pathFindingAlgorithm.getPath() != null) {
             glDisable(GL_TEXTURE_2D);
             glColor4f(1f, 1f, 1f, 0.5f);
-            glBegin(GL_LINES);
+            OpenGLManager.glBegin(GL_LINES);
 
             Coordinates startingCoordinates = pathFindingAlgorithm.initialCoordinates.toCameraCoordinates();
             int start = pathFindingAlgorithm.getPath().size() - 1;

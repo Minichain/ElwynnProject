@@ -24,7 +24,7 @@ public class TextRendering {
      * */
     public static void renderText(int leftMargin, int topMargin, int gapBetweenTexts, ArrayList<String> textList, int textScale) {
         fontSpriteWhite.bind();
-        glBegin(GL_QUADS);
+        OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < textList.size(); i++) {
             TextRendering.renderText(leftMargin, i * gapBetweenTexts + topMargin, textList.get(i), textScale, true);
         }
@@ -50,7 +50,7 @@ public class TextRendering {
         if (!isTextureBoundAndOpenGlBegun) {
             fontSpriteWhite.bind();
             glEnable(GL_TEXTURE_2D);
-            glBegin(GL_QUADS);
+            OpenGLManager.glBegin(GL_QUADS);
         }
 
         int numOfTilesInTileSetX = 18;

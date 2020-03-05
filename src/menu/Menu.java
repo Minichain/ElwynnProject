@@ -74,7 +74,7 @@ public class Menu {
         }
 
         glDisable(GL_TEXTURE_2D);
-        glBegin(GL_TRIANGLES);
+        OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             MenuComponent component = listOfMenuComponents.get(i);
             component.renderBackground();
@@ -83,7 +83,7 @@ public class Menu {
 
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
-        glBegin(GL_QUADS);
+        OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             MenuComponent component = listOfMenuComponents.get(i);
             component.renderInfo();

@@ -6,6 +6,12 @@ import org.lwjgl.opengl.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class OpenGLManager {
+    public static int GPU_CALLS;
+
+    public static void glBegin(int mode) {
+        GL11.glBegin(mode);
+        GPU_CALLS++;
+    }
 
     /**
      * program shader, to which is attached a vertex and fragment shaders.
@@ -60,6 +66,7 @@ public class OpenGLManager {
     }
 
     public static void prepareFrame() {
+        GPU_CALLS = 0;
         glClear(GL_COLOR_BUFFER_BIT);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();

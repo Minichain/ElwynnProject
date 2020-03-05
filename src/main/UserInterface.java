@@ -43,6 +43,7 @@ public class UserInterface {
             textList.add("Reset Game: F4");
             textList.add("Save World: F5");
             textList.add("FPS: " + fps);
+            textList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             textList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
             textList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
             textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
@@ -69,7 +70,7 @@ public class UserInterface {
 
             /** DEBUG LINES **/
             glDisable(GL_BLEND);
-            glBegin(GL_LINES);
+            OpenGLManager.glBegin(GL_LINES);
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             glVertex2i(Parameters.getResolutionWidth() / 2, 0);
             glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());
