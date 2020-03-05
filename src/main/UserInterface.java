@@ -24,14 +24,13 @@ public class UserInterface {
     }
 
     public void render(long timeElapsed) {
-        renderCursorUI(timeElapsed);
         renderDebugUI(timeElapsed);
     }
 
     private void renderDebugUI(long timeElapsed) {
         if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
-            float fps = 1000 / timeElapsed;
+            float fps = 1000f / timeElapsed;
 
             /** DEBUG TEXT **/
             ArrayList<String> textList = new ArrayList<>();
@@ -83,55 +82,14 @@ public class UserInterface {
         /** FLOATING TEXT **/
         FloatingText.renderAndUpdate(timeElapsed);
 
-        /** YOU DIED **/
-        if (Player.getInstance().getStatus() == Player.Status.DEAD) {
-            String text = "YOU DIED";
-            int scale = 4;
-            TextRendering.renderText((Parameters.getResolutionWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
-        }
-
-        /** CREATIVE MODE UI **/
-        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-            int previousTilesToShow = 5;
-            int currentTile;
-            int x;
-            int y;
-
-            TileMap.bindTileSetTexture();
-            glEnable(GL_TEXTURE_2D);
-            glBegin(GL_QUADS);
-            for (int i = 0; i < 25; i++) {
-                currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
-                x = 20 + i * 64;
-                y = Parameters.getResolutionHeight() - 100;
-                if (currentTile == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
-                    TileMap.drawTile(currentTile, x + 5, y + 5, 2.5, 0f, 0f, 0f, true);
-                    TileMap.drawTile(currentTile, x, y, 2.5, 1f, 1f, 1f, true);
-                } else {
-                    TileMap.drawTile(currentTile, x + 5, y + 5, 2, 0f, 0f, 0f, true);
-                    TileMap.drawTile(currentTile, x, y, 2, 0.5f, 0.5f, 0.5f, true);
-                }
-            }
-            glEnd();
+        /** HUD **/
+        if (true) {
+            HeadUpDisplay.render(timeElapsed);
         }
 
         /** MENU **/
         if (Menu.getInstance().isShowing()) {
-            Menu.getInstance().render();
-        }
-    }
-
-    private void renderCursorUI(long timeElapsed) {
-        double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
-        double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
-        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
-                && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
-                && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
-            TileMap.bindTileSetTexture();
-            glEnable(GL_TEXTURE_2D);
-            glBegin(GL_QUADS);
-            TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2, 1f, 1f, 1f, true);
-            glEnd();
+            Menu.getInstance().render(timeElapsed);
         }
     }
 }

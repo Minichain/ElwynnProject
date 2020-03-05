@@ -60,7 +60,7 @@ public class Menu {
         return listOfMenuComponents;
     }
 
-    public void render() {
+    public void render(long timeElapsed) {
         float menuHeight = 0f;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             if (i > 0) menuHeight += gapBetweenComponents;

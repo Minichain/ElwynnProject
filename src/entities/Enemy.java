@@ -47,7 +47,7 @@ public class Enemy extends DynamicEntity {
     private void init(int x, int y) {
         getWorldCoordinates().x = x;
         getWorldCoordinates().y = y;
-        health = 1000f;
+        health = 2500f;
         speed = 0.075;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;

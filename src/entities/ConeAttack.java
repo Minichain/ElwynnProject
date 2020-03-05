@@ -121,18 +121,18 @@ public class ConeAttack {
     /*
     public void render() {
         int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
-        int characterCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "characterCameraCoordinates");
+        int playerCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "playerCameraCoordinates");
         int cameraZoomUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraZoom");
         int cameraWindowRatioUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraWindowRatio");
         ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
         ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
 
-        double[] characterWindowCoordinates = Player.getInstance().getCoordinates().toCameraCoordinates();
-        characterWindowCoordinates[0] *= Window.getCameraWindowScaleFactor()[0];
-        characterWindowCoordinates[1] *= Window.getCameraWindowScaleFactor()[1];
-        float[] characterCoordinatesUniform = new float[]{(float) characterWindowCoordinates[0], Window.getHeight() - (float) characterWindowCoordinates[1]};
+        double[] playerWindowCoordinates = Player.getInstance().getCoordinates().toCameraCoordinates();
+        playerWindowCoordinates[0] *= Window.getCameraWindowScaleFactor()[0];
+        playerWindowCoordinates[1] *= Window.getCameraWindowScaleFactor()[1];
+        float[] playerCoordinatesUniform = new float[]{(float) playerWindowCoordinates[0], Window.getHeight() - (float) playerWindowCoordinates[1]};
 
-        ARBShaderObjects.glUniform2fvARB(characterCoordinatesUniformLocation, characterCoordinatesUniform);
+        ARBShaderObjects.glUniform2fvARB(playerCoordinatesUniformLocation, playerCoordinatesUniform);
         ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());
         ARBShaderObjects.glUniform2fvARB(cameraWindowRatioUniformLocation, Window.getCameraWindowScaleFactor());
 

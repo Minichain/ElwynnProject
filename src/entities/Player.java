@@ -14,6 +14,12 @@ public class Player extends DynamicEntity {
     private static Status playerStatus;
     private static Utils.DirectionFacing directionFacing;
 
+    public static float MAX_HEALTH = 5000f;
+    public static float HEALTH_REGENERATION = 0.01f;
+    public static float MAX_MANA = 100f;
+    public static float MANA_REGENERATION = 0.0003f;
+    private float mana = 100f;
+
     /** ATTACK **/
     private boolean attacking = false;
     private int attackPeriod = 250;
@@ -26,6 +32,7 @@ public class Player extends DynamicEntity {
     private int circleAttackPeriod = 10000;
     private int circleAttackCoolDown = 0;
     private float circleAttackPower = 100f;
+    private float circleAttackManaCost = 25f;
 
     public enum Status {
         IDLE, RUNNING, JUMPING, DYING, DEAD;
@@ -47,6 +54,7 @@ public class Player extends DynamicEntity {
         getWorldCoordinates().x = Scene.getInitialCoordinates().x;
         getWorldCoordinates().y = Scene.getInitialCoordinates().y;
         health = 5000f;
+        mana = 100f;
         speed = 0.125;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
@@ -83,6 +91,16 @@ public class Player extends DynamicEntity {
         getPreviousWorldCoordinates().y = getWorldCoordinates().y;
         if (health > 0)  {
             playerStatus = Status.IDLE;
+            if (mana < MAX_MANA) {
+                mana += (MANA_REGENERATION * timeElapsed);
+            } else if (mana > MAX_MANA) {
+                mana = MAX_MANA;
+            }
+            if (health < MAX_HEALTH) {
+                health += (HEALTH_REGENERATION * timeElapsed);
+            } else if (health > MAX_HEALTH) {
+                health = MAX_HEALTH;
+            }
 
             attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && InputListenerManager.leftMouseButtonPressed);
             attack(timeElapsed);
@@ -227,11 +245,12 @@ public class Player extends DynamicEntity {
 
         /** CIRCLE ATTACK **/
         if (InputListenerManager.rightMouseButtonPressed) {
-            if (circleAttackCoolDown <= 0) {
+            if (mana >= circleAttackManaCost && circleAttackCoolDown <= 0) {
                 circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
                         100, 500, circleAttackPower, false, true);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
+                mana -= circleAttackManaCost;
             }
         }
         if (circleAttackCoolDown > 0) {
@@ -243,5 +262,13 @@ public class Player extends DynamicEntity {
         if (coneAttack != null && attacking) {
             coneAttack.render();
         }
+    }
+
+    public float getMana() {
+        return mana;
+    }
+
+    public void setMana(float mana) {
+        this.mana = mana;
     }
 }
