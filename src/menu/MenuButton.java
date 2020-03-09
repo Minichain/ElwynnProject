@@ -2,6 +2,7 @@ package menu;
 
 import listeners.InputListenerManager;
 import main.*;
+import text.TextRendering;
 import utils.MathUtils;
 
 public class MenuButton extends MenuComponent {

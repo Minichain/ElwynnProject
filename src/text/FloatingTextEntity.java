@@ -1,4 +1,4 @@
-package entities;
+package text;
 
 import main.Coordinates;
 

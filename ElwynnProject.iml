@@ -10,17 +10,6 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/libs/libgdx/gdx.jar!/" />
-          <root url="file://$MODULE_DIR$/libs/libgdx" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-        <jarDirectory url="file://$MODULE_DIR$/libs/libgdx" recursive="false" />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library">
-      <library>
-        <CLASSES>
           <root url="jar://$MODULE_DIR$/libs/lwjgl/lwjgl-glfw-natives-linux.jar!/" />
         </CLASSES>
         <JAVADOC />

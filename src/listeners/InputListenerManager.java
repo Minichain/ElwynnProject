@@ -1,8 +1,8 @@
 package listeners;
 
-import entities.Camera;
-import entities.Scene;
-import entities.TileMap;
+import scene.Camera;
+import scene.Scene;
+import scene.TileMap;
 import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;

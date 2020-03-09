@@ -1,12 +1,15 @@
 package entities;
 
 import main.*;
+import scene.Camera;
+import scene.Scene;
+import scene.TileMap;
 import utils.MathUtils;
 import utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Enemy extends DynamicEntity {
+public class Enemy extends DynamicGraphicEntity {
     private static Texture spriteSheet;
     private Utils.DirectionFacing directionFacing;
     private Status status;
@@ -42,8 +45,7 @@ public class Enemy extends DynamicEntity {
     }
 
     private void init(int x, int y) {
-        getWorldCoordinates().x = x;
-        getWorldCoordinates().y = y;
+        setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
         speed = 0.075;
         status = Status.IDLE;
@@ -70,8 +72,7 @@ public class Enemy extends DynamicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        getPreviousWorldCoordinates().x = getWorldCoordinates().x;
-        getPreviousWorldCoordinates().y = getWorldCoordinates().y;
+        setPreviousWorldCoordinates(getWorldCoordinates());
         if (health > 0) {
             status = Status.IDLE;
             distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
@@ -84,10 +85,10 @@ public class Enemy extends DynamicEntity {
             boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x + movement[0] * distanceFactor), (int)(getWorldCoordinates().y));
             boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x), (int)(getWorldCoordinates().y + movement[1] * distanceFactor));
             if (!horizontalCollision) {
-                getWorldCoordinates().x = getWorldCoordinates().x + movement[0];
+                getWorldCoordinates().x += movement[0];
             }
             if (!verticalCollision) {
-                getWorldCoordinates().y = getWorldCoordinates().y + movement[1];
+                getWorldCoordinates().y += movement[1];
             }
 
             displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};

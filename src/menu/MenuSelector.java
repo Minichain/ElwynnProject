@@ -5,7 +5,7 @@ import listeners.InputListenerManager;
 import main.Coordinates;
 import main.OpenGLManager;
 import main.Parameters;
-import main.TextRendering;
+import text.TextRendering;
 import utils.MathUtils;
 
 public class MenuSelector extends MenuComponent {

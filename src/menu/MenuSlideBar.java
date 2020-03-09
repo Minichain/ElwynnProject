@@ -3,7 +3,7 @@ package menu;
 import listeners.InputListenerManager;
 import main.OpenGLManager;
 import main.Parameters;
-import main.TextRendering;
+import text.TextRendering;
 import utils.MathUtils;
 
 public class MenuSlideBar extends MenuComponent {

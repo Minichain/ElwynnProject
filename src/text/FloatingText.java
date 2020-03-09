@@ -1,8 +1,7 @@
-package entities;
+package text;
 
 import main.Coordinates;
 import main.OpenGLManager;
-import main.TextRendering;
 
 import java.util.ArrayList;
 

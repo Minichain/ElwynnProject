@@ -1,5 +1,6 @@
-package entities;
+package scene;
 
+import entities.Player;
 import listeners.InputListenerManager;
 import main.Coordinates;
 import main.GameMode;

@@ -1,6 +1,7 @@
 package menu;
 
 import main.*;
+import text.TextRendering;
 
 import java.util.ArrayList;
 

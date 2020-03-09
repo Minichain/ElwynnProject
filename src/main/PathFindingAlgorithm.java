@@ -1,6 +1,6 @@
 package main;
 
-import entities.TileMap;
+import scene.TileMap;
 
 import java.util.ArrayList;
 

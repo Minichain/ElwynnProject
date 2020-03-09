@@ -1,6 +1,8 @@
 package entities;
 
 import audio.OpenALManager;
+import scene.Scene;
+import scene.TileMap;
 import utils.MathUtils;
 import utils.Utils;
 import listeners.InputListenerManager;
@@ -8,7 +10,7 @@ import main.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Player extends DynamicEntity {
+public class Player extends DynamicGraphicEntity {
     private static Texture spriteSheet;
     private static Player instance = null;
     private static Status playerStatus;
@@ -51,8 +53,7 @@ public class Player extends DynamicEntity {
     }
 
     private void init() {
-        getWorldCoordinates().x = Scene.getInitialCoordinates().x;
-        getWorldCoordinates().y = Scene.getInitialCoordinates().y;
+        setWorldCoordinates(Scene.getInitialCoordinates());
         health = 5000f;
         mana = 100f;
         speed = 0.125;
@@ -87,8 +88,7 @@ public class Player extends DynamicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        getPreviousWorldCoordinates().x = getWorldCoordinates().x;
-        getPreviousWorldCoordinates().y = getWorldCoordinates().y;
+        setPreviousWorldCoordinates(getWorldCoordinates());
         if (health > 0)  {
             playerStatus = Status.IDLE;
             if (mana < MAX_MANA) {
@@ -114,10 +114,10 @@ public class Player extends DynamicEntity {
             boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x + movement[0] * distanceFactor), (int)(getWorldCoordinates().y));
             boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x), (int)(getWorldCoordinates().y + movement[1] * distanceFactor));
             if (!horizontalCollision) {
-                getWorldCoordinates().x = getWorldCoordinates().x + movement[0];
+                getWorldCoordinates().x += movement[0];
             }
             if (!verticalCollision) {
-                getWorldCoordinates().y = getWorldCoordinates().y + movement[1];
+                getWorldCoordinates().y += movement[1];
             }
 
             displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};

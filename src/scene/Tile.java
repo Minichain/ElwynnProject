@@ -1,4 +1,4 @@
-package entities;
+package scene;
 
 public class Tile {
     private boolean collidable;

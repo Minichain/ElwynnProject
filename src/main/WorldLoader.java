@@ -1,7 +1,7 @@
 package main;
 
-import entities.Tile;
-import entities.TileMap;
+import scene.Tile;
+import scene.TileMap;
 
 import java.io.File;
 import java.io.FileInputStream;

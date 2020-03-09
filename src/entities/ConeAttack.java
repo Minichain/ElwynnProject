@@ -2,6 +2,11 @@ package entities;
 
 import audio.OpenALManager;
 import main.*;
+import particles.Particle;
+import particles.ParticleManager;
+import scene.Camera;
+import scene.Scene;
+import text.FloatingTextEntity;
 import utils.MathUtils;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -68,7 +73,7 @@ public class ConeAttack {
             return;
         }
 
-        Entity entity;
+        GraphicEntity entity;
         for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
             entity = Scene.getInstance().getListOfEntities().get(i);
             float damage = (float) (attackPower + (Math.random() * 10));

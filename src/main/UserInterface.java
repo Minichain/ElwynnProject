@@ -1,9 +1,14 @@
 package main;
 
-import entities.*;
 import entities.Player;
 import listeners.InputListenerManager;
 import menu.Menu;
+import scene.Camera;
+import scene.Scene;
+import scene.Tile;
+import scene.TileMap;
+import text.FloatingText;
+import text.TextRendering;
 
 import java.util.ArrayList;
 

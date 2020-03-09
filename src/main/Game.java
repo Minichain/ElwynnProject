@@ -1,8 +1,8 @@
 package main;
 
 import audio.OpenALManager;
-import entities.Camera;
-import entities.Scene;
+import scene.Camera;
+import scene.Scene;
 import listeners.InputListenerManager;
 
 public class Game {

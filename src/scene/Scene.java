@@ -1,7 +1,9 @@
-package entities;
+package scene;
 
 import audio.OpenALManager;
+import entities.*;
 import main.*;
+import particles.ParticleManager;
 import utils.MathUtils;
 
 import java.util.ArrayList;
@@ -13,8 +15,8 @@ public class Scene {
     private static Scene instance = null;
 
     /** ENTITIES **/
-    private static ArrayList<Entity> listOfEntities;
-    private static ArrayList<Entity> listOfEntitiesToUpdate;
+    private static ArrayList<GraphicEntity> listOfEntities;
+    private static ArrayList<GraphicEntity> listOfEntitiesToUpdate;
     private static int enemySpawnPeriod = 7500; // In Milliseconds
     private static long lastEnemySpawnTime;
 
@@ -93,7 +95,7 @@ public class Scene {
         /** UPDATE ENTITIES **/
         listOfEntitiesToUpdate.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
-            Entity currentEntity = listOfEntities.get(i);
+            GraphicEntity currentEntity = listOfEntities.get(i);
             if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
                 currentEntity.update(timeElapsed);
             }
@@ -109,21 +111,21 @@ public class Scene {
         int n = listOfEntitiesToUpdate.size() - 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < (n - i); j++) {
-                Entity entity1 = listOfEntitiesToUpdate.get(j + 1);
-                Entity entity2 = listOfEntitiesToUpdate.get(j);
-                if (entity1.getWorldCoordinates().y < entity2.getWorldCoordinates().y) {
-                    listOfEntitiesToUpdate.set(j + 1, entity2);
+                GraphicEntity entity1 = listOfEntitiesToUpdate.get(j + 1);
+                GraphicEntity graphicEntity2 = listOfEntitiesToUpdate.get(j);
+                if (entity1.getWorldCoordinates().y < graphicEntity2.getWorldCoordinates().y) {
+                    listOfEntitiesToUpdate.set(j + 1, graphicEntity2);
                     listOfEntitiesToUpdate.set(j, entity1);
                 }
             }
         }
     }
 
-    public List<Entity> getListOfEntities() {
+    public List<GraphicEntity> getListOfEntities() {
         return listOfEntities;
     }
 
-    public List<Entity> getListOfEntitiesToUpdate() {
+    public List<GraphicEntity> getListOfEntitiesToUpdate() {
         return listOfEntitiesToUpdate;
     }
 
@@ -164,7 +166,7 @@ public class Scene {
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
         Coordinates entityCameraCoordinates;
-        Entity entity = null;
+        GraphicEntity entity = null;
         int entityIterator = 0;
         int firstTileRowToDraw = (int) topLeftTileCoordinates.y;
         int lastTileRowToDraw = (int) bottomLeftTileCoordinates.y;

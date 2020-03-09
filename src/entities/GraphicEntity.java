@@ -1,20 +1,13 @@
 package entities;
 
-import main.Coordinates;
 import main.OpenGLManager;
 import main.Texture;
+import scene.Camera;
 
-import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_QUADS;
+import static org.lwjgl.opengl.GL11.glEnd;
 
-public abstract class DynamicEntity extends Entity {
-    private Coordinates previousWorldCoordinates;
-
-    /** Variables **/
-    public float health;
-    public double speed;
-    public double[] displacementVector;
-    public double[] facingVector;
-
+public abstract class GraphicEntity extends Entity {
     /** Sprite Attributes **/
     private double spriteCoordinateFromSpriteSheetX;
     private double spriteCoordinateFromSpriteSheetY;
@@ -25,11 +18,12 @@ public abstract class DynamicEntity extends Entity {
     public int DYING_FRAMES;
     public int DEAD_FRAMES;
 
-    public DynamicEntity(int x, int y, int prevX, int prevY) {
+    public GraphicEntity(int x, int y) {
         super(x, y);
-        previousWorldCoordinates = new Coordinates(prevX, prevY);
-        displacementVector = new double[2];
+        loadSprite();
     }
+
+    public abstract void loadSprite();
 
     public void drawSprite(int x, int y, Texture spriteSheet) {
         spriteSheet.bind();
@@ -50,10 +44,6 @@ public abstract class DynamicEntity extends Entity {
         glEnd();
     }
 
-    public Coordinates getPreviousWorldCoordinates() {
-        return previousWorldCoordinates;
-    }
-
     public double getSpriteCoordinateFromSpriteSheetX() {
         return spriteCoordinateFromSpriteSheetX;
     }
@@ -70,11 +60,5 @@ public abstract class DynamicEntity extends Entity {
         this.spriteCoordinateFromSpriteSheetY = spriteCoordinateFromSpriteSheetY;
     }
 
-    public float getHealth() {
-        return health;
-    }
-
-    public void setHealth(float health) {
-        this.health = health;
-    }
+    public abstract Texture getSpriteSheet();
 }

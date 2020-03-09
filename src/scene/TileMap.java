@@ -1,4 +1,4 @@
-package entities;
+package scene;
 
 import main.*;
 

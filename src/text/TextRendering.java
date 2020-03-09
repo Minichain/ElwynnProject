@@ -1,4 +1,7 @@
-package main;
+package text;
+
+import main.OpenGLManager;
+import main.Texture;
 
 import java.util.ArrayList;
 

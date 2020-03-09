@@ -1,7 +1,7 @@
 package main;
 
-import entities.Camera;
-import entities.TileMap;
+import scene.Camera;
+import scene.TileMap;
 
 public class Coordinates {
     public double x;

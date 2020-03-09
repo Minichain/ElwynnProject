@@ -1,7 +1,6 @@
 package entities;
 
 import main.Coordinates;
-import main.Texture;
 
 public abstract class Entity {
     private Coordinates worldCoordinates;
@@ -10,7 +9,6 @@ public abstract class Entity {
     public Entity(int x, int y) {
         worldCoordinates = new Coordinates(x, y);
         cameraCoordinates = worldCoordinates.toCameraCoordinates();
-        loadSprite();
     }
 
     public Coordinates getWorldCoordinates() {
@@ -18,19 +16,14 @@ public abstract class Entity {
     }
 
     public void setWorldCoordinates(Coordinates coordinates) {
-        this.worldCoordinates = coordinates;
+        this.worldCoordinates.x = coordinates.x;
+        this.worldCoordinates.y = coordinates.y;
         cameraCoordinates = worldCoordinates.toCameraCoordinates();
     }
 
     public Coordinates getCameraCoordinates() {
         return cameraCoordinates;
     }
-
-    public abstract void loadSprite();
-
-    public abstract void drawSprite(int x, int y, Texture spriteSheet);
-
-    public abstract Texture getSpriteSheet();
 
     public abstract void update(long timeElapsed);
 

@@ -1,7 +1,5 @@
 package utils;
 
-import java.util.Arrays;
-
 public class Utils {
     public enum DirectionFacing {
         LEFT, RIGHT, UP, DOWN;
@@ -14,7 +12,6 @@ public class Utils {
 
     public static DirectionFacing checkDirectionFacing(double x, double y) {
         DirectionFacing directionFacing;
-//        y = -y; // y axis inverted in libGdx
         if (x > 0) {
             if (y > 0) {
                 if (y >= x) {

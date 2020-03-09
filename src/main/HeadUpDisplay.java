@@ -1,9 +1,10 @@
 package main;
 
 import entities.Player;
-import entities.TileMap;
+import scene.TileMap;
 import enums.Resolution;
 import listeners.InputListenerManager;
+import text.TextRendering;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glEnd;
