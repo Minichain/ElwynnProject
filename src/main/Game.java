@@ -8,13 +8,14 @@ import listeners.InputListenerManager;
 public class Game {
     public static void startGame() {
         Window.start();
+        Scene.getInstance();    //Initialize Scene
         GameStatus.setStatus(GameStatus.Status.RUNNING);
     }
 
     public static void update(long timeElapsed) {
-        Scene.getInstance().update(timeElapsed);
-        Camera.getInstance().update(timeElapsed);
         InputListenerManager.updateMouseWorldCoordinates();
+        Camera.getInstance().update(timeElapsed);
+        Scene.getInstance().update(timeElapsed);
     }
 
     public static void render(long timeElapsed) {

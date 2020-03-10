@@ -78,26 +78,6 @@ public class OpenGLManager {
         glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
 
-    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
-        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, 1f, 1f, 1f);
-    }
-
-    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, float r, float g, float b) {
-        drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, r, g, b);
-    }
-
-    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, double transparency, float r, float g, float b) {
-        glColor4f(r, g, b, (float) transparency);
-        glTexCoord2f(u, v);
-        glVertex2f(x, y);
-        glTexCoord2f(u, v2);
-        glVertex2f(x, y + spriteHeight);
-        glTexCoord2f(u2, v2);
-        glVertex2f(x + spriteWidth, y + spriteHeight);
-        glTexCoord2f(u2, v);
-        glVertex2f(x + spriteWidth, y);
-    }
-
     public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight) {
         drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, 1f, 1f, 1f);
     }

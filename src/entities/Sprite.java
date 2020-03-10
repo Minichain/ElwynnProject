@@ -53,10 +53,10 @@ public class Sprite {
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
         float height = (float) spriteSheet.getHeight() / (float) SPRITE_HEIGHT;
 
-        float u = ((1f / width) * spriteCoordinateFromSpriteSheetX);
-        float v = 1f - ((1f / height) * spriteCoordinateFromSpriteSheetY);
-        float u2 = u + (1f / width);
-        float v2 = v - (1f / height);
+        double u = ((1.0 / width) * spriteCoordinateFromSpriteSheetX);
+        double v = 1.0 - ((1.0 / height) * spriteCoordinateFromSpriteSheetY);
+        double u2 = u + (1.0 / width);
+        double v2 = v - (1.0 / height);
         double scale = Camera.getZoom();
 
         OpenGLManager.glBegin(GL_QUADS);
@@ -64,7 +64,7 @@ public class Sprite {
             x -= (int) ((SPRITE_WIDTH / 2) * scale);
             y -= (int) ((SPRITE_HEIGHT / 2) * scale);
         }
-        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (float) (SPRITE_WIDTH * scale), (float) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
+        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
         glEnd();
     }
 }
