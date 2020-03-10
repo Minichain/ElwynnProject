@@ -63,6 +63,9 @@ public class UserInterface {
             textList.add("Mouse Window Coordinates: (" + InputListenerManager.getMouseWindowCoordinates().x + ", " + InputListenerManager.getMouseWindowCoordinates().y + ")");
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
+                if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                    textList.add("Layer Editing: " + GameMode.getLayerEditing());
+                }
             } else {
                 textList.add("Game Mode: " + " " + GameMode.getGameMode());
             }

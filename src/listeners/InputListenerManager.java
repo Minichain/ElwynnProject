@@ -96,24 +96,24 @@ public class InputListenerManager {
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
         if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-            /*
-            Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-            int layer = 0;
-            switch (GameMode.getCreativeMode()) {
-                case FIRST_LAYER:
-                    layer = 0;
-                    break;
-                case SECOND_LAYER:
-                    layer = 1;
-                    break;
-                case THIRD_LAYER:
-                    layer = 2;
-                    break;
+            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
+                int layer = 0;
+                switch (GameMode.getLayerEditing()) {
+                    case FIRST_LAYER:
+                        layer = 0;
+                        break;
+                    case SECOND_LAYER:
+                        layer = 1;
+                        break;
+                    case THIRD_LAYER:
+                        layer = 2;
+                        break;
+                }
+                TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
+            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
             }
-            TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
-            */
-
-            new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
         }
     }
 
@@ -171,8 +171,10 @@ public class InputListenerManager {
                 if (pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
                 break;
             case GLFW_KEY_F2:
+                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
                 break;
             case GLFW_KEY_F3:
+                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
                 break;
             case GLFW_KEY_F4:
                 if (pressed) Scene.getInstance().initEntities();
@@ -195,13 +197,13 @@ public class InputListenerManager {
             case GLFW_KEY_F12:
                 break;
             case GLFW_KEY_1:
-                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.FIRST_LAYER);
+                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.FIRST_LAYER);
                 break;
             case GLFW_KEY_2:
-                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.SECOND_LAYER);
+                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.SECOND_LAYER);
                 break;
             case GLFW_KEY_3:
-                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.THIRD_LAYER);
+                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.THIRD_LAYER);
                 break;
             case GLFW_KEY_4:
                 break;

@@ -47,11 +47,7 @@ public class Sprite {
         return spriteSheet;
     }
 
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY) {
-        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, false);
-    }
-
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, boolean centered) {
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, boolean centered, double transparency) {
         spriteSheet.bind();
 
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
@@ -68,7 +64,7 @@ public class Sprite {
             x -= (int) ((SPRITE_WIDTH / 2) * scale);
             y -= (int) ((SPRITE_HEIGHT / 2) * scale);
         }
-        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (float) (SPRITE_WIDTH * scale), (float) (SPRITE_HEIGHT * scale));
+        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (float) (SPRITE_WIDTH * scale), (float) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
         glEnd();
     }
 }

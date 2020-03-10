@@ -3,7 +3,6 @@ package entities;
 import main.Coordinates;
 import main.Texture;
 import scene.Scene;
-import scene.TileMap;
 
 public class Tree extends StaticGraphicEntity {
 
@@ -14,7 +13,6 @@ public class Tree extends StaticGraphicEntity {
 
     private void init() {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
-        TileMap.getArrayOfTiles()[(int) getTileCoordinates().x][(int) getTileCoordinates().y].setCollidable(true);
         Scene.getInstance().getListOfEntities().add(this);
     }
 
@@ -35,6 +33,6 @@ public class Tree extends StaticGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY());
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), false, 1.0);
     }
 }
