@@ -54,20 +54,18 @@ public class Enemy extends DynamicGraphicEntity {
     }
 
     @Override
-    public void loadSprite() {
-        String path = "res/sprites/characters/enemy.png";
-        if (spriteSheet == null) spriteSheet = Texture.loadTexture(path);
-        SPRITE_WIDTH = 32;
-        SPRITE_HEIGHT = 32;
-        IDLE_FRAMES = 1;
-        RUNNING_FRAMES = 8;
-        DYING_FRAMES = 1;
-        DEAD_FRAMES = 1;
+    public Sprite getSprite() {
+        return SpriteManager.getInstance().ENEMY;
     }
 
     @Override
     public Texture getSpriteSheet() {
-        return spriteSheet;
+        return getSprite().getSpriteSheet();
+    }
+
+    @Override
+    public void drawSprite(int x, int y) {
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), true);
     }
 
     @Override
@@ -105,10 +103,10 @@ public class Enemy extends DynamicGraphicEntity {
 
         switch (status) {
             case IDLE:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().RUNNING_FRAMES);
                 break;
             case JUMPING:
                 break;
@@ -117,11 +115,11 @@ public class Enemy extends DynamicGraphicEntity {
                 if (frame > 1) {
                     status = Status.DEAD;
                 } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % DYING_FRAMES);
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
                 }
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % DEAD_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().DEAD_FRAMES);
                 break;
         }
 

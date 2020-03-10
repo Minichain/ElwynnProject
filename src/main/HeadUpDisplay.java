@@ -1,6 +1,7 @@
 package main;
 
 import entities.Player;
+import entities.SpriteManager;
 import scene.TileMap;
 import enums.Resolution;
 import listeners.InputListenerManager;
@@ -66,6 +67,7 @@ public class HeadUpDisplay {
             TextRendering.renderText((Parameters.getResolutionWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
         }
 
+        /*
         double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
         double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
         if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
@@ -78,5 +80,18 @@ public class HeadUpDisplay {
             TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2.5, 1f, 1f, 1f, true);
             glEnd();
         }
+        */
+
+
+        double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
+        double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
+        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
+                && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
+                && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
+            Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
+            Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
+            SpriteManager.getInstance().TREE.draw((int) c2.x, (int) c2.y, 0, 0);
+        }
+
     }
 }

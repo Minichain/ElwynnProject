@@ -11,7 +11,6 @@ import main.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends DynamicGraphicEntity {
-    private static Texture spriteSheet;
     private static Player instance = null;
     private static Status playerStatus;
     private static Utils.DirectionFacing directionFacing;
@@ -70,20 +69,18 @@ public class Player extends DynamicGraphicEntity {
     }
 
     @Override
-    public void loadSprite() {
-        String path = "res/sprites/characters/link.png";
-        if (spriteSheet == null) spriteSheet = Texture.loadTexture(path);
-        SPRITE_WIDTH = 32;
-        SPRITE_HEIGHT = 32;
-        IDLE_FRAMES = 1;
-        RUNNING_FRAMES = 8;
-        DYING_FRAMES = 1;
-        DEAD_FRAMES = 1;
+    public Sprite getSprite() {
+        return SpriteManager.getInstance().PLAYER;
     }
 
     @Override
     public Texture getSpriteSheet() {
-        return spriteSheet;
+        return getSprite().getSpriteSheet();
+    }
+
+    @Override
+    public void drawSprite(int x, int y) {
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), true);
     }
 
     @Override
@@ -142,10 +139,10 @@ public class Player extends DynamicGraphicEntity {
 
         switch (playerStatus) {
             case IDLE:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % IDLE_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % RUNNING_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().RUNNING_FRAMES);
                 break;
             case JUMPING:
                 break;
@@ -154,11 +151,11 @@ public class Player extends DynamicGraphicEntity {
                 if (frame > 1) {
                     playerStatus = Status.DEAD;
                 } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % DYING_FRAMES);
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
                 }
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % DEAD_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().DEAD_FRAMES);
                 break;
         }
 

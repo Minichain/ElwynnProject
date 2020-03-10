@@ -1,5 +1,6 @@
 package listeners;
 
+import entities.Tree;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
@@ -95,6 +96,7 @@ public class InputListenerManager {
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
         if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+            /*
             Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
             int layer = 0;
             switch (GameMode.getCreativeMode()) {
@@ -109,6 +111,9 @@ public class InputListenerManager {
                     break;
             }
             TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
+            */
+
+            new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
         }
     }
 

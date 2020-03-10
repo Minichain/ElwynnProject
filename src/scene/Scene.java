@@ -165,7 +165,6 @@ public class Scene {
     }
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
-        Coordinates entityCameraCoordinates;
         GraphicEntity entity = null;
         int entityIterator = 0;
         int firstTileRowToDraw = (int) topLeftTileCoordinates.y;
@@ -176,7 +175,12 @@ public class Scene {
                 entity = listOfEntitiesToUpdate.get(entityIterator);
             }
             if (entity != null && entity.getWorldCoordinates().y < Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator).y) {
-                entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y, entity.getSpriteSheet());
+                if (entity instanceof Tree) {
+                    //System.out.println("AdriHell:: Tree at Tile Coordinates: " + ((Tree) entity).getTileCoordinates().toString());
+                    //System.out.println("AdriHell:: Tree at World Coordinates: " + ((Tree) entity).getWorldCoordinates().toString());
+                    //System.out.println("AdriHell:: Tree at Camera Coordinates: " + ((Tree) entity).getCameraCoordinates().toString());
+                }
+                entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y);
                 entity = null;
                 entityIterator++;
             } else {
