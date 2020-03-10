@@ -1,5 +1,7 @@
 package entities;
 
+import scene.TileMap;
+
 public class SpriteManager {
     private static SpriteManager instance = null;
 
@@ -7,6 +9,7 @@ public class SpriteManager {
     public Sprite PLAYER;
     public Sprite ENEMY;
     public Sprite TREE;
+    public Sprite TILESET;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -17,6 +20,9 @@ public class SpriteManager {
 
         /** TREE **/
         TREE = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1);
+
+        /** TILESET **/
+        TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
     }
 
     public static SpriteManager getInstance() {

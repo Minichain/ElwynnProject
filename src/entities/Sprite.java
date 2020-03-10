@@ -18,6 +18,9 @@ public class Sprite {
     public int DYING_FRAMES;
     public int DEAD_FRAMES;
 
+    public int TILES_IN_TILESET_X_AXIS;
+    public int TILES_IN_TILESET_Y_AXIS;
+
     public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames) {
         spriteSheet = Texture.loadTexture(path);
 
@@ -28,6 +31,16 @@ public class Sprite {
         RUNNING_FRAMES = runningFrames;
         DYING_FRAMES = dyingFrames;
         DEAD_FRAMES = deadFrames;
+    }
+
+    public Sprite(String path, int spriteWidth, int spriteHeight) {
+        spriteSheet = Texture.loadTexture(path);
+
+        SPRITE_WIDTH = spriteWidth;
+        SPRITE_HEIGHT = spriteHeight;
+
+        TILES_IN_TILESET_X_AXIS = spriteSheet.getWidth() / SPRITE_WIDTH;
+        TILES_IN_TILESET_Y_AXIS = spriteSheet.getWidth() / SPRITE_HEIGHT;
     }
 
     public Texture getSpriteSheet() {

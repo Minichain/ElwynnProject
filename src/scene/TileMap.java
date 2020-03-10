@@ -1,5 +1,7 @@
 package scene;
 
+import entities.Sprite;
+import entities.SpriteManager;
 import main.*;
 
 public class TileMap {
@@ -7,12 +9,9 @@ public class TileMap {
     private static Tile[][] arrayOfTiles;
     private static int numOfHorizontalTiles = 1000;
     private static int numOfVerticalTiles = 1000;
-    private static Texture tileSet;
 
     public static int TILE_WIDTH = 16;
     public static int TILE_HEIGHT = 16;
-    public static int TILES_IN_TILESET_X_AXIS;
-    public static int TILES_IN_TILESET_Y_AXIS;
 
     public static void loadMap() {
         arrayOfTiles = WorldLoader.loadWorld();
@@ -27,16 +26,12 @@ public class TileMap {
         }
     }
 
-    public static void loadSprites() {
-        String path;
-        path = "res/sprites/tiles/tileset.png";
-        tileSet = Texture.loadTexture(path);
-        TILES_IN_TILESET_X_AXIS = tileSet.getWidth() / TILE_WIDTH;
-        TILES_IN_TILESET_Y_AXIS = tileSet.getHeight() / TILE_HEIGHT;
+    public static Sprite getTileSet() {
+        return SpriteManager.getInstance().TILESET;
     }
 
     public static void bindTileSetTexture() {
-        tileSet.bind();
+        getTileSet().getSpriteSheet().bind();
     }
 
     public static Tile[][] getArrayOfTiles() {
@@ -81,10 +76,10 @@ public class TileMap {
         int tileFromTileSetX = tileFromTileSet[0];
         int tileFromTileSetY = tileFromTileSet[1];
 
-        double u = ((1.0 / (double) TILES_IN_TILESET_X_AXIS)) * tileFromTileSetX;
-        double v = ((1.0 / (double) TILES_IN_TILESET_Y_AXIS)) * tileFromTileSetY;
-        double u2 = u + (1.0 / (double) TILES_IN_TILESET_X_AXIS);
-        double v2 = v + (1.0 / (double) TILES_IN_TILESET_Y_AXIS);
+        double u = ((1.0 / (double) getTileSet().TILES_IN_TILESET_X_AXIS)) * tileFromTileSetX;
+        double v = ((1.0 / (double) getTileSet().TILES_IN_TILESET_Y_AXIS)) * tileFromTileSetY;
+        double u2 = u + (1.0 / (double) getTileSet().TILES_IN_TILESET_X_AXIS);
+        double v2 = v + (1.0 / (double) getTileSet().TILES_IN_TILESET_Y_AXIS);
 
         int width = (int) (TILE_WIDTH * scale);
         int height = (int) (TILE_HEIGHT * scale);
@@ -99,15 +94,15 @@ public class TileMap {
     }
 
     public static int[] getTile(int tile) {
-        int x = TILES_IN_TILESET_X_AXIS;
-        int y = TILES_IN_TILESET_Y_AXIS;
+        int x = getTileSet().TILES_IN_TILESET_X_AXIS;
+        int y = getTileSet().TILES_IN_TILESET_Y_AXIS;
         tile %= (x * y);
         return new int[]{tile % x, y - 1 - (tile / x)};
     }
 
     public static void setTile(int i, int j, int k, byte value) {
-        int x = TILES_IN_TILESET_X_AXIS;
-        int y = TILES_IN_TILESET_Y_AXIS;
+        int x = getTileSet().TILES_IN_TILESET_X_AXIS;
+        int y = getTileSet().TILES_IN_TILESET_Y_AXIS;
         value %= (x * y);
         if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
             arrayOfTiles[i][j].setLayerValue(k, value);

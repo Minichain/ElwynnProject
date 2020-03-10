@@ -33,7 +33,6 @@ public class Scene {
         listOfCircleAttacks = new ArrayList<>();
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
-        loadSprites();
         OpenALManager.playSound(OpenALManager.SOUND_MUSIC_O1);
     }
 
@@ -46,10 +45,6 @@ public class Scene {
 
     private void loadWorld() {
         TileMap.loadMap();
-    }
-
-    private void loadSprites() {
-        TileMap.loadSprites();
     }
 
     public void update(long timeElapsed) {
