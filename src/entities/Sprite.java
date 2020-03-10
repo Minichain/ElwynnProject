@@ -40,7 +40,7 @@ public class Sprite {
         SPRITE_HEIGHT = spriteHeight;
 
         TILES_IN_TILESET_X_AXIS = spriteSheet.getWidth() / SPRITE_WIDTH;
-        TILES_IN_TILESET_Y_AXIS = spriteSheet.getWidth() / SPRITE_HEIGHT;
+        TILES_IN_TILESET_Y_AXIS = spriteSheet.getHeight() / SPRITE_HEIGHT;
     }
 
     public Texture getSpriteSheet() {
