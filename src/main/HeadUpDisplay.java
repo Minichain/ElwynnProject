@@ -1,6 +1,7 @@
 package main;
 
 import entities.Player;
+import entities.Sprite;
 import entities.SpriteManager;
 import scene.TileMap;
 import enums.Resolution;
@@ -82,7 +83,9 @@ public class HeadUpDisplay {
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                 Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                 Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
-                SpriteManager.getInstance().TREE.draw((int) c2.x, (int) c2.y, 0, 0, false, 0.5);
+                Sprite sprite;
+                sprite = InputListenerManager.getMouseWheelPosition() % 2 == 0 ? SpriteManager.getInstance().TREE : SpriteManager.getInstance().BUILDING;
+                sprite.draw((int) c2.x, (int) c2.y, 0, 0, false, 0.5);
             }
         }
     }

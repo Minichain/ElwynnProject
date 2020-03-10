@@ -1,5 +1,6 @@
 package listeners;
 
+import entities.Building;
 import entities.Tree;
 import scene.Camera;
 import scene.Scene;
@@ -98,9 +99,10 @@ public class InputListenerManager {
         if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                 Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                int layer = 0;
+                int layer;
                 switch (GameMode.getLayerEditing()) {
                     case FIRST_LAYER:
+                    default:
                         layer = 0;
                         break;
                     case SECOND_LAYER:
@@ -112,7 +114,16 @@ public class InputListenerManager {
                 }
                 TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                int i = 2;
+                switch (InputListenerManager.getMouseWheelPosition() % i) {
+                    case 0:
+                        new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 1:
+                    default:
+                        new Building((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                }
             }
         }
     }

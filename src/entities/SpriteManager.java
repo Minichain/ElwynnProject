@@ -9,6 +9,7 @@ public class SpriteManager {
     public Sprite PLAYER;
     public Sprite ENEMY;
     public Sprite TREE;
+    public Sprite BUILDING;
     public Sprite TILESET;
 
     public SpriteManager() {
@@ -20,6 +21,9 @@ public class SpriteManager {
 
         /** TREE **/
         TREE = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1);
+
+        /** BUILDING **/
+        BUILDING = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1);
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
