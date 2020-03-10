@@ -20,7 +20,9 @@ public class TileMap {
             for (int i = 0; i < numOfHorizontalTiles; i++) {
                 for (int j = 0; j < numOfVerticalTiles; j++) {
                     arrayOfTiles[i][j] = new Tile();
-                    arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 4) + 1));
+                    if (Math.random() < 0.1) {
+                        arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 6) + 1));
+                    }
                 }
             }
         }

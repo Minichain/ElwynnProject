@@ -14,10 +14,10 @@ public class SpriteManager {
 
     public SpriteManager() {
         /** PLAYER **/
-        PLAYER = new Sprite("res/sprites/dynamic/link.png", 32, 32, 1, 8, 1, 1);
+        PLAYER = new Sprite("res/sprites/dynamic/player.png", 32, 32, 1, 1, 1, 1);
 
         /** ENEMY **/
-        ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 8, 1, 1);
+        ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 1, 1, 1);
 
         /** TREE **/
         TREE = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1);
