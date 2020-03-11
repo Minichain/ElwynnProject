@@ -76,8 +76,8 @@ public class Enemy extends DynamicGraphicEntity {
             attack(timeElapsed);
 
             int distanceFactor = 4;
-            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x + movement[0] * distanceFactor), (int)(getWorldCoordinates().y));
-            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getWorldCoordinates().x), (int)(getWorldCoordinates().y + movement[1] * distanceFactor));
+            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getCenterOfMassWorldCoordinates().x + movement[0] * distanceFactor), (int)(getCenterOfMassWorldCoordinates().y));
+            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getCenterOfMassWorldCoordinates().x), (int)(getCenterOfMassWorldCoordinates().y + movement[1] * distanceFactor));
             if (!horizontalCollision) {
                 getWorldCoordinates().x += movement[0];
             }

@@ -50,11 +50,7 @@ public class TileMap {
 
     public static void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
         if (0 < i && i < TileMap.getArrayOfTiles().length && 0 < j && j < TileMap.getArrayOfTiles()[0].length) {
-            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE && TileMap.getArrayOfTiles()[i][j].isCollidable()) { // COLLISION Tile
-                drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, 1f, 0.5f, 0.5f, false); // Draw the tile more red
-            } else {
-                drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, distanceFactor, false);
-            }
+            drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, distanceFactor, false);
         }
     }
 

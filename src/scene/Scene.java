@@ -157,6 +157,11 @@ public class Scene {
 
         /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
+
+        /** COLLIDABLE TILES **/
+        if ((GameMode.getGameMode() == GameMode.Mode.CREATIVE || Parameters.isDebugMode())) {
+            renderCollidableTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
+        }
     }
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
@@ -212,6 +217,29 @@ public class Scene {
                     int y = j * TileMap.TILE_HEIGHT;
                     double distanceBetweenPlayerAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
                     TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
+                }
+            }
+        }
+        glEnd();
+    }
+
+    private void renderCollidableTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
+        glDisable(GL_TEXTURE_2D);
+        OpenGLManager.glBegin(GL_TRIANGLES);
+        for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
+            for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
+                if (0 < i && i < TileMap.getArrayOfTiles().length
+                        && 0 < j && j < TileMap.getArrayOfTiles()[0].length) {
+                    if (TileMap.getArrayOfTiles()[i][j].isCollidable()) {
+                        double scale = Camera.getZoom();
+                        int x = i * TileMap.TILE_WIDTH;
+                        int y = j * TileMap.TILE_HEIGHT;
+                        Coordinates cameraCoordinates = new Coordinates(x, y);
+                        cameraCoordinates = cameraCoordinates.toCameraCoordinates();
+                        int width = (int) (TileMap.TILE_WIDTH * scale);
+                        int height = (int) (TileMap.TILE_HEIGHT * scale);
+                        OpenGLManager.drawRectangle((int) cameraCoordinates.x, (int) cameraCoordinates.y, width, height, 0.5, 1f, 0f, 0f);
+                    }
                 }
             }
         }
