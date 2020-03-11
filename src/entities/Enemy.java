@@ -50,12 +50,8 @@ public class Enemy extends DynamicGraphicEntity {
         speed = 0.075;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
+        setSprite(SpriteManager.getInstance().ENEMY);
         Scene.getInstance().getListOfEntities().add(this);
-    }
-
-    @Override
-    public Sprite getSprite() {
-        return SpriteManager.getInstance().ENEMY;
     }
 
     @Override
@@ -65,7 +61,7 @@ public class Enemy extends DynamicGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), true, 1.0);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
     }
 
     @Override
@@ -206,13 +202,14 @@ public class Enemy extends DynamicGraphicEntity {
 
     private void attack(long timeElapsed) {
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x,
-                Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y};
+        double[] pointingVector = new double[]{Player.getInstance().getCenterOfMassWorldCoordinates().x - getCenterOfMassWorldCoordinates().x,
+                Player.getInstance().getCenterOfMassWorldCoordinates().y - getCenterOfMassWorldCoordinates().y};
 
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(getWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
+            coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0,
+                    coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
         } else {
-            coneAttack.update(getWorldCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking);
         }
 
         /** CIRCLE ATTACK **/

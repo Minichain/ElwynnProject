@@ -13,6 +13,7 @@ public class Tree extends StaticGraphicEntity {
 
     private void init() {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setSprite(SpriteManager.getInstance().TREE);
         Scene.getInstance().getListOfEntities().add(this);
     }
 
@@ -22,17 +23,12 @@ public class Tree extends StaticGraphicEntity {
     }
 
     @Override
-    public Sprite getSprite() {
-        return SpriteManager.getInstance().TREE;
-    }
-
-    @Override
     public Texture getSpriteSheet() {
         return getSprite().getSpriteSheet();
     }
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), false, 1.0);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
     }
 }

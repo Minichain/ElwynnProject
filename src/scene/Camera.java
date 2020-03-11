@@ -72,8 +72,8 @@ public class Camera {
     public void update(long timeElapsed) {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             double[] cameraVelocityVector = new double[2];
-            cameraVelocityVector[0] = Player.getInstance().getWorldCoordinates().x - Camera.getInstance().getCoordinates().x;
-            cameraVelocityVector[1] = Player.getInstance().getWorldCoordinates().y - Camera.getInstance().getCoordinates().y;
+            cameraVelocityVector[0] = Player.getInstance().getCenterOfMassWorldCoordinates().x - Camera.getInstance().getCoordinates().x;
+            cameraVelocityVector[1] = Player.getInstance().getCenterOfMassWorldCoordinates().y - Camera.getInstance().getCoordinates().y;
             double cameraSpeed = MathUtils.module(cameraVelocityVector) * followingSpeed * timeElapsed;
             cameraVelocityVector = MathUtils.normalizeVector(cameraVelocityVector);
 

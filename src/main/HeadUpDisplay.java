@@ -85,7 +85,7 @@ public class HeadUpDisplay {
                 Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
                 Sprite sprite;
                 sprite = InputListenerManager.getMouseWheelPosition() % 2 == 0 ? SpriteManager.getInstance().TREE : SpriteManager.getInstance().BUILDING;
-                sprite.draw((int) c2.x, (int) c2.y, 0, 0, false, 0.5);
+                sprite.draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
             }
         }
     }

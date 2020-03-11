@@ -80,18 +80,18 @@ public class ConeAttack {
 
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                        && MathUtils.isPointInsideTriangle(entity.getCameraCoordinates(), vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, false);
+                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
-                        && MathUtils.isPointInsideTriangle(entity.getCameraCoordinates(), vertex1, vertex2, vertex3)) {
+                        && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, true);
+                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, true);
                 }
             }
         }

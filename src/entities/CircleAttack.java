@@ -77,18 +77,18 @@ public class CircleAttack {
             double radius = this.radius * Camera.getZoom();
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
-                        && MathUtils.isPointInsideCircle(entity.getCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
+                        && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, false);
+                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
-                        && MathUtils.isPointInsideCircle(entity.getCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
+                        && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, true);
+                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, true);
                 }
             }
         }

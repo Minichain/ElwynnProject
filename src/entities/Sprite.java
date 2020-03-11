@@ -47,7 +47,7 @@ public class Sprite {
         return spriteSheet;
     }
 
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, boolean centered, double transparency) {
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency) {
         spriteSheet.bind();
 
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
@@ -60,10 +60,7 @@ public class Sprite {
         double scale = Camera.getZoom();
 
         OpenGLManager.glBegin(GL_QUADS);
-        if (centered) {
-            x -= (int) ((SPRITE_WIDTH / 2) * scale);
-            y -= (int) ((SPRITE_HEIGHT / 2) * scale);
-        }
+        y -= (int) (SPRITE_HEIGHT * scale);
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
         glEnd();
     }

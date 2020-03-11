@@ -58,6 +58,7 @@ public class Player extends DynamicGraphicEntity {
         speed = 0.125;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
+        setSprite(SpriteManager.getInstance().PLAYER);
     }
 
     public static Player getInstance() {
@@ -69,18 +70,13 @@ public class Player extends DynamicGraphicEntity {
     }
 
     @Override
-    public Sprite getSprite() {
-        return SpriteManager.getInstance().PLAYER;
-    }
-
-    @Override
     public Texture getSpriteSheet() {
         return getSprite().getSpriteSheet();
     }
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), true, 1.0);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
     }
 
     @Override
@@ -229,15 +225,15 @@ public class Player extends DynamicGraphicEntity {
 
     private void attack(long timeElapsed) {
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getWorldCoordinates().x,
-                InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getWorldCoordinates().y};
+        double[] pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
+                InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
 
         attacking = attacking && playerStatus != Player.Status.DEAD;
 
         if (coneAttack == null) {
-            coneAttack = new ConeAttack(getWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
+            coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
         } else {
-            coneAttack.update(getWorldCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking);
         }
 
         /** CIRCLE ATTACK **/
