@@ -11,8 +11,8 @@ public class PathFindingAlgorithm {
 
     private int tilesInXAxis;
     private int tilesInYAxis;
-    private int marginX = 5;
-    private int marginY = 5;
+    private int marginX = 10;
+    private int marginY = 10;
 
     private int[] initialNode = new int[2];
     private int[] goalNode = new int[2];
@@ -116,8 +116,10 @@ public class PathFindingAlgorithm {
                     previousNodeCost = cost[node[0]][node[1]];
                 }
             }
-            nodesToVisitNext.remove(nodeWithLessCost);
-            computeCostsSurroundingNode(nodeWithLessCost[0], nodeWithLessCost[1]);
+            if (nodeWithLessCost[0] != x || nodeWithLessCost[1] != y) {
+                nodesToVisitNext.remove(nodeWithLessCost);
+                computeCostsSurroundingNode(nodeWithLessCost[0], nodeWithLessCost[1]);
+            }
         }
     }
 

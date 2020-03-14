@@ -158,7 +158,7 @@ public class Enemy extends DynamicGraphicEntity {
 
 
     private void computePath() {
-        pathFindingAlgorithm = new PathFindingAlgorithm(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
+        pathFindingAlgorithm = new PathFindingAlgorithm(getCenterOfMassWorldCoordinates(), Player.getInstance().getCenterOfMassWorldCoordinates());
         pathFindingAlgorithm.computeBestPath();
     }
 

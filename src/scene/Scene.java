@@ -91,7 +91,7 @@ public class Scene {
         listOfEntitiesToUpdate.clear();
         for (int i = 0; i < listOfEntities.size(); i++) {
             GraphicEntity currentEntity = listOfEntities.get(i);
-            if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
+            if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 currentEntity.update(timeElapsed);
             }
             currentEntity.updateCoordinates();

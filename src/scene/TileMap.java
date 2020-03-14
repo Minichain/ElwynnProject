@@ -21,7 +21,7 @@ public class TileMap {
                 for (int j = 0; j < numOfVerticalTiles; j++) {
                     arrayOfTiles[i][j] = new Tile();
                     if (Math.random() < 0.1) {
-                        arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 6) + 1));
+                        arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 3) + 1));
                     }
                 }
             }
