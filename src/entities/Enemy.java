@@ -10,7 +10,6 @@ import utils.Utils;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends DynamicGraphicEntity {
-    private static Texture spriteSheet;
     private Utils.DirectionFacing directionFacing;
     private Status status;
 
@@ -32,7 +31,7 @@ public class Enemy extends DynamicGraphicEntity {
     boolean useDijkstraAlgorithm = true;
     private PathFindingAlgorithm pathFindingAlgorithm;
     private double distanceToPlayer;
-    private int computePathPeriod = 500;
+    private int computePathPeriod = 600;
     private int computePathCoolDown = 0;
 
     public enum Status {
@@ -47,7 +46,7 @@ public class Enemy extends DynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = 0.075;
+        speed = Math.random() * 0.06 + 0.04;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         setSprite(SpriteManager.getInstance().ENEMY);
@@ -136,8 +135,11 @@ public class Enemy extends DynamicGraphicEntity {
                 computePath();
                 computePathCoolDown = computePathPeriod;
             }
-            int[] step = pathFindingAlgorithm.getNextStep();
-            movement = new double[]{step[0], step[1]};
+            int[] step = pathFindingAlgorithm.getNextStep(getCenterOfMassWorldCoordinates());
+            Coordinates stepWorldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(step[0], step[1]);
+            movement = new double[]{
+                    stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2),
+                    stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2)};
             computePathCoolDown -= timeElapsed;
         } else {
             movement[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
@@ -228,22 +230,35 @@ public class Enemy extends DynamicGraphicEntity {
         if (coneAttack != null && attacking) {
             coneAttack.render();
         }
-        if (Parameters.isDebugMode() && status != Status.DEAD && pathFindingAlgorithm != null && pathFindingAlgorithm.getPath() != null) {
+
+        /** PATH RENDERING **/
+        if (Parameters.isDebugMode() && status != Status.DEAD
+                && pathFindingAlgorithm != null
+                && pathFindingAlgorithm.getPath() != null
+                && pathFindingAlgorithm.getPath().size() > 0) {
+
+            int start = pathFindingAlgorithm.getPath().size() - 1;
+            Coordinates cameraCoordinates1;
+            Coordinates cameraCoordinates2;
+
             glDisable(GL_TEXTURE_2D);
             glColor4f(1f, 1f, 1f, 0.5f);
             OpenGLManager.glBegin(GL_LINES);
 
-            Coordinates startingCoordinates = pathFindingAlgorithm.initialCoordinates.toCameraCoordinates();
-            int start = pathFindingAlgorithm.getPath().size() - 1;
-            for (int i = start; i >= 0; i--) {
-                glVertex2d(startingCoordinates.x, startingCoordinates.y);
-                startingCoordinates.x += pathFindingAlgorithm.getPath().get(i)[0] * TileMap.TILE_WIDTH * Camera.getZoom();
-                startingCoordinates.y += pathFindingAlgorithm.getPath().get(i)[1] * TileMap.TILE_HEIGHT * Camera.getZoom();
-                glVertex2d(startingCoordinates.x, startingCoordinates.y);
+            //FIXME: We should check why "y" tile is not correct, therefore we have to add "+ 1"
+            cameraCoordinates1 = Coordinates.tileCoordinatesToWorldCoordinates(
+                    pathFindingAlgorithm.getPath().get(start)[0],
+                    pathFindingAlgorithm.getPath().get(start)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
+            for (int i = start - 1; i >= 0; i--) {
+                cameraCoordinates2 = Coordinates.tileCoordinatesToWorldCoordinates(
+                        pathFindingAlgorithm.getPath().get(i)[0],
+                        pathFindingAlgorithm.getPath().get(i)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
+                glVertex2d(cameraCoordinates1.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates1.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
+                glVertex2d(cameraCoordinates2.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates2.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
+                cameraCoordinates1 = cameraCoordinates2;
             }
 
             glEnd();
-
             glEnable(GL_TEXTURE_2D);
         }
     }

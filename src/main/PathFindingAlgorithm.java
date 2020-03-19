@@ -5,7 +5,7 @@ import scene.TileMap;
 import java.util.ArrayList;
 
 public class PathFindingAlgorithm {
-    public Coordinates initialCoordinates;
+    private Coordinates initialCoordinates;
     private Coordinates initialTileCoordinates;
     private Coordinates goalTileCoordinates;
 
@@ -33,7 +33,7 @@ public class PathFindingAlgorithm {
 
         int[] toTileMapCoordinates = new int[2];
 
-        if (this.initialTileCoordinates.x < this.goalTileCoordinates.x) {
+        if ((int) this.initialTileCoordinates.x < (int) this.goalTileCoordinates.x) {
             tilesInXAxis = (int) this.goalTileCoordinates.x - (int) this.initialTileCoordinates.x + 1 + (marginX * 2);
             initialNode[0] = marginX;
             goalNode[0] = tilesInXAxis - 1 - marginX;
@@ -45,7 +45,7 @@ public class PathFindingAlgorithm {
             toTileMapCoordinates[0] = (int) this.goalTileCoordinates.x - marginX;
         }
 
-        if (this.initialTileCoordinates.y < this.goalTileCoordinates.y) {
+        if ((int) this.initialTileCoordinates.y < (int) this.goalTileCoordinates.y) {
             tilesInYAxis = (int) this.goalTileCoordinates.y - (int) this.initialTileCoordinates.y + 1 + (marginY * 2);
             initialNode[1] = marginY;
             goalNode[1] = tilesInYAxis - 1 - marginY;
@@ -75,11 +75,24 @@ public class PathFindingAlgorithm {
         findPath();
     }
 
-    public int[] getNextStep() {
+    /**
+     * It returns the next tile (step) where we have to move from the computed path.
+     * If we are already in the tile, it removes it from the path and it returns the next "step".
+     * */
+    public int[] getNextStep(Coordinates currentWorldCoordinates) {
         if (!path.isEmpty()) {
             int index = path.size() - 1;
-            int[] step = path.get(index);
-            return step;
+            Coordinates worldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(path.get(index)[0], path.get(index)[1]);
+            worldCoordinates.x += TileMap.TILE_WIDTH / 2;
+            worldCoordinates.y += TileMap.TILE_HEIGHT / 2;
+            if (Math.abs(currentWorldCoordinates.x - worldCoordinates.x) <= 1
+                    && Math.abs(currentWorldCoordinates.y - worldCoordinates.y) <= 1) {   //We are already on that tile.
+                path.remove(index);
+                index--;
+            }
+            if (index >= 0) {
+                return path.get(index);
+            }
         }
         return new int[]{0, 0};
     }
@@ -161,7 +174,10 @@ public class PathFindingAlgorithm {
         }
         int[] parentNode = this.parentNode[parent[0]][parent[1]];
         if (parent[0] != parentNode[0] || parent[1] != parentNode[1]) {
-            path.add(new int[]{parent[0] - parentNode[0], parent[1] - parentNode[1]});
+            int[] newPath = new int[2];
+            newPath[0] = parent[0] - initialNode[0] + (int) initialTileCoordinates.x;
+            newPath[1] = parent[1] - initialNode[1] + (int) initialTileCoordinates.y;
+            path.add(newPath);
             findStep(parentNode);
         }
     }
