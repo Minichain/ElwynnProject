@@ -14,13 +14,13 @@ public class Utils {
         DirectionFacing directionFacing;
         if (x > 0) {
             if (y > 0) {
-                if (y >= x) {
+                if (y > x) {
                     directionFacing = DirectionFacing.DOWN;
                 } else {
                     directionFacing = DirectionFacing.RIGHT;
                 }
             } else {
-                if (Math.abs(y) >= x) {
+                if (Math.abs(y) > x) {
                     directionFacing = DirectionFacing.UP;
                 } else {
                     directionFacing = DirectionFacing.RIGHT;
@@ -28,13 +28,13 @@ public class Utils {
             }
         } else {
             if (y > 0) {
-                if (y >= Math.abs(x)) {
+                if (y > Math.abs(x)) {
                     directionFacing = DirectionFacing.DOWN;
                 } else {
                     directionFacing = DirectionFacing.LEFT;
                 }
             } else {
-                if (Math.abs(y) >= Math.abs(x)) {
+                if (Math.abs(y) > Math.abs(x)) {
                     directionFacing = DirectionFacing.UP;
                 } else {
                     directionFacing = DirectionFacing.LEFT;

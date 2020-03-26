@@ -8,6 +8,9 @@ public class Tile {
     public Tile() {
         collidable = false;
         layerValue = new byte[numOfLayers];
+        for (int i = 0; i < numOfLayers; i++) {
+            layerValue[i] = (byte) 0;
+        }
     }
 
     public byte getLayerValue(int layer) {

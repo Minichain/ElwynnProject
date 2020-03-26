@@ -107,7 +107,7 @@ public class Enemy extends DynamicGraphicEntity {
                 break;
             case DYING:
                 double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
-                if (frame > 1) {
+                if (frame > getSprite().DYING_FRAMES) {
                     status = Status.DEAD;
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
