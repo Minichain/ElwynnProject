@@ -96,7 +96,7 @@ public class ConeAttack {
             }
         }
 
-        OpenALManager.playSound(OpenALManager.SOUND_ATTACK_01);
+        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
         attackCoolDown = attackPeriod;
     }
 

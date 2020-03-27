@@ -23,7 +23,7 @@ public class OpenALManager {
     private static ArrayList<Sound> listOfSounds;
 
     public static Sound SOUND_PLAYER_HURT_01;
-    public static Sound SOUND_ATTACK_01;
+    public static Sound SOUND_PLAYER_ATTACK_01;
     public static Sound SOUND_PLAYER_DYING_01;
     public static Sound SOUND_MUSIC_O1;
 
@@ -57,19 +57,23 @@ public class OpenALManager {
     private static void loadSounds() {
         listOfSounds = new ArrayList<>();
 
-        SOUND_ATTACK_01 = new Sound(loadSound("link_dash"), listOfSounds.size(), Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_ATTACK_01);
-
-        SOUND_MUSIC_O1 = new Sound(loadSound("minecraft_music_01"), listOfSounds.size(), Sound.SoundType.MUSIC);
-        listOfSounds.add(SOUND_MUSIC_O1);
-
-        SOUND_PLAYER_HURT_01 = new Sound(loadSound("minecraft_player_hurt"), listOfSounds.size(), Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_PLAYER_HURT_01);
-
-        SOUND_PLAYER_DYING_01 = new Sound(loadSound("minecraft_player_die"), listOfSounds.size(), Sound.SoundType.EFFECT);
-        listOfSounds.add(SOUND_PLAYER_DYING_01);
+        SOUND_PLAYER_ATTACK_01 = loadSound("player_attack_01", Sound.SoundType.EFFECT);
+        SOUND_MUSIC_O1 = loadSound("music_01", Sound.SoundType.MUSIC);
+        SOUND_PLAYER_HURT_01 = loadSound("player_hurt_01", Sound.SoundType.EFFECT);
+        SOUND_PLAYER_DYING_01 = loadSound("player_die_01", Sound.SoundType.EFFECT);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
+    }
+
+    private static Sound loadSound(String soundName, Sound.SoundType soundType) {
+        Sound sound = null;
+        try {
+            sound = new Sound(loadSound(soundName), listOfSounds.size(), soundType);
+            listOfSounds.add(sound);
+        } catch (Exception e) {
+            System.err.println("Error loading " + soundName);
+        }
+        return sound;
     }
 
     private static int loadSound(String soundName) {
@@ -140,6 +144,7 @@ public class OpenALManager {
     }
 
     public static void playSound(Sound soundBuffer) {
+        if (soundBuffer == null) return;
         alSourcePlay(source.get(soundBuffer.getIndex()));
     }
 
