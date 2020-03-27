@@ -33,7 +33,6 @@ public class Scene {
         listOfCircleAttacks = new ArrayList<>();
         initialCoordinates = new Coordinates(2500, 2500);
         loadWorld();
-        OpenALManager.playSound(OpenALManager.SOUND_MUSIC_O1);
     }
 
     public static Scene getInstance() {
@@ -48,6 +47,7 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
+        OpenALManager.playSound(OpenALManager.SOUND_MUSIC_O1);
         updateAndSortEntities(timeElapsed);
 
         if (GameStatus.getStatus() != GameStatus.Status.RUNNING) {

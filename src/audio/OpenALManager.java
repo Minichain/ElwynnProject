@@ -144,8 +144,14 @@ public class OpenALManager {
     }
 
     public static void playSound(Sound soundBuffer) {
-        if (soundBuffer == null) return;
+        if (soundBuffer == null || isPlaying(soundBuffer)) {
+            return;
+        }
         alSourcePlay(source.get(soundBuffer.getIndex()));
+    }
+
+    public static boolean isPlaying(Sound soundBuffer) {
+        return AL10.alGetSourcei(source.get(soundBuffer.getIndex()), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
     }
 
     public static void onMusicLevelChange(float soundLevel) {
