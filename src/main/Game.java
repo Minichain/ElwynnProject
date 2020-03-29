@@ -4,11 +4,13 @@ import audio.OpenALManager;
 import scene.Camera;
 import scene.Scene;
 import listeners.InputListenerManager;
+import scene.TileMap;
 
 public class Game {
     public static void startGame() {
         Window.start();
         Scene.getInstance();    //Initialize Scene
+        TileMap.loadMap();
         GameStatus.setStatus(GameStatus.Status.RUNNING);
     }
 

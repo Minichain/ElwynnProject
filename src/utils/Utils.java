@@ -1,5 +1,7 @@
 package utils;
 
+import java.nio.ByteBuffer;
+
 public class Utils {
     public enum DirectionFacing {
         LEFT, RIGHT, UP, DOWN;
@@ -63,5 +65,15 @@ public class Utils {
             }
             System.out.print("\n");
         }
+    }
+
+    public static byte[] doubleToBytes(double value) {
+        byte[] bytes = new byte[8];
+        ByteBuffer.wrap(bytes).putDouble(value);
+        return bytes;
+    }
+
+    public static double byteArrayToDouble(byte[] bytes) {
+        return ByteBuffer.wrap(bytes).getDouble();
     }
 }

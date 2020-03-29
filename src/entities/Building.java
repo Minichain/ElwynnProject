@@ -5,6 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Building extends StaticGraphicEntity {
+    public static int ENTITY_CODE = 2;
 
     public Building(int x, int y) {
         super(x, y);
@@ -15,6 +16,7 @@ public class Building extends StaticGraphicEntity {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
         setSprite(SpriteManager.getInstance().BUILDING);
         Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfStaticEntities().add(this);
     }
 
     @Override
@@ -30,5 +32,10 @@ public class Building extends StaticGraphicEntity {
     @Override
     public void drawSprite(int x, int y) {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
+    }
+
+    @Override
+    public int getEntityCode() {
+        return ENTITY_CODE;
     }
 }

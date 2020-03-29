@@ -82,6 +82,7 @@ public class ConeAttack {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
+                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
@@ -96,7 +97,6 @@ public class ConeAttack {
             }
         }
 
-        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
         attackCoolDown = attackPeriod;
     }
 

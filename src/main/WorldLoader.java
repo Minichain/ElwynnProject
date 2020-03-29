@@ -1,7 +1,12 @@
 package main;
 
+import entities.Building;
+import entities.GraphicEntity;
+import entities.Tree;
+import scene.Scene;
 import scene.Tile;
 import scene.TileMap;
+import utils.Utils;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,8 +25,12 @@ public class WorldLoader {
 
     public static boolean saveWorld(Tile[][] arrayOfTiles) {
         // The array of Tiles is stored into a 1-Dimensional byte array
-        byte[] data = new byte[TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1)];
+        int dataArraySize = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
+        dataArraySize += Scene.getInstance().getListOfStaticEntities().size() * (Double.BYTES * 2 + 1);
+        byte[] data = new byte[dataArraySize];
         int dataIterator = 0;
+
+        /** TILES DATA **/
         for (int i = 0; i < TileMap.getNumOfHorizontalTiles(); i++) {
             for (int j = 0; j < TileMap.getNumOfVerticalTiles(); j++) {
                 for (int k = 0; k < Tile.getNumOfLayers(); k++) {
@@ -29,6 +38,23 @@ public class WorldLoader {
                     dataIterator++;
                 }
                 data[dataIterator] = arrayOfTiles[i][j].isCollidable() ? (byte) 1 : (byte) 0;
+                dataIterator++;
+            }
+        }
+
+        /** ENTITIES DATA **/
+        for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
+            GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
+            data[dataIterator] = (byte) graphicEntity.getEntityCode();
+            dataIterator++;
+            byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
+            for (int j = 0; j < xCoordinate.length; j++) {
+                data[dataIterator] = xCoordinate[j];
+                dataIterator++;
+            }
+            byte[] yCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().y);
+            for (int j = 0; j < xCoordinate.length; j++) {
+                data[dataIterator] = yCoordinate[j];
                 dataIterator++;
             }
         }
@@ -70,9 +96,10 @@ public class WorldLoader {
             return null;
         }
 
+        /** TILES DATA **/
         // The 1-Dimensional byte array is loaded into a 3-Dimensional array of Tiles
         Tile[][] arrayOfTiles = new Tile[TileMap.getNumOfHorizontalTiles()][TileMap.getNumOfVerticalTiles()];
-        for (int i = 0; i < fileData.length; i += 4) {
+        for (int i = 0; i < TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1); i += 4) {
             int x = (i / (Tile.getNumOfLayers() + 1)) / TileMap.getNumOfVerticalTiles();
             int y = (i / (Tile.getNumOfLayers() + 1)) % TileMap.getNumOfVerticalTiles();
             arrayOfTiles[x][y] = new Tile();
@@ -80,6 +107,38 @@ public class WorldLoader {
                 arrayOfTiles[x][y].setLayerValue(j, fileData[i + j]);
             }
             arrayOfTiles[x][y].setCollidable(fileData[i + Tile.getNumOfLayers()] == (byte) 1);
+        }
+
+        /** ENTITIES DATA **/
+        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
+        while (i < fileData.length - (Double.BYTES * 2 + 1)) {
+            if (fileData[i] == (byte) Tree.ENTITY_CODE) {
+                i++;
+                byte[] xCoordinate = new byte[Double.BYTES];
+                for (int j = 0; j < Double.BYTES; j++) {
+                    xCoordinate[j] = fileData[i];
+                    i++;
+                }
+                byte[] yCoordinate = new byte[Double.BYTES];
+                for (int j = 0; j < Double.BYTES; j++) {
+                    yCoordinate[j] = fileData[i];
+                    i++;
+                }
+                new Tree((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Building.ENTITY_CODE) {
+                i++;
+                byte[] xCoordinate = new byte[Double.BYTES];
+                for (int j = 0; j < Double.BYTES; j++) {
+                    xCoordinate[j] = fileData[i];
+                    i++;
+                }
+                byte[] yCoordinate = new byte[Double.BYTES];
+                for (int j = 0; j < Double.BYTES; j++) {
+                    yCoordinate[j] = fileData[i];
+                    i++;
+                }
+                new Building((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            }
         }
 
         return arrayOfTiles;

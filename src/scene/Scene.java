@@ -16,6 +16,7 @@ public class Scene {
 
     /** ENTITIES **/
     private static ArrayList<GraphicEntity> listOfEntities;
+    private static ArrayList<StaticGraphicEntity> listOfStaticEntities;
     private static ArrayList<GraphicEntity> listOfEntitiesToUpdate;
     private static int enemySpawnPeriod = 7500; // In Milliseconds
     private static long lastEnemySpawnTime;
@@ -29,10 +30,10 @@ public class Scene {
 
     private Scene() {
         listOfEntities = new ArrayList<>();
+        listOfStaticEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         initialCoordinates = new Coordinates(2500, 2500);
-        loadWorld();
     }
 
     public static Scene getInstance() {
@@ -40,10 +41,6 @@ public class Scene {
             instance = new Scene();
         }
         return instance;
-    }
-
-    private void loadWorld() {
-        TileMap.loadMap();
     }
 
     public void update(long timeElapsed) {
@@ -118,6 +115,10 @@ public class Scene {
 
     public List<GraphicEntity> getListOfEntities() {
         return listOfEntities;
+    }
+
+    public List<StaticGraphicEntity> getListOfStaticEntities() {
+        return listOfStaticEntities;
     }
 
     public List<GraphicEntity> getListOfEntitiesToUpdate() {

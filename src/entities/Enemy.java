@@ -64,6 +64,11 @@ public class Enemy extends DynamicGraphicEntity {
     }
 
     @Override
+    public int getEntityCode() {
+        return 0;
+    }
+
+    @Override
     public void update(long timeElapsed) {
         setPreviousWorldCoordinates(getWorldCoordinates());
         if (health > 0) {

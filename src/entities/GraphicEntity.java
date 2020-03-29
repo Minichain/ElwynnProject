@@ -60,4 +60,6 @@ public abstract class GraphicEntity extends Entity {
                 getWorldCoordinates().y - (double) Player.getInstance().getSprite().SPRITE_HEIGHT / 2.0);
         centerOfMassCameraCoordinates = centerOfMassWorldCoordinates.toCameraCoordinates();
     }
+
+    public abstract int getEntityCode();
 }
