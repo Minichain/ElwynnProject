@@ -1,6 +1,7 @@
 package listeners;
 
 import entities.Building;
+import entities.Player;
 import entities.Tree;
 import scene.Camera;
 import scene.Scene;
@@ -75,8 +76,12 @@ public class InputListenerManager {
         scrollCallback = new GLFWScrollCallback() {
             @Override
             public void invoke(long window, double xOffset, double yOffset) {
-                mouseWheelPosition += yOffset;
-                if (mouseWheelPosition < 0) mouseWheelPosition = 0;
+                if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                    mouseWheelPosition += yOffset;
+                    if (mouseWheelPosition < 0) mouseWheelPosition = 0;
+                } else {
+                    Camera.setZoom(Camera.getZoom() + 0.1 * yOffset * Camera.getZoom());
+                }
             }
         };
 
@@ -175,6 +180,13 @@ public class InputListenerManager {
             case GLFW_KEY_D:
                 D_KEY_PRESSED = pressed;
                 break;
+            case GLFW_KEY_SPACE:
+                if (pressed) {
+                    if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                        Player.getInstance().performJump();
+                    }
+                }
+                break;
             case GLFW_KEY_ESCAPE:
                 if (pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
                 break;
@@ -219,10 +231,10 @@ public class InputListenerManager {
             case GLFW_KEY_4:
                 break;
             case GLFW_KEY_UP:
-                if (pressed) Camera.setZoom(Camera.getZoom() + 0.1);
+                if (pressed) Camera.setZoom(Camera.getZoom() + 0.1 * Camera.getZoom());
                 break;
             case GLFW_KEY_DOWN:
-                if (pressed) Camera.setZoom(Camera.getZoom() - 0.1);
+                if (pressed) Camera.setZoom(Camera.getZoom() - 0.1 * Camera.getZoom());
                 break;
         }
     }

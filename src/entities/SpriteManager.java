@@ -14,16 +14,16 @@ public class SpriteManager {
 
     public SpriteManager() {
         /** PLAYER **/
-        PLAYER = new Sprite("res/sprites/dynamic/player.png", 32, 32, 1, 8, 2, 1);
+        PLAYER = new Sprite("res/sprites/dynamic/player.png", 32, 32, 1, 8, 2, 1, 7);
 
         /** ENEMY **/
-        ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 4, 2, 1);
+        ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 8, 2, 1, -1);
 
         /** TREE **/
-        TREE = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1);
+        TREE = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
 
         /** BUILDING **/
-        BUILDING = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1);
+        BUILDING = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);

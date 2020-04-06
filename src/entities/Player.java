@@ -36,7 +36,7 @@ public class Player extends DynamicGraphicEntity {
     private float circleAttackManaCost = 25f;
 
     public enum Status {
-        IDLE, RUNNING, JUMPING, DYING, DEAD;
+        IDLE, RUNNING, ROLLING, DYING, DEAD;
     }
 
     private Player() {
@@ -88,7 +88,9 @@ public class Player extends DynamicGraphicEntity {
     public void update(long timeElapsed) {
         setPreviousWorldCoordinates(getWorldCoordinates());
         if (health > 0)  {
-            playerStatus = Status.IDLE;
+            if (playerStatus != Status.ROLLING) {
+                playerStatus = Status.IDLE;
+            }
             if (mana < MAX_MANA) {
                 mana += (MANA_REGENERATION * timeElapsed);
             } else if (mana > MAX_MANA) {
@@ -105,7 +107,11 @@ public class Player extends DynamicGraphicEntity {
 
             double[] movement = new double[]{0, 0};
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                movement = computeMovementVector(timeElapsed, speed);
+                if (playerStatus != Status.ROLLING) {
+                    movement = computeMovementVector(timeElapsed, speed);
+                } else {
+                    movement = displacementVector;
+                }
             }
 
             int distanceFactor = 4;
@@ -129,7 +135,9 @@ public class Player extends DynamicGraphicEntity {
             }
 
             if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If player is moving
-                playerStatus = Status.RUNNING;
+                if (playerStatus != Status.ROLLING) {
+                    playerStatus = Status.RUNNING;
+                }
             }
         } else if (playerStatus != Status.DEAD && playerStatus != Status.DYING) {
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
@@ -138,25 +146,33 @@ public class Player extends DynamicGraphicEntity {
             attacking = false;
         }
 
+        double frame;
+        frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
         switch (playerStatus) {
             case IDLE:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().IDLE_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().RUNNING_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
                 break;
-            case JUMPING:
+            case ROLLING:
+                if (frame >= getSprite().JUMPING_FRAMES) {
+                    playerStatus = Status.IDLE;
+                    setSpriteCoordinateFromSpriteSheetX(0);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().JUMPING_FRAMES);
+                }
                 break;
             case DYING:
-                double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
-                if (frame > getSprite().DYING_FRAMES) {
+                if (frame >= getSprite().DYING_FRAMES) {
                     playerStatus = Status.DEAD;
+                    setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
                 }
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().DEAD_FRAMES);
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
                 break;
         }
 
@@ -213,7 +229,16 @@ public class Player extends DynamicGraphicEntity {
                     setSpriteCoordinateFromSpriteSheetY(6);
                 }
                 break;
-            case JUMPING:
+            case ROLLING:
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(10);
+                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
+                    setSpriteCoordinateFromSpriteSheetY(13);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(11);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(12);
+                }
                 break;
             case DYING:
                 setSpriteCoordinateFromSpriteSheetY(8);
@@ -268,5 +293,12 @@ public class Player extends DynamicGraphicEntity {
 
     public void setMana(float mana) {
         this.mana = mana;
+    }
+
+    public void performJump() {
+        if (playerStatus == Status.RUNNING && !attacking) {
+            playerStatus = Status.ROLLING;
+            setSpriteCoordinateFromSpriteSheetX(0);
+        }
     }
 }
