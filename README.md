@@ -11,4 +11,4 @@ The sprites I'm using are all extracted from the game A Link To The Past, develo
 
 ## Social Media
 - LinkedIn: www.linkedin.com/in/adria-cadena-rubio
-- Twitter: https://twitter.com/Kartojal
+- Twitter: https://twitter.com/itsminichain
