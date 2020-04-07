@@ -20,7 +20,7 @@ public class SpriteManager {
         ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 8, 2, 1, -1);
 
         /** TREE **/
-        TREE = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
+        TREE = new Sprite("res/sprites/static/tree03.png", 32, 64, -1, -1, -1, -1, -1);
 
         /** BUILDING **/
         BUILDING = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);

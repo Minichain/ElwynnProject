@@ -111,7 +111,7 @@ public class WorldLoader {
 
         /** ENTITIES DATA **/
         int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
-        while (i < fileData.length - (Double.BYTES * 2 + 1)) {
+        while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
             if (fileData[i] == (byte) Tree.ENTITY_CODE) {
                 i++;
                 byte[] xCoordinate = new byte[Double.BYTES];

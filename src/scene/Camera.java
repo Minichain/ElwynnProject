@@ -67,6 +67,7 @@ public class Camera {
     public void reset() {
         this.setCoordinates((int) Player.getInstance().getWorldCoordinates().x,
                 (int) Player.getInstance().getWorldCoordinates().y);
+        this.zoom = 2.0;
     }
 
     public void update(long timeElapsed) {

@@ -130,7 +130,12 @@ public class Scene {
     }
 
     public void initEntities() {
-        Scene.getInstance().getListOfEntities().clear();
+        for (int i = 0; i < getListOfEntities().size(); i++) {
+            if (getListOfEntities().get(i) instanceof DynamicGraphicEntity) {
+                getListOfEntities().remove(i);
+                i--;
+            }
+        }
         Player.getInstance().reset();
         Camera.getInstance().reset();
         Scene.getInstance().getListOfEntities().add(Player.getInstance());
