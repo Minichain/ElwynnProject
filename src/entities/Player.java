@@ -20,6 +20,9 @@ public class Player extends DynamicGraphicEntity {
     public static float MAX_MANA = 100f;
     public static float MANA_REGENERATION = 0.0003f;
     private float mana = 100f;
+    public static float MAX_STAMINA = 100f;
+    public static float STAMINA_REGENERATION = 0.01f;
+    private float stamina = 100f;
 
     /** ATTACK **/
     private boolean attacking = false;
@@ -100,6 +103,11 @@ public class Player extends DynamicGraphicEntity {
                 health += (HEALTH_REGENERATION * timeElapsed);
             } else if (health > MAX_HEALTH) {
                 health = MAX_HEALTH;
+            }
+            if (stamina < MAX_STAMINA) {
+                stamina += (STAMINA_REGENERATION * timeElapsed);
+            } else if (stamina > MAX_STAMINA) {
+                stamina = MAX_STAMINA;
             }
 
             attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && InputListenerManager.leftMouseButtonPressed);
@@ -291,14 +299,19 @@ public class Player extends DynamicGraphicEntity {
         return mana;
     }
 
+    public float getStamina() {
+        return stamina;
+    }
+
     public void setMana(float mana) {
         this.mana = mana;
     }
 
-    public void performJump() {
-        if (playerStatus == Status.RUNNING && !attacking) {
+    public void roll() {
+        if (stamina >= 25f && playerStatus == Status.RUNNING && !attacking) {
             playerStatus = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
+            stamina -= 25f;
         }
     }
 }

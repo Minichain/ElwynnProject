@@ -183,7 +183,7 @@ public class InputListenerManager {
             case GLFW_KEY_SPACE:
                 if (pressed) {
                     if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                        Player.getInstance().performJump();
+                        Player.getInstance().roll();
                     }
                 }
                 break;

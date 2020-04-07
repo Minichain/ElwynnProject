@@ -21,11 +21,12 @@ public class HeadUpDisplay {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             /** NORMAL MODE HUD **/
             int x = (int) (30f * relativeWidth);
-            int y = Parameters.getResolutionHeight() - (int) (50f * relativeHeight);
+            int y = Parameters.getResolutionHeight() - (int) (70f * relativeHeight);
             int width = (int) (500f * relativeWidth);
             int height = (int) (10f * relativeHeight);
             float healthPercentage = Player.getInstance().getHealth() / Player.MAX_HEALTH;
             float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
+            float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
 
             glDisable(GL_TEXTURE_2D);
             OpenGLManager.glBegin(GL_TRIANGLES);
@@ -35,6 +36,10 @@ public class HeadUpDisplay {
             y += (int) (20f * relativeHeight);
             OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.25f, 0.25f, 1f);
             OpenGLManager.drawRectangle(x, y, width * manaPercentage, height, 1.0, 0.25f, 0.25f, 1f);
+
+            y += (int) (20f * relativeHeight);
+            OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.25f, 1f, 0.25f);
+            OpenGLManager.drawRectangle(x, y, width * staminaPercentage, height, 1.0, 0.25f, 1f, 0.25f);
             glEnd();
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
