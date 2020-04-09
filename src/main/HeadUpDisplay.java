@@ -64,6 +64,29 @@ public class HeadUpDisplay {
                 }
             }
             glEnd();
+
+            double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
+            double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
+            if (0 < mouseX && mouseX < Parameters.getResolutionWidth()
+                    && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
+                if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                    TileMap.bindTileSetTexture();
+                    glEnable(GL_TEXTURE_2D);
+                    OpenGLManager.glBegin(GL_QUADS);
+                    TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX + 5, mouseY + 5, 2.5, 0f, 0f, 0f, true);
+                    TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2.5, 1f, 1f, 1f, true);
+                    glEnd();
+                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                    Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
+                    Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
+                    Sprite sprite;
+                    sprite = InputListenerManager.getMouseWheelPosition() % 2 == 0 ? SpriteManager.getInstance().TREE : SpriteManager.getInstance().BUILDING;
+                    sprite.draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
+                }
+            }
+
+
+
         }
 
         /** YOU DIED **/
@@ -71,27 +94,6 @@ public class HeadUpDisplay {
             String text = "YOU DIED";
             int scale = 4;
             TextRendering.renderText((Parameters.getResolutionWidth() / 2) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2), 450, text, scale);
-        }
-
-        double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
-        double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
-        if (GameMode.getGameMode() == GameMode.Mode.CREATIVE
-                && 0 < mouseX && mouseX < Parameters.getResolutionWidth()
-                && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
-            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                TileMap.bindTileSetTexture();
-                glEnable(GL_TEXTURE_2D);
-                OpenGLManager.glBegin(GL_QUADS);
-                TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX + 5, mouseY + 5, 2.5, 0f, 0f, 0f, true);
-                TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2.5, 1f, 1f, 1f, true);
-                glEnd();
-            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
-                Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
-                Sprite sprite;
-                sprite = InputListenerManager.getMouseWheelPosition() % 2 == 0 ? SpriteManager.getInstance().TREE : SpriteManager.getInstance().BUILDING;
-                sprite.draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
-            }
         }
     }
 }

@@ -1,5 +1,6 @@
 package main;
 
+import scene.Scene;
 import scene.TileMap;
 
 import java.util.ArrayList;
@@ -149,7 +150,8 @@ public class PathFindingAlgorithm {
             }
 
             int G, H, F;
-            if (collidableNodes[i][j]) {
+            if (collidableNodes[i][j]
+                    || Scene.getInstance().checkCollisionWithEntities(Coordinates.tileCoordinatesToWorldCoordinates(i - initialNode[0] + (int) initialTileCoordinates.x, j - initialNode[1] + (int) initialTileCoordinates.y))) {
                 F = -1;
             } else {
                 G = (int) (Math.sqrt(Math.pow(i - initialNode[0], 2.0) + Math.pow(j - initialNode[1], 2.0)) * 10.0);

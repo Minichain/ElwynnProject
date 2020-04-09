@@ -122,9 +122,9 @@ public class Player extends DynamicGraphicEntity {
                 }
             }
 
-            int distanceFactor = 4;
-            boolean horizontalCollision = TileMap.checkCollisionWithTile((int)(getCenterOfMassWorldCoordinates().x + movement[0] * distanceFactor), (int)(getCenterOfMassWorldCoordinates().y));
-            boolean verticalCollision = TileMap.checkCollisionWithTile((int)(getCenterOfMassWorldCoordinates().x), (int)(getCenterOfMassWorldCoordinates().y + movement[1] * distanceFactor));
+            double distanceFactor = 4;
+            boolean horizontalCollision = checkHorizontalCollision(movement, distanceFactor);
+            boolean verticalCollision = checkVerticalCollision(movement, distanceFactor);
             if (!horizontalCollision) {
                 getWorldCoordinates().x += movement[0];
             }
@@ -185,6 +185,20 @@ public class Player extends DynamicGraphicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
+    }
+
+    private boolean checkHorizontalCollision(double[] movement, double distanceFactor) {
+        Coordinates collisionCoordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + movement[0] * distanceFactor, getCenterOfMassWorldCoordinates().y);
+        boolean tileCollision = TileMap.checkCollisionWithTile((int) collisionCoordinates.x, (int) collisionCoordinates.y);
+
+        return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
+    }
+
+    private boolean checkVerticalCollision(double[] movement, double distanceFactor) {
+        Coordinates collisionCoordinates = new Coordinates(getCenterOfMassWorldCoordinates().x, getCenterOfMassWorldCoordinates().y + movement[1] * distanceFactor);
+        boolean tileCollision = TileMap.checkCollisionWithTile((int) collisionCoordinates.x, (int) collisionCoordinates.y);
+
+        return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
     }
 
     public double[] computeMovementVector(long timeElapsed, double speed) {

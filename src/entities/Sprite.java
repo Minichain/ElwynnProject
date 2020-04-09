@@ -4,8 +4,8 @@ import main.OpenGLManager;
 import main.Texture;
 import scene.Camera;
 
-import static org.lwjgl.opengl.GL11.GL_QUADS;
-import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class Sprite {
     private Texture spriteSheet;
@@ -51,6 +51,7 @@ public class Sprite {
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency) {
         spriteSheet.bind();
+        glEnable(GL_TEXTURE_2D);
 
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
         float height = (float) spriteSheet.getHeight() / (float) SPRITE_HEIGHT;

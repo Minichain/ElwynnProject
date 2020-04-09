@@ -181,11 +181,6 @@ public class Scene {
                 entity = listOfEntitiesToUpdate.get(entityIterator);
             }
             if (entity != null && entity.getWorldCoordinates().y < Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator).y) {
-                if (entity instanceof Tree) {
-                    //System.out.println("AdriHell:: Tree at Tile Coordinates: " + ((Tree) entity).getTileCoordinates().toString());
-                    //System.out.println("AdriHell:: Tree at World Coordinates: " + ((Tree) entity).getWorldCoordinates().toString());
-                    //System.out.println("AdriHell:: Tree at Camera Coordinates: " + ((Tree) entity).getCameraCoordinates().toString());
-                }
                 entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y);
                 entity = null;
                 entityIterator++;
@@ -250,5 +245,14 @@ public class Scene {
             }
         }
         glEnd();
+    }
+
+    public boolean checkCollisionWithEntities(Coordinates collisionCoordinates) {
+        for (StaticGraphicEntity staticGraphicEntity : getListOfStaticEntities()) {
+            if (staticGraphicEntity.getCollision().isColliding(collisionCoordinates)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

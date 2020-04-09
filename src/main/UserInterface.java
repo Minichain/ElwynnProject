@@ -92,9 +92,7 @@ public class UserInterface {
         FloatingText.renderAndUpdate(timeElapsed);
 
         /** HUD **/
-        if (true) {
-            HeadUpDisplay.render(timeElapsed);
-        }
+        HeadUpDisplay.render(timeElapsed);
 
         /** MENU **/
         if (Menu.getInstance().isShowing()) {
