@@ -1,8 +1,6 @@
 package listeners;
 
-import entities.Building;
-import entities.Player;
-import entities.Tree;
+import entities.*;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
@@ -119,14 +117,28 @@ public class InputListenerManager {
                 }
                 TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                int i = 2;
-                switch (InputListenerManager.getMouseWheelPosition() % i) {
+                switch (InputListenerManager.getMouseWheelPosition() % 7) {
                     case 0:
-                        new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                     case 1:
+                        new Tree02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 2:
+                        new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 3:
+                        new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 4:
+                        new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 5:
+                        new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 6:
                     default:
-                        new Building((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                 }
             }

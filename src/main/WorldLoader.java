@@ -1,8 +1,6 @@
 package main;
 
-import entities.Building;
-import entities.GraphicEntity;
-import entities.Tree;
+import entities.*;
 import scene.Scene;
 import scene.Tile;
 import scene.TileMap;
@@ -112,32 +110,32 @@ public class WorldLoader {
         /** ENTITIES DATA **/
         int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
         while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
-            if (fileData[i] == (byte) Tree.ENTITY_CODE) {
+            i++;
+            byte[] xCoordinate = new byte[Double.BYTES];
+            for (int j = 0; j < Double.BYTES; j++) {
+                xCoordinate[j] = fileData[i];
                 i++;
-                byte[] xCoordinate = new byte[Double.BYTES];
-                for (int j = 0; j < Double.BYTES; j++) {
-                    xCoordinate[j] = fileData[i];
-                    i++;
-                }
-                byte[] yCoordinate = new byte[Double.BYTES];
-                for (int j = 0; j < Double.BYTES; j++) {
-                    yCoordinate[j] = fileData[i];
-                    i++;
-                }
-                new Tree((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Building.ENTITY_CODE) {
+            }
+            byte[] yCoordinate = new byte[Double.BYTES];
+            for (int j = 0; j < Double.BYTES; j++) {
+                yCoordinate[j] = fileData[i];
                 i++;
-                byte[] xCoordinate = new byte[Double.BYTES];
-                for (int j = 0; j < Double.BYTES; j++) {
-                    xCoordinate[j] = fileData[i];
-                    i++;
-                }
-                byte[] yCoordinate = new byte[Double.BYTES];
-                for (int j = 0; j < Double.BYTES; j++) {
-                    yCoordinate[j] = fileData[i];
-                    i++;
-                }
-                new Building((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            }
+
+            if (fileData[i] == (byte) Tree01.ENTITY_CODE) {
+                new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Tree02.ENTITY_CODE) {
+                new Tree02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Tree03.ENTITY_CODE) {
+                new Tree03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Fence01.ENTITY_CODE) {
+                new Fence01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Fence02.ENTITY_CODE) {
+                new Fence02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Fence03.ENTITY_CODE) {
+                new Fence03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (fileData[i] == (byte) Building01.ENTITY_CODE) {
+                new Building01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             }
         }
 

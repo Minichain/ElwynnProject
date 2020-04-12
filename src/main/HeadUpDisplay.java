@@ -80,13 +80,33 @@ public class HeadUpDisplay {
                     Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                     Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
                     Sprite sprite;
-                    sprite = InputListenerManager.getMouseWheelPosition() % 2 == 0 ? SpriteManager.getInstance().TREE : SpriteManager.getInstance().BUILDING;
+                    switch (InputListenerManager.getMouseWheelPosition() % 7) {
+                        case 0:
+                            sprite = SpriteManager.getInstance().TREE01;
+                            break;
+                        case 1:
+                            sprite = SpriteManager.getInstance().TREE02;
+                            break;
+                        case 2:
+                            sprite = SpriteManager.getInstance().TREE03;
+                            break;
+                        case 3:
+                            sprite = SpriteManager.getInstance().BUILDING01;
+                            break;
+                        case 4:
+                            sprite = SpriteManager.getInstance().FENCE01;
+                            break;
+                        case 5:
+                            sprite = SpriteManager.getInstance().FENCE02;
+                            break;
+                        case 6:
+                        default:
+                            sprite = SpriteManager.getInstance().FENCE03;
+                            break;
+                    }
                     sprite.draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
                 }
             }
-
-
-
         }
 
         /** YOU DIED **/

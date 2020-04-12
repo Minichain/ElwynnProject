@@ -151,7 +151,7 @@ public class PathFindingAlgorithm {
 
             int G, H, F;
             if (collidableNodes[i][j]
-                    || Scene.getInstance().checkCollisionWithEntities(Coordinates.tileCoordinatesToWorldCoordinates(i - initialNode[0] + (int) initialTileCoordinates.x, j - initialNode[1] + (int) initialTileCoordinates.y))) {
+                    || Scene.getInstance().checkCollisionWithEntities(Coordinates.tileCoordinatesToWorldCoordinates(xNodeToTileCoordinate(i), yNodeToTileCoordinate(j)))) {
                 F = -1;
             } else {
                 G = (int) (Math.sqrt(Math.pow(i - initialNode[0], 2.0) + Math.pow(j - initialNode[1], 2.0)) * 10.0);
@@ -177,10 +177,22 @@ public class PathFindingAlgorithm {
         int[] parentNode = this.parentNode[parent[0]][parent[1]];
         if (parent[0] != parentNode[0] || parent[1] != parentNode[1]) {
             int[] newPath = new int[2];
-            newPath[0] = parent[0] - initialNode[0] + (int) initialTileCoordinates.x;
-            newPath[1] = parent[1] - initialNode[1] + (int) initialTileCoordinates.y;
+            newPath[0] = xNodeToTileCoordinate(parent[0]);
+            newPath[1] = yNodeToTileCoordinate(parent[1]);
             path.add(newPath);
             findStep(parentNode);
         }
+    }
+
+    private int[] nodeToTileCoordinates(int i, int j) {
+        return new int[]{xNodeToTileCoordinate(i), yNodeToTileCoordinate(j)};
+    }
+
+    private int xNodeToTileCoordinate(int i) {
+        return i - initialNode[0] + (int) initialTileCoordinates.x;
+    }
+
+    private int yNodeToTileCoordinate(int j) {
+        return j - initialNode[1] + (int) initialTileCoordinates.y;
     }
 }
