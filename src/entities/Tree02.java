@@ -5,7 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Tree02 extends StaticGraphicEntity {
-    public static int ENTITY_CODE = 12;
+    public static byte ENTITY_CODE = 12;
 
     public Tree02(int x, int y) {
         super(x, y);
@@ -31,7 +31,7 @@ public class Tree02 extends StaticGraphicEntity {
     }
 
     @Override
-    public int getEntityCode() {
+    public byte getEntityCode() {
         return ENTITY_CODE;
     }
 }

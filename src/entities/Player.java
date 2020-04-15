@@ -11,6 +11,7 @@ import main.*;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends DynamicGraphicEntity {
+    public static byte ENTITY_CODE = 41;
     private static Player instance = null;
     private static Status playerStatus;
     private static Utils.DirectionFacing directionFacing;
@@ -83,8 +84,8 @@ public class Player extends DynamicGraphicEntity {
     }
 
     @Override
-    public int getEntityCode() {
-        return 0;
+    public byte getEntityCode() {
+        return ENTITY_CODE;
     }
 
     @Override

@@ -10,6 +10,7 @@ import utils.Utils;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends DynamicGraphicEntity {
+    public static byte ENTITY_CODE = 51;
     private Utils.DirectionFacing directionFacing;
     private Status status;
 
@@ -64,8 +65,8 @@ public class Enemy extends DynamicGraphicEntity {
     }
 
     @Override
-    public int getEntityCode() {
-        return 0;
+    public byte getEntityCode() {
+        return ENTITY_CODE;
     }
 
     @Override

@@ -43,7 +43,8 @@ public class WorldLoader {
         /** ENTITIES DATA **/
         for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
-            data[dataIterator] = (byte) graphicEntity.getEntityCode();
+            data[dataIterator] = graphicEntity.getEntityCode();
+            System.out.println("Loading Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
             dataIterator++;
             byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
             for (int j = 0; j < xCoordinate.length; j++) {
@@ -108,35 +109,37 @@ public class WorldLoader {
         }
 
         /** ENTITIES DATA **/
-        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
-        while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
-            i++;
+        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1) - 17 + 1;
+        while (i < fileData.length - (Double.BYTES * 2 + 1)) {
             byte[] xCoordinate = new byte[Double.BYTES];
             for (int j = 0; j < Double.BYTES; j++) {
-                xCoordinate[j] = fileData[i];
+                xCoordinate[j] = fileData[i + 17];
                 i++;
             }
             byte[] yCoordinate = new byte[Double.BYTES];
             for (int j = 0; j < Double.BYTES; j++) {
-                yCoordinate[j] = fileData[i];
+                yCoordinate[j] = fileData[i + 17];
                 i++;
             }
 
-            if (fileData[i] == (byte) Tree01.ENTITY_CODE) {
+            byte entityCode = fileData[i];
+            System.out.println("Loading Entity "+ i + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
+            if (entityCode == Tree01.ENTITY_CODE) {
                 new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Tree02.ENTITY_CODE) {
+            } else if (entityCode == Tree02.ENTITY_CODE) {
                 new Tree02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Tree03.ENTITY_CODE) {
+            } else if (entityCode == Tree03.ENTITY_CODE) {
                 new Tree03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Fence01.ENTITY_CODE) {
+            } else if (entityCode == Fence01.ENTITY_CODE) {
                 new Fence01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Fence02.ENTITY_CODE) {
+            } else if (entityCode == Fence02.ENTITY_CODE) {
                 new Fence02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Fence03.ENTITY_CODE) {
+            } else if (entityCode == Fence03.ENTITY_CODE) {
                 new Fence03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (fileData[i] == (byte) Building01.ENTITY_CODE) {
+            } else if (entityCode == Building01.ENTITY_CODE) {
                 new Building01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             }
+            i++;
         }
 
         return arrayOfTiles;

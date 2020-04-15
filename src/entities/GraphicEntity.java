@@ -56,10 +56,15 @@ public abstract class GraphicEntity extends Entity {
     @Override
     public void updateCoordinates() {
         super.updateCoordinates();
-        centerOfMassWorldCoordinates = new Coordinates(getWorldCoordinates().x + (double) Player.getInstance().getSprite().SPRITE_WIDTH / 2.0,
-                getWorldCoordinates().y - (double) Player.getInstance().getSprite().SPRITE_HEIGHT / 2.0);
+        centerOfMassWorldCoordinates = new Coordinates(getWorldCoordinates().x + (double) getSprite().SPRITE_WIDTH / 2.0,
+                getWorldCoordinates().y - (double) getSprite().SPRITE_HEIGHT / 2.0);
         centerOfMassCameraCoordinates = centerOfMassWorldCoordinates.toCameraCoordinates();
     }
 
-    public abstract int getEntityCode();
+    public abstract byte getEntityCode();
+
+    public boolean isOverEntity(Coordinates coordinates) {
+        return (Math.abs(coordinates.x - centerOfMassWorldCoordinates.x) <= (getSprite().SPRITE_WIDTH / 2))
+                && (Math.abs(coordinates.y - centerOfMassWorldCoordinates.y) <= (getSprite().SPRITE_HEIGHT / 2));
+    }
 }

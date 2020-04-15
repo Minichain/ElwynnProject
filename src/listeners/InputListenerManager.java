@@ -153,9 +153,22 @@ public class InputListenerManager {
         rightMouseButtonPressed = true;
         if (!Menu.getInstance().isShowing() ) {
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                // Change Tile's collision behaviour
-                Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                TileMap.getArrayOfTiles()[(int) tileCoordinates.x][(int) tileCoordinates.y].changeCollisionBehaviour();
+                if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                    // Change Tile's collision behaviour
+                    Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
+                    TileMap.getArrayOfTiles()[(int) tileCoordinates.x][(int) tileCoordinates.y].changeCollisionBehaviour();
+                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                    for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
+                        GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
+                        if (graphicEntity.isOverEntity(getMouseWorldCoordinates())) {
+                            /** DELETE ENTITY **/
+                            System.out.println("Deleting entity!");
+                            Scene.getInstance().getListOfStaticEntities().remove(graphicEntity);
+                            Scene.getInstance().getListOfEntities().remove(graphicEntity);
+                            break;
+                        }
+                    }
+                }
             }
         }
     }
