@@ -109,21 +109,23 @@ public class WorldLoader {
         }
 
         /** ENTITIES DATA **/
-        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1) - 17 + 1;
-        while (i < fileData.length - (Double.BYTES * 2 + 1)) {
+        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
+        while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
+            byte entityCode = fileData[i];
+
             byte[] xCoordinate = new byte[Double.BYTES];
             for (int j = 0; j < Double.BYTES; j++) {
-                xCoordinate[j] = fileData[i + 17];
                 i++;
+                xCoordinate[j] = fileData[i];
             }
             byte[] yCoordinate = new byte[Double.BYTES];
             for (int j = 0; j < Double.BYTES; j++) {
-                yCoordinate[j] = fileData[i + 17];
                 i++;
+                yCoordinate[j] = fileData[i];
             }
 
-            byte entityCode = fileData[i];
-            System.out.println("Loading Entity "+ i + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
+            System.out.println("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
+
             if (entityCode == Tree01.ENTITY_CODE) {
                 new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Tree02.ENTITY_CODE) {
