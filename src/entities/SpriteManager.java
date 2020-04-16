@@ -12,6 +12,7 @@ public class SpriteManager {
     public Sprite TREE02;
     public Sprite TREE03;
     public Sprite BUILDING01;
+    public Sprite BUILDING02;
     public Sprite FENCE01;
     public Sprite FENCE02;
     public Sprite FENCE03;
@@ -31,6 +32,7 @@ public class SpriteManager {
 
         /** BUILDINGS **/
         BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
+        BUILDING02 = new Sprite("res/sprites/static/building02.png", 96, 80, -1, -1, -1, -1, -1);
 
         /** FENCES **/
         FENCE01 = new Sprite("res/sprites/static/fence01.png", 16, 16, -1, -1, -1, -1, -1);
@@ -48,7 +50,7 @@ public class SpriteManager {
         return instance;
     }
 
-    private static int numOfStaticEntitySprites = 7;
+    public static int numOfStaticEntitySprites = 8;
 
     public static Sprite getStaticEntitySprite(int i) {
         Sprite sprite;
@@ -66,12 +68,15 @@ public class SpriteManager {
                 sprite = SpriteManager.getInstance().BUILDING01;
                 break;
             case 4:
-                sprite = SpriteManager.getInstance().FENCE01;
+                sprite = SpriteManager.getInstance().BUILDING02;
                 break;
             case 5:
-                sprite = SpriteManager.getInstance().FENCE02;
+                sprite = SpriteManager.getInstance().FENCE01;
                 break;
             case 6:
+                sprite = SpriteManager.getInstance().FENCE02;
+                break;
+            case 7:
             default:
                 sprite = SpriteManager.getInstance().FENCE03;
                 break;

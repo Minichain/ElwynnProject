@@ -117,7 +117,7 @@ public class InputListenerManager {
                 }
                 TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                switch (InputListenerManager.getMouseWheelPosition() % 7) {
+                switch (InputListenerManager.getMouseWheelPosition() % SpriteManager.numOfStaticEntitySprites) {
                     case 0:
                         new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
@@ -131,12 +131,15 @@ public class InputListenerManager {
                         new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                     case 4:
-                        new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                     case 5:
-                        new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                     case 6:
+                        new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 7:
                     default:
                         new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
