@@ -47,4 +47,35 @@ public class SpriteManager {
         }
         return instance;
     }
+
+    private static int numOfStaticEntitySprites = 7;
+
+    public static Sprite getStaticEntitySprite(int i) {
+        Sprite sprite;
+        switch (i % numOfStaticEntitySprites) {
+            case 0:
+                sprite = SpriteManager.getInstance().TREE01;
+                break;
+            case 1:
+                sprite = SpriteManager.getInstance().TREE02;
+                break;
+            case 2:
+                sprite = SpriteManager.getInstance().TREE03;
+                break;
+            case 3:
+                sprite = SpriteManager.getInstance().BUILDING01;
+                break;
+            case 4:
+                sprite = SpriteManager.getInstance().FENCE01;
+                break;
+            case 5:
+                sprite = SpriteManager.getInstance().FENCE02;
+                break;
+            case 6:
+            default:
+                sprite = SpriteManager.getInstance().FENCE03;
+                break;
+        }
+        return sprite;
+    }
 }

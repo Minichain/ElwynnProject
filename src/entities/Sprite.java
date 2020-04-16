@@ -50,6 +50,10 @@ public class Sprite {
     }
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency) {
+        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, Camera.getZoom());
+    }
+
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency, double scale) {
         spriteSheet.bind();
         glEnable(GL_TEXTURE_2D);
 
@@ -60,7 +64,6 @@ public class Sprite {
         double v = 1.0 - ((1.0 / height) * spriteCoordinateFromSpriteSheetY);
         double u2 = u + (1.0 / width);
         double v2 = v - (1.0 / height);
-        double scale = Camera.getZoom();
 
         OpenGLManager.glBegin(GL_QUADS);
         y -= (int) (SPRITE_HEIGHT * scale);

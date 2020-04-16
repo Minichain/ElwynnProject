@@ -1,7 +1,6 @@
 package main;
 
 import entities.Player;
-import entities.Sprite;
 import entities.SpriteManager;
 import scene.TileMap;
 import enums.Resolution;
@@ -43,28 +42,42 @@ public class HeadUpDisplay {
             glEnd();
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
-            int previousTilesToShow = 5;
-            int currentTile;
-            int x;
-            int y;
 
-            TileMap.bindTileSetTexture();
-            glEnable(GL_TEXTURE_2D);
-            OpenGLManager.glBegin(GL_QUADS);
-            for (int i = 0; i < 25; i++) {
-                currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
-                x = (int) (20f * relativeWidth + i * 128f * relativeWidth);
-                y = (int) (Parameters.getResolutionHeight() - 100f * relativeHeight);
-                if (currentTile == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
-                    TileMap.drawTile(currentTile, x + 5, y + 5, 5 * relativeWidth, 0f, 0f, 0f, true);
-                    TileMap.drawTile(currentTile, x, y, 5 * relativeWidth, 1f, 1f, 1f, true);
-                } else {
-                    TileMap.drawTile(currentTile, x + 5, y + 5, 4 * relativeWidth, 0f, 0f, 0f, true);
-                    TileMap.drawTile(currentTile, x, y, 4 * relativeWidth, 0.5f, 0.5f, 0.5f, true);
+            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                int previousTilesToShow = 5, currentTile, x, y;
+
+                TileMap.bindTileSetTexture();
+                glEnable(GL_TEXTURE_2D);
+                OpenGLManager.glBegin(GL_QUADS);
+                for (int i = 0; i < 25; i++) {
+                    currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
+                    x = (int) (20f * relativeWidth + i * 128f * relativeWidth);
+                    y = (int) (Parameters.getResolutionHeight() - 100f * relativeHeight);
+                    if (currentTile == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                        TileMap.drawTile(currentTile, x + 5, y + 5, 5 * relativeWidth, 0f, 0f, 0f, true);
+                        TileMap.drawTile(currentTile, x, y, 5 * relativeWidth, 1f, 1f, 1f, true);
+                    } else {
+                        TileMap.drawTile(currentTile, x + 5, y + 5, 4 * relativeWidth, 0f, 0f, 0f, true);
+                        TileMap.drawTile(currentTile, x, y, 4 * relativeWidth, 0.5f, 0.5f, 0.5f, true);
+                    }
+                }
+                glEnd();
+            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                int previousEntitiesToShow = 5, currentEntity, x, y;
+
+                for (int i = 0; i < 25; i++) {
+                    currentEntity = InputListenerManager.getMouseWheelPosition() + i - previousEntitiesToShow;
+                    x = (int) (20f * relativeWidth + i * 128f * relativeWidth);
+                    y = (int) (Parameters.getResolutionHeight() - 100f * relativeHeight);
+                    if (currentEntity == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.7, 2.0);
+                    } else {
+                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.5, 1.5);
+                    }
                 }
             }
-            glEnd();
 
+            /** MOUSE HUD **/
             double mouseX = InputListenerManager.getMouseCameraCoordinates().x;
             double mouseY = InputListenerManager.getMouseCameraCoordinates().y;
             if (0 < mouseX && mouseX < Parameters.getResolutionWidth()
@@ -79,32 +92,7 @@ public class HeadUpDisplay {
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                     Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                     Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
-                    Sprite sprite;
-                    switch (InputListenerManager.getMouseWheelPosition() % 7) {
-                        case 0:
-                            sprite = SpriteManager.getInstance().TREE01;
-                            break;
-                        case 1:
-                            sprite = SpriteManager.getInstance().TREE02;
-                            break;
-                        case 2:
-                            sprite = SpriteManager.getInstance().TREE03;
-                            break;
-                        case 3:
-                            sprite = SpriteManager.getInstance().BUILDING01;
-                            break;
-                        case 4:
-                            sprite = SpriteManager.getInstance().FENCE01;
-                            break;
-                        case 5:
-                            sprite = SpriteManager.getInstance().FENCE02;
-                            break;
-                        case 6:
-                        default:
-                            sprite = SpriteManager.getInstance().FENCE03;
-                            break;
-                    }
-                    sprite.draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
+                    SpriteManager.getStaticEntitySprite(InputListenerManager.getMouseWheelPosition()).draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
                 }
             }
         }
