@@ -1,5 +1,6 @@
 package entities;
 
+import audio.OpenALManager;
 import main.*;
 import scene.Camera;
 import scene.Scene;
@@ -36,7 +37,7 @@ public class Enemy extends DynamicGraphicEntity {
     private int computePathCoolDown = 0;
 
     public enum Status {
-        IDLE, RUNNING, JUMPING, DYING, DEAD;
+        IDLE, RUNNING, ROLLING, DYING, DEAD;
     }
 
     public Enemy(int x, int y) {
@@ -72,33 +73,45 @@ public class Enemy extends DynamicGraphicEntity {
     @Override
     public void update(long timeElapsed) {
         setPreviousWorldCoordinates(getWorldCoordinates());
-        if (health > 0) {
-            status = Status.IDLE;
+
+        if (health > 0) {   //Enemy is alive
             distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
             attacking = distanceToPlayer < coneAttackLength && Player.getInstance().getStatus() != Player.Status.DEAD;
 
-            double[] movement = computeMovementVector(timeElapsed, speed);
+            movementVector = computeMovementVector(timeElapsed);
             attack(timeElapsed);
 
-            double distanceFactor = 4;
-            boolean horizontalCollision = checkHorizontalCollision(movement, distanceFactor);
-            boolean verticalCollision = checkVerticalCollision(movement, distanceFactor);
+            /** CHECK COLLISIONS **/
+            double distanceFactor = timeElapsed / 32.0;
+            boolean horizontalCollision = checkHorizontalCollision(movementVector, distanceFactor);
+            boolean verticalCollision = checkVerticalCollision(movementVector, distanceFactor);
+
+            /** MOVE ENTITY **/
+            double speed = 0.0;
+            if (attacking) {
+                speed = this.speed * 0.5;
+            } else if (status == Status.RUNNING) {
+                speed = this.speed;
+            } else if (status == Status.ROLLING) {
+                speed = this.speed * 1.5;
+            }
+
             if (!horizontalCollision) {
-                getWorldCoordinates().x += movement[0];
+                getWorldCoordinates().x += movementVector[0] * speed;
             }
             if (!verticalCollision) {
-                getWorldCoordinates().y += movement[1];
+                getWorldCoordinates().y += movementVector[1] * speed;
             }
 
-            displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};
-
-            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If Player is moving
-                directionFacing = Utils.checkDirectionFacing(displacementVector);
-                status = Status.RUNNING;
+            /** WHERE IS IT FACING? **/
+            facingVector = null;
+            if (movementVector[0] != 0 || movementVector[1] != 0) {
+                directionFacing = Utils.checkDirectionFacing(movementVector);
             }
-        } else if (status != Status.DEAD) {
+        } else if (status != Status.DEAD) {   //Enemy is dying
+            OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             status = Status.DYING;
-        } else {
+        } else {    //Enemy is dead
             attacking = false;
         }
 
@@ -109,7 +122,7 @@ public class Enemy extends DynamicGraphicEntity {
             case RUNNING:
                 setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().RUNNING_FRAMES);
                 break;
-            case JUMPING:
+            case ROLLING:
                 break;
             case DYING:
                 double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
@@ -141,7 +154,7 @@ public class Enemy extends DynamicGraphicEntity {
         return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
     }
 
-    public double[] computeMovementVector(long timeElapsed, double speed) {
+    public double[] computeMovementVector(long timeElapsed) {
         boolean chasing = status != Status.DYING && status != Status.DEAD && distanceToPlayer > 25 && distanceToPlayer < 2000;
 
         if (!chasing) {
@@ -149,6 +162,7 @@ public class Enemy extends DynamicGraphicEntity {
         }
 
         double[] movement = new double[2];
+        status = Status.RUNNING;
 
         if (useDijkstraAlgorithm) {
             if (computePathCoolDown <= 0) {
@@ -168,12 +182,8 @@ public class Enemy extends DynamicGraphicEntity {
 
         movement = MathUtils.normalizeVector(movement);
 
-        if (attacking) {
-            speed *= 0.5;
-        }
-
-        movement[0] *= timeElapsed * speed;
-        movement[1] *= timeElapsed * speed;
+        movement[0] *= timeElapsed;
+        movement[1] *= timeElapsed;
 
         return movement;
     }

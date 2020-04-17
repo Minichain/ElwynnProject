@@ -8,13 +8,13 @@ public abstract class DynamicGraphicEntity extends GraphicEntity {
     /** Variables **/
     public float health;
     public double speed;
-    public double[] displacementVector;
+    public double[] movementVector;
     public double[] facingVector;
 
     public DynamicGraphicEntity(int x, int y, int prevX, int prevY) {
         super(x, y);
         previousWorldCoordinates = new Coordinates(prevX, prevY);
-        displacementVector = new double[2];
+        movementVector = new double[2];
     }
 
     public Coordinates getPreviousWorldCoordinates() {

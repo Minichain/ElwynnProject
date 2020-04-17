@@ -91,10 +91,9 @@ public class Player extends DynamicGraphicEntity {
     @Override
     public void update(long timeElapsed) {
         setPreviousWorldCoordinates(getWorldCoordinates());
-        if (health > 0)  {
-            if (playerStatus != Status.ROLLING) {
-                playerStatus = Status.IDLE;
-            }
+
+        if (health > 0)  {  //Player is alive
+            /** UPDATE MANA, HEALTH AND STAMINA **/
             if (mana < MAX_MANA) {
                 mana += (MANA_REGENERATION * timeElapsed);
             } else if (mana > MAX_MANA) {
@@ -111,47 +110,52 @@ public class Player extends DynamicGraphicEntity {
                 stamina = MAX_STAMINA;
             }
 
+            /** UPDATE ATTACKS **/
             attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && InputListenerManager.leftMouseButtonPressed);
             attack(timeElapsed);
 
-            double[] movement = new double[]{0, 0};
+            /** UPDATE MOVEMENT VECTOR **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 if (playerStatus != Status.ROLLING) {
-                    movement = computeMovementVector(timeElapsed, speed);
-                } else {
-                    movement = displacementVector;
+                    movementVector = computeMovementVector(timeElapsed);
                 }
             }
 
-            double distanceFactor = 4;
-            boolean horizontalCollision = checkHorizontalCollision(movement, distanceFactor);
-            boolean verticalCollision = checkVerticalCollision(movement, distanceFactor);
-            if (!horizontalCollision) {
-                getWorldCoordinates().x += movement[0];
-            }
-            if (!verticalCollision) {
-                getWorldCoordinates().y += movement[1];
+            /** CHECK COLLISIONS **/
+            double distanceFactor = timeElapsed / 32.0;
+            boolean horizontalCollision = checkHorizontalCollision(movementVector, distanceFactor);
+            boolean verticalCollision = checkVerticalCollision(movementVector, distanceFactor);
+
+            /** MOVE ENTITY **/
+            double speed = 0.0;
+            if (attacking) {
+                speed = this.speed * 0.5;
+            } else if (playerStatus == Status.RUNNING) {
+                speed = this.speed;
+            } else if (playerStatus == Status.ROLLING) {
+                speed = this.speed * 1.5;
             }
 
-            displacementVector = new double[]{getWorldCoordinates().x - getPreviousWorldCoordinates().x, getWorldCoordinates().y - getPreviousWorldCoordinates().y};
+            if (!horizontalCollision) {
+                getWorldCoordinates().x += movementVector[0] * speed;
+            }
+            if (!verticalCollision) {
+                getWorldCoordinates().y += movementVector[1] * speed;
+            }
+
+            /** WHERE IS IT FACING? **/
             facingVector = null;
             if (attacking) {
                 facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCameraCoordinates().x,
                         InputListenerManager.getMouseCameraCoordinates().y - getCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
-            } else if (displacementVector[0] != 0 || displacementVector[1] != 0) {
-                directionFacing = Utils.checkDirectionFacing(displacementVector);
+            } else if (movementVector[0] != 0 || movementVector[1] != 0) {
+                directionFacing = Utils.checkDirectionFacing(movementVector);
             }
-
-            if (displacementVector[0] != 0 || displacementVector[1] != 0) { //If player is moving
-                if (playerStatus != Status.ROLLING) {
-                    playerStatus = Status.RUNNING;
-                }
-            }
-        } else if (playerStatus != Status.DEAD && playerStatus != Status.DYING) {
+        } else if (playerStatus != Status.DEAD) {   //Player is dying
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             playerStatus = Status.DYING;
-        } else {
+        } else {    //Player is dead
             attacking = false;
         }
 
@@ -202,27 +206,35 @@ public class Player extends DynamicGraphicEntity {
         return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
     }
 
-    public double[] computeMovementVector(long timeElapsed, double speed) {
+    public double[] computeMovementVector(long timeElapsed) {
         double[] movement = new double[2];
+        boolean playerMoving = false;
         if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
+            playerMoving = true;
             movement[1] = 1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
+            playerMoving = true;
             movement[0] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
+            playerMoving = true;
             movement[1] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
+            playerMoving = true;
             movement[0] = 1;
         }
 
-        movement = MathUtils.normalizeVector(movement);
-        if (attacking) {
-            speed *= 0.5;
+        if (playerMoving) {
+            playerStatus = Status.RUNNING;
+        } else {
+            playerStatus = Status.IDLE;
         }
-        movement[0] *= timeElapsed * speed;
-        movement[1] *= timeElapsed * speed;
+
+        movement = MathUtils.normalizeVector(movement);
+        movement[0] *= timeElapsed;
+        movement[1] *= timeElapsed;
 
         return movement;
     }

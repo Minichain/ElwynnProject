@@ -12,7 +12,7 @@ public class Parameters {
     private static Resolution resolution = Resolution.RESOLUTION_1600_900;
 
     /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.3f;
+    private static float musicSoundLevel = 0.0f;
     private static float effectSoundLevel = 0.3f;
     private static float ambienceSoundLevel = 0.3f;
 

@@ -7,9 +7,9 @@ public class Utils {
         LEFT, RIGHT, UP, DOWN;
     }
 
-    public static DirectionFacing checkDirectionFacing(double[] displacementVector) {
-        displacementVector = MathUtils.normalizeVector(displacementVector);
-        return checkDirectionFacing(displacementVector[0], displacementVector[1]);
+    public static DirectionFacing checkDirectionFacing(double[] movementVector) {
+        movementVector = MathUtils.normalizeVector(movementVector);
+        return checkDirectionFacing(movementVector[0], movementVector[1]);
     }
 
     public static DirectionFacing checkDirectionFacing(double x, double y) {
