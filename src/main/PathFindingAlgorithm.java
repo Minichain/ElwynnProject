@@ -64,7 +64,10 @@ public class PathFindingAlgorithm {
 
         for (int i = 0; i < collidableNodes.length; i++) {
             for (int j = 0; j < collidableNodes[i].length; j++) {
-                collidableNodes[i][j] = TileMap.getArrayOfTiles()[toTileMapCoordinates[0] + i][toTileMapCoordinates[1] + j].isCollidable();
+                if (0 < (toTileMapCoordinates[0] + i) && (toTileMapCoordinates[0] + i) < collidableNodes.length
+                        && 0 < (toTileMapCoordinates[1] + j) && (toTileMapCoordinates[1] + j) < collidableNodes[0].length) {
+                    collidableNodes[i][j] = TileMap.getArrayOfTiles()[toTileMapCoordinates[0] + i][toTileMapCoordinates[1] + j].isCollidable();
+                }
             }
         }
 
@@ -137,6 +140,7 @@ public class PathFindingAlgorithm {
         }
     }
 
+    //FIXME sometimes it gets stuck in this method
     private int computeNodeCost(int i, int j, int[] parentNode) {
         if (i >= 0 && i < tilesInXAxis
                 && j >= 0 && j < tilesInYAxis

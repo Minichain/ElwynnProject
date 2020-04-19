@@ -140,8 +140,11 @@ public class InputListenerManager {
                         new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                     case 7:
-                    default:
                         new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                        break;
+                    case 8:
+                    default:
+                        new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
                 }
             }

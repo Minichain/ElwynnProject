@@ -22,7 +22,8 @@ public class Player extends DynamicGraphicEntity {
     public static float MANA_REGENERATION = 0.0003f;
     private float mana = 100f;
     public static float MAX_STAMINA = 100f;
-    public static float STAMINA_REGENERATION = 0.01f;
+    public static float STAMINA_REGENERATION = 0.018f;
+    public static float STAMINA_REGENERATION_WHEN_ATTACKING = 0.009f;
     private float stamina = 100f;
 
     /** ATTACK **/
@@ -105,7 +106,11 @@ public class Player extends DynamicGraphicEntity {
                 health = MAX_HEALTH;
             }
             if (stamina < MAX_STAMINA) {
-                stamina += (STAMINA_REGENERATION * timeElapsed);
+                if (attacking) {
+                    stamina += (STAMINA_REGENERATION_WHEN_ATTACKING * timeElapsed);
+                } else {
+                    stamina += (STAMINA_REGENERATION * timeElapsed);
+                }
             } else if (stamina > MAX_STAMINA) {
                 stamina = MAX_STAMINA;
             }
