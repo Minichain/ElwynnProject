@@ -116,7 +116,7 @@ public class Player extends DynamicGraphicEntity {
             }
 
             /** UPDATE ATTACKS **/
-            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && InputListenerManager.leftMouseButtonPressed);
+            attacking = (GameMode.getGameMode() == GameMode.Mode.NORMAL && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0f));
             attack(timeElapsed);
 
             /** UPDATE MOVEMENT VECTOR **/
@@ -215,20 +215,23 @@ public class Player extends DynamicGraphicEntity {
         double[] movement = new double[2];
         boolean playerMoving = false;
         if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
-            playerMoving = true;
             movement[1] = 1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
-            playerMoving = true;
             movement[0] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
-            playerMoving = true;
             movement[1] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
-            playerMoving = true;
             movement[0] = 1;
+        }
+
+        movement[0] += (double) InputListenerManager.getLeftJoystickAxes()[0];
+        movement[1] += (double) InputListenerManager.getLeftJoystickAxes()[1];
+
+        if (Math.abs(movement[0]) > 0 || Math.abs(movement[1]) > 0) {
+            playerMoving = true;
         }
 
         if (playerMoving) {
@@ -293,10 +296,18 @@ public class Player extends DynamicGraphicEntity {
         return playerStatus;
     }
 
+    private double[] pointingVector = new double[]{1.0, 1.0};
+
     private void attack(long timeElapsed) {
         /** CONE ATTACK **/
-        double[] pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
-                InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
+        if (InputListenerManager.isUsingKeyboardAndMouse()) {
+            pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
+                    InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
+        } else {
+            if (InputListenerManager.getRightJoystickAxes()[0] != 0f || InputListenerManager.getRightJoystickAxes()[1] != 0) {
+                pointingVector = new double[]{(double) InputListenerManager.getRightJoystickAxes()[0], (double) InputListenerManager.getRightJoystickAxes()[1]};
+            }
+        }
 
         attacking = attacking && playerStatus != Player.Status.DEAD;
 

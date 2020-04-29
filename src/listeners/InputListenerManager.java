@@ -8,6 +8,9 @@ import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;
 
+import java.nio.ByteBuffer;
+import java.nio.FloatBuffer;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class InputListenerManager {
@@ -33,6 +36,11 @@ public class InputListenerManager {
     private static boolean S_KEY_PRESSED;
     private static boolean D_KEY_PRESSED;
 
+    private static boolean usingKeyboardAndMouse = false;
+
+    /**
+     * MOUSE AND KEYBOARD INPUT HANDLING
+     */
     public static void initMyInputListener() {
         long window = Window.getWindow();
 
@@ -99,6 +107,7 @@ public class InputListenerManager {
 
     private static void processLeftMouseButtonPressed() {
         leftMouseButtonPressed = true;
+        usingKeyboardAndMouse = true;
         if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                 Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
@@ -157,6 +166,7 @@ public class InputListenerManager {
 
     private static void processRightMouseButtonPressed() {
         rightMouseButtonPressed = true;
+        usingKeyboardAndMouse = true;
         if (!Menu.getInstance().isShowing() ) {
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
@@ -198,6 +208,8 @@ public class InputListenerManager {
     }
 
     private static void setKeyPressed(int key, boolean pressed) {
+//        System.out.println("setKeyPressed key: " + key + ", pressed: " + pressed);
+        usingKeyboardAndMouse = true;
         switch(key) {
             case GLFW_KEY_W:
                 W_KEY_PRESSED = pressed;
@@ -296,5 +308,170 @@ public class InputListenerManager {
 
     public static int getMouseWheelPosition() {
         return mouseWheelPosition;
+    }
+
+    /**
+     * XBOX CONTROLLER INPUT HANDLING
+     */
+    private static float[] leftJoystickAxes = new float[2];
+    private static float[] rightJoystickAxes = new float[2];
+    public static float joystickSensibility = 0.15f;
+
+    private static float leftTriggerValue = 0f;
+    private static float rightTriggerValue = 0f;
+    public static float triggersSensibility = - 0.95f;
+
+    public static boolean aButtonPressed = false;
+    public static boolean bButtonPressed = false;
+
+    public static void updateControllerInputs() {
+//        System.out.println("Controller plugged in: " + glfwGetJoystickName(GLFW_JOYSTICK_1));
+
+        FloatBuffer joystickAxes01 = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
+        if (joystickAxes01 != null) {
+            for(int i = 0; i < joystickAxes01.capacity(); i++) {
+                processJoystickAxesInput(i, joystickAxes01.get(i));
+            }
+        }
+
+        ByteBuffer joystickButtons01 = GLFW.glfwGetJoystickButtons(GLFW_JOYSTICK_1);
+        if (joystickAxes01 != null) {
+            for(int i = 0; i < joystickButtons01.capacity(); i++) {
+                processJoystickButtonInput(i, joystickButtons01.get(i) == 1);
+            }
+        }
+    }
+
+    public static float[] getLeftJoystickAxes() {
+        return leftJoystickAxes;
+    }
+
+    public static float[] getRightJoystickAxes() {
+        return rightJoystickAxes;
+    }
+
+    public static float getLeftTriggerValue() {
+        return leftTriggerValue;
+    }
+
+    public static float getRightTriggerValue() {
+        return rightTriggerValue;
+    }
+
+    public static void processJoystickAxesInput(int button, float value) {
+        switch (button) {
+            case 0:
+                if (Math.abs(value) > joystickSensibility) {
+//                    System.out.println("Left Stick, X axis, value: " + value);
+                    leftJoystickAxes[0] = value;
+                    usingKeyboardAndMouse = false;
+                } else {
+                    leftJoystickAxes[0] = 0f;
+                }
+                break;
+            case 1:
+                if (Math.abs(value) > joystickSensibility) {
+//                    System.out.println("Left Stick, Y axis, value: " + value);
+                    leftJoystickAxes[1] = value;
+                    usingKeyboardAndMouse = false;
+                } else {
+                    leftJoystickAxes[1] = 0f;
+                }
+                break;
+            case 2:
+                if (Math.abs(value) > joystickSensibility) {
+//                    System.out.println("Right Stick, X axis, value: " + value);
+                    rightJoystickAxes[0] = value;
+                    usingKeyboardAndMouse = false;
+                } else {
+                    rightJoystickAxes[0] = 0f;
+                }
+                break;
+            case 3:
+                if (Math.abs(value) > joystickSensibility) {
+//                    System.out.println("Right Stick, Y axis, value: " + value);
+                    rightJoystickAxes[1] = value;
+                    usingKeyboardAndMouse = false;
+                } else {
+                    rightJoystickAxes[1] = 0f;
+                }
+                break;
+            case 4:
+                if (value > triggersSensibility) {
+//                    System.out.println("Left Trigger, value: " + value);
+                    leftTriggerValue = value;
+                } else {
+                    leftTriggerValue = 0f;
+                }
+                break;
+            case 5:
+                if (value > triggersSensibility) {
+//                    System.out.println("Right Trigger, value: " + value);
+                    rightTriggerValue = value;
+                } else {
+                    rightTriggerValue = 0f;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static void processJoystickButtonInput(int button, boolean pressed) {
+        switch (button) {
+            case 0: //A
+                if (pressed && !aButtonPressed) {
+//                    System.out.println("A pressed!");
+                    aButtonPressed = true;
+                    usingKeyboardAndMouse = false;
+                } else if (!pressed && aButtonPressed) {
+//                    System.out.println("A released!");
+                    aButtonPressed = false;
+                }
+                break;
+            case 1: //B
+                if (pressed && !bButtonPressed) {
+//                    System.out.println("B pressed!");
+                    bButtonPressed = true;
+                    usingKeyboardAndMouse = false;
+                    if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                        Player.getInstance().roll();
+                    }
+                } else if (!pressed && bButtonPressed) {
+//                    System.out.println("B released!");
+                    bButtonPressed = false;
+                }
+                break;
+            case 2: //X
+                if (pressed) System.out.println("X pressed!");
+                break;
+            case 3: //Y
+                if (pressed) System.out.println("Y pressed!");
+                break;
+            case 4: //Left Shoulder
+                if (pressed) System.out.println("Left Shoulder pressed!");
+                break;
+            case 5: //Right Shoulder
+                if (pressed) System.out.println("Right Shoulder pressed!");
+                break;
+            case 6: //Back Button
+                if (pressed) System.out.println("Back Button pressed!");
+                break;
+            case 7: //Start Button
+                if (pressed) System.out.println("Start Button pressed!");
+                break;
+            case 8: //Left Sticker
+                if (pressed) System.out.println("Left Sticker pressed!");
+                break;
+            case 9: //Right Sticker
+                if (pressed) System.out.println("Right Sticker pressed!");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public static boolean isUsingKeyboardAndMouse() {
+        return usingKeyboardAndMouse;
     }
 }

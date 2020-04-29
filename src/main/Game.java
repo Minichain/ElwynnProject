@@ -16,6 +16,7 @@ public class Game {
 
     public static void update(long timeElapsed) {
         InputListenerManager.updateMouseWorldCoordinates();
+        InputListenerManager.updateControllerInputs();
         Camera.getInstance().update(timeElapsed);
         Scene.getInstance().update(timeElapsed);
     }
