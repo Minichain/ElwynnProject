@@ -7,7 +7,9 @@ public class SpriteManager {
 
     /** SPRITES **/
     public Sprite PLAYER;
-    public Sprite ENEMY;
+    public Sprite ENEMY01;
+    public Sprite ENEMY02;
+    public Sprite ENEMY03;
     public Sprite TREE01;
     public Sprite TREE02;
     public Sprite TREE03;
@@ -21,10 +23,12 @@ public class SpriteManager {
 
     public SpriteManager() {
         /** PLAYER **/
-        PLAYER = new Sprite("res/sprites/dynamic/player.png", 32, 32, 1, 8, 2, 1, 7);
+        PLAYER = new Sprite("res/sprites/dynamic/player01.png", 32, 32, 1, 8, 2, 1, 7);
 
         /** ENEMY **/
-        ENEMY = new Sprite("res/sprites/dynamic/enemy.png", 32, 32, 1, 8, 2, 1, -1);
+        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, -1);
+        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
+        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
 
         /** TREES **/
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);

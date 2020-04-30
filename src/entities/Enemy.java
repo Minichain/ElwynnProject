@@ -51,7 +51,20 @@ public class Enemy extends DynamicGraphicEntity {
         speed = Math.random() * 0.06 + 0.04;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
-        setSprite(SpriteManager.getInstance().ENEMY);
+        int numOfEnemyTypes = 3;
+        int randomEnemy = (int) (Math.random() * Integer.MAX_VALUE) % numOfEnemyTypes;
+        switch (randomEnemy) {
+            case 0:
+                setSprite(SpriteManager.getInstance().ENEMY01);
+                break;
+            case 1:
+                setSprite(SpriteManager.getInstance().ENEMY02);
+                break;
+            case 2:
+            default:
+                setSprite(SpriteManager.getInstance().ENEMY03);
+                break;
+        }
         Scene.getInstance().getListOfEntities().add(this);
     }
 
