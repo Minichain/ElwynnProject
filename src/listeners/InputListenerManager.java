@@ -263,13 +263,43 @@ public class InputListenerManager {
             case GLFW_KEY_F12:
                 break;
             case GLFW_KEY_1:
-                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.FIRST_LAYER);
+                if (pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setAttackMode(0);
+                            break;
+                        case CREATIVE:
+                        default:
+                            GameMode.setLayerEditing(GameMode.LayerEditing.FIRST_LAYER);
+                            break;
+                    }
+                }
                 break;
             case GLFW_KEY_2:
-                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.SECOND_LAYER);
+                if (pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setAttackMode(1);
+                            break;
+                        case CREATIVE:
+                        default:
+                            GameMode.setLayerEditing(GameMode.LayerEditing.SECOND_LAYER);
+                            break;
+                    }
+                }
                 break;
             case GLFW_KEY_3:
-                if (pressed) GameMode.setLayerEditing(GameMode.LayerEditing.THIRD_LAYER);
+                if (pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setAttackMode(2);
+                            break;
+                        case CREATIVE:
+                        default:
+                            GameMode.setLayerEditing(GameMode.LayerEditing.THIRD_LAYER);
+                            break;
+                    }
+                }
                 break;
             case GLFW_KEY_4:
                 break;

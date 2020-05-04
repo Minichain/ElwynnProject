@@ -40,6 +40,8 @@ public class Player extends DynamicGraphicEntity {
     private float circleAttackPower = 100f;
     private float circleAttackManaCost = 25f;
 
+    private AttackMode attackMode;
+
     public enum Status {
         IDLE, RUNNING, ROLLING, DYING, DEAD;
     }
@@ -63,6 +65,7 @@ public class Player extends DynamicGraphicEntity {
         speed = 0.125;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
+        attackMode = AttackMode.MODE_01;
         setSprite(SpriteManager.getInstance().PLAYER);
     }
 
@@ -314,14 +317,14 @@ public class Player extends DynamicGraphicEntity {
         if (coneAttack == null) {
             coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
         } else {
-            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, attackMode);
         }
 
         /** CIRCLE ATTACK **/
         if (InputListenerManager.rightMouseButtonPressed) {
             if (mana >= circleAttackManaCost && circleAttackCoolDown <= 0) {
                 circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
-                        100, 500, circleAttackPower, false, true);
+                        100, 500, circleAttackPower, false, true, attackMode);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
                 mana -= circleAttackManaCost;
@@ -355,6 +358,25 @@ public class Player extends DynamicGraphicEntity {
             playerStatus = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
             stamina -= 25f;
+        }
+    }
+
+    public AttackMode getAttackMode() {
+        return attackMode;
+    }
+
+    public void setAttackMode(int attackMode) {
+        switch (attackMode % AttackMode.numOfAttackModes) {
+            case 0:
+                this.attackMode = AttackMode.MODE_01;
+                break;
+            case 1:
+                this.attackMode = AttackMode.MODE_02;
+                break;
+            case 2:
+            default:
+                this.attackMode = AttackMode.MODE_03;
+                break;
         }
     }
 }

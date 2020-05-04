@@ -14,6 +14,9 @@ public class Enemy extends DynamicGraphicEntity {
     public static byte ENTITY_CODE = 51;
     private Utils.DirectionFacing directionFacing;
     private Status status;
+    public enum Status {
+        IDLE, RUNNING, ROLLING, DYING, DEAD;
+    }
 
     /** ATTACK **/
     private boolean attacking = false;
@@ -36,9 +39,13 @@ public class Enemy extends DynamicGraphicEntity {
     private int computePathPeriod = 600;
     private int computePathCoolDown = 0;
 
-    public enum Status {
-        IDLE, RUNNING, ROLLING, DYING, DEAD;
+    private Type type;
+    private final static int numOfEnemyTypes = 3;
+    public enum Type {
+        TYPE_01, TYPE_02, TYPE_03;
     }
+
+    AttackMode attackMode;
 
     public Enemy(int x, int y) {
         super(x, y, x, y);
@@ -51,17 +58,22 @@ public class Enemy extends DynamicGraphicEntity {
         speed = Math.random() * 0.06 + 0.04;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
-        int numOfEnemyTypes = 3;
-        int randomEnemy = (int) (Math.random() * Integer.MAX_VALUE) % numOfEnemyTypes;
-        switch (randomEnemy) {
+        int enemyType = (int) (Math.random() * Integer.MAX_VALUE) % numOfEnemyTypes;
+        switch (enemyType) {
             case 0:
+                type = Type.TYPE_01;
+                attackMode = AttackMode.MODE_01;
                 setSprite(SpriteManager.getInstance().ENEMY01);
                 break;
             case 1:
+                type = Type.TYPE_02;
+                attackMode = AttackMode.MODE_02;
                 setSprite(SpriteManager.getInstance().ENEMY02);
                 break;
             case 2:
             default:
+                type = Type.TYPE_03;
+                attackMode = AttackMode.MODE_03;
                 setSprite(SpriteManager.getInstance().ENEMY03);
                 break;
         }
@@ -253,13 +265,13 @@ public class Enemy extends DynamicGraphicEntity {
             coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0,
                     coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
         } else {
-            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking);
+            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, attackMode);
         }
 
         /** CIRCLE ATTACK **/
         if (circleAttackCoolDown <= 0) {
             circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
-                    50, 500, circleAttackPower, true, true);
+                    50, 500, circleAttackPower, true, true, attackMode);
             Scene.listOfCircleAttacks.add(circleAttack);
             circleAttackCoolDown = circleAttackPeriod;
         }
@@ -302,6 +314,34 @@ public class Enemy extends DynamicGraphicEntity {
 
             glEnd();
             glEnable(GL_TEXTURE_2D);
+        }
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public float getWeakness(AttackMode attackMode) {
+        switch (attackMode) {
+            case MODE_01:
+                if (type == Type.TYPE_01) {
+                    return 1f;
+                } else {
+                    return 0.2f;
+                }
+            case MODE_02:
+                if (type == Type.TYPE_02) {
+                    return 1f;
+                } else {
+                    return 0.2f;
+                }
+            case MODE_03:
+            default:
+                if (type == Type.TYPE_03) {
+                    return 1f;
+                } else {
+                    return 0.2f;
+                }
         }
     }
 }

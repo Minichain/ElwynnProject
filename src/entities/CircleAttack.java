@@ -26,14 +26,16 @@ public class CircleAttack {
     private boolean enemyAttack;
     private double timeLiving = 0;
     private double timeToLive = 5000;
+    private AttackMode attackMode;
 
-    public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking) {
+    public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking, AttackMode attackMode) {
         this.center = center;
         this.radius = radius;
         this.enemyAttack = enemyAttack;
         this.attackPeriod = attackPeriod;
         this.attackPower = attackPower;
         this.attackCoolDown = 0;
+        this.attackMode = attackMode;
         update(0, attacking);
     }
 
@@ -56,9 +58,10 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 0f, 0f);
+                    particle = new Particle(particleCoordinates, velocityVector, 4, 1f, 0f, 0f);
                 } else {
-                    particle = new Particle(particleCoordinates, velocityVector, (int) (4 * Camera.getZoom()), 1f, 1f, 1f);
+                    float[] color = attackMode.getColor();
+                    particle = new Particle(particleCoordinates, velocityVector, 4, color[0], color[1], color[2]);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }
@@ -78,6 +81,7 @@ public class CircleAttack {
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
+                    damage *= ((Enemy) entity).getWeakness(attackMode);
                     ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
                     OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
                     String text = String.valueOf((int) damage);
@@ -108,7 +112,8 @@ public class CircleAttack {
             if (enemyAttack) {
                 glColor4f(1.0f, 0f, 0f, 1.0f);
             } else {
-                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                float[] color = attackMode.getColor();
+                glColor4f(color[0], color[1], color[2], 1.0f);
             }
 
             /** CIRCLE OUTLINE **/
