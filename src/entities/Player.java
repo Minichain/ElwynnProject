@@ -46,6 +46,8 @@ public class Player extends DynamicGraphicEntity {
         IDLE, RUNNING, ROLLING, DYING, DEAD;
     }
 
+    boolean footstep = true;
+
     private Player() {
         super((int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y,
@@ -174,6 +176,16 @@ public class Player extends DynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
+                if (footstep && (int) frame % 4 == 0) {
+                    footstep = false;
+                    if (Math.random() < 0.5) {
+                        OpenALManager.playSound(OpenALManager.SOUND_FOOTSTEP_01);
+                    } else {
+                        OpenALManager.playSound(OpenALManager.SOUND_FOOTSTEP_02);
+                    }
+                } else if ((int) frame % 4 != 0) {
+                    footstep = true;
+                }
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
                 break;
             case ROLLING:
@@ -357,6 +369,7 @@ public class Player extends DynamicGraphicEntity {
         if (stamina >= 25f && playerStatus == Status.RUNNING && !attacking) {
             playerStatus = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
+            OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);
             stamina -= 25f;
         }
     }

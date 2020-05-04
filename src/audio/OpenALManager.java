@@ -22,9 +22,15 @@ public class OpenALManager {
     /** SOUNDS **/
     private static ArrayList<Sound> listOfSounds;
 
+    /** EFFECTS **/
     public static Sound SOUND_PLAYER_HURT_01;
     public static Sound SOUND_PLAYER_ATTACK_01;
     public static Sound SOUND_PLAYER_DYING_01;
+    public static Sound SOUND_FOOTSTEP_01;
+    public static Sound SOUND_FOOTSTEP_02;
+    public static Sound SOUND_ROLLING_01;
+
+    /** MUSIC **/
     public static Sound SOUND_MUSIC_O1;
 
     /** Sources are points emitting sound. */
@@ -61,6 +67,9 @@ public class OpenALManager {
         SOUND_MUSIC_O1 = loadSound("music_01", Sound.SoundType.MUSIC);
         SOUND_PLAYER_HURT_01 = loadSound("player_hurt_01", Sound.SoundType.EFFECT);
         SOUND_PLAYER_DYING_01 = loadSound("player_die_01", Sound.SoundType.EFFECT);
+        SOUND_FOOTSTEP_01 = loadSound("footstep_01", Sound.SoundType.EFFECT);
+        SOUND_FOOTSTEP_02 = loadSound("footstep_02", Sound.SoundType.EFFECT);
+        SOUND_ROLLING_01 = loadSound("rolling_01", Sound.SoundType.EFFECT);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
     }
