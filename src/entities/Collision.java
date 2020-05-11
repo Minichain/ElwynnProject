@@ -49,7 +49,7 @@ public class Collision {
         double heightRelativeToCamera = height * Camera.getZoom();
 
         OpenGLManager.glBegin(GL_LINES);
-        glColor4f(1f, 1f, 1f, 1f);
+        glColor4f(1f, 0f, 0f, 1f);
 
         switch (collisionType) {
             case SQUARE:

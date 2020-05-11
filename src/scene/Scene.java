@@ -167,6 +167,8 @@ public class Scene {
         /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
 
+        OpenGLManager.releaseCurrentShader();
+
         /** COLLIDABLE TILES **/
         if ((GameMode.getGameMode() == GameMode.Mode.CREATIVE || Parameters.isDebugMode())) {
             renderCollidableTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
