@@ -135,7 +135,7 @@ public class PathFindingAlgorithm {
             }
             if (nodeWithLessCost[0] != x || nodeWithLessCost[1] != y) {
                 nodesToVisitNext.remove(nodeWithLessCost);
-                computeCostsSurroundingNode(nodeWithLessCost[0], nodeWithLessCost[1]);
+                computeCostsSurroundingNode(nodeWithLessCost[0], nodeWithLessCost[1]);  //FIXME <-- java.lang.StackOverflowError
             }
         }
     }

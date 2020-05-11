@@ -19,6 +19,7 @@ public class OpenGLManager {
      * values to each
      */
     public static int programShader01 = 0;
+    public static int programShader02 = 0;
 
     private static int loadShader(String shader) {
         int vertexShader;
@@ -63,39 +64,39 @@ public class OpenGLManager {
 
         //Load shaders
         programShader01 = loadShader("shader01");
+        programShader02 = loadShader("shader02");
     }
 
     public static void prepareFrame() {
+        System.out.println("Preparing frame!");
+
         GPU_CALLS = 0;
+
+        //Clear frame
         glClear(GL_COLOR_BUFFER_BIT);
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(0, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), 0, 1, -1);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-        glEnable(GL_BLEND);
-        glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glLoadIdentity(); //Cleans out any matrix mode
+        glOrtho(0f, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), 0f, 1f, -1f);
     }
 
-    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight) {
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
         drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, 1f, 1f, 1f);
     }
 
-    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, float r, float g, float b) {
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, float r, float g, float b) {
         drawTexture(x, y, u, v, u2, v2, spriteWidth, spriteHeight, 1f, r, g, b);
     }
 
-    public static void drawTexture(int x, int y, double u, double v, double u2, double v2, float spriteWidth, float spriteHeight, double transparency, float r, float g, float b) {
-        glColor4f(r, g, b, (float) transparency);
-        glTexCoord2d(u, v);
-        glVertex2d(x, y);
-        glTexCoord2d(u, v2);
-        glVertex2d(x, y + spriteHeight);
-        glTexCoord2d(u2, v2);
-        glVertex2d(x + spriteWidth, y + spriteHeight);
-        glTexCoord2d(u2, v);
-        glVertex2d(x + spriteWidth, y);
+    public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight, float transparency, float r, float g, float b) {
+        glColor4f(r, g, b, transparency);
+        glTexCoord2f(u, v);
+        glVertex2f(x, y);
+        glTexCoord2f(u, v2);
+        glVertex2f(x, y + spriteHeight);
+        glTexCoord2f(u2, v2);
+        glVertex2f(x + spriteWidth, y + spriteHeight);
+        glTexCoord2f(u2, v);
+        glVertex2f(x + spriteWidth, y);
     }
 
     public static void drawRectangle(int x, int y, float width, float height) {
@@ -167,5 +168,37 @@ public class OpenGLManager {
 
     private static String getLogInfo(int obj) {
         return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
+    }
+
+    public static void updateShadersUniforms() {
+
+        //Update programShader01
+        int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "time");
+        int textureUniform01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "texture01");
+        ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
+        ARBShaderObjects.glUniform1iARB(textureUniform01, 0);
+
+        //Update the rest of the shaders...
+
+    }
+
+    public static void useShader(int shader) {
+        System.out.println("Use shader " + shader);
+        switch (shader) {
+            case 0:
+            default:
+                ARBShaderObjects.glUseProgramObjectARB(0);
+                break;
+            case 1:
+                ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader01);
+                break;
+            case 2:
+                ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader02);
+                break;
+        }
+    }
+
+    public static void releaseCurrentShader() {
+        useShader(0);
     }
 }

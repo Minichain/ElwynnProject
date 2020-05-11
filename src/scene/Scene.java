@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.*;
 
 public class Scene {
     private static Scene instance = null;
@@ -155,6 +156,8 @@ public class Scene {
         Coordinates bottomLeftWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x - oneAxisDistance, Camera.getInstance().getCoordinates().y + oneAxisDistance);
         Coordinates bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates.x, bottomLeftWorldCoordinates.y);
 
+        OpenGLManager.useShader(1);
+
         /** FIRST LAYER OF TILES IS DRAWN FIRST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
 
@@ -168,14 +171,26 @@ public class Scene {
         if ((GameMode.getGameMode() == GameMode.Mode.CREATIVE || Parameters.isDebugMode())) {
             renderCollidableTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
         }
+
+        /** ENTITIES HITBOX **/
+        if (Parameters.isDebugMode()) {
+            for (GraphicEntity graphicEntity : listOfEntitiesToUpdate) {
+                if (graphicEntity instanceof StaticGraphicEntity) {
+                    ((StaticGraphicEntity) graphicEntity).drawHitBox((int) graphicEntity.getCameraCoordinates().x, (int) graphicEntity.getCameraCoordinates().y);
+                }
+            }
+        }
     }
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
+        System.out.println("Render second layer of Tiles and Entities.");
+
         GraphicEntity entity = null;
         int entityIterator = 0;
         int firstTileRowToDraw = (int) topLeftTileCoordinates.y;
         int lastTileRowToDraw = (int) bottomLeftTileCoordinates.y;
         int tileRowIterator = firstTileRowToDraw;
+
         while (tileRowIterator < lastTileRowToDraw) {
             if (entityIterator < listOfEntitiesToUpdate.size()) {
                 entity = listOfEntitiesToUpdate.get(entityIterator);
@@ -185,8 +200,15 @@ public class Scene {
                 entity = null;
                 entityIterator++;
             } else {
+                glActiveTexture(GL_TEXTURE0);
                 TileMap.bindTileSetTexture();
+
+                glEnable(GL_BLEND);
+                glEnable(GL_TEXTURE_2D);
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
                 OpenGLManager.glBegin(GL_QUADS);
+
                 for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
                     int k = 1;
                     if (0 < i && i < TileMap.getArrayOfTiles().length
@@ -199,15 +221,29 @@ public class Scene {
                         TileMap.drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
                     }
                 }
+
+                glDisable(GL_BLEND);
+                glDisable(GL_TEXTURE_2D);
+
                 glEnd();
+
                 tileRowIterator++;
             }
         }
     }
 
     private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
+        System.out.println("Render layer " + layerToRender + " of Tiles.");
+
+        glActiveTexture(GL_TEXTURE0);
         TileMap.bindTileSetTexture();
+
+        glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
         OpenGLManager.glBegin(GL_QUADS);
+
         for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
             for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
                 if (0 < i && i < TileMap.getArrayOfTiles().length
@@ -221,6 +257,10 @@ public class Scene {
                 }
             }
         }
+
+        glDisable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+
         glEnd();
     }
 
@@ -245,6 +285,7 @@ public class Scene {
             }
         }
         glEnd();
+        glEnable(GL_TEXTURE_2D);
     }
 
     public boolean checkCollisionWithEntities(Coordinates collisionCoordinates) {

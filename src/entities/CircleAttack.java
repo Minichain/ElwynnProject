@@ -103,10 +103,9 @@ public class CircleAttack {
     }
 
     public void render() {
-        glDisable(GL_TEXTURE_2D);
-
         /** DEBUG LINES **/
         if (attacking && Parameters.isDebugMode()) {
+            glDisable(GL_TEXTURE_2D);
             glDisable(GL_BLEND);
             OpenGLManager.glBegin(GL_LINES);
             if (enemyAttack) {
@@ -131,6 +130,7 @@ public class CircleAttack {
             }
 
             glEnd();
+            glEnable(GL_TEXTURE_2D);
             glEnable(GL_BLEND);
         }
     }

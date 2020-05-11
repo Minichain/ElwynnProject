@@ -86,7 +86,7 @@ public class Player extends DynamicGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
     }
 
     @Override

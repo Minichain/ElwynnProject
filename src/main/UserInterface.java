@@ -33,6 +33,9 @@ public class UserInterface {
     }
 
     private void renderDebugUI(long timeElapsed) {
+        OpenGLManager.releaseCurrentShader();
+        System.out.println("Render Debug UI");
+
         if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
             float fps = 1000f / timeElapsed;
@@ -73,18 +76,21 @@ public class UserInterface {
                 textList.add("GAME PAUSED");
             }
 
-            glEnable(GL_TEXTURE_2D);
             TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, textList, textScale);
 
             /** DEBUG LINES **/
             glDisable(GL_BLEND);
+
             OpenGLManager.glBegin(GL_LINES);
+
             glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             glVertex2i(Parameters.getResolutionWidth() / 2, 0);
             glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());
             glVertex2i(0, Parameters.getResolutionHeight() / 2);
             glVertex2i(Parameters.getResolutionWidth(), Parameters.getResolutionHeight() / 2);
+
             glEnd();
+
             glEnable(GL_BLEND);
         }
 

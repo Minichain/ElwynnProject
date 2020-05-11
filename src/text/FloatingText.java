@@ -24,7 +24,7 @@ public class FloatingText {
         OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
             entity = listOfFloatingTextEntities.get(i);
-            double alpha = 1.0 - entity.timeLiving / entity.timeToLive;
+            float alpha = 1f - (float) (entity.timeLiving / entity.timeToLive);
             Coordinates entityCameraCoordinates = entity.coordinates.toCameraCoordinates();
             if (entity.isDangerText()) {
                 TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text, 2, true, alpha, 1f, 0f, 0f);
@@ -39,5 +39,6 @@ public class FloatingText {
             }
         }
         glEnd();
+        glDisable(GL_TEXTURE_2D);
     }
 }

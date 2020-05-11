@@ -48,9 +48,8 @@ public class Collision {
         double widthRelativeToCamera = width * Camera.getZoom();
         double heightRelativeToCamera = height * Camera.getZoom();
 
-        glDisable(GL_TEXTURE_2D);
-        glColor4f(1.0f, 0f, 0f, 1.0f);
         OpenGLManager.glBegin(GL_LINES);
+        glColor4f(1f, 1f, 1f, 1f);
 
         switch (collisionType) {
             case SQUARE:
@@ -85,9 +84,6 @@ public class Collision {
                     glVertex2d(x2, y2);
                     angle += angleStep;
                 }
-
-                glEnd();
-                glEnable(GL_BLEND);
                 break;
             default:
                 break;

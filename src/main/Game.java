@@ -23,6 +23,8 @@ public class Game {
 
     public static void render(long timeElapsed) {
         OpenGLManager.prepareFrame();
+        OpenGLManager.updateShadersUniforms();
+
         Scene.getInstance().render();
         SpecialEffects.render();
         UserInterface.getInstance().render(timeElapsed);

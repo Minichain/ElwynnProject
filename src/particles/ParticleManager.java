@@ -43,5 +43,6 @@ public class ParticleManager {
             particle.render();
         }
         glEnd();
+        glEnable(GL_TEXTURE_2D);
     }
 }

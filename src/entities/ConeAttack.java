@@ -107,10 +107,9 @@ public class ConeAttack {
     }
 
     public void render() {
-        glDisable(GL_TEXTURE_2D);
-
         /** DEBUG LINES **/
         if (attacking && Parameters.isDebugMode()) {
+            glDisable(GL_TEXTURE_2D);
             glDisable(GL_BLEND);
             OpenGLManager.glBegin(GL_LINES);
             if (enemyAttack) {
@@ -129,35 +128,4 @@ public class ConeAttack {
             glEnable(GL_BLEND);
         }
     }
-
-    /*
-    public void render() {
-        int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "time");
-        int playerCoordinatesUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "playerCameraCoordinates");
-        int cameraZoomUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraZoom");
-        int cameraWindowRatioUniformLocation = ARBShaderObjects.glGetUniformLocationARB(MyOpenGL.programShader01, "cameraWindowRatio");
-        ARBShaderObjects.glUseProgramObjectARB(MyOpenGL.programShader01);
-        ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
-
-        double[] playerWindowCoordinates = Player.getInstance().getCoordinates().toCameraCoordinates();
-        playerWindowCoordinates[0] *= Window.getCameraWindowScaleFactor()[0];
-        playerWindowCoordinates[1] *= Window.getCameraWindowScaleFactor()[1];
-        float[] playerCoordinatesUniform = new float[]{(float) playerWindowCoordinates[0], Window.getHeight() - (float) playerWindowCoordinates[1]};
-
-        ARBShaderObjects.glUniform2fvARB(playerCoordinatesUniformLocation, playerCoordinatesUniform);
-        ARBShaderObjects.glUniform1fARB(cameraZoomUniformLocation, (float) Camera.getZoom());
-        ARBShaderObjects.glUniform2fvARB(cameraWindowRatioUniformLocation, Window.getCameraWindowScaleFactor());
-
-        glBegin(GL_TRIANGLES);
-
-        glVertex2d(getVertex1()[0], getVertex1()[1]);
-        glVertex2d(getVertex2()[0], getVertex2()[1]);
-        glVertex2d(getVertex3()[0], getVertex3()[1]);
-
-        glEnd();
-
-        //release the shader
-        ARBShaderObjects.glUseProgramObjectARB(0);
-    }
-    */
 }

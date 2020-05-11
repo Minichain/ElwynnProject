@@ -29,32 +29,37 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
     }
 
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1.0);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
+    }
 
-        if (Parameters.isDebugMode()) {
-            glDisable(GL_TEXTURE_2D);
+    public void drawHitBox(int x, int y) {
+        glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
 
-            OpenGLManager.glBegin(GL_LINES);
+        OpenGLManager.glBegin(GL_LINES);
+        glColor4f(1f, 1f, 1f, 1f);
 
-            //1st Line
-            glVertex2i(x, y);
-            glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
+        //1st Line
+        glVertex2i(x, y);
+        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
 
-            //2nd Line
-            glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
-            glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        //2nd Line
+        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
+        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
 
-            //3rd Line
-            glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
-            glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        //3rd Line
+        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
 
-            //4th Line
-            glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
-            glVertex2i(x, y);
+        //4th Line
+        glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        glVertex2i(x, y);
 
-            glEnd();
+        glEnd();
 
-            getCollision().draw();
-        }
+        getCollision().draw();
+
+        glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
     }
 }

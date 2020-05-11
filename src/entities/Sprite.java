@@ -2,10 +2,13 @@ package entities;
 
 import main.OpenGLManager;
 import main.Texture;
+import org.lwjgl.opengl.ARBShaderObjects;
 import scene.Camera;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 public class Sprite {
     private Texture spriteSheet;
@@ -49,25 +52,34 @@ public class Sprite {
         return spriteSheet;
     }
 
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency) {
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency) {
         draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, Camera.getZoom());
     }
 
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, double transparency, double scale) {
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale) {
+        glActiveTexture(GL_TEXTURE0);
         spriteSheet.bind();
+
+        glEnable(GL_BLEND);
         glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
         float height = (float) spriteSheet.getHeight() / (float) SPRITE_HEIGHT;
 
-        double u = ((1.0 / width) * spriteCoordinateFromSpriteSheetX);
-        double v = 1.0 - ((1.0 / height) * spriteCoordinateFromSpriteSheetY);
-        double u2 = u + (1.0 / width);
-        double v2 = v - (1.0 / height);
+        float u = ((1f / width) * spriteCoordinateFromSpriteSheetX);
+        float v = 1f - ((1f / height) * spriteCoordinateFromSpriteSheetY);
+        float u2 = u + (1f / width);
+        float v2 = v - (1f / height);
 
         OpenGLManager.glBegin(GL_QUADS);
+
         y -= (int) (SPRITE_HEIGHT * scale);
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
+
+        glDisable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+
         glEnd();
     }
 }

@@ -90,6 +90,7 @@ public class Menu {
             component.renderInfo();
         }
         glEnd();
+        glDisable(GL_TEXTURE_2D);
     }
 
     public Coordinates getCoordinates() {

@@ -23,12 +23,11 @@ public class Main {
                 timeElapsed = System.currentTimeMillis() - lastUpdateTime;
                 lastUpdateTime = System.currentTimeMillis();
 
-                glfwPollEvents();
-
                 Game.update(timeElapsed);
                 Game.render(timeElapsed);
 
                 glfwSwapBuffers(Window.getWindow());
+                glfwPollEvents();
 
                 timeSpentUpdatingAndRendering = System.currentTimeMillis() - lastUpdateTime;
                 //Wait time until processing next frame. FPS locked.

@@ -70,9 +70,9 @@ public class HeadUpDisplay {
                     x = (int) (20f * relativeWidth + i * 128f * relativeWidth);
                     y = (int) (Parameters.getResolutionHeight() - 100f * relativeHeight);
                     if (currentEntity == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
-                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.7, 2.0);
+                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.7f, 2.0);
                     } else {
-                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.5, 1.5);
+                        SpriteManager.getStaticEntitySprite(currentEntity).draw(x, y, 0, 0, 0.5f, 1.5);
                     }
                 }
             }
@@ -89,10 +89,11 @@ public class HeadUpDisplay {
                     TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX + 5, mouseY + 5, 2.5, 0f, 0f, 0f, true);
                     TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 2.5, 1f, 1f, 1f, true);
                     glEnd();
+                    glDisable(GL_TEXTURE_2D);
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                     Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                     Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
-                    SpriteManager.getStaticEntitySprite(InputListenerManager.getMouseWheelPosition()).draw((int) c2.x, (int) c2.y, 0, 0, 0.5);
+                    SpriteManager.getStaticEntitySprite(InputListenerManager.getMouseWheelPosition()).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
                 }
             }
         }

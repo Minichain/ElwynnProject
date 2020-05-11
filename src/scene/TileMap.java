@@ -72,10 +72,10 @@ public class TileMap {
         int tileFromTileSetX = tileFromTileSet[0];
         int tileFromTileSetY = tileFromTileSet[1];
 
-        double u = ((1.0 / (double) getTileSet().TILES_IN_TILESET_X_AXIS)) * tileFromTileSetX;
-        double v = ((1.0 / (double) getTileSet().TILES_IN_TILESET_Y_AXIS)) * tileFromTileSetY;
-        double u2 = u + (1.0 / (double) getTileSet().TILES_IN_TILESET_X_AXIS);
-        double v2 = v + (1.0 / (double) getTileSet().TILES_IN_TILESET_Y_AXIS);
+        float u = ((1f / (float) getTileSet().TILES_IN_TILESET_X_AXIS)) * tileFromTileSetX;
+        float v = ((1f / (float) getTileSet().TILES_IN_TILESET_Y_AXIS)) * tileFromTileSetY;
+        float u2 = u + (1f / (float) getTileSet().TILES_IN_TILESET_X_AXIS);
+        float v2 = v + (1f / (float) getTileSet().TILES_IN_TILESET_Y_AXIS);
 
         int width = (int) (TILE_WIDTH * scale);
         int height = (int) (TILE_HEIGHT * scale);
