@@ -8,7 +8,7 @@ import scene.Scene;
 public class SpecialEffects {
     public static void render() {
         OpenGLManager.releaseCurrentShader();
-        System.out.println("Render Special Effects");
+//        System.out.println("Render Special Effects");
 
         for (GraphicEntity entity : Scene.getInstance().getListOfEntities()) {
             if (entity instanceof Enemy) {

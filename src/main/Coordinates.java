@@ -43,6 +43,14 @@ public class Coordinates {
         return new Coordinates(x / Window.getCameraWindowScaleFactor()[0], y / Window.getCameraWindowScaleFactor()[1]);
     }
 
+    public static Coordinates cameraToOpenGLCoordinates(double x, double y) {
+        return new Coordinates((x / ((double) Parameters.getResolutionWidth() / 2.0)) - 1.0, (y / ((double) Parameters.getResolutionHeight() / 2.0)) - 1.0);
+    }
+
+    public static Coordinates cameraToOpenGLCoordinates(Coordinates coordinates) {
+        return cameraToOpenGLCoordinates(coordinates.x, coordinates.y);
+    }
+
     public String toString() {
         return "(" + this.x + ", " + this.y + ")";
     }

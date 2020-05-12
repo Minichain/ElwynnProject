@@ -1,5 +1,7 @@
 package main;
 
+import scene.Camera;
+import scene.Scene;
 import utils.FileUtils;
 import org.lwjgl.opengl.*;
 
@@ -68,7 +70,7 @@ public class OpenGLManager {
     }
 
     public static void prepareFrame() {
-        System.out.println("Preparing frame!");
+//        System.out.println("Preparing frame!");
 
         GPU_CALLS = 0;
 
@@ -171,19 +173,46 @@ public class OpenGLManager {
     }
 
     public static void updateShadersUniforms() {
-
-        //Update programShader01
-        int timeUniformLocation = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "time");
+        /** Update programShader01 **/
+        int timeUniformLocation01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "time");
         int textureUniform01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "texture01");
-        ARBShaderObjects.glUniform1fARB(timeUniformLocation, (float) GameStatus.getRuntime());
+        int zoomUniform = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "zoom");
+        int widthHeightRatio = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "widthHeightRatio");
+        int lightSourceUniform01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource01");
+        int lightSourceUniform02 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource02");
+        int lightSourceUniform03 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource03");
+        ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader01);
+        ARBShaderObjects.glUniform1fARB(timeUniformLocation01, (float) GameStatus.getRuntime());
         ARBShaderObjects.glUniform1iARB(textureUniform01, 0);
+        ARBShaderObjects.glUniform1fARB(zoomUniform, (float) Camera.getZoom());
+        ARBShaderObjects.glUniform1fARB(widthHeightRatio, ((float) Window.getWidth() / (float) Window.getHeight()));
 
-        //Update the rest of the shaders...
+        if (Scene.getListOfLightSources().size() >= 1) {
+            Coordinates lightSourceOpenGLCoordinates01 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 1).getCameraCoordinates());
+            float[] lightSource01 = new float[]{(float) lightSourceOpenGLCoordinates01.x, - (float) lightSourceOpenGLCoordinates01.y};
+            ARBShaderObjects.glUniform2fvARB(lightSourceUniform01, lightSource01);
+        }
 
+        if (Scene.getListOfLightSources().size() >= 2) {
+            Coordinates lightSourceOpenGLCoordinates02 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 2).getCameraCoordinates());
+            float[] lightSource02 = new float[]{(float) lightSourceOpenGLCoordinates02.x, - (float) lightSourceOpenGLCoordinates02.y};
+            ARBShaderObjects.glUniform2fvARB(lightSourceUniform02, lightSource02);
+        }
+
+        if (Scene.getListOfLightSources().size() >= 3) {
+            Coordinates lightSourceOpenGLCoordinates03 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 3).getCameraCoordinates());
+            float[] lightSource03 = new float[]{(float) lightSourceOpenGLCoordinates03.x, - (float) lightSourceOpenGLCoordinates03.y};
+            ARBShaderObjects.glUniform2fvARB(lightSourceUniform03, lightSource03);
+        }
+
+        /** Update programShader02 **/
+        int timeUniformLocation02 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader02, "time");
+        ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader02);
+        ARBShaderObjects.glUniform1fARB(timeUniformLocation02, (float) GameStatus.getRuntime());
     }
 
     public static void useShader(int shader) {
-        System.out.println("Use shader " + shader);
+//        System.out.println("Use shader " + shader);
         switch (shader) {
             case 0:
             default:

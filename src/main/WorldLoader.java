@@ -140,6 +140,8 @@ public class WorldLoader {
                 new Fence03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Fence04.ENTITY_CODE) {
                 new Fence04((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Light01.ENTITY_CODE) {
+                new Light01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Building01.ENTITY_CODE) {
                 new Building01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Building02.ENTITY_CODE) {

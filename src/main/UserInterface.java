@@ -34,7 +34,7 @@ public class UserInterface {
 
     private void renderDebugUI(long timeElapsed) {
         OpenGLManager.releaseCurrentShader();
-        System.out.println("Render Debug UI");
+//        System.out.println("Render Debug UI");
 
         if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;

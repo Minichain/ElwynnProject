@@ -46,9 +46,9 @@ public class TileMap {
         return numOfVerticalTiles;
     }
 
-    public static void drawTile(int i, int j, int k, int x, int y, double scale, float distanceFactor) {
+    public static void drawTile(int i, int j, int k, int x, int y, double scale) {
         if (0 < i && i < TileMap.getArrayOfTiles().length && 0 < j && j < TileMap.getArrayOfTiles()[0].length) {
-            drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, distanceFactor, false);
+            drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, false);
         }
     }
 

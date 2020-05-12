@@ -1,5 +1,6 @@
 uniform float time;
 uniform sampler2D texture01;
+
 varying vec4 vertColor;
 varying in vec2 TexCoord;
 

@@ -29,12 +29,15 @@ public class Scene {
 
     public static ArrayList<CircleAttack> listOfCircleAttacks;
 
+    public static ArrayList<LightSource> listOfLightSources;
+
     private Scene() {
         listOfEntities = new ArrayList<>();
         listOfStaticEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         initialCoordinates = new Coordinates(2500, 2500);
+        listOfLightSources = new ArrayList<>();
     }
 
     public static Scene getInstance() {
@@ -112,6 +115,11 @@ public class Scene {
                 }
             }
         }
+
+        /** LIGHT SOURCES **/
+        for (LightSource lightSource : listOfLightSources) {
+            lightSource.update();
+        }
     }
 
     public List<GraphicEntity> getListOfEntities() {
@@ -124,6 +132,10 @@ public class Scene {
 
     public List<GraphicEntity> getListOfEntitiesToUpdate() {
         return listOfEntitiesToUpdate;
+    }
+
+    public static ArrayList<LightSource> getListOfLightSources() {
+        return listOfLightSources;
     }
 
     public static Coordinates getInitialCoordinates() {
@@ -185,7 +197,7 @@ public class Scene {
     }
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
-        System.out.println("Render second layer of Tiles and Entities.");
+//        System.out.println("Render second layer of Tiles and Entities.");
 
         GraphicEntity entity = null;
         int entityIterator = 0;
@@ -219,8 +231,7 @@ public class Scene {
                         double scale = Camera.getZoom();
                         int x = i * TileMap.TILE_WIDTH;
                         int y = tileRowIterator * TileMap.TILE_HEIGHT;
-                        double distanceBetweenPlayerAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
+                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale);
                     }
                 }
 
@@ -235,7 +246,7 @@ public class Scene {
     }
 
     private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
-        System.out.println("Render layer " + layerToRender + " of Tiles.");
+//        System.out.println("Render layer " + layerToRender + " of Tiles.");
 
         glActiveTexture(GL_TEXTURE0);
         TileMap.bindTileSetTexture();
@@ -254,8 +265,7 @@ public class Scene {
                     double scale = Camera.getZoom();
                     int x = i * TileMap.TILE_WIDTH;
                     int y = j * TileMap.TILE_HEIGHT;
-                    double distanceBetweenPlayerAndTile = MathUtils.module(Camera.getInstance().getCoordinates(), new Coordinates(x, y));
-                    TileMap.drawTile(i, j, layerToRender, x, y, scale, (float) (renderDistance - distanceBetweenPlayerAndTile) / renderDistance);
+                    TileMap.drawTile(i, j, layerToRender, x, y, scale);
                 }
             }
         }

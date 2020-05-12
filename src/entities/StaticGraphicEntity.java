@@ -2,7 +2,6 @@ package entities;
 
 import main.Coordinates;
 import main.OpenGLManager;
-import main.Parameters;
 import scene.Camera;
 
 import static org.lwjgl.opengl.GL11.*;
