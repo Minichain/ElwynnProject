@@ -5,10 +5,12 @@ Game Engine written in Java, using LWJGL (Lightweight Java Game Library).
 - LWJGL: https://www.lwjgl.org/
 
 ## Screenshots
-![Alt Text](/screenshots/gif01.gif)
-![Alt text](/screenshots/screenshot01.jpg?raw=true "screenshot01")
-![Alt text](/screenshots/screenshot02.jpg?raw=true "screenshot02")
-![Alt text](/screenshots/screenshot03.jpg?raw=true "screenshot03")
+<p align="center">
+  <img src="/screenshots/gif01.gif" width="1280px"</img> 
+  <img src="/screenshots/screenshot01.jpg" width="1280px"</img> 
+  <img src="/screenshots/screenshot02.jpg" width="1280px"</img> 
+  <img src="/screenshots/screenshot03.jpg" width="1280px"</img>   
+</p>
 
 ## Social Media
 - LinkedIn: www.linkedin.com/in/adria-cadena-rubio
