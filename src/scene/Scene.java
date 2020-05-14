@@ -118,7 +118,7 @@ public class Scene {
 
         /** LIGHT SOURCES **/
         for (LightSource lightSource : listOfLightSources) {
-            lightSource.update();
+            lightSource.update(timeElapsed);
         }
     }
 
@@ -134,7 +134,7 @@ public class Scene {
         return listOfEntitiesToUpdate;
     }
 
-    public static ArrayList<LightSource> getListOfLightSources() {
+    public ArrayList<LightSource> getListOfLightSources() {
         return listOfLightSources;
     }
 

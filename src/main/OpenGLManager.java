@@ -84,7 +84,7 @@ public class OpenGLManager {
         GPU_CALLS = 0;
 
         //Clear frame
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         glLoadIdentity(); //Cleans out any matrix mode
         glOrtho(0f, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), 0f, 1f, -1f);
@@ -191,20 +191,21 @@ public class OpenGLManager {
         glUniform1f(widthHeightRatio, ((float) Window.getWidth() / (float) Window.getHeight()));
 
         int i = 0;
-        int size = 64 * 2;
+        int size = 64 * 3;
         float[] lightSources = new float[size];
         Arrays.fill(lightSources, -10000f);
-        for (LightSource lightSource : Scene.getListOfLightSources()) {
+        for (LightSource lightSource : Scene.getInstance().getListOfLightSources()) {
             Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToOpenGLCoordinates(lightSource.getCameraCoordinates());
             lightSources[i] = (float) lightSourceOpenGLCoordinates.x;
             lightSources[i + 1] = - (float) lightSourceOpenGLCoordinates.y;
-            i += 2;
+            lightSources[i + 2] = lightSource.getIntensity();
+            i += 3;
         }
 
         FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(size);
         floatBuffer.put(lightSources);
         floatBuffer.flip();
-        glUniform2fv(lightSourcesUniform, floatBuffer);
+        glUniform3fv(lightSourcesUniform, floatBuffer);
 
         /** Update programShader02 **/
         int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");
@@ -313,6 +314,14 @@ public class OpenGLManager {
             ARBShaderObjects.glUniform2fvARB(uniformLocation, uniformValue);
         } else {
             GL20.glUniform2fv(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glUniform3fv(int uniformLocation, FloatBuffer uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform3fvARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform3fv(uniformLocation, uniformValue);
         }
     }
 

@@ -28,6 +28,9 @@ public class Game {
         Scene.getInstance().render();
         SpecialEffects.render();
         UserInterface.getInstance().render(timeElapsed);
+
+        //After everything rendered...
+        System.out.println("GPU calls: " + OpenGLManager.GPU_CALLS);
     }
 
     public static void stopGame() {

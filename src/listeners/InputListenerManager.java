@@ -182,6 +182,9 @@ public class InputListenerManager {
                         if (graphicEntity.isOverEntity(getMouseWorldCoordinates())) {
                             /** DELETE ENTITY **/
                             System.out.println("Deleting entity!");
+                            for (LightSource lightSource : graphicEntity.getLightSources()) {
+                                Scene.getInstance().getListOfLightSources().remove(lightSource);
+                            }
                             Scene.getInstance().getListOfStaticEntities().remove(graphicEntity);
                             Scene.getInstance().getListOfEntities().remove(graphicEntity);
                             break;

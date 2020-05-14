@@ -3,6 +3,8 @@ package entities;
 import main.Coordinates;
 import main.Texture;
 
+import java.util.ArrayList;
+
 public abstract class GraphicEntity extends Entity {
     /** Sprite Attributes **/
     private Sprite sprite;
@@ -10,11 +12,13 @@ public abstract class GraphicEntity extends Entity {
     private double spriteCoordinateFromSpriteSheetY;
     private Coordinates centerOfMassWorldCoordinates;
     private Coordinates centerOfMassCameraCoordinates;
+    private ArrayList<LightSource> lightSources;
 
     public GraphicEntity(int x, int y) {
         super(x, y);
         centerOfMassWorldCoordinates = new Coordinates(getWorldCoordinates().x, getWorldCoordinates().y);
         centerOfMassCameraCoordinates = new Coordinates(getCameraCoordinates().x, getCameraCoordinates().y);
+        lightSources = new ArrayList<>();
     }
 
     public double getSpriteCoordinateFromSpriteSheetX() {
@@ -66,5 +70,9 @@ public abstract class GraphicEntity extends Entity {
     public boolean isOverEntity(Coordinates coordinates) {
         return (Math.abs(coordinates.x - centerOfMassWorldCoordinates.x) <= (getSprite().SPRITE_WIDTH / 2))
                 && (Math.abs(coordinates.y - centerOfMassWorldCoordinates.y) <= (getSprite().SPRITE_HEIGHT / 2));
+    }
+
+    public ArrayList<LightSource> getLightSources() {
+        return lightSources;
     }
 }

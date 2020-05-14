@@ -18,7 +18,14 @@ public class Light01 extends StaticGraphicEntity {
         setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 8), 16, 16));   //Square collision
         Scene.getInstance().getListOfEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
-        Scene.getListOfLightSources().add(new LightSource(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 58)));
+
+        /** LIGHT SOURCES **/
+        Coordinates lightSourceCoordinates = new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 58);
+        float intensity = (float) Math.random() + 0.5f;
+        getLightSources().add(new LightSource(lightSourceCoordinates, intensity));
+        for (LightSource lightSource : getLightSources()) {
+            Scene.getInstance().getListOfLightSources().add(lightSource);
+        }
     }
 
     @Override
