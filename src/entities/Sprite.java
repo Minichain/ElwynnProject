@@ -2,7 +2,6 @@ package entities;
 
 import main.OpenGLManager;
 import main.Texture;
-import org.lwjgl.opengl.ARBShaderObjects;
 import scene.Camera;
 
 import static org.lwjgl.opengl.GL11.*;

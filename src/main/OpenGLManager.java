@@ -1,11 +1,16 @@
 package main;
 
+import entities.LightSource;
+import org.lwjgl.BufferUtils;
 import scene.Camera;
 import scene.Scene;
 import utils.FileUtils;
 import org.lwjgl.opengl.*;
 
-import static org.lwjgl.opengl.GL11.*;
+import java.nio.FloatBuffer;
+import java.util.Arrays;
+
+import static org.lwjgl.opengl.GL20.*;
 
 public class OpenGLManager {
     public static int GPU_CALLS;
@@ -20,17 +25,21 @@ public class OpenGLManager {
      * They are set to 0 as a check because GL will assign unique int
      * values to each
      */
+    private static final boolean ARB_SHADERS = true;
+    private static final int VERTEX_SHADER = ARB_SHADERS ? ARBVertexShader.GL_VERTEX_SHADER_ARB : GL_VERTEX_SHADER;
+    private static final int FRAGMENT_SHADER = ARB_SHADERS ? ARBFragmentShader.GL_FRAGMENT_SHADER_ARB : GL_FRAGMENT_SHADER;
+
     public static int programShader01 = 0;
     public static int programShader02 = 0;
 
     private static int loadShader(String shader) {
         int vertexShader;
         int fragmentShader;
-        int programShader = ARBShaderObjects.glCreateProgramObjectARB();
+        int programShader = GL20.glCreateProgram();
 
         try {
-            vertexShader = createShader("res/shaders/" + shader + ".vert", ARBVertexShader.GL_VERTEX_SHADER_ARB);
-            fragmentShader = createShader("res/shaders/" + shader + ".frag", ARBFragmentShader.GL_FRAGMENT_SHADER_ARB);
+            vertexShader = createShader("res/shaders/" + shader + ".vert", VERTEX_SHADER);
+            fragmentShader = createShader("res/shaders/" + shader + ".frag", FRAGMENT_SHADER);
         } catch (Exception e) {
             e.printStackTrace();
             return 0;
@@ -43,17 +52,17 @@ public class OpenGLManager {
          * attach them to the shader program, link the shader program,
          * and validate.
          */
-        ARBShaderObjects.glAttachObjectARB(programShader, vertexShader);
-        ARBShaderObjects.glAttachObjectARB(programShader, fragmentShader);
+        glAttachShader(programShader, vertexShader);
+        glAttachShader(programShader, fragmentShader);
 
-        ARBShaderObjects.glLinkProgramARB(programShader);
-        if (ARBShaderObjects.glGetObjectParameteriARB(programShader, ARBShaderObjects.GL_OBJECT_LINK_STATUS_ARB) == GL11.GL_FALSE) {
+        glLinkProgram(programShader);
+        if (glGetProgrami(programShader, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
             System.err.println(getLogInfo(programShader));
             return 0;
         }
 
-        ARBShaderObjects.glValidateProgramARB(programShader);
-        if (ARBShaderObjects.glGetObjectParameteriARB(programShader, ARBShaderObjects.GL_OBJECT_VALIDATE_STATUS_ARB) == GL11.GL_FALSE) {
+        glValidateProgram(programShader);
+        if (glGetProgrami(programShader, GL20.GL_VALIDATE_STATUS) == GL11.GL_FALSE) {
             System.err.println(getLogInfo(programShader));
             return 0;
         }
@@ -150,65 +159,57 @@ public class OpenGLManager {
     private static int createShader(String filename, int shaderType) throws Exception {
         int shader = 0;
         try {
-            shader = ARBShaderObjects.glCreateShaderObjectARB(shaderType);
+            shader = glCreateShader(shaderType);
 
             if (shader == 0) return 0;
 
-            ARBShaderObjects.glShaderSourceARB(shader, FileUtils.readFileAsString(filename));
-            ARBShaderObjects.glCompileShaderARB(shader);
+            glShaderSource(shader, FileUtils.readFileAsString(filename));
+            glCompileShader(shader);
 
-            if (ARBShaderObjects.glGetObjectParameteriARB(shader, ARBShaderObjects.GL_OBJECT_COMPILE_STATUS_ARB) == GL11.GL_FALSE) {
+            if (glGetProgrami(shader, GL20.GL_COMPILE_STATUS) == GL20.GL_FALSE) {
                 throw new RuntimeException("Error creating shader: " + getLogInfo(shader));
             }
 
             return shader;
         } catch (Exception e) {
-            ARBShaderObjects.glDeleteObjectARB(shader);
+            glDeleteShader(shader);
             throw e;
         }
     }
 
-    private static String getLogInfo(int obj) {
-        return ARBShaderObjects.glGetInfoLogARB(obj, ARBShaderObjects.glGetObjectParameteriARB(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
-    }
-
     public static void updateShadersUniforms() {
         /** Update programShader01 **/
-        int timeUniformLocation01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "time");
-        int textureUniform01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "texture01");
-        int zoomUniform = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "zoom");
-        int widthHeightRatio = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "widthHeightRatio");
-        int lightSourceUniform01 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource01");
-        int lightSourceUniform02 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource02");
-        int lightSourceUniform03 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader01, "lightSource03");
-        ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader01);
-        ARBShaderObjects.glUniform1fARB(timeUniformLocation01, (float) GameStatus.getRuntime());
-        ARBShaderObjects.glUniform1iARB(textureUniform01, 0);
-        ARBShaderObjects.glUniform1fARB(zoomUniform, (float) Camera.getZoom());
-        ARBShaderObjects.glUniform1fARB(widthHeightRatio, ((float) Window.getWidth() / (float) Window.getHeight()));
+        int timeUniformLocation01 = glGetUniformLocation(OpenGLManager.programShader01, "time");
+        int textureUniform01 = glGetUniformLocation(OpenGLManager.programShader01, "texture01");
+        int zoomUniform = glGetUniformLocation(OpenGLManager.programShader01, "zoom");
+        int widthHeightRatio = glGetUniformLocation(OpenGLManager.programShader01, "widthHeightRatio");
+        int lightSourcesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSources");
+        glUseProgram(OpenGLManager.programShader01);
+        glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
+        glUniform1i(textureUniform01, 0);
+        glUniform1f(zoomUniform, (float) Camera.getZoom());
+        glUniform1f(widthHeightRatio, ((float) Window.getWidth() / (float) Window.getHeight()));
 
-        if (Scene.getListOfLightSources().size() >= 1) {
-            Coordinates lightSourceOpenGLCoordinates01 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 1).getCameraCoordinates());
-            float[] lightSource01 = new float[]{(float) lightSourceOpenGLCoordinates01.x, - (float) lightSourceOpenGLCoordinates01.y};
-            ARBShaderObjects.glUniform2fvARB(lightSourceUniform01, lightSource01);
+        int i = 0;
+        int size = 64 * 2;
+        float[] lightSources = new float[size];
+        Arrays.fill(lightSources, -10000f);
+        for (LightSource lightSource : Scene.getListOfLightSources()) {
+            Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToOpenGLCoordinates(lightSource.getCameraCoordinates());
+            lightSources[i] = (float) lightSourceOpenGLCoordinates.x;
+            lightSources[i + 1] = - (float) lightSourceOpenGLCoordinates.y;
+            i += 2;
         }
 
-        if (Scene.getListOfLightSources().size() >= 2) {
-            Coordinates lightSourceOpenGLCoordinates02 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 2).getCameraCoordinates());
-            float[] lightSource02 = new float[]{(float) lightSourceOpenGLCoordinates02.x, - (float) lightSourceOpenGLCoordinates02.y};
-            ARBShaderObjects.glUniform2fvARB(lightSourceUniform02, lightSource02);
-        }
-
-        if (Scene.getListOfLightSources().size() >= 3) {
-            Coordinates lightSourceOpenGLCoordinates03 = Coordinates.cameraToOpenGLCoordinates(Scene.getListOfLightSources().get(Scene.getListOfLightSources().size() - 3).getCameraCoordinates());
-            float[] lightSource03 = new float[]{(float) lightSourceOpenGLCoordinates03.x, - (float) lightSourceOpenGLCoordinates03.y};
-            ARBShaderObjects.glUniform2fvARB(lightSourceUniform03, lightSource03);
-        }
+        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(size);
+        floatBuffer.put(lightSources);
+        floatBuffer.flip();
+        glUniform2fv(lightSourcesUniform, floatBuffer);
 
         /** Update programShader02 **/
-        int timeUniformLocation02 = ARBShaderObjects.glGetUniformLocationARB(OpenGLManager.programShader02, "time");
-        ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader02);
-        ARBShaderObjects.glUniform1fARB(timeUniformLocation02, (float) GameStatus.getRuntime());
+        int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");
+        glUseProgram(OpenGLManager.programShader02);
+        glUniform1f(timeUniformLocation02, (float) GameStatus.getRuntime());
     }
 
     public static void useShader(int shader) {
@@ -216,18 +217,135 @@ public class OpenGLManager {
         switch (shader) {
             case 0:
             default:
-                ARBShaderObjects.glUseProgramObjectARB(0);
+                glUseProgram(0);
                 break;
             case 1:
-                ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader01);
+                glUseProgram(OpenGLManager.programShader01);
                 break;
             case 2:
-                ARBShaderObjects.glUseProgramObjectARB(OpenGLManager.programShader02);
+                glUseProgram(OpenGLManager.programShader02);
                 break;
         }
     }
 
     public static void releaseCurrentShader() {
         useShader(0);
+    }
+
+    /**
+     * Methods depending on if "ARB_SHADERS" is ENABLED / DISABLED
+     **/
+
+    private static void glDeleteShader(int shader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glDeleteObjectARB(shader);
+        } else {
+            GL20.glDeleteShader(shader);
+        }
+    }
+
+    private static void glCompileShader(int shader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glCompileShaderARB(shader);
+        } else {
+            GL20.glCompileShader(shader);
+        }
+    }
+
+    private static void glShaderSource(int shader, String file) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glShaderSourceARB(shader, file);
+        } else {
+            GL20.glShaderSource(shader, file);
+        }
+    }
+
+    private static int glCreateShader(int shaderType) {
+        if (ARB_SHADERS) {
+            return ARBShaderObjects.glCreateShaderObjectARB(shaderType);
+        } else {
+            return GL20.glCreateShader(shaderType);
+        }
+    }
+
+    private static String getLogInfo(int obj) {
+        if (ARB_SHADERS) {
+            return ARBShaderObjects.glGetInfoLogARB(obj, glGetProgrami(obj, ARBShaderObjects.GL_OBJECT_INFO_LOG_LENGTH_ARB));
+        } else {
+            return GL20.glGetProgramInfoLog(obj, glGetProgrami(obj, GL20.GL_INFO_LOG_LENGTH));
+        }
+    }
+
+    private static int glGetUniformLocation(int shader, String uniformName) {
+        if (ARB_SHADERS) {
+            return ARBShaderObjects.glGetUniformLocationARB(shader, uniformName);
+        } else {
+            return GL20.glGetUniformLocation(shader, uniformName);
+        }
+    }
+
+    private static void glUseProgram(int shader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUseProgramObjectARB(shader);
+        } else {
+            GL20.glUseProgram(shader);
+        }
+    }
+
+    private static void glUniform1f(int uniformLocation, float uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform1fARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform1f(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glUniform1i(int uniformLocation, int uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform1iARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform1i(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glUniform2fv(int uniformLocation, FloatBuffer uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform2fvARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform2fv(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glValidateProgram(int programShader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glValidateProgramARB(programShader);
+        } else {
+            GL20.glValidateProgram(programShader);
+        }
+    }
+
+    private static int glGetProgrami(int programShader, int status) {
+        if (ARB_SHADERS) {
+            return ARBShaderObjects.glGetObjectParameteriARB(programShader, status);
+        } else {
+//            return GL20.glGetShaderi(programShader, status);
+            return GL20.glGetProgrami(programShader, status);
+        }
+    }
+
+    private static void glAttachShader(int programShader, int vertexShader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glAttachObjectARB(programShader, vertexShader);
+        } else {
+            GL20.glAttachShader(programShader, vertexShader);
+        }
+    }
+
+    private static void glLinkProgram(int programShader) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glLinkProgramARB(programShader);
+        } else {
+            GL20.glLinkProgram(programShader);
+        }
     }
 }

@@ -8,7 +8,7 @@ public class LightSource {
     private float intensity;
 
     public LightSource(Coordinates worldCoordinates) {
-        this.worldCoordinates = new Coordinates(worldCoordinates.x, worldCoordinates.y);
+        this.worldCoordinates = worldCoordinates;
         this.cameraCoordinates = worldCoordinates.toCameraCoordinates();
         this.intensity = 1f;
     }
