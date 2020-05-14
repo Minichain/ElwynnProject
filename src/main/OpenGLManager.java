@@ -184,6 +184,7 @@ public class OpenGLManager {
         int zoomUniform = glGetUniformLocation(OpenGLManager.programShader01, "zoom");
         int widthHeightRatio = glGetUniformLocation(OpenGLManager.programShader01, "widthHeightRatio");
         int lightSourcesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSources");
+        int gameTimeLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "gameTimeLight");
         glUseProgram(OpenGLManager.programShader01);
         glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
         glUniform1i(textureUniform01, 0);
@@ -206,6 +207,7 @@ public class OpenGLManager {
         floatBuffer.put(lightSources);
         floatBuffer.flip();
         glUniform3fv(lightSourcesUniform, floatBuffer);
+        glUniform1f(gameTimeLightUniform, GameTime.getLight());
 
         /** Update programShader02 **/
         int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");

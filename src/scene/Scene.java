@@ -32,11 +32,11 @@ public class Scene {
     public static ArrayList<LightSource> listOfLightSources;
 
     private Scene() {
+        initialCoordinates = new Coordinates(2500, 2500);
         listOfEntities = new ArrayList<>();
         listOfStaticEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
-        initialCoordinates = new Coordinates(2500, 2500);
         listOfLightSources = new ArrayList<>();
     }
 
@@ -54,13 +54,16 @@ public class Scene {
         if (GameStatus.getStatus() != GameStatus.Status.RUNNING) {
             return;
         }
+
         updateEnemiesSpawn();
+
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
             if (listOfCircleAttacks.get(i).isDead()) {
                 listOfCircleAttacks.remove(listOfCircleAttacks.get(i));
             }
         }
+
         ParticleManager.getInstance().updateParticles(timeElapsed);
     }
 

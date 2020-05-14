@@ -2,6 +2,7 @@ uniform float time; //Time elapsed since the Game has been executed (in millisec
 uniform vec3 lightSources[64];
 uniform float zoom;
 uniform float widthHeightRatio;
+uniform float gameTimeLight;
 
 varying vec4 vertColor;
 varying out vec2 TexCoord;
@@ -21,7 +22,7 @@ void main() {
             distanceFromLightSourceY = abs(lightSources[i].y - gl_Position.y);
             distanceFromLightSource = length(vec2(distanceFromLightSourceX, distanceFromLightSourceY));
             lightReceivedFromLightSource = 1.0 - (distanceFromLightSource / zoom) / lightSources[i].z;
-            light += clamp(lightReceivedFromLightSource, 0, 1);
+            light += clamp(lightReceivedFromLightSource, gameTimeLight, 1);
         }
     }
 
