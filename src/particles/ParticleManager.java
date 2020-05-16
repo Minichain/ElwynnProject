@@ -25,6 +25,12 @@ public class ParticleManager {
         listOfParticles.add(particle);
     }
 
+    public void addParticles(Particle[] particles) {
+        for (int i = 0; i < particles.length; i++) {
+            addParticle(particles[i]);
+        }
+    }
+
     public void updateParticles(long timeElapsed) {
         Particle particle;
         for (int i = 0; i < listOfParticles.size(); i++) {

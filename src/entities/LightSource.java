@@ -12,7 +12,7 @@ public class LightSource {
         this.worldCoordinates = worldCoordinates;
         this.cameraCoordinates = worldCoordinates.toCameraCoordinates();
         this.intensity = intensity;
-        this.timeOn = 0;
+        this.timeOn = (long) (Math.random() * 100.0);
     }
 
     public Coordinates getWorldCoordinates() {
@@ -26,7 +26,7 @@ public class LightSource {
     public void update(long timeElapsed) {
         //Update Camera coordinates
         cameraCoordinates = worldCoordinates.toCameraCoordinates();
-        intensity = intensity + (float) (Math.sin(timeOn) * 0.01);
+        intensity = intensity + (float) (Math.sin(timeOn) * intensity * 0.01);
         timeOn += timeElapsed;
     }
 

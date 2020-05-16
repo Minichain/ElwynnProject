@@ -10,18 +10,23 @@ public class Particle {
     private float size;
     private double movingSpeed = 0.25;
     private double timeLiving = 0;
-    private double timeToLive = 600;
+    private double timeToLive;
     private float r;
     private float g;
     private float b;
 
     public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b) {
+        this(center, velocityVector, size, r, g, b, 600.0);
+    }
+
+    public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive) {
         this.velocityVector = velocityVector;
         this.center = center;
         this.size = size;
         this.r = r;
         this.g = g;
         this.b = b;
+        this.timeToLive = timeToLive;
     }
 
     public void update(long timeElapsed) {

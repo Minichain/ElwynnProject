@@ -72,6 +72,8 @@ public class UserInterface {
             } else {
                 textList.add("Game Mode: " + " " + GameMode.getGameMode());
             }
+            textList.add("Game time: " + String.format("%.2f", GameTime.getGameTime()) + ", light: " + String.format("%.2f", GameTime.getLight()));
+            textList.add("Current Weather: " + Weather.getWeatherStatus());
             if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
                 textList.add("GAME PAUSED");
             }

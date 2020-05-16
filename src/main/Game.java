@@ -19,6 +19,7 @@ public class Game {
         InputListenerManager.updateControllerInputs();
         Camera.getInstance().update(timeElapsed);
         Scene.getInstance().update(timeElapsed);
+        Weather.getInstance().update(timeElapsed);
         GameTime.update(timeElapsed);
     }
 

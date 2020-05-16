@@ -3,7 +3,7 @@ package main;
 public class GameTime {
     private static GameTime instance = null;
     private static float gameTime;  //InGame time in hours (0f - 24.0f)
-    private static float gameTimeRealTimeFactor = 100f;
+    private static float gameTimeRealTimeFactor = 60f;
 
     private GameTime() {
         gameTime = 0f;
@@ -20,7 +20,7 @@ public class GameTime {
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }
-        float hoursElapsed = (float) timeElapsed / (3600.0f * 24.0f);
+        float hoursElapsed = (float) timeElapsed / (1000.0f * 3600.0f * 24.0f);   //From milliseconds to hours
         gameTime = (gameTime + hoursElapsed * gameTimeRealTimeFactor) % 24.0f;
         System.out.println("Updating ingame time. Current time: " + gameTime);
     }
