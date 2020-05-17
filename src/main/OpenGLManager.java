@@ -185,6 +185,7 @@ public class OpenGLManager {
         int widthHeightRatio = glGetUniformLocation(OpenGLManager.programShader01, "widthHeightRatio");
         int lightSourcesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSources");
         int gameTimeLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "gameTimeLight");
+        int rainingUniform = glGetUniformLocation(OpenGLManager.programShader01, "rainingIntensity");
         glUseProgram(OpenGLManager.programShader01);
         glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
         glUniform1i(textureUniform01, 0);
@@ -208,6 +209,7 @@ public class OpenGLManager {
         floatBuffer.flip();
         glUniform3fv(lightSourcesUniform, floatBuffer);
         glUniform1f(gameTimeLightUniform, GameTime.getLight());
+        glUniform1f(rainingUniform, Weather.getRainingIntensity());
 
         /** Update programShader02 **/
         int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");
@@ -324,6 +326,14 @@ public class OpenGLManager {
             ARBShaderObjects.glUniform3fvARB(uniformLocation, uniformValue);
         } else {
             GL20.glUniform3fv(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glUniform1b(int uniformLocation, int uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform1iARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform1i(uniformLocation, uniformValue);
         }
     }
 

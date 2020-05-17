@@ -174,6 +174,12 @@ public class OpenALManager {
         }
     }
 
+    public static void setSoundGain(Sound soundBuffer, float gain) {
+        if (soundBuffer != null) {
+            alSourcef(source.get(soundBuffer.getIndex()), AL_GAIN, gain);
+        }
+    }
+
     public static void onMusicLevelChange(float soundLevel) {
         for (Sound listOfSound : listOfSounds) {
             if (listOfSound.getType() == Sound.SoundType.MUSIC) {

@@ -3,6 +3,7 @@ uniform vec3 lightSources[64];
 uniform float zoom;
 uniform float widthHeightRatio;
 uniform float gameTimeLight;
+uniform float rainingIntensity;
 
 varying vec4 vertColor;
 varying out vec2 TexCoord;
@@ -28,5 +29,5 @@ void main() {
 
     light = clamp(light, 0, 1);
 
-    vertColor = vec4(light, light, light, 1.0);
+    vertColor = vec4(light - (0.2 * rainingIntensity), light - (0.2 * rainingIntensity), light, 1.0);
 }
