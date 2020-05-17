@@ -10,8 +10,8 @@ import scene.Camera;
 public class Weather {
     private static Weather instance = null;
     private static WeatherStatus weatherStatus;
-    private static long timeUntilNextCheck = 10000;  //milliseconds
-    private static long timeElapsedUntilNextCheck;  //milliseconds
+    private static float timeUntilNextCheck = 1f * 3600f * 1000f / GameTime.getGameTimeRealTimeFactor();  //milliseconds
+    private static float timeElapsedUntilNextCheck;  //milliseconds
 
     public enum WeatherStatus {
         CLEAR, RAINING
@@ -34,7 +34,7 @@ public class Weather {
             return;
         }
 
-        timeElapsedUntilNextCheck += timeElapsed;
+        timeElapsedUntilNextCheck += (float) timeElapsed;
         if (timeElapsedUntilNextCheck >= timeUntilNextCheck) {
             if (Math.random() >= 0.5) {
                 setWeatherStatus(WeatherStatus.CLEAR);
@@ -58,7 +58,7 @@ public class Weather {
                 ParticleManager.getInstance().addParticle(newParticle);
             }
         } else {
-
+            OpenALManager.stopPlayingSound(OpenALManager.SOUND_RAIN_01);
         }
     }
 

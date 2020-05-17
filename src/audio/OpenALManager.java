@@ -168,6 +168,12 @@ public class OpenALManager {
         return AL10.alGetSourcei(source.get(soundBuffer.getIndex()), AL10.AL_SOURCE_STATE) == AL10.AL_PLAYING;
     }
 
+    public static void stopPlayingSound(Sound soundBuffer) {
+        if (soundBuffer != null) {
+            alSourceStop(source.get(soundBuffer.getIndex()));
+        }
+    }
+
     public static void onMusicLevelChange(float soundLevel) {
         for (Sound listOfSound : listOfSounds) {
             if (listOfSound.getType() == Sound.SoundType.MUSIC) {
