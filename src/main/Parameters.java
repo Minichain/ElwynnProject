@@ -11,11 +11,9 @@ public class Parameters {
     private static boolean fullScreen = false;
     private static Resolution resolution = Resolution.RESOLUTION_1600_900;
 
-    /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.0f;
-    private static float effectSoundLevel = 0.3f;
-    private static float ambienceSoundLevel = 0.3f;
-
+    /**
+     * Frames Per Second we would love to see our game to run at.
+     */
     public static int getFramesPerSecond() {
         return framesPerSecond;
     }
@@ -53,6 +51,11 @@ public class Parameters {
         Parameters.debugMode = debugMode;
     }
 
+    /** AUDIO PARAMETERS **/
+    private static float musicSoundLevel = 0.0f;
+    private static float effectSoundLevel = 0.3f;
+    private static float ambienceSoundLevel = 0.3f;
+
     public static float getMusicSoundLevel() {
         return musicSoundLevel;
     }
@@ -78,5 +81,19 @@ public class Parameters {
     public static void setAmbienceSoundLevel(float soundLevel) {
         OpenALManager.onEffectLevelChange(soundLevel);
         Parameters.ambienceSoundLevel = soundLevel;
+    }
+
+    /** ------------------------ PROJECT VERSION ------------------------
+     * [Major build number].[Minor build number].[Revision].[Package]
+     * i.e. Version: 1.0.15.2
+     * Major build number: This indicates a major milestone in the game, increment this when going from beta to release, from release to major updates.
+     * Minor build number: Used for feature updates, large bug fixes etc.
+     * Revision: Minor alterations on existing features, small bug fixes, etc.
+     * Package: Your code stays the same, external library changes or asset file update.
+     */
+    private static String projectVersion = "0.00.01.0";
+
+    public static String getProjectVersion() {
+        return projectVersion;
     }
 }

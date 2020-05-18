@@ -42,7 +42,6 @@ public class HeadUpDisplay {
             glEnd();
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
-
             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                 int previousTilesToShow = 5, currentTile, x, y;
 

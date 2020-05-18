@@ -6,10 +6,9 @@ Game Engine written in Java, using LWJGL (Lightweight Java Game Library).
 
 ## Screenshots
 <p align="center">
-  <img src="/screenshots/gif01.gif" width="1280px"</img> 
-  <img src="/screenshots/screenshot01.jpg" width="1280px"</img> 
-  <img src="/screenshots/screenshot02.jpg" width="1280px"</img> 
-  <img src="/screenshots/screenshot03.jpg" width="1280px"</img>   
+  <img src="/screenshots/gif01.gif" width="640px"</img> 
+  <img src="/screenshots/gif02.gif" width="640px"</img> 
+  <img src="/screenshots/gif03.gif" width="640px"</img> 
 </p>
 
 ## Social Media

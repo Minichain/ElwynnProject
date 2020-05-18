@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import static org.lwjgl.opengl.GL11.*;
 
 public class UserInterface {
-    public static UserInterface instance = null;
+    private static UserInterface instance = null;
 
     public UserInterface() {
         TextRendering.init();
@@ -39,6 +39,7 @@ public class UserInterface {
         if (Parameters.isDebugMode()) {
             if (timeElapsed <= 0) timeElapsed = 1;
             float fps = 1000f / timeElapsed;
+            FramesPerSecond.update(fps);
 
             /** DEBUG TEXT **/
             ArrayList<String> textList = new ArrayList<>();
@@ -47,10 +48,11 @@ public class UserInterface {
             int leftMargin = 10;
             int gapBetweenTexts = 10 * textScale;
 
+            textList.add("Project Version: " + Parameters.getProjectVersion());
             textList.add("Show/Hide Debug Info: F1");
             textList.add("Reset Game: F4");
             textList.add("Save World: F5");
-            textList.add("FPS: " + fps);
+            textList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
             textList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             textList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
             textList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
