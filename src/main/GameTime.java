@@ -30,11 +30,14 @@ public class GameTime {
         return gameTime;
     }
 
+    /**
+     * This function translates hours into light using "sigmoid" function.
+     */
     public static float getLight() {
         if (gameTime < 12.0) {
-            return 1f / (1f + (float) Math.exp(-(gameTime / 24f) * 10f + 5f));
+            return 1f / (1f + (float) Math.exp(-(gameTime / 12f) * 10f + 5f));
         } else {
-            return 1f / (1f + (float) Math.exp((gameTime / 24f) * 10f - 5f));
+            return 1f / (1f + (float) Math.exp(((gameTime - 12f) / 12f) * 10f - 5f));
         }
     }
 
