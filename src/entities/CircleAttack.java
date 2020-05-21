@@ -48,7 +48,7 @@ public class CircleAttack {
         /** GENERATE NEW PARTICLES **/
         if (attacking) {
             Coordinates particleCoordinates;
-            double amountOfParticles = 1;
+            double amountOfParticles = 0.05;
             double randomAngle;
             double[] generationVector;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
@@ -58,10 +58,10 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, 4, 1f, 0f, 0f);
+                    particle = new Particle(particleCoordinates, velocityVector, 4, 1f, 0f, 0f, true);
                 } else {
                     float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, velocityVector, 4, color[0], color[1], color[2]);
+                    particle = new Particle(particleCoordinates, velocityVector, 4, color[0], color[1], color[2], true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }

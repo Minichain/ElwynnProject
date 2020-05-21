@@ -43,12 +43,20 @@ public class Coordinates {
         return new Coordinates(x / Window.getCameraWindowScaleFactor()[0], y / Window.getCameraWindowScaleFactor()[1]);
     }
 
-    public static Coordinates cameraToOpenGLCoordinates(double x, double y) {
+    public static Coordinates cameraToVertexCoordinates(double x, double y) {
         return new Coordinates((x / ((double) Parameters.getResolutionWidth() / 2.0)) - 1.0, (y / ((double) Parameters.getResolutionHeight() / 2.0)) - 1.0);
     }
 
-    public static Coordinates cameraToOpenGLCoordinates(Coordinates coordinates) {
-        return cameraToOpenGLCoordinates(coordinates.x, coordinates.y);
+    public static Coordinates cameraToVertexCoordinates(Coordinates coordinates) {
+        return cameraToVertexCoordinates(coordinates.x, coordinates.y);
+    }
+
+    public static Coordinates cameraToFragmentCoordinates(double x, double y) {
+        return new Coordinates(x, y - Window.getHeight());
+    }
+
+    public static Coordinates cameraToFragmentCoordinates(Coordinates coordinates) {
+        return cameraToFragmentCoordinates(coordinates.x, coordinates.y);
     }
 
     public String toString() {

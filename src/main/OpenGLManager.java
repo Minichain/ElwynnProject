@@ -182,7 +182,8 @@ public class OpenGLManager {
         int timeUniformLocation01 = glGetUniformLocation(OpenGLManager.programShader01, "time");
         int textureUniform01 = glGetUniformLocation(OpenGLManager.programShader01, "texture01");
         int zoomUniform = glGetUniformLocation(OpenGLManager.programShader01, "zoom");
-        int widthHeightRatio = glGetUniformLocation(OpenGLManager.programShader01, "widthHeightRatio");
+        int windowWidthUniform = glGetUniformLocation(OpenGLManager.programShader01, "windowWidth");
+        int windowHeightUniform = glGetUniformLocation(OpenGLManager.programShader01, "windowHeight");
         int lightSourcesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSources");
         int gameTimeLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "gameTimeLight");
         int rainingUniform = glGetUniformLocation(OpenGLManager.programShader01, "rainingIntensity");
@@ -190,14 +191,15 @@ public class OpenGLManager {
         glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
         glUniform1i(textureUniform01, 0);
         glUniform1f(zoomUniform, (float) Camera.getZoom());
-        glUniform1f(widthHeightRatio, ((float) Window.getWidth() / (float) Window.getHeight()));
+        glUniform1f(windowWidthUniform, (float) Window.getWidth());
+        glUniform1f(windowHeightUniform, (float) Window.getHeight());
 
         int i = 0;
-        int size = 64 * 3;
+        int size = 256 * 3;
         float[] lightSources = new float[size];
         Arrays.fill(lightSources, -10000f);
         for (LightSource lightSource : Scene.getInstance().getListOfLightSources()) {
-            Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToOpenGLCoordinates(lightSource.getCameraCoordinates());
+            Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToFragmentCoordinates(lightSource.getCameraCoordinates());
             lightSources[i] = (float) lightSourceOpenGLCoordinates.x;
             lightSources[i + 1] = - (float) lightSourceOpenGLCoordinates.y;
             lightSources[i + 2] = lightSource.getIntensity();

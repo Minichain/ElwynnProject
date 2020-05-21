@@ -1,6 +1,7 @@
 package particles;
 
 import main.OpenGLManager;
+import scene.Scene;
 
 import java.util.ArrayList;
 
@@ -37,6 +38,7 @@ public class ParticleManager {
             particle = listOfParticles.get(i);
             particle.update(timeElapsed);
             if (particle.isDead()) {
+                Scene.getInstance().getListOfLightSources().remove(particle.getLightSource());
                 listOfParticles.remove(particle);
             }
         }

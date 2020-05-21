@@ -52,7 +52,7 @@ public class ConeAttack {
         /** GENERATE NEW PARTICLES **/
         if (attacking) {
             Coordinates particleCoordinates;
-            double amountOfParticles = 0.1;
+            double amountOfParticles = 0.02;
             double randomAngle;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
                 randomAngle = Math.random() * angle;
@@ -62,10 +62,10 @@ public class ConeAttack {
                         initialParticleCoordinates.x + rotatedVector[0] * Math.random() * distanceFromEntity,
                         initialParticleCoordinates.y + rotatedVector[1] * Math.random() * distanceFromEntity);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, rotatedVector, 4, 1f, 0f, 0f);
+                    particle = new Particle(particleCoordinates, rotatedVector, 4, 1f, 0f, 0f, true);
                 } else {
                     float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, rotatedVector, 4, color[0], color[1], color[2]);
+                    particle = new Particle(particleCoordinates, rotatedVector, 4, color[0], color[1], color[2], true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }

@@ -19,6 +19,10 @@ public class LightSource {
         return worldCoordinates;
     }
 
+    public void setWorldCoordinates(Coordinates worldCoordinates) {
+        this.worldCoordinates = worldCoordinates;
+    }
+
     public Coordinates getCameraCoordinates() {
         return cameraCoordinates;
     }
@@ -32,5 +36,9 @@ public class LightSource {
 
     public float getIntensity() {
         return intensity;
+    }
+
+    public void setIntensity(float intensity) {
+        this.intensity = intensity;
     }
 }
