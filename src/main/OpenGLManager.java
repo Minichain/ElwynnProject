@@ -184,9 +184,11 @@ public class OpenGLManager {
         int zoomUniform = glGetUniformLocation(OpenGLManager.programShader01, "zoom");
         int windowWidthUniform = glGetUniformLocation(OpenGLManager.programShader01, "windowWidth");
         int windowHeightUniform = glGetUniformLocation(OpenGLManager.programShader01, "windowHeight");
-        int lightSourcesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSources");
+        int lightSourceCoordinatesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceCoordinates");
+        int lightSourceIntensityUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceIntensity");
+        int lightSourceColorUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceColor");
         int gameTimeLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "gameTimeLight");
-        int rainingUniform = glGetUniformLocation(OpenGLManager.programShader01, "rainingIntensity");
+        int rainingIntensityUniform = glGetUniformLocation(OpenGLManager.programShader01, "rainingIntensity");
         glUseProgram(OpenGLManager.programShader01);
         glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
         glUniform1i(textureUniform01, 0);
@@ -194,24 +196,41 @@ public class OpenGLManager {
         glUniform1f(windowWidthUniform, (float) Window.getWidth());
         glUniform1f(windowHeightUniform, (float) Window.getHeight());
 
-        int i = 0;
-        int size = 256 * 3;
-        float[] lightSources = new float[size];
-        Arrays.fill(lightSources, -10000f);
-        for (LightSource lightSource : Scene.getInstance().getListOfLightSources()) {
+        int maxNumberOfLightSources = 100;
+
+        int lightSourcesCoordinatesArraySize = maxNumberOfLightSources * 2;
+        float[] lightSourceCoordinates = new float[lightSourcesCoordinatesArraySize];
+
+        int lightSourcesIntensityArraySize = maxNumberOfLightSources;
+        float[] lightSourceIntensity = new float[lightSourcesIntensityArraySize];
+        Arrays.fill(lightSourceIntensity, -1f);
+
+        int lightSourceColorArraySize = maxNumberOfLightSources * 3;
+        float[] lightSourceColor = new float[lightSourceColorArraySize];
+
+        for (int i = 0; i < Scene.getInstance().getListOfLightSources().size() && i < maxNumberOfLightSources; i++) {
+            LightSource lightSource = Scene.getInstance().getListOfLightSources().get(i);
             Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToFragmentCoordinates(lightSource.getCameraCoordinates());
-            lightSources[i] = (float) lightSourceOpenGLCoordinates.x;
-            lightSources[i + 1] = - (float) lightSourceOpenGLCoordinates.y;
-            lightSources[i + 2] = lightSource.getIntensity();
-            i += 3;
+
+            //Coordinates
+            lightSourceCoordinates[i * 2] = (float) lightSourceOpenGLCoordinates.x;
+            lightSourceCoordinates[i * 2 + 1] = - (float) lightSourceOpenGLCoordinates.y;
+
+            //Intensity
+            lightSourceIntensity[i] = lightSource.getIntensity();
+
+            //Light Color
+            lightSourceColor[i * 3] = lightSource.getColor()[0];
+            lightSourceColor[i * 3 + 1] = lightSource.getColor()[1];
+            lightSourceColor[i * 3 + 2] = lightSource.getColor()[2];
         }
 
-        FloatBuffer floatBuffer = BufferUtils.createFloatBuffer(size);
-        floatBuffer.put(lightSources);
-        floatBuffer.flip();
-        glUniform3fv(lightSourcesUniform, floatBuffer);
+        glUniform2fv(lightSourceCoordinatesUniform, lightSourceCoordinates);
+        glUniform1fv(lightSourceIntensityUniform, lightSourceIntensity);
+        glUniform3fv(lightSourceColorUniform, lightSourceColor);
+
         glUniform1f(gameTimeLightUniform, GameTime.getLight());
-        glUniform1f(rainingUniform, Weather.getRainingIntensity());
+        glUniform1f(rainingIntensityUniform, Weather.getRainingIntensity());
 
         /** Update programShader02 **/
         int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");
@@ -315,7 +334,15 @@ public class OpenGLManager {
         }
     }
 
-    private static void glUniform2fv(int uniformLocation, FloatBuffer uniformValue) {
+    private static void glUniform1fv(int uniformLocation, float[] uniformValue) {
+        if (ARB_SHADERS) {
+            ARBShaderObjects.glUniform1fvARB(uniformLocation, uniformValue);
+        } else {
+            GL20.glUniform1fv(uniformLocation, uniformValue);
+        }
+    }
+
+    private static void glUniform2fv(int uniformLocation, float[] uniformValue) {
         if (ARB_SHADERS) {
             ARBShaderObjects.glUniform2fvARB(uniformLocation, uniformValue);
         } else {
@@ -323,7 +350,7 @@ public class OpenGLManager {
         }
     }
 
-    private static void glUniform3fv(int uniformLocation, FloatBuffer uniformValue) {
+    private static void glUniform3fv(int uniformLocation, float[] uniformValue) {
         if (ARB_SHADERS) {
             ARBShaderObjects.glUniform3fvARB(uniformLocation, uniformValue);
         } else {

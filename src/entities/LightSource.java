@@ -7,12 +7,18 @@ public class LightSource {
     private Coordinates cameraCoordinates;
     private float intensity;
     private long timeOn;
+    private float[] color;
 
     public LightSource(Coordinates worldCoordinates, float intensity) {
+        this(worldCoordinates, intensity, new float[]{1f, 1f, 1f});
+    }
+
+    public LightSource(Coordinates worldCoordinates, float intensity, float[] color) {
         this.worldCoordinates = worldCoordinates;
         this.cameraCoordinates = worldCoordinates.toCameraCoordinates();
         this.intensity = intensity;
         this.timeOn = (long) (Math.random() * 100.0);
+        this.color = color;
     }
 
     public Coordinates getWorldCoordinates() {
@@ -40,5 +46,9 @@ public class LightSource {
 
     public void setIntensity(float intensity) {
         this.intensity = intensity;
+    }
+
+    public float[] getColor() {
+        return color;
     }
 }

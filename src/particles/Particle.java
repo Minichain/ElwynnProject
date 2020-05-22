@@ -35,7 +35,7 @@ public class Particle {
         if (producesLight) {
             Coordinates lightSourceCoordinates = new Coordinates(center.x, center.y);
             float intensity = 0.05f;
-            lightSource = new LightSource(lightSourceCoordinates, intensity);
+            lightSource = new LightSource(lightSourceCoordinates, intensity, new float[]{r, g, b});
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
     }
