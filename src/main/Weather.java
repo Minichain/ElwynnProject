@@ -19,7 +19,7 @@ public class Weather {
     }
 
     private Weather() {
-        weatherStatus = WeatherStatus.CLEAR;
+        weatherStatus = WeatherStatus.RAINING;
         timeElapsedUntilNextCheck = 0;
         rainingIntensity = 0f;
     }

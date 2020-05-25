@@ -48,7 +48,7 @@ public class CircleAttack {
         /** GENERATE NEW PARTICLES **/
         if (attacking) {
             Coordinates particleCoordinates;
-            double amountOfParticles = 0.05;
+            double amountOfParticles = 0.01;
             double randomAngle;
             double[] generationVector;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
