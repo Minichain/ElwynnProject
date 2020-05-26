@@ -19,6 +19,7 @@ public class Scene {
     private static ArrayList<GraphicEntity> listOfEntities;
     private static ArrayList<StaticGraphicEntity> listOfStaticEntities;
     private static ArrayList<GraphicEntity> listOfEntitiesToUpdate;
+    private static ArrayList<MusicalNoteGraphicEntity> listOfMusicalNoteGraphicEntities;
     private static int enemySpawnPeriod = 7500; // In Milliseconds
     private static long lastEnemySpawnTime;
 
@@ -38,6 +39,7 @@ public class Scene {
         listOfEntitiesToUpdate = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         listOfLightSources = new ArrayList<>();
+        listOfMusicalNoteGraphicEntities = new ArrayList<>();
     }
 
     public static Scene getInstance() {
@@ -120,8 +122,25 @@ public class Scene {
         }
 
         /** LIGHT SOURCES **/
-        for (LightSource lightSource : listOfLightSources) {
-            lightSource.update(timeElapsed);
+        if (!listOfLightSources.isEmpty()) {
+            for (LightSource lightSource : listOfLightSources) {
+                lightSource.update(timeElapsed);
+            }
+        }
+
+        /** MUSICAL NOTES **/
+        if (!listOfMusicalNoteGraphicEntities.isEmpty()) {
+            MusicalNoteGraphicEntity musicalNoteGraphicEntity;
+            for (int i = 0; i < listOfMusicalNoteGraphicEntities.size(); i++) {
+                musicalNoteGraphicEntity = listOfMusicalNoteGraphicEntities.get(i);
+                if (musicalNoteGraphicEntity.isDead()) {
+                    listOfLightSources.remove(musicalNoteGraphicEntity.getLightSource());
+                    listOfMusicalNoteGraphicEntities.remove(musicalNoteGraphicEntity);
+                } else {
+                    musicalNoteGraphicEntity.update(timeElapsed);
+                    musicalNoteGraphicEntity.updateCoordinates();
+                }
+            }
         }
     }
 
@@ -139,6 +158,10 @@ public class Scene {
 
     public ArrayList<LightSource> getListOfLightSources() {
         return listOfLightSources;
+    }
+
+    public ArrayList<MusicalNoteGraphicEntity> getListOfMusicalNoteGraphicEntities() {
+        return listOfMusicalNoteGraphicEntities;
     }
 
     public static Coordinates getInitialCoordinates() {
@@ -181,6 +204,16 @@ public class Scene {
 
         /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
+
+        /** MUSICAL NOTES **/
+        if (!listOfMusicalNoteGraphicEntities.isEmpty()) {
+            for (MusicalNoteGraphicEntity musicalNoteGraphicEntity : listOfMusicalNoteGraphicEntities) {
+                if (musicalNoteGraphicEntity != null) {
+                    Coordinates cameraCoordinates = musicalNoteGraphicEntity.getWorldCoordinates().toCameraCoordinates();
+                    musicalNoteGraphicEntity.drawSprite((int) cameraCoordinates.x, (int) cameraCoordinates.y);
+                }
+            }
+        }
 
         OpenGLManager.releaseCurrentShader();
 

@@ -10,7 +10,7 @@ import utils.Utils;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Enemy extends DynamicGraphicEntity {
+public class Enemy extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 51;
     private Utils.DirectionFacing directionFacing;
     private Status status;
@@ -48,7 +48,7 @@ public class Enemy extends DynamicGraphicEntity {
     AttackMode attackMode;
 
     public Enemy(int x, int y) {
-        super(x, y, x, y);
+        super(x, y);
         init(x, y);
     }
 
@@ -97,8 +97,6 @@ public class Enemy extends DynamicGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        setPreviousWorldCoordinates(getWorldCoordinates());
-
         if (health > 0) {   //Enemy is alive
             distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
             attacking = distanceToPlayer < coneAttackLength && Player.getInstance().getStatus() != Player.Status.DEAD;

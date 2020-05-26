@@ -10,7 +10,7 @@ import main.*;
 
 import static org.lwjgl.glfw.GLFW.*;
 
-public class Player extends DynamicGraphicEntity {
+public class Player extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 41;
     private static Player instance = null;
     private static Status playerStatus;
@@ -28,11 +28,11 @@ public class Player extends DynamicGraphicEntity {
 
     /** ATTACK **/
     private boolean attacking = false;
-    private int attackPeriod = 250;
-    private int attackCoolDown = 0;
-    private float attackPower = 100f;
-    private ConeAttack coneAttack;
-    private float coneAttackLength = 200f;
+
+    private int attack01Period = 250;
+    private int attack01CoolDown = 0;
+    private float attack01Power = 250f;
+    private float attack01ManaCost = 0.1f;
 
     private CircleAttack circleAttack;
     private int circleAttackPeriod = 10000;
@@ -50,8 +50,6 @@ public class Player extends DynamicGraphicEntity {
 
     private Player() {
         super((int) Scene.getInitialCoordinates().x,
-                (int) Scene.getInitialCoordinates().y,
-                (int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y);
         init();
     }
@@ -96,8 +94,6 @@ public class Player extends DynamicGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        setPreviousWorldCoordinates(getWorldCoordinates());
-
         if (health > 0)  {  //Player is alive
             /** UPDATE MANA, HEALTH AND STAMINA **/
             if (mana < MAX_MANA) {
@@ -318,6 +314,7 @@ public class Player extends DynamicGraphicEntity {
         if (InputListenerManager.isUsingKeyboardAndMouse()) {
             pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
                     InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
+            pointingVector = MathUtils.normalizeVector(pointingVector);
         } else {
             if (InputListenerManager.getRightJoystickAxes()[0] != 0f || InputListenerManager.getRightJoystickAxes()[1] != 0) {
                 pointingVector = new double[]{(double) InputListenerManager.getRightJoystickAxes()[0], (double) InputListenerManager.getRightJoystickAxes()[1]};
@@ -326,10 +323,16 @@ public class Player extends DynamicGraphicEntity {
 
         attacking = attacking && playerStatus != Player.Status.DEAD;
 
-        if (coneAttack == null) {
-            coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0, coneAttackLength, attackPeriod, attackCoolDown, attackPower, false, attacking);
-        } else {
-            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, attackMode);
+        if (InputListenerManager.leftMouseButtonPressed) {
+            if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
+                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector, 0.38, attackMode, attack01Power);
+                Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
+                attack01CoolDown = attack01Period;
+                mana -= attack01ManaCost;
+            }
+        }
+        if (attack01CoolDown > 0) {
+            attack01CoolDown -= timeElapsed;
         }
 
         /** CIRCLE ATTACK **/
@@ -348,9 +351,6 @@ public class Player extends DynamicGraphicEntity {
     }
 
     public void drawAttackFX() {
-        if (coneAttack != null && attacking) {
-            coneAttack.render();
-        }
     }
 
     public float getMana() {

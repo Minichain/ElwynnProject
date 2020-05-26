@@ -1,13 +1,11 @@
 package main;
 
 import entities.LightSource;
-import org.lwjgl.BufferUtils;
 import scene.Camera;
 import scene.Scene;
 import utils.FileUtils;
 import org.lwjgl.opengl.*;
 
-import java.nio.FloatBuffer;
 import java.util.Arrays;
 
 import static org.lwjgl.opengl.GL20.*;

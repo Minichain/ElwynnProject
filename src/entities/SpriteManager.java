@@ -20,6 +20,10 @@ public class SpriteManager {
     public Sprite FENCE03;
     public Sprite FENCE04;
     public Sprite LIGHT01;
+    public Sprite G_CLEF;
+    public Sprite QUARTER_NOTE;
+    public Sprite EIGHTH_NOTE;
+    public Sprite DOUBLE_EIGHTH_NOTE;
     public Sprite TILESET;
 
     public SpriteManager() {
@@ -30,6 +34,12 @@ public class SpriteManager {
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, -1);
         ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
         ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
+
+        /** MUSICAL NOTES **/
+        G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white.png", 16, 16, -1, -1, -1, -1, -1);
+        QUARTER_NOTE = new Sprite("res/sprites/dynamic/quarter_note_white.png", 16, 16, -1, -1, -1, -1, -1);
+        EIGHTH_NOTE = new Sprite("res/sprites/dynamic/eighth_note_white.png", 16, 16, -1, -1, -1, -1, -1);
+        DOUBLE_EIGHTH_NOTE = new Sprite("res/sprites/dynamic/double_eighth_note_white.png", 16, 16, -1, -1, -1, -1, -1);
 
         /** TREES **/
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);

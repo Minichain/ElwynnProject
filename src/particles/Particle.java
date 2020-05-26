@@ -24,6 +24,10 @@ public class Particle {
     }
 
     public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight) {
+        this(center, velocityVector, size, r, g, b, 600.0, producesLight, 0.05f);
+    }
+
+    public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight, float intensity) {
         this.velocityVector = velocityVector;
         this.center = center;
         this.size = size;
@@ -34,7 +38,6 @@ public class Particle {
         this.producesLight = producesLight;
         if (producesLight) {
             Coordinates lightSourceCoordinates = new Coordinates(center.x, center.y);
-            float intensity = 0.05f;
             lightSource = new LightSource(lightSourceCoordinates, intensity, new float[]{r, g, b});
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
