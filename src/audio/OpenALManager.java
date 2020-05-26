@@ -24,15 +24,27 @@ public class OpenALManager {
 
     /** EFFECTS **/
     public static Sound SOUND_PLAYER_HURT_01;
-    public static Sound SOUND_PLAYER_ATTACK_01;
     public static Sound SOUND_PLAYER_DYING_01;
+
+    public static Sound SOUND_ENEMY_HURT_01;
+
     public static Sound SOUND_FOOTSTEP_01;
     public static Sound SOUND_FOOTSTEP_02;
+
     public static Sound SOUND_ROLLING_01;
+
     public static Sound SOUND_RAIN_01;
 
+    public static Sound SOUND_NOTE_A_01;
+    public static Sound SOUND_NOTE_B_01;
+    public static Sound SOUND_NOTE_C_SHARP_01;
+    public static Sound SOUND_NOTE_D_01;
+    public static Sound SOUND_NOTE_E_01;
+    public static Sound SOUND_NOTE_F_SHARP_01;
+    public static Sound SOUND_NOTE_G_SHARP_01;
+
     /** MUSIC **/
-    public static Sound SOUND_MUSIC_O1;
+    public static Sound SOUND_MUSIC_A_MAJOR_O1;
 
     /** Sources are points emitting sound. */
     private static IntBuffer source;
@@ -65,16 +77,28 @@ public class OpenALManager {
         listOfSounds = new ArrayList<>();
 
         /** EFFECTS **/
-        SOUND_PLAYER_ATTACK_01 = loadSound("player_attack_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_A_01 = loadSound("note_a_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_B_01 = loadSound("note_b_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_C_SHARP_01 = loadSound("note_c_sharp_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_D_01 = loadSound("note_d_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_E_01 = loadSound("note_e_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_F_SHARP_01 = loadSound("note_f_Sharp_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_G_SHARP_01 = loadSound("note_g_Sharp_01", Sound.SoundType.EFFECT);
+
         SOUND_PLAYER_HURT_01 = loadSound("player_hurt_01", Sound.SoundType.EFFECT);
         SOUND_PLAYER_DYING_01 = loadSound("player_die_01", Sound.SoundType.EFFECT);
+
+        SOUND_ENEMY_HURT_01 = loadSound("enemy_hurt_01", Sound.SoundType.EFFECT);
+
         SOUND_FOOTSTEP_01 = loadSound("footstep_01", Sound.SoundType.EFFECT);
         SOUND_FOOTSTEP_02 = loadSound("footstep_02", Sound.SoundType.EFFECT);
+
         SOUND_ROLLING_01 = loadSound("rolling_01", Sound.SoundType.EFFECT);
+
         SOUND_RAIN_01 = loadSound("rain_01", Sound.SoundType.EFFECT);
 
         /** MUSIC **/
-        SOUND_MUSIC_O1 = loadSound("music_01", Sound.SoundType.MUSIC);
+        SOUND_MUSIC_A_MAJOR_O1 = loadSound("music_a_major_01", Sound.SoundType.MUSIC);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
     }

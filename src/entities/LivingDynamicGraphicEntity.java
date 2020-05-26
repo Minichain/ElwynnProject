@@ -2,7 +2,7 @@ package entities;
 
 import main.Texture;
 
-public class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
+public abstract class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
     public float health;
     public double[] facingVector;
 
@@ -37,4 +37,6 @@ public class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
     public void setHealth(float health) {
         this.health = health;
     }
+
+    public abstract void hurt(float damage);
 }

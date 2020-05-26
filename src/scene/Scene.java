@@ -50,7 +50,7 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
-        OpenALManager.playSound(OpenALManager.SOUND_MUSIC_O1);
+        OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_MAJOR_O1);
         updateAndSortEntities(timeElapsed);
 
         if (GameStatus.getStatus() != GameStatus.Status.RUNNING) {

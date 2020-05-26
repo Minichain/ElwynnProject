@@ -48,6 +48,32 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, this.attackMode.getColor());
         this.damage = damage;
         Scene.getInstance().getListOfLightSources().add(this.lightSource);
+
+        random = (int) (Math.random() * 7);
+        switch (random) {
+            case 0:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_A_01);
+                break;
+            case 1:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_B_01);
+                break;
+            case 2:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_C_SHARP_01);
+                break;
+            case 3:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_D_01);
+                break;
+            case 4:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_E_01);
+                break;
+            case 5:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_F_SHARP_01);
+                break;
+            case 6:
+            default:
+                OpenALManager.playSound(OpenALManager.SOUND_NOTE_G_SHARP_01);
+                break;
+        }
     }
 
     public void update(long timeElapsed) {
@@ -69,26 +95,12 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), enemy.getCenterOfMassWorldCoordinates()) < 30) {
                     damage *= enemy.getWeakness(attackMode);
-                    enemy.setHealth(enemy.getHealth() - damage);
-                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
+                    enemy.hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(enemy.getCenterOfMassWorldCoordinates().x, enemy.getCenterOfMassWorldCoordinates().y, text, true, true, false);
-                    Particle particle;
-//                    for (int i = 0; i < 2; i++) {
-//                        double[] velocityVector = MathUtils.rotateVector(new double[]{0.1, 0}, Math.random() * 2.0 * Math.PI);
-//                        particle = new Particle(getCenterOfMassWorldCoordinates(), velocityVector, 1,
-//                                this.attackMode.getColor()[0], this.attackMode.getColor()[1], this.attackMode.getColor()[2], 300, true, 0.01f);
-//                        ParticleManager.getInstance().addParticle(particle);
-//                    }
 
-                    particle = new Particle(getCenterOfMassWorldCoordinates(), new double[]{1, 0.1}, 1,
-                            this.attackMode.getColor()[0], this.attackMode.getColor()[1], this.attackMode.getColor()[2], 500, true, 0.01f);
-                    ParticleManager.getInstance().addParticle(particle);
-
-                    particle = new Particle(getCenterOfMassWorldCoordinates(), new double[]{-1, 0.7}, 1,
-                            this.attackMode.getColor()[0], this.attackMode.getColor()[1], this.attackMode.getColor()[2], 500, true, 0.01f);
-                    ParticleManager.getInstance().addParticle(particle);
-
+                    //TODO Add explosion effect when interacting with an enemy. Using particles!!
+                    //Particle particle;
 
                     this.dead = true;
                 }

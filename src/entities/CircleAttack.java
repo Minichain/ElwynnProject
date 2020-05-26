@@ -82,8 +82,7 @@ public class CircleAttack {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     damage *= ((Enemy) entity).getWeakness(attackMode);
-                    ((Enemy) entity).setHealth(((Enemy) entity).getHealth() - damage);
-                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_ATTACK_01);
+                    ((Enemy) entity).hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
@@ -91,8 +90,7 @@ public class CircleAttack {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
                         && ((Player) entity).getStatus() != Player.Status.ROLLING
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
-                    ((Player) entity).setHealth(((Player) entity).getHealth() - damage);
-                    OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
+                    ((Player) entity).hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, true);
                 }

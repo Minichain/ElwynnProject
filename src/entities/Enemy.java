@@ -96,6 +96,12 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     @Override
+    public void hurt(float damage) {
+        OpenALManager.playSound(OpenALManager.SOUND_ENEMY_HURT_01);
+        setHealth(getHealth() - damage);
+    }
+
+    @Override
     public void update(long timeElapsed) {
         if (health > 0) {   //Enemy is alive
             distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
