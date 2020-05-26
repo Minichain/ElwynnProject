@@ -13,21 +13,28 @@ uniform sampler2D texture01;
 varying vec4 vertColor;
 varying in vec2 TexCoord;
 
+float lightReceivedFromLightSource;
+
 void main() {
     vec4 texColor = texture2D(texture01, TexCoord);
     float distanceFromLightSourceX;
     float distanceFromLightSourceY;
     float distanceFromLightSource;
-    float lightReceivedFromLightSource;
     vec3 light = vec3(0.0);
 
     for (int i = 0; i < maxLightSources; i++) {
         if (lightSourceIntensity[i] != -1.0) {
             distanceFromLightSourceX = abs(lightSourceCoordinates[i].x - gl_FragCoord.x);
             distanceFromLightSourceY = abs(lightSourceCoordinates[i].y - gl_FragCoord.y);
-            distanceFromLightSource = length(vec2(distanceFromLightSourceX, distanceFromLightSourceY)) / 500.0;
+            distanceFromLightSource = length(vec2(distanceFromLightSourceX, distanceFromLightSourceY));
+
+            //Linear light attenuation
             lightReceivedFromLightSource = 1.0 - (distanceFromLightSource / zoom) / lightSourceIntensity[i];
             if (lightReceivedFromLightSource < 0.0) lightReceivedFromLightSource = 0.0;
+
+            //Inverse square (real light attenuation behaviour)
+            lightReceivedFromLightSource = 1.0 - 1.0 / (pow(lightReceivedFromLightSource + 1.0, 2.0));
+
             light.x += (lightSourceColor[i].x * lightReceivedFromLightSource);
             light.y += (lightSourceColor[i].y * lightReceivedFromLightSource);
             light.z += (lightSourceColor[i].z * lightReceivedFromLightSource);

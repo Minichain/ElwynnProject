@@ -17,7 +17,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private LightSource lightSource;
     private AttackMode attackMode;
     private float damage;
-    private float lightIntensity = 0.15f;
+    private float lightIntensity = 50f;
 
     public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, AttackMode attackMode, float damage) {
         super((int) worldCoordinates.x, (int) worldCoordinates.y);

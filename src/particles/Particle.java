@@ -18,13 +18,14 @@ public class Particle {
     private float b;
     private boolean producesLight;
     private LightSource lightSource;
+    private float intensity;
 
     public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, boolean producesLight) {
         this(center, velocityVector, size, r, g, b, 600.0, producesLight);
     }
 
     public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight) {
-        this(center, velocityVector, size, r, g, b, 600.0, producesLight, 0.05f);
+        this(center, velocityVector, size, r, g, b, timeToLive, producesLight, 25f);
     }
 
     public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight, float intensity) {
@@ -36,6 +37,7 @@ public class Particle {
         this.b = b;
         this.timeToLive = timeToLive;
         this.producesLight = producesLight;
+        this.intensity = intensity;
         if (producesLight) {
             Coordinates lightSourceCoordinates = new Coordinates(center.x, center.y);
             lightSource = new LightSource(lightSourceCoordinates, intensity, new float[]{r, g, b});
@@ -49,7 +51,7 @@ public class Particle {
         this.center.y += velocityVector[1] * timeElapsed * movingSpeed;
         if (producesLight) {
             this.lightSource.setWorldCoordinates(center);
-            this.lightSource.setIntensity(0.05f - 0.05f * (float) (timeLiving / timeToLive));
+            this.lightSource.setIntensity(intensity - intensity * (float) (timeLiving / timeToLive));
         }
     }
 
