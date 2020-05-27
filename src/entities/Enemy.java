@@ -8,6 +8,7 @@ import scene.TileMap;
 import utils.MathUtils;
 import utils.Utils;
 
+import static entities.MusicalMode.IONIAN;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends LivingDynamicGraphicEntity {
@@ -62,12 +63,12 @@ public class Enemy extends LivingDynamicGraphicEntity {
         switch (enemyType) {
             case 0:
                 type = Type.TYPE_01;
-                musicalMode = MusicalMode.IONIAN;
+                musicalMode = MusicalMode.DORIAN;
                 setSprite(SpriteManager.getInstance().ENEMY01);
                 break;
             case 1:
                 type = Type.TYPE_02;
-                musicalMode = MusicalMode.DORIAN;
+                musicalMode = IONIAN;
                 setSprite(SpriteManager.getInstance().ENEMY02);
                 break;
             case 2:
@@ -326,26 +327,10 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public float getWeakness(MusicalMode musicalMode) {
-        switch (musicalMode) {
-            case IONIAN:
-                if (type == Type.TYPE_01) {
-                    return 1f;
-                } else {
-                    return 0.2f;
-                }
-            case DORIAN:
-                if (type == Type.TYPE_02) {
-                    return 1f;
-                } else {
-                    return 0.2f;
-                }
-            case PHRYGIAN:
-            default:
-                if (type == Type.TYPE_03) {
-                    return 1f;
-                } else {
-                    return 0.2f;
-                }
+        if (this.musicalMode == musicalMode) {
+            return 1f;
+        } else {
+            return 0.15f;
         }
     }
 }
