@@ -7,6 +7,8 @@ import particles.Particle;
 import particles.ParticleManager;
 import scene.Camera;
 
+import java.awt.*;
+
 public class Weather {
     private static Weather instance = null;
     private static float timeUntilNextCheck = 1f * 3600f * 1000f / GameTime.getGameTimeRealTimeFactor();  //milliseconds
@@ -70,7 +72,7 @@ public class Weather {
                 for (int j = 0; j < 5; j++) {
                     newParticles[j] = new Particle(
                             new Coordinates(x - j * velocityVector[0], y - j * velocityVector[1]),
-                            velocityVector, 0.25, particleSize, 0.25f, 0.25f, 0.5f, 4000.0, false);
+                            velocityVector, 0.25, particleSize, new Color(0.25f, 0.25f, 0.5f), 4000.0, false);
                 }
                 ParticleManager.getInstance().addParticles(newParticles);
             }

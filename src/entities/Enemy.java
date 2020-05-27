@@ -45,7 +45,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         TYPE_01, TYPE_02, TYPE_03;
     }
 
-    AttackMode attackMode;
+    MusicalMode musicalMode;
 
     public Enemy(int x, int y) {
         super(x, y);
@@ -62,18 +62,18 @@ public class Enemy extends LivingDynamicGraphicEntity {
         switch (enemyType) {
             case 0:
                 type = Type.TYPE_01;
-                attackMode = AttackMode.MODE_01;
+                musicalMode = MusicalMode.IONIAN;
                 setSprite(SpriteManager.getInstance().ENEMY01);
                 break;
             case 1:
                 type = Type.TYPE_02;
-                attackMode = AttackMode.MODE_02;
+                musicalMode = MusicalMode.DORIAN;
                 setSprite(SpriteManager.getInstance().ENEMY02);
                 break;
             case 2:
             default:
                 type = Type.TYPE_03;
-                attackMode = AttackMode.MODE_03;
+                musicalMode = MusicalMode.PHRYGIAN;
                 setSprite(SpriteManager.getInstance().ENEMY03);
                 break;
         }
@@ -269,13 +269,13 @@ public class Enemy extends LivingDynamicGraphicEntity {
             coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0,
                     coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
         } else {
-            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, attackMode);
+            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, musicalMode);
         }
 
         /** CIRCLE ATTACK **/
         if (circleAttackCoolDown <= 0) {
             circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
-                    50, 500, circleAttackPower, true, true, attackMode);
+                    50, 500, circleAttackPower, true, true, musicalMode);
             Scene.listOfCircleAttacks.add(circleAttack);
             circleAttackCoolDown = circleAttackPeriod;
         }
@@ -325,21 +325,21 @@ public class Enemy extends LivingDynamicGraphicEntity {
         return type;
     }
 
-    public float getWeakness(AttackMode attackMode) {
-        switch (attackMode) {
-            case MODE_01:
+    public float getWeakness(MusicalMode musicalMode) {
+        switch (musicalMode) {
+            case IONIAN:
                 if (type == Type.TYPE_01) {
                     return 1f;
                 } else {
                     return 0.2f;
                 }
-            case MODE_02:
+            case DORIAN:
                 if (type == Type.TYPE_02) {
                     return 1f;
                 } else {
                     return 0.2f;
                 }
-            case MODE_03:
+            case PHRYGIAN:
             default:
                 if (type == Type.TYPE_03) {
                     return 1f;

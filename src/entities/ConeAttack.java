@@ -1,13 +1,13 @@
 package entities;
 
-import audio.OpenALManager;
 import main.*;
 import particles.Particle;
 import particles.ParticleManager;
-import scene.Camera;
 import scene.Scene;
 import text.FloatingTextEntity;
 import utils.MathUtils;
+
+import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 
@@ -22,7 +22,7 @@ public class ConeAttack {
     private int attackCoolDown;
     private float attackPower;
     private boolean enemyAttack;
-    private AttackMode attackMode;
+    private MusicalMode musicalMode;
 
     public ConeAttack(Coordinates initialParticleCoordinates, double[] pointingVector, double angle, float coneLength, int attackPeriod, int attackCoolDown, float attackPower, boolean enemyAttack, boolean attacking) {
         this.angle = angle;
@@ -31,13 +31,13 @@ public class ConeAttack {
         this.attackCoolDown = attackCoolDown;
         this.attackPower = attackPower;
         this.enemyAttack = enemyAttack;
-        this.attackMode = AttackMode.MODE_01;
-        update(initialParticleCoordinates, pointingVector, 0, attacking, attackMode);
+        this.musicalMode = MusicalMode.IONIAN;
+        update(initialParticleCoordinates, pointingVector, 0, attacking, musicalMode);
     }
 
-    public void update(Coordinates initialParticleCoordinates, double[] pointingVector, long timeElapsed, boolean attacking, AttackMode attackMode) {
+    public void update(Coordinates initialParticleCoordinates, double[] pointingVector, long timeElapsed, boolean attacking, MusicalMode musicalMode) {
         this.attacking = attacking;
-        this.attackMode = attackMode;
+        this.musicalMode = musicalMode;
         pointingVector = MathUtils.normalizeVector(pointingVector);
         double[] rotatedVector;
 
@@ -62,10 +62,9 @@ public class ConeAttack {
                         initialParticleCoordinates.x + rotatedVector[0] * Math.random() * distanceFromEntity,
                         initialParticleCoordinates.y + rotatedVector[1] * Math.random() * distanceFromEntity);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, 1f, 0f, 0f, true);
+                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, new Color(1f, 0f, 0f), true);
                 } else {
-                    float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, color[0], color[1], color[2], true);
+                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, musicalMode.getColor(), true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }
@@ -85,7 +84,7 @@ public class ConeAttack {
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
-                    damage *= ((Enemy) entity).getWeakness(attackMode);
+                    damage *= ((Enemy) entity).getWeakness(musicalMode);
                     ((Enemy) entity).hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
@@ -113,8 +112,7 @@ public class ConeAttack {
             if (enemyAttack) {
                 glColor4f(1.0f, 0f, 0f, 1.0f);
             } else {
-                float[] color = attackMode.getColor();
-                glColor4f(color[0], color[1], color[2], 1.0f);
+                glColor4f(musicalMode.getColor().getRed() / 255f, musicalMode.getColor().getGreen() / 255f, musicalMode.getColor().getBlue() / 255f, 1.0f);
             }
             glVertex2d(vertex1.x, vertex1.y);
             glVertex2d(vertex2.x, vertex2.y);

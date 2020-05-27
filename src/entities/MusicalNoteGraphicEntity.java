@@ -16,17 +16,17 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private boolean dead = false;
     private double timeToLive = 1000;
     private LightSource lightSource;
-    private AttackMode attackMode;
+    private MusicalMode musicalMode;
     private float damage;
     private float lightIntensity = 30f;
     private float intensityFactor;
 
-    public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, AttackMode attackMode, float damage) {
+    public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, MusicalMode musicalMode, float damage) {
         super((int) worldCoordinates.x, (int) worldCoordinates.y);
-        init(movementVector, speed, attackMode, damage);
+        init(movementVector, speed, musicalMode, damage);
     }
 
-    public void init(double[] movementVector, double speed, AttackMode attackMode, float damage) {
+    public void init(double[] movementVector, double speed, MusicalMode musicalMode, float damage) {
         int random = (int) (Math.random() * 4);
         switch (random) {
             case 0:
@@ -46,8 +46,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.movementVector = movementVector;
         this.speed = speed;
         this.timeLiving = 0;
-        this.attackMode = attackMode;
-        this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, this.attackMode.getColor());
+        this.musicalMode = musicalMode;
+        this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, this.musicalMode.getColor());
         this.damage = damage;
         Scene.getInstance().getListOfLightSources().add(this.lightSource);
 
@@ -90,7 +90,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.lightSource.update(timeElapsed);
         this.timeLiving += timeElapsed;
         if (timeLiving >= timeToLive) {
-            ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, attackMode.getColor());
+            ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, musicalMode.getColor());
             this.dead = true;
         }
         Enemy enemy;
@@ -101,12 +101,12 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), enemy.getCenterOfMassWorldCoordinates()) < 30) {
-                    damage *= enemy.getWeakness(attackMode);
+                    damage *= enemy.getWeakness(musicalMode);
                     enemy.hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(enemy.getWorldCoordinates().x, enemy.getWorldCoordinates().y, text, true, true, false);
                     this.dead = true;
-                    ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, attackMode.getColor());
+                    ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, musicalMode.getColor());
                 }
             }
         }

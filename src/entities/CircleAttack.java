@@ -1,6 +1,5 @@
 package entities;
 
-import audio.OpenALManager;
 import main.Coordinates;
 import main.OpenGLManager;
 import main.Parameters;
@@ -10,6 +9,8 @@ import scene.Camera;
 import scene.Scene;
 import text.FloatingTextEntity;
 import utils.MathUtils;
+
+import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glEnd;
@@ -26,16 +27,16 @@ public class CircleAttack {
     private boolean enemyAttack;
     private double timeLiving = 0;
     private double timeToLive = 5000;
-    private AttackMode attackMode;
+    private MusicalMode musicalMode;
 
-    public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking, AttackMode attackMode) {
+    public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking, MusicalMode musicalMode) {
         this.center = center;
         this.radius = radius;
         this.enemyAttack = enemyAttack;
         this.attackPeriod = attackPeriod;
         this.attackPower = attackPower;
         this.attackCoolDown = 0;
-        this.attackMode = attackMode;
+        this.musicalMode = musicalMode;
         update(0, attacking);
     }
 
@@ -58,10 +59,9 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, 1f, 0f, 0f, true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, new Color(255, 0, 0), true);
                 } else {
-                    float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, color[0], color[1], color[2], true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, musicalMode.getColor(), true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }
@@ -81,7 +81,7 @@ public class CircleAttack {
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
-                    damage *= ((Enemy) entity).getWeakness(attackMode);
+                    damage *= ((Enemy) entity).getWeakness(musicalMode);
                     ((Enemy) entity).hurt(damage);
                     String text = String.valueOf((int) damage);
                     new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
@@ -106,12 +106,13 @@ public class CircleAttack {
             glDisable(GL_TEXTURE_2D);
             glDisable(GL_BLEND);
             OpenGLManager.glBegin(GL_LINES);
+            Color color;
             if (enemyAttack) {
-                glColor4f(1.0f, 0f, 0f, 1.0f);
+                color = new Color(255, 0, 0);
             } else {
-                float[] color = attackMode.getColor();
-                glColor4f(color[0], color[1], color[2], 1.0f);
+                color = musicalMode.getColor();
             }
+            glColor4f(color.getRed(), color.getGreen(), color.getBlue(), 1.0f);
 
             /** CIRCLE OUTLINE **/
             double angle = 0;

@@ -218,9 +218,9 @@ public class OpenGLManager {
             lightSourceIntensity[i] = lightSource.getIntensity();
 
             //Light Color
-            lightSourceColor[i * 3] = lightSource.getColor()[0];
-            lightSourceColor[i * 3 + 1] = lightSource.getColor()[1];
-            lightSourceColor[i * 3 + 2] = lightSource.getColor()[2];
+            lightSourceColor[i * 3] = lightSource.getColor().getRed() / 255f;
+            lightSourceColor[i * 3 + 1] = lightSource.getColor().getGreen() / 255f;
+            lightSourceColor[i * 3 + 2] = lightSource.getColor().getBlue() / 255f;
         }
 
         glUniform2fv(lightSourceCoordinatesUniform, lightSourceCoordinates);

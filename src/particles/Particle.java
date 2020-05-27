@@ -6,6 +6,8 @@ import main.OpenGLManager;
 import scene.Camera;
 import scene.Scene;
 
+import java.awt.*;
+
 public class Particle {
     private Coordinates center;
     private double[] velocityVector;
@@ -13,35 +15,31 @@ public class Particle {
     private double movingSpeed;
     private double timeLiving = 0;
     private double timeToLive;
-    private float r;
-    private float g;
-    private float b;
+    private Color color;
     private boolean producesLight;
     private LightSource lightSource;
     private float intensity;
 
-    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, boolean producesLight) {
-        this(center, velocityVector, movingSpeed, size, r, g, b, 600.0, producesLight);
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, boolean producesLight) {
+        this(center, velocityVector, movingSpeed, size, color, 600.0, producesLight);
     }
 
-    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, double timeToLive, boolean producesLight) {
-        this(center, velocityVector, movingSpeed, size, r, g, b, timeToLive, producesLight, 15f);
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight) {
+        this(center, velocityVector, movingSpeed, size, color, timeToLive, producesLight, 15f);
     }
 
-    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, double timeToLive, boolean producesLight, float intensity) {
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight, float intensity) {
         this.velocityVector = velocityVector;
         this.movingSpeed = movingSpeed;
         this.center = new Coordinates(center.x, center.y);
         this.size = size;
-        this.r = r;
-        this.g = g;
-        this.b = b;
+        this.color = color;
         this.timeToLive = timeToLive;
         this.producesLight = producesLight;
         this.intensity = intensity;
         if (producesLight) {
             Coordinates lightSourceCoordinates = new Coordinates(center.x, center.y);
-            lightSource = new LightSource(lightSourceCoordinates, intensity, new float[]{r, g, b});
+            lightSource = new LightSource(lightSourceCoordinates, intensity, color);
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
     }
@@ -62,7 +60,7 @@ public class Particle {
         float size = (float) (this.size * Camera.getZoom());
 //        float size = (float) ((timeLiving / timeToLive) * this.size * Camera.getZoom());
         OpenGLManager.drawRectangle((int) (centerCameraCoordinates.x - halfSize), (int) (centerCameraCoordinates.y - halfSize),
-                size, size, 1.0 - timeLiving / timeToLive, r, g, b);
+                size, size, 1.0 - timeLiving / timeToLive, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
     }
 
     public boolean isDead() {

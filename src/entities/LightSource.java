@@ -2,18 +2,20 @@ package entities;
 
 import main.Coordinates;
 
+import java.awt.*;
+
 public class LightSource {
     private Coordinates worldCoordinates;
     private Coordinates cameraCoordinates;
     private float intensity;
     private long timeOn;
-    private float[] color;
+    private Color color;
 
     public LightSource(Coordinates worldCoordinates, float intensity) {
-        this(worldCoordinates, intensity, new float[]{1f, 1f, 1f});
+        this(worldCoordinates, intensity, new Color(1f, 1f, 1f));
     }
 
-    public LightSource(Coordinates worldCoordinates, float intensity, float[] color) {
+    public LightSource(Coordinates worldCoordinates, float intensity, Color color) {
         this.worldCoordinates = worldCoordinates;
         this.cameraCoordinates = worldCoordinates.toCameraCoordinates();
         this.intensity = intensity;
@@ -47,7 +49,7 @@ public class LightSource {
         this.intensity = intensity;
     }
 
-    public float[] getColor() {
+    public Color getColor() {
         return color;
     }
 }

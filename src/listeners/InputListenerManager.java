@@ -237,22 +237,22 @@ public class InputListenerManager {
                 }
                 break;
             case GLFW_KEY_ESCAPE:
-                if (pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
+                if (!pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
                 break;
             case GLFW_KEY_F1:
-                if (pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
+                if (!pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
                 break;
             case GLFW_KEY_F2:
-                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
+                if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
                 break;
             case GLFW_KEY_F3:
-                if (pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
+                if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
                 break;
             case GLFW_KEY_F4:
-                if (pressed) Scene.getInstance().initEntities();
+                if (!pressed) Scene.getInstance().initEntities();
                 break;
             case GLFW_KEY_F5:
-                if (pressed) WorldLoader.saveWorld();
+                if (!pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
                 break;
@@ -269,10 +269,10 @@ public class InputListenerManager {
             case GLFW_KEY_F12:
                 break;
             case GLFW_KEY_1:
-                if (pressed) {
+                if (!pressed) {
                     switch (GameMode.getGameMode()) {
                         case NORMAL:
-                            Player.getInstance().setAttackMode(0);
+                            Player.getInstance().setMusicalMode(MusicalMode.IONIAN);
                             break;
                         case CREATIVE:
                         default:
@@ -282,10 +282,10 @@ public class InputListenerManager {
                 }
                 break;
             case GLFW_KEY_2:
-                if (pressed) {
+                if (!pressed) {
                     switch (GameMode.getGameMode()) {
                         case NORMAL:
-                            Player.getInstance().setAttackMode(1);
+                            Player.getInstance().setMusicalMode(MusicalMode.DORIAN);
                             break;
                         case CREATIVE:
                         default:
@@ -295,10 +295,10 @@ public class InputListenerManager {
                 }
                 break;
             case GLFW_KEY_3:
-                if (pressed) {
+                if (!pressed) {
                     switch (GameMode.getGameMode()) {
                         case NORMAL:
-                            Player.getInstance().setAttackMode(2);
+                            Player.getInstance().setMusicalMode(MusicalMode.PHRYGIAN);
                             break;
                         case CREATIVE:
                         default:
@@ -308,6 +308,40 @@ public class InputListenerManager {
                 }
                 break;
             case GLFW_KEY_4:
+                if (!pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setMusicalMode(MusicalMode.LYDIAN);
+                            break;
+                    }
+                }
+                break;
+            case GLFW_KEY_5:
+                if (!pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setMusicalMode(MusicalMode.MIXOLYDIAN);
+                            break;
+                    }
+                }
+                break;
+            case GLFW_KEY_6:
+                if (!pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setMusicalMode(MusicalMode.AEOLIAN);
+                            break;
+                    }
+                }
+                break;
+            case GLFW_KEY_7:
+                if (!pressed) {
+                    switch (GameMode.getGameMode()) {
+                        case NORMAL:
+                            Player.getInstance().setMusicalMode(MusicalMode.LOCRIAN);
+                            break;
+                    }
+                }
                 break;
             case GLFW_KEY_UP:
                 if (pressed) Camera.setZoom(Camera.getZoom() + 0.1 * Camera.getZoom());

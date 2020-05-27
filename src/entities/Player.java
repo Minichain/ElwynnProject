@@ -40,7 +40,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private float circleAttackPower = 100f;
     private float circleAttackManaCost = 25f;
 
-    private AttackMode attackMode;
+    private MusicalMode musicalMode;
 
     public enum Status {
         IDLE, RUNNING, ROLLING, DYING, DEAD;
@@ -65,7 +65,7 @@ public class Player extends LivingDynamicGraphicEntity {
         speed = 0.125;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
-        attackMode = AttackMode.MODE_01;
+        musicalMode = MusicalMode.IONIAN;
         setSprite(SpriteManager.getInstance().PLAYER);
     }
 
@@ -331,7 +331,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
         if (InputListenerManager.leftMouseButtonPressed) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
-                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector, 0.38, attackMode, attack01Power);
+                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector, 0.38, musicalMode, attack01Power);
                 Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;
@@ -345,7 +345,7 @@ public class Player extends LivingDynamicGraphicEntity {
         if (InputListenerManager.rightMouseButtonPressed) {
             if (mana >= circleAttackManaCost && circleAttackCoolDown <= 0) {
                 circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
-                        100, 500, circleAttackPower, false, true, attackMode);
+                        100, 500, circleAttackPower, false, true, musicalMode);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
                 mana -= circleAttackManaCost;
@@ -380,22 +380,11 @@ public class Player extends LivingDynamicGraphicEntity {
         }
     }
 
-    public AttackMode getAttackMode() {
-        return attackMode;
+    public MusicalMode getMusicalMode() {
+        return musicalMode;
     }
 
-    public void setAttackMode(int attackMode) {
-        switch (attackMode % AttackMode.numOfAttackModes) {
-            case 0:
-                this.attackMode = AttackMode.MODE_01;
-                break;
-            case 1:
-                this.attackMode = AttackMode.MODE_02;
-                break;
-            case 2:
-            default:
-                this.attackMode = AttackMode.MODE_03;
-                break;
-        }
+    public void setMusicalMode(MusicalMode musicalMode) {
+        this.musicalMode = musicalMode;
     }
 }
