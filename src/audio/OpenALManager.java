@@ -36,11 +36,16 @@ public class OpenALManager {
     public static Sound SOUND_RAIN_01;
 
     public static Sound SOUND_NOTE_A_01;
+    public static Sound SOUND_NOTE_A_SHARP_01;
     public static Sound SOUND_NOTE_B_01;
+    public static Sound SOUND_NOTE_C_01;
     public static Sound SOUND_NOTE_C_SHARP_01;
     public static Sound SOUND_NOTE_D_01;
+    public static Sound SOUND_NOTE_D_SHARP_01;
     public static Sound SOUND_NOTE_E_01;
+    public static Sound SOUND_NOTE_F_01;
     public static Sound SOUND_NOTE_F_SHARP_01;
+    public static Sound SOUND_NOTE_G_01;
     public static Sound SOUND_NOTE_G_SHARP_01;
 
     /** MUSIC **/
@@ -78,12 +83,17 @@ public class OpenALManager {
 
         /** EFFECTS **/
         SOUND_NOTE_A_01 = loadSound("note_a_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_A_SHARP_01 = loadSound("note_a_sharp_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_B_01 = loadSound("note_b_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_C_01 = loadSound("note_c_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_C_SHARP_01 = loadSound("note_c_sharp_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_D_01 = loadSound("note_d_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_D_SHARP_01 = loadSound("note_d_sharp_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_E_01 = loadSound("note_e_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_F_SHARP_01 = loadSound("note_f_Sharp_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_G_SHARP_01 = loadSound("note_g_Sharp_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_F_01 = loadSound("note_f_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_F_SHARP_01 = loadSound("note_f_sharp_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_G_01 = loadSound("note_g_01", Sound.SoundType.EFFECT);
+        SOUND_NOTE_G_SHARP_01 = loadSound("note_g_sharp_01", Sound.SoundType.EFFECT);
 
         SOUND_PLAYER_HURT_01 = loadSound("player_hurt_01", Sound.SoundType.EFFECT);
         SOUND_PLAYER_DYING_01 = loadSound("player_die_01", Sound.SoundType.EFFECT);
