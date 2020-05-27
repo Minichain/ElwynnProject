@@ -206,8 +206,8 @@ public class OpenGLManager {
         int lightSourceColorArraySize = maxNumberOfLightSources * 3;
         float[] lightSourceColor = new float[lightSourceColorArraySize];
 
-        for (int i = 0; i < Scene.getInstance().getListOfLightSources().size() && i < maxNumberOfLightSources; i++) {
-            LightSource lightSource = Scene.getInstance().getListOfLightSources().get(i);
+        for (int i = 0; i < Scene.getInstance().getListOfVisibleLightSources().size() && i < maxNumberOfLightSources; i++) {
+            LightSource lightSource = Scene.getInstance().getListOfVisibleLightSources().get(i);
             Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToFragmentCoordinates(lightSource.getCameraCoordinates());
 
             //Coordinates

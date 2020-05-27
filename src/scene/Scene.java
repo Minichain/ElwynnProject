@@ -31,6 +31,7 @@ public class Scene {
     public static ArrayList<CircleAttack> listOfCircleAttacks;
 
     public static ArrayList<LightSource> listOfLightSources;
+    public static ArrayList<LightSource> listOfVisibleLightSources;
 
     private Scene() {
         initialCoordinates = new Coordinates(2500, 2500);
@@ -39,6 +40,7 @@ public class Scene {
         listOfEntitiesToUpdate = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         listOfLightSources = new ArrayList<>();
+        listOfVisibleLightSources = new ArrayList<>();
         listOfMusicalNoteGraphicEntities = new ArrayList<>();
     }
 
@@ -121,9 +123,13 @@ public class Scene {
         }
 
         /** LIGHT SOURCES **/
+        listOfVisibleLightSources.clear();
         if (!listOfLightSources.isEmpty()) {
             for (LightSource lightSource : listOfLightSources) {
                 lightSource.update(timeElapsed);
+                if (MathUtils.module(lightSource.getWorldCoordinates(), Camera.getInstance().getCoordinates()) < 1000.0) {
+                    listOfVisibleLightSources.add(lightSource);
+                }
             }
         }
 
@@ -157,6 +163,10 @@ public class Scene {
 
     public ArrayList<LightSource> getListOfLightSources() {
         return listOfLightSources;
+    }
+
+    public ArrayList<LightSource> getListOfVisibleLightSources() {
+        return listOfVisibleLightSources;
     }
 
     public ArrayList<MusicalNoteGraphicEntity> getListOfMusicalNoteGraphicEntities() {

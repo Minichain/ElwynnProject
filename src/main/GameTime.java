@@ -4,7 +4,8 @@ public class GameTime {
     private static GameTime instance = null;
     private static float gameTime;  //InGame time in hours (0f - 24.0f)
     private static float gameTimeRealTimeFactor = 60f;  //60 times faster than in real life.
-//    private static float gameTimeRealTimeFactor = 500f;
+//    private static float gameTimeRealTimeFactor = 1000f;
+    private static float sunLightIntensity = 0.8f;
 
     private GameTime() {
         gameTime = 0f;
@@ -35,9 +36,9 @@ public class GameTime {
      */
     public static float getLight() {
         if (gameTime < 12.0) {
-            return 1f / (1f + (float) Math.exp(-(gameTime / 12f) * 10f + 5f));
+            return (1f / (1f + (float) Math.exp(-(gameTime / 12f) * 10f + 5f))) * sunLightIntensity;
         } else {
-            return 1f / (1f + (float) Math.exp(((gameTime - 12f) / 12f) * 10f - 5f));
+            return (1f / (1f + (float) Math.exp(((gameTime - 12f) / 12f) * 10f - 5f))) * sunLightIntensity;
         }
     }
 
