@@ -59,7 +59,7 @@ public class ParticleManager {
     public static void particlesExplosion(Coordinates position, int numberOfParticles, float[] color) {
         double[] velocityVector;
         for (int i = 0; i < numberOfParticles; i++) {
-            velocityVector = MathUtils.rotateVector(new double[]{1.0, 0.0}, Math.random() * 2 * Math.PI * i);
+            velocityVector = MathUtils.rotateVector(new double[]{1.0, 0.0}, Math.random() * 2 * Math.PI);
             ParticleManager.getInstance().addParticle(new Particle(position, velocityVector, 0.05, 1f, color[0], color[1], color[2],
                     500, true, 5f));
         }

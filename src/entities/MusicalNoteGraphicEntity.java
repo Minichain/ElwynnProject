@@ -2,6 +2,7 @@ package entities;
 
 import audio.OpenALManager;
 import main.Coordinates;
+import main.GameStatus;
 import main.Texture;
 import particles.ParticleManager;
 import scene.Camera;
@@ -78,6 +79,9 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void update(long timeElapsed) {
+        if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
+            return;
+        }
         Coordinates newWorldCoordinates = new Coordinates(getWorldCoordinates().x + movementVector[0] * speed * timeElapsed, getWorldCoordinates().y + movementVector[1] * speed * timeElapsed);
         setWorldCoordinates(newWorldCoordinates);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);

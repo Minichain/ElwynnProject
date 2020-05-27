@@ -53,7 +53,7 @@ public class Scene {
         OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_MAJOR_O1);
         updateAndSortEntities(timeElapsed);
 
-        if (GameStatus.getStatus() != GameStatus.Status.RUNNING) {
+        if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }
 
@@ -89,22 +89,21 @@ public class Scene {
     }
 
     private void updateAndSortEntities(long timeElapsed) {
-        if (listOfEntities.isEmpty() || listOfEntitiesToUpdate == null) {
-            return;
-        }
-
         /** UPDATE ENTITIES **/
-        listOfEntitiesToUpdate.clear();
-        for (int i = 0; i < listOfEntities.size(); i++) {
-            GraphicEntity currentEntity = listOfEntities.get(i);
-            if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                currentEntity.update(timeElapsed);
-            }
-            currentEntity.updateCoordinates();
+        if (!listOfEntities.isEmpty() && listOfEntitiesToUpdate != null) {
+            listOfEntitiesToUpdate.clear();
+            for (int i = 0; i < listOfEntities.size(); i++) {
+                GraphicEntity currentEntity = listOfEntities.get(i);
+                if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    currentEntity.update(timeElapsed);
+                }
+                currentEntity.updateCoordinates();
 
-            if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getWorldCoordinates()) < updateDistance) {
-                listOfEntitiesToUpdate.add(currentEntity);
+                if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getWorldCoordinates()) < updateDistance) {
+                    listOfEntitiesToUpdate.add(currentEntity);
+                }
             }
+
         }
 
         /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/

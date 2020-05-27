@@ -33,6 +33,7 @@ public class Weather {
 
     public void update(long timeElapsed) {
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
+            OpenALManager.stopPlayingSound(OpenALManager.SOUND_RAIN_01);
             return;
         }
 
