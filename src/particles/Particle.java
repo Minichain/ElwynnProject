@@ -10,7 +10,7 @@ public class Particle {
     private Coordinates center;
     private double[] velocityVector;
     private float size;
-    private double movingSpeed = 0.25;
+    private double movingSpeed;
     private double timeLiving = 0;
     private double timeToLive;
     private float r;
@@ -20,17 +20,18 @@ public class Particle {
     private LightSource lightSource;
     private float intensity;
 
-    public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, boolean producesLight) {
-        this(center, velocityVector, size, r, g, b, 600.0, producesLight);
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, boolean producesLight) {
+        this(center, velocityVector, movingSpeed, size, r, g, b, 600.0, producesLight);
     }
 
-    public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight) {
-        this(center, velocityVector, size, r, g, b, timeToLive, producesLight, 25f);
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, double timeToLive, boolean producesLight) {
+        this(center, velocityVector, movingSpeed, size, r, g, b, timeToLive, producesLight, 25f);
     }
 
-    public Particle(Coordinates center, double[] velocityVector, float size, float r, float g, float b, double timeToLive, boolean producesLight, float intensity) {
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, float r, float g, float b, double timeToLive, boolean producesLight, float intensity) {
         this.velocityVector = velocityVector;
-        this.center = center;
+        this.movingSpeed = movingSpeed;
+        this.center = new Coordinates(center.x, center.y);
         this.size = size;
         this.r = r;
         this.g = g;

@@ -137,8 +137,8 @@ public class Scene {
                     listOfLightSources.remove(musicalNoteGraphicEntity.getLightSource());
                     listOfMusicalNoteGraphicEntities.remove(musicalNoteGraphicEntity);
                 } else {
-                    musicalNoteGraphicEntity.update(timeElapsed);
                     musicalNoteGraphicEntity.updateCoordinates();
+                    musicalNoteGraphicEntity.update(timeElapsed);
                 }
             }
         }

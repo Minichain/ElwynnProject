@@ -93,4 +93,20 @@ public class MathUtils {
         }
         return sum / values.length;
     }
+
+    public static double inverseCubicFunction(double x) {
+        return 1.0 - Math.pow(x, 3);
+    }
+
+    public static float inverseCubicFunction(float x) {
+        return 1f - (float) Math.pow(x, 3);
+    }
+
+    public static double cubicFunction(double x) {
+        return Math.pow(x, 3);
+    }
+
+    public static float cubicFunction(float x) {
+        return (float) Math.pow(x, 3);
+    }
 }

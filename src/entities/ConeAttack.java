@@ -62,10 +62,10 @@ public class ConeAttack {
                         initialParticleCoordinates.x + rotatedVector[0] * Math.random() * distanceFromEntity,
                         initialParticleCoordinates.y + rotatedVector[1] * Math.random() * distanceFromEntity);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, rotatedVector, 4, 1f, 0f, 0f, true);
+                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, 1f, 0f, 0f, true);
                 } else {
                     float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, rotatedVector, 4, color[0], color[1], color[2], true);
+                    particle = new Particle(particleCoordinates, rotatedVector, 0.25, 4, color[0], color[1], color[2], true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }

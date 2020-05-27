@@ -29,7 +29,7 @@ public class Player extends LivingDynamicGraphicEntity {
     /** ATTACK **/
     private boolean attacking = false;
 
-    private int attack01Period = 420;
+    private int attack01Period = 210;
     private int attack01CoolDown = 0;
     private float attack01Power = 250f;
     private float attack01ManaCost = 0.1f;

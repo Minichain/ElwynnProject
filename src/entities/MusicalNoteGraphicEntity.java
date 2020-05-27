@@ -3,8 +3,8 @@ package entities;
 import audio.OpenALManager;
 import main.Coordinates;
 import main.Texture;
-import particles.Particle;
 import particles.ParticleManager;
+import scene.Camera;
 import scene.Scene;
 import text.FloatingTextEntity;
 import utils.MathUtils;
@@ -17,7 +17,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private LightSource lightSource;
     private AttackMode attackMode;
     private float damage;
-    private float lightIntensity = 50f;
+    private float lightIntensity = 30f;
+    private float intensityFactor;
 
     public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, AttackMode attackMode, float damage) {
         super((int) worldCoordinates.x, (int) worldCoordinates.y);
@@ -79,11 +80,13 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     public void update(long timeElapsed) {
         Coordinates newWorldCoordinates = new Coordinates(getWorldCoordinates().x + movementVector[0] * speed * timeElapsed, getWorldCoordinates().y + movementVector[1] * speed * timeElapsed);
         setWorldCoordinates(newWorldCoordinates);
+        this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
         this.lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
-        this.lightSource.setIntensity(lightIntensity - (float) (timeLiving / timeToLive) * lightIntensity);
+        this.lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
         this.lightSource.update(timeElapsed);
         this.timeLiving += timeElapsed;
         if (timeLiving >= timeToLive) {
+            ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, attackMode.getColor());
             this.dead = true;
         }
         Enemy enemy;
@@ -97,12 +100,9 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                     damage *= enemy.getWeakness(attackMode);
                     enemy.hurt(damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(enemy.getCenterOfMassWorldCoordinates().x, enemy.getCenterOfMassWorldCoordinates().y, text, true, true, false);
-
-                    //TODO Add explosion effect when interacting with an enemy. Using particles!!
-                    //Particle particle;
-
+                    new FloatingTextEntity(enemy.getWorldCoordinates().x, enemy.getWorldCoordinates().y, text, true, true, false);
                     this.dead = true;
+                    ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, attackMode.getColor());
                 }
             }
         }
@@ -113,7 +113,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
+                1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor));
     }
 
     public byte getEntityCode() {

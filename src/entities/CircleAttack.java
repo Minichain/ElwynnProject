@@ -58,10 +58,10 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, 4, 1f, 0f, 0f, true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, 1f, 0f, 0f, true);
                 } else {
                     float[] color = attackMode.getColor();
-                    particle = new Particle(particleCoordinates, velocityVector, 4, color[0], color[1], color[2], true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, color[0], color[1], color[2], true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }

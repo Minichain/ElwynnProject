@@ -52,7 +52,7 @@ public class Parameters {
     }
 
     /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.0f;
+    private static float musicSoundLevel = 0.3f;
     private static float effectSoundLevel = 0.3f;
     private static float ambienceSoundLevel = 0.3f;
 
@@ -91,7 +91,7 @@ public class Parameters {
      * Revision: Minor alterations on existing features, small bug fixes, etc.
      * Package: Your code stays the same, external library changes or asset file update.
      */
-    private static String projectVersion = "0.00.01.0";
+    private static String projectVersion = "0.00.02.0";
 
     public static String getProjectVersion() {
         return projectVersion;

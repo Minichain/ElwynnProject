@@ -1,7 +1,9 @@
 package particles;
 
+import main.Coordinates;
 import main.OpenGLManager;
 import scene.Scene;
+import utils.MathUtils;
 
 import java.util.ArrayList;
 
@@ -52,5 +54,14 @@ public class ParticleManager {
         }
         glEnd();
         glEnable(GL_TEXTURE_2D);
+    }
+
+    public static void particlesExplosion(Coordinates position, int numberOfParticles, float[] color) {
+        double[] velocityVector;
+        for (int i = 0; i < numberOfParticles; i++) {
+            velocityVector = MathUtils.rotateVector(new double[]{1.0, 0.0}, Math.random() * 2 * Math.PI * i);
+            ParticleManager.getInstance().addParticle(new Particle(position, velocityVector, 0.05, 1f, color[0], color[1], color[2],
+                    500, true, 5f));
+        }
     }
 }
