@@ -50,32 +50,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, this.musicalMode.getColor());
         this.damage = damage;
         Scene.getInstance().getListOfLightSources().add(this.lightSource);
-
-        random = (int) (Math.random() * 7);
-        switch (random) {
-            case 0:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_A_01);
-                break;
-            case 1:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_B_01);
-                break;
-            case 2:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_C_SHARP_01);
-                break;
-            case 3:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_D_01);
-                break;
-            case 4:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_E_01);
-                break;
-            case 5:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_F_SHARP_01);
-                break;
-            case 6:
-            default:
-                OpenALManager.playSound(OpenALManager.SOUND_NOTE_G_SHARP_01);
-                break;
-        }
+        this.musicalMode.getRandomNote(MusicalNote.A).play();
     }
 
     public void update(long timeElapsed) {
