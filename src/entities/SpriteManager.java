@@ -5,7 +5,7 @@ import scene.TileMap;
 public class SpriteManager {
     private static SpriteManager instance = null;
 
-    /** SPRITES **/
+    /** ENTITIES **/
     public Sprite PLAYER;
     public Sprite ENEMY01;
     public Sprite ENEMY02;
@@ -24,7 +24,18 @@ public class SpriteManager {
     public Sprite QUARTER_NOTE;
     public Sprite EIGHTH_NOTE;
     public Sprite DOUBLE_EIGHTH_NOTE;
+
+    /** TILESET **/
     public Sprite TILESET;
+
+    /** INTERFACE **/
+    public Sprite IONIAN_ICON;
+    public Sprite DORIAN_ICON;
+    public Sprite PHRYGIAN_ICON;
+    public Sprite LYDIAN_ICON;
+    public Sprite MIXOLYDIAN_ICON;
+    public Sprite AEOLIAN_ICON;
+    public Sprite LOCRIAN_ICON;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -61,6 +72,15 @@ public class SpriteManager {
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
+
+        /** INTERFACE **/
+        IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        DORIAN_ICON = new Sprite("res/sprites/interface/dorian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        PHRYGIAN_ICON = new Sprite("res/sprites/interface/phrygian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        LYDIAN_ICON = new Sprite("res/sprites/interface/lydian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon.png", 32, 32, -1, -1, -1, -1, -1);
     }
 
     public static SpriteManager getInstance() {

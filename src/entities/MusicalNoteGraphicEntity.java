@@ -27,22 +27,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void init(double[] movementVector, double speed, MusicalMode musicalMode, float damage) {
-        int random = (int) (Math.random() * 4);
-        switch (random) {
-            case 0:
-                setSprite(SpriteManager.getInstance().G_CLEF);
-                break;
-            case 1:
-                setSprite(SpriteManager.getInstance().QUARTER_NOTE);
-                break;
-            case 2:
-                setSprite(SpriteManager.getInstance().EIGHTH_NOTE);
-                break;
-            case 3:
-            default:
-                setSprite(SpriteManager.getInstance().DOUBLE_EIGHTH_NOTE);
-                break;
-        }
+        Sprite randomSprite = getMusicalRandomSprite();
+        setSprite(randomSprite);
         this.movementVector = movementVector;
         this.speed = speed;
         this.timeLiving = 0;
@@ -51,6 +37,21 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.damage = damage;
         Scene.getInstance().getListOfLightSources().add(this.lightSource);
         this.musicalMode.getRandomNote(MusicalNote.A).play();
+    }
+
+    private Sprite getMusicalRandomSprite() {
+        int random = (int) (Math.random() * 4);
+        switch (random) {
+            case 0:
+                return SpriteManager.getInstance().G_CLEF;
+            case 1:
+                return SpriteManager.getInstance().QUARTER_NOTE;
+            case 2:
+                return SpriteManager.getInstance().EIGHTH_NOTE;
+            case 3:
+            default:
+                return SpriteManager.getInstance().DOUBLE_EIGHTH_NOTE;
+        }
     }
 
     public void update(long timeElapsed) {

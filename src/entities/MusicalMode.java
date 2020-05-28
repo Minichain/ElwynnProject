@@ -3,15 +3,23 @@ package entities;
 import java.awt.*;
 
 public enum MusicalMode {
-    IONIAN,     //MAJOR SCALE
-    DORIAN,
-    PHRYGIAN,
-    LYDIAN,
-    MIXOLYDIAN,
-    AEOLIAN,    //NATURAL MINOR SCALE
-    LOCRIAN;
+    IONIAN(0),     //MAJOR SCALE
+    DORIAN(1),     //Minor
+    PHRYGIAN(2),   //Minor
+    LYDIAN(3),     //Major
+    MIXOLYDIAN(4), //Major
+    AEOLIAN(5),    //NATURAL MINOR SCALE
+    LOCRIAN(6);
 
-    public final static int numOfMusicalModes = 3;
+    public int value;
+
+    private MusicalMode(final int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
 
     public Color getColor() {
         switch (this) {
@@ -69,5 +77,25 @@ public enum MusicalMode {
     public MusicalNote getRandomNote(MusicalNote rootNote) {
         MusicalNote[] notes = this.getNotes(rootNote);
         return notes[(int) (Math.random() * notes.length)];
+    }
+
+    public Sprite getSprite() {
+        switch (this) {
+            case IONIAN:
+                return SpriteManager.getInstance().IONIAN_ICON;
+            case DORIAN:
+                return SpriteManager.getInstance().DORIAN_ICON;
+            case PHRYGIAN:
+                return SpriteManager.getInstance().PHRYGIAN_ICON;
+            case LYDIAN:
+                return SpriteManager.getInstance().LYDIAN_ICON;
+            case MIXOLYDIAN:
+                return SpriteManager.getInstance().MIXOLYDIAN_ICON;
+            case AEOLIAN:
+                return SpriteManager.getInstance().AEOLIAN_ICON;
+            case LOCRIAN:
+            default:
+                return SpriteManager.getInstance().LOCRIAN_ICON;
+        }
     }
 }

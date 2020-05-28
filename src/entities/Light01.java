@@ -21,7 +21,7 @@ public class Light01 extends StaticGraphicEntity {
 
         /** LIGHT SOURCES **/
         Coordinates lightSourceCoordinates = new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 58);
-        float intensity = 170f;
+        float intensity = 100f;
         getLightSources().add(new LightSource(lightSourceCoordinates, intensity));
         for (LightSource lightSource : getLightSources()) {
             Scene.getInstance().getListOfLightSources().add(lightSource);

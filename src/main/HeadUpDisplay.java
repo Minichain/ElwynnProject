@@ -1,5 +1,6 @@
 package main;
 
+import entities.MusicalMode;
 import entities.Player;
 import entities.SpriteManager;
 import scene.TileMap;
@@ -19,6 +20,8 @@ public class HeadUpDisplay {
 
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             /** NORMAL MODE HUD **/
+
+            /** HEALTH, MANA AND STAMINA **/
             int x = (int) (30f * relativeWidth);
             int y = Parameters.getResolutionHeight() - (int) (70f * relativeHeight);
             int width = (int) (500f * relativeWidth);
@@ -28,6 +31,7 @@ public class HeadUpDisplay {
             float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
 
             glDisable(GL_TEXTURE_2D);
+
             OpenGLManager.glBegin(GL_TRIANGLES);
             OpenGLManager.drawRectangle(x, y, width, height, 0.5, 1f, 0.25f, 0.25f);
             OpenGLManager.drawRectangle(x, y, width * healthPercentage, height, 1.0, 1f, 0.25f, 0.25f);
@@ -40,6 +44,25 @@ public class HeadUpDisplay {
             OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.25f, 1f, 0.25f);
             OpenGLManager.drawRectangle(x, y, width * staminaPercentage, height, 1.0, 0.25f, 1f, 0.25f);
             glEnd();
+
+            glEnable(GL_TEXTURE_2D);
+
+            /** MUSICAL MODE **/
+            int numberOfModes = MusicalMode.values().length;
+            int spaceBetweenModes = 16;
+            double scale = 2.0;
+            width = (int) (numberOfModes * 32 * scale + spaceBetweenModes * (numberOfModes - 1));
+            x = Parameters.getResolutionWidth() / 2 - width / 2;
+            MusicalMode currentMusicalMode;
+            for (int i = 0; i < numberOfModes; i++) {
+                currentMusicalMode = MusicalMode.values()[i];
+                if (Player.getInstance().getMusicalMode() == currentMusicalMode) {
+                    currentMusicalMode.getSprite().draw(x, y, 1f, 2.0, MusicalMode.values()[i].getColor());
+                } else {
+                    currentMusicalMode.getSprite().draw(x, y, 0.5f, 2.0, MusicalMode.values()[i].getColor());
+                }
+                x += 32 * scale + spaceBetweenModes;
+            }
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {

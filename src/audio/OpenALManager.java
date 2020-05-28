@@ -1,5 +1,6 @@
 package audio;
 
+import entities.MusicalMode;
 import main.Parameters;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.openal.*;
@@ -49,7 +50,9 @@ public class OpenALManager {
     public static Sound SOUND_NOTE_G_SHARP_01;
 
     /** MUSIC **/
-    public static Sound SOUND_MUSIC_A_MAJOR_O1;
+    public static Sound SOUND_MUSIC_A_IONIAN_O1;
+    public static Sound SOUND_MUSIC_A_DORIAN_O1;
+    public static Sound SOUND_MUSIC_A_PHRYGIAN_O1;
 
     /** Sources are points emitting sound. */
     private static IntBuffer source;
@@ -108,7 +111,9 @@ public class OpenALManager {
         SOUND_RAIN_01 = loadSound("rain_01", Sound.SoundType.EFFECT);
 
         /** MUSIC **/
-        SOUND_MUSIC_A_MAJOR_O1 = loadSound("music_a_major_01", Sound.SoundType.MUSIC);
+        SOUND_MUSIC_A_IONIAN_O1 = loadSound("music_a_ionian_01", Sound.SoundType.MUSIC);
+        SOUND_MUSIC_A_DORIAN_O1 = loadSound("music_a_dorian_01", Sound.SoundType.MUSIC);
+        SOUND_MUSIC_A_PHRYGIAN_O1 = loadSound("music_a_phrygian_01", Sound.SoundType.MUSIC);
 
         source = BufferUtils.createIntBuffer(listOfSounds.size());
     }
@@ -233,5 +238,37 @@ public class OpenALManager {
     public static void destroy() {
         alcDestroyContext(context);
         alcCloseDevice(device);
+    }
+
+    public static void playMusicDependingOnMusicalMode(MusicalMode musicalMode) {
+        switch (musicalMode) {
+            case IONIAN:
+            default:
+                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O1);
+                break;
+//            case DORIAN:
+//                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_DORIAN_O1);
+//                break;
+//            case PHRYGIAN:
+//            default:
+//                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_PHRYGIAN_O1);
+//                break;
+        }
+    }
+
+    public static void stopMusicDependingOnMusicalMode(MusicalMode musicalMode) {
+        switch (musicalMode) {
+            case IONIAN:
+            default:
+                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O1);
+                break;
+//            case DORIAN:
+//                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_DORIAN_O1);
+//                break;
+//            case PHRYGIAN:
+//            default:
+//                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_PHRYGIAN_O1);
+//                break;
+        }
     }
 }

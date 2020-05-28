@@ -4,6 +4,8 @@ import main.OpenGLManager;
 import main.Texture;
 import scene.Camera;
 
+import java.awt.*;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
@@ -51,11 +53,23 @@ public class Sprite {
         return spriteSheet;
     }
 
+    public void draw(int x, int y, float transparency) {
+        draw(x, y, 0, 0, transparency, Camera.getZoom());
+    }
+
+    public void draw(int x, int y, float transparency, double scale, Color color) {
+        draw(x, y, 0, 0, transparency, scale, color);
+    }
+
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency) {
         draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, Camera.getZoom());
     }
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale) {
+        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, scale, new Color(1f, 1f, 1f));
+    }
+
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale, Color color) {
         glActiveTexture(GL_TEXTURE0);
         spriteSheet.bind();
 
@@ -74,7 +88,8 @@ public class Sprite {
         OpenGLManager.glBegin(GL_QUADS);
 
         y -= (int) (SPRITE_HEIGHT * scale);
-        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency, 1f, 1f, 1f);
+        OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency,
+                color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
