@@ -23,8 +23,8 @@ public class Scene {
     private static int enemySpawnPeriod = 7500; // In Milliseconds
     private static long lastEnemySpawnTime;
 
-    private static int renderDistance = 1000; //TODO This should depend on the Window and Camera parameters
-    private static int updateDistance = 1250; //TODO This should depend on... what?
+    private static int renderDistance; //TODO This should depend on the Window and Camera parameters
+    private static int updateDistance; //TODO This should depend on... what?
 
     private static Coordinates initialCoordinates;
 
@@ -52,6 +52,9 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
+        renderDistance = (int) ((Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
+        updateDistance = (int) (1.2 * (Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
+
         OpenALManager.playMusicDependingOnMusicalMode(Player.getInstance().getMusicalMode());
 
         updateAndSortEntities(timeElapsed);
@@ -106,7 +109,6 @@ public class Scene {
                     listOfEntitiesToUpdate.add(currentEntity);
                 }
             }
-
         }
 
         /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/
@@ -128,7 +130,7 @@ public class Scene {
         if (!listOfLightSources.isEmpty()) {
             for (LightSource lightSource : listOfLightSources) {
                 lightSource.update(timeElapsed);
-                if (MathUtils.module(lightSource.getWorldCoordinates(), Camera.getInstance().getCoordinates()) < 1000.0) {
+                if (MathUtils.module(lightSource.getWorldCoordinates(), Camera.getInstance().getCoordinates()) / lightSource.getIntensity() < 30.0) {
                     listOfVisibleLightSources.add(lightSource);
                 }
             }

@@ -1,4 +1,4 @@
-const int maxLightSources = 150;
+const int maxLightSources = 50;
 
 uniform vec2 lightSourceCoordinates[maxLightSources];
 uniform float lightSourceIntensity[maxLightSources];
