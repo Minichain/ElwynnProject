@@ -86,7 +86,11 @@ public class InputListenerManager {
                     mouseWheelPosition += yOffset;
                     if (mouseWheelPosition < 0) mouseWheelPosition = 0;
                 } else {
-                    Camera.setZoom(Camera.getZoom() + 0.1 * yOffset * Camera.getZoom());
+                    if (yOffset > 0.0) {
+                        Camera.increaseZoom();
+                    } else {
+                        Camera.decreaseZoom();
+                    }
                 }
             }
         };
@@ -344,10 +348,10 @@ public class InputListenerManager {
                 }
                 break;
             case GLFW_KEY_UP:
-                if (pressed) Camera.setZoom(Camera.getZoom() + 0.1 * Camera.getZoom());
+                if (pressed) Camera.increaseZoom();
                 break;
             case GLFW_KEY_DOWN:
-                if (pressed) Camera.setZoom(Camera.getZoom() - 0.1 * Camera.getZoom());
+                if (pressed) Camera.decreaseZoom();
                 break;
         }
     }

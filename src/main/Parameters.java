@@ -8,8 +8,8 @@ public class Parameters {
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond = 60;
-    private static boolean fullScreen = false;
-    private static Resolution resolution = Resolution.RESOLUTION_1600_900;
+    private static boolean fullScreen = true;
+    private static Resolution resolution = Resolution.RESOLUTION_1920_1080;
 
     /**
      * Frames Per Second we would love to see our game to run at.

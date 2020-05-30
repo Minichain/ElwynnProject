@@ -64,8 +64,8 @@ public class Weather {
             for (int i = 0; i < newParticlesToGenerate; i++) {
                 double width = 1400.0 * Window.getWidth() / Resolution.RESOLUTION_1920_1080.getResolution()[0];
                 double height = 600.0 * Window.getHeight() / Resolution.RESOLUTION_1920_1080.getResolution()[1];
-                double x = Player.getInstance().getWorldCoordinates().x - (width / Camera.getZoom()) + Math.random() * (width * 2.0/ Camera.getZoom());
-                double y = Player.getInstance().getWorldCoordinates().y - (height / Camera.getZoom() + Math.random() * (height * 0.2 / Camera.getZoom()));
+                double x = Camera.getInstance().getCoordinates().x - (width / Camera.getZoom()) + Math.random() * (width * 2.0/ Camera.getZoom());
+                double y = Camera.getInstance().getCoordinates().y - (height / Camera.getZoom() + Math.random() * (height * 0.2 / Camera.getZoom()));
                 double[] velocityVector = new double[] {- 0.25 - Math.random() * 0.2, 2.5 + Math.random() * 0.4};
                 float particleSize = (float) (Math.random() * 2.0);
                 Particle[] newParticles = new Particle[5];

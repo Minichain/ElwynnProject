@@ -16,6 +16,8 @@ public class Camera {
     private static double xInitialCoordinate = Scene.getInitialCoordinates().x;
     private static double yInitialCoordinate = Scene.getInitialCoordinates().y;
     private static double zoom = 2;
+    private static double minZoom = 2;
+    private static double maxZoom = 4;
     private static double freeCameraSpeed = 1.0;
     private static double followingSpeed = 0.0025;
 
@@ -61,7 +63,21 @@ public class Camera {
     }
 
     public static void setZoom(double zoom) {
-        Camera.zoom = zoom;
+        if (zoom <= minZoom) {
+            Camera.zoom = minZoom;
+        } else if (zoom >= maxZoom) {
+            Camera.zoom = maxZoom;
+        } else {
+            Camera.zoom = zoom;
+        }
+    }
+
+    public static void increaseZoom() {
+        setZoom(getZoom() + 1.0);
+    }
+
+    public static void decreaseZoom() {
+        setZoom(getZoom() - 1.0);
     }
 
     public void reset() {
