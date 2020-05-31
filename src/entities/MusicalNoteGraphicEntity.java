@@ -65,22 +65,32 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
         this.lightSource.update(timeElapsed);
         this.timeLiving += timeElapsed;
+
         if (timeLiving >= timeToLive) {
             ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, musicalMode.getColor());
             this.dead = true;
         }
-        Enemy enemy;
+
+        Enemy entity;
         for (GraphicEntity graphicEntity : Scene.getInstance().getListOfEntitiesToUpdate()) {
-            if (graphicEntity instanceof Enemy) {
-                enemy = (Enemy) graphicEntity;
-                if (enemy.getStatus() == Enemy.Status.DEAD) {
-                    continue;
-                }
-                if (MathUtils.module(getCenterOfMassWorldCoordinates(), enemy.getCenterOfMassWorldCoordinates()) < 30) {
-                    damage *= enemy.getWeakness(musicalMode);
-                    enemy.hurt(damage);
+            if (graphicEntity instanceof Player) {
+                continue;
+            } else if (graphicEntity instanceof Enemy) {
+                if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 30) {
+                    this.dead = true;
+                    ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, musicalMode.getColor());
+
+                    entity = (Enemy) graphicEntity;
+                    if (entity.getStatus() == Enemy.Status.DEAD) {
+                        continue;
+                    }
+                    damage *= entity.getWeakness(musicalMode);
+                    entity.hurt(damage);
                     String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(enemy.getWorldCoordinates().x, enemy.getWorldCoordinates().y, text, true, true, false);
+                    new FloatingTextEntity(entity.getWorldCoordinates().x, entity.getWorldCoordinates().y, text, true, true, false);
+                }
+            } else if (graphicEntity instanceof StaticGraphicEntity) {
+                if (((StaticGraphicEntity) graphicEntity).getCollision().isColliding(getCenterOfMassWorldCoordinates())) {
                     this.dead = true;
                     ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, musicalMode.getColor());
                 }
