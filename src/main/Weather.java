@@ -1,7 +1,6 @@
 package main;
 
 import audio.OpenALManager;
-import entities.Player;
 import enums.Resolution;
 import particles.Particle;
 import particles.ParticleManager;

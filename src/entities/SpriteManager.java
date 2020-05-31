@@ -39,7 +39,7 @@ public class SpriteManager {
 
     public SpriteManager() {
         /** PLAYER **/
-        PLAYER = new Sprite("res/sprites/dynamic/player01.png", 32, 32, 1, 8, 2, 1, 7);
+        PLAYER = new Sprite("res/sprites/dynamic/player01.png", 32, 32, 1, 8, 2, 1, 7, 5);
 
         /** ENEMY **/
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, -1);

@@ -22,11 +22,16 @@ public class Sprite {
     public int DYING_FRAMES;
     public int DEAD_FRAMES;
     public int JUMPING_FRAMES;
+    public int ATTACKING_FRAMES;
 
     public int TILES_IN_TILESET_X_AXIS;
     public int TILES_IN_TILESET_Y_AXIS;
 
     public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int jumpingFrames) {
+        this(path, spriteWidth, spriteHeight, idleFrames, runningFrames, dyingFrames, deadFrames, jumpingFrames, -1);
+    }
+
+    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int jumpingFrames, int attackingFrames) {
         spriteSheet = Texture.loadTexture(path);
 
         SPRITE_WIDTH = spriteWidth;
@@ -37,6 +42,7 @@ public class Sprite {
         DYING_FRAMES = dyingFrames;
         DEAD_FRAMES = deadFrames;
         JUMPING_FRAMES = jumpingFrames;
+        ATTACKING_FRAMES = attackingFrames;
     }
 
     public Sprite(String path, int spriteWidth, int spriteHeight) {

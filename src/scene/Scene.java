@@ -23,8 +23,8 @@ public class Scene {
     private static int enemySpawnPeriod = 7500; // In Milliseconds
     private static long lastEnemySpawnTime;
 
-    private static int renderDistance; //TODO This should depend on the Window and Camera parameters
-    private static int updateDistance; //TODO This should depend on... what?
+    private static int renderDistance;
+    private static int updateDistance;
 
     private static Coordinates initialCoordinates;
 
@@ -52,8 +52,8 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
-        renderDistance = (int) ((Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
-        updateDistance = (int) (1.2 * (Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
+        renderDistance = (int) (1.2 * (Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
+        updateDistance = (int) (1.5 * (Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
 
         OpenALManager.playMusicDependingOnMusicalMode(Player.getInstance().getMusicalMode());
 
@@ -105,7 +105,7 @@ public class Scene {
                 }
                 currentEntity.updateCoordinates();
 
-                if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getWorldCoordinates()) < updateDistance) {
+                if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCenterOfMassWorldCoordinates()) < updateDistance) {
                     listOfEntitiesToUpdate.add(currentEntity);
                 }
             }

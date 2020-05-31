@@ -22,6 +22,14 @@ public class Coordinates {
                 y / Camera.getZoom() + Camera.getInstance().getCoordinates().y - (Camera.getHeight() / 2));
     }
 
+    public void translate(double x, double y) {
+        this.x += x;
+        this.y += y;
+    }
+
+
+    /** STATIC METHODS **/
+
     public static Coordinates cameraCoordinatesToTileCoordinates(double x, double y) {
         Coordinates worldCoordinates = new Coordinates(x, y).toWorldCoordinates();
         return worldCoordinatesToTileCoordinates(worldCoordinates.x, worldCoordinates.y);
