@@ -5,6 +5,7 @@ import main.*;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
+import text.FloatingTextEntity;
 import utils.MathUtils;
 import utils.Utils;
 
@@ -16,17 +17,14 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private Utils.DirectionFacing directionFacing;
     private Status status;
     public enum Status {
-        IDLE, RUNNING, ROLLING, DYING, DEAD;
+        IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING, CHASING;
     }
 
     /** ATTACK **/
-    private boolean attacking = false;
-
-    private ConeAttack coneAttack;
-    private int coneAttackPeriod = 500;
-    private int coneAttackCoolDown = 0;
-    private float coneAttackPower = 100f;
-    private float coneAttackLength = 75;
+    private int attack01Period = 1000;
+    private int attack01CoolDown = 0;
+    private float attack01Power = 250f;
+    private float attack01ManaCost = 0.1f;
 
     private CircleAttack circleAttack;
     private int circleAttackPeriod = 10000;
@@ -34,17 +32,14 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private float circleAttackPower = 100f;
 
     /** PATH FINDING **/
-    boolean useDijkstraAlgorithm = true;
+    private enum ChasingMode {
+        STRAIGHT_LINE, DIJKSTRA
+    }
+    private ChasingMode chasingMode;
     private PathFindingAlgorithm pathFindingAlgorithm;
     private double distanceToPlayer;
     private int computePathPeriod = 600;
     private int computePathCoolDown = 0;
-
-    private Type type;
-    private final static int numOfEnemyTypes = 3;
-    public enum Type {
-        TYPE_01, TYPE_02, TYPE_03;
-    }
 
     MusicalMode musicalMode;
 
@@ -59,23 +54,13 @@ public class Enemy extends LivingDynamicGraphicEntity {
         speed = Math.random() * 0.06 + 0.04;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
-        int enemyType = (int) (Math.random() * Integer.MAX_VALUE) % numOfEnemyTypes;
+        chasingMode = ChasingMode.STRAIGHT_LINE;
+        int enemyType = (int) (Math.random() * Integer.MAX_VALUE) % MusicalMode.values().length;
         switch (enemyType) {
             case 0:
-                type = Type.TYPE_01;
-                musicalMode = MusicalMode.DORIAN;
-                setSprite(SpriteManager.getInstance().ENEMY01);
-                break;
-            case 1:
-                type = Type.TYPE_02;
-                musicalMode = IONIAN;
-                setSprite(SpriteManager.getInstance().ENEMY02);
-                break;
-            case 2:
             default:
-                type = Type.TYPE_03;
-                musicalMode = MusicalMode.PHRYGIAN;
-                setSprite(SpriteManager.getInstance().ENEMY03);
+                musicalMode = IONIAN;
+                setSprite(SpriteManager.getInstance().ENEMY01);
                 break;
         }
         Scene.getInstance().getListOfEntities().add(this);
@@ -100,13 +85,17 @@ public class Enemy extends LivingDynamicGraphicEntity {
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_ENEMY_HURT_01);
         setHealth(getHealth() - damage);
+        String text = String.valueOf((int) damage);
+        new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text, true, true, false);
     }
 
     @Override
     public void update(long timeElapsed) {
         if (health > 0) {   //Enemy is alive
             distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
-            attacking = distanceToPlayer < coneAttackLength && Player.getInstance().getStatus() != Player.Status.DEAD;
+            if (Player.getInstance().getStatus() != Player.Status.DEAD && distanceToPlayer < 500.0 && Math.random() < 0.1) {
+                status = Status.ATTACKING;
+            }
 
             movementVector = computeMovementVector(timeElapsed);
             attack(timeElapsed);
@@ -118,7 +107,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
             /** MOVE ENTITY **/
             double speed = 0.0;
-            if (attacking) {
+            if (status == Status.ATTACKING) {
                 speed = this.speed * 0.5;
             } else if (status == Status.RUNNING) {
                 speed = this.speed;
@@ -141,29 +130,50 @@ public class Enemy extends LivingDynamicGraphicEntity {
         } else if (status != Status.DEAD) {   //Enemy is dying
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             status = Status.DYING;
-        } else {    //Enemy is dead
-            attacking = false;
+        } else {
+            //Enemy is dead
         }
 
+        double frame;
         switch (status) {
             case IDLE:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().IDLE_FRAMES);
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().RUNNING_FRAMES);
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
                 break;
             case ROLLING:
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                if (frame >= getSprite().ROLLING_FRAMES) {
+                    status = Status.IDLE;
+                    setSpriteCoordinateFromSpriteSheetX(0);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ROLLING_FRAMES);
+                }
                 break;
             case DYING:
-                double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
-                if (frame > getSprite().DYING_FRAMES) {
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                if (frame >= getSprite().DYING_FRAMES) {
                     status = Status.DEAD;
+                    setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
                 }
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetX((getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01)) % getSprite().DEAD_FRAMES);
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
+                break;
+            case ATTACKING:
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.02));
+                if (frame >= getSprite().ATTACKING_FRAMES) {
+                    status = Status.IDLE;
+                    setSpriteCoordinateFromSpriteSheetX(0);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
+                }
                 break;
         }
 
@@ -185,16 +195,23 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public double[] computeMovementVector(long timeElapsed) {
-        boolean chasing = status != Status.DYING && status != Status.DEAD && distanceToPlayer > 25 && distanceToPlayer < 2000;
+        if (status != Status.DYING
+                && status != Status.DEAD
+                && status != Status.ATTACKING
+                && distanceToPlayer > 250
+                && distanceToPlayer < 2000) {
+            status = Status.CHASING;
+            chasingMode = ChasingMode.DIJKSTRA;
+        }
 
-        if (!chasing) {
+        if (status != Status.CHASING) {
             return new double[]{0 ,0};
         }
 
         double[] movement = new double[2];
         status = Status.RUNNING;
 
-        if (useDijkstraAlgorithm) {
+        if (chasingMode == ChasingMode.DIJKSTRA) {
             if (computePathCoolDown <= 0) {
                 computePath();
                 computePathCoolDown = computePathPeriod;
@@ -205,7 +222,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2),
                     stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2)};
             computePathCoolDown -= timeElapsed;
-        } else {
+        } else if (chasingMode == ChasingMode.STRAIGHT_LINE) {
             movement[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
             movement[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
         }
@@ -248,11 +265,33 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     setSpriteCoordinateFromSpriteSheetY(6);
                 }
                 break;
+            case ROLLING:
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(10);
+                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
+                    setSpriteCoordinateFromSpriteSheetY(13);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(11);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(12);
+                }
+                break;
             case DYING:
                 setSpriteCoordinateFromSpriteSheetY(8);
                 break;
             case DEAD:
                 setSpriteCoordinateFromSpriteSheetY(9);
+                break;
+            case ATTACKING:
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(14);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(15);
+                } else if (directionFacing == Utils.DirectionFacing.UP) {
+                    setSpriteCoordinateFromSpriteSheetY(16);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(17);
+                }
                 break;
         }
     }
@@ -262,15 +301,20 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     private void attack(long timeElapsed) {
-        /** CONE ATTACK **/
+        /** MUSICAL NOTE ATTACK **/
         double[] pointingVector = new double[]{Player.getInstance().getCenterOfMassWorldCoordinates().x - getCenterOfMassWorldCoordinates().x,
                 Player.getInstance().getCenterOfMassWorldCoordinates().y - getCenterOfMassWorldCoordinates().y};
 
-        if (coneAttack == null) {
-            coneAttack = new ConeAttack(getCenterOfMassWorldCoordinates(), pointingVector, Math.PI / 6.0,
-                    coneAttackLength, coneAttackPeriod, coneAttackCoolDown, coneAttackPower, true, attacking);
-        } else {
-            coneAttack.update(getCenterOfMassWorldCoordinates(), pointingVector, timeElapsed, attacking, musicalMode);
+        if (status == Status.ATTACKING) {
+            if (attack01CoolDown <= 0) {
+                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
+                        0.3, musicalMode, attack01Power, 1500.0, true);
+                Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
+                attack01CoolDown = attack01Period;
+            }
+        }
+        if (attack01CoolDown > 0) {
+            attack01CoolDown -= timeElapsed;
         }
 
         /** CIRCLE ATTACK **/
@@ -286,10 +330,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public void drawAttackFX() {
-        if (coneAttack != null && attacking) {
-            coneAttack.render();
-        }
-
         /** PATH RENDERING **/
         if (Parameters.isDebugMode() && status != Status.DEAD
                 && pathFindingAlgorithm != null
@@ -320,10 +360,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
             glEnd();
             glEnable(GL_TEXTURE_2D);
         }
-    }
-
-    public Type getType() {
-        return type;
     }
 
     public float getWeakness(MusicalMode musicalMode) {

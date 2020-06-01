@@ -42,9 +42,9 @@ public class SpriteManager {
         PLAYER = new Sprite("res/sprites/dynamic/player01.png", 32, 32, 1, 8, 2, 1, 7, 5);
 
         /** ENEMY **/
-        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, -1);
-        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
-        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
+        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, 7, 5);
+//        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
+//        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
 
         /** MUSICAL NOTES **/
         G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white.png", 16, 16, -1, -1, -1, -1, -1);

@@ -86,16 +86,12 @@ public class ConeAttack {
                         && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     damage *= ((Enemy) entity).getWeakness(musicalMode);
                     ((Enemy) entity).hurt(damage);
-                    String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
                         && ((Player) entity).getStatus() != Player.Status.ROLLING
                         && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
                     ((Player) entity).hurt(damage);
-                    String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, true);
                 }
             }
         }

@@ -21,17 +21,17 @@ public class Sprite {
     public int RUNNING_FRAMES;
     public int DYING_FRAMES;
     public int DEAD_FRAMES;
-    public int JUMPING_FRAMES;
+    public int ROLLING_FRAMES;
     public int ATTACKING_FRAMES;
 
     public int TILES_IN_TILESET_X_AXIS;
     public int TILES_IN_TILESET_Y_AXIS;
 
-    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int jumpingFrames) {
-        this(path, spriteWidth, spriteHeight, idleFrames, runningFrames, dyingFrames, deadFrames, jumpingFrames, -1);
+    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int rollingFrame) {
+        this(path, spriteWidth, spriteHeight, idleFrames, runningFrames, dyingFrames, deadFrames, rollingFrame, -1);
     }
 
-    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int jumpingFrames, int attackingFrames) {
+    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int rollingFrame, int attackingFrames) {
         spriteSheet = Texture.loadTexture(path);
 
         SPRITE_WIDTH = spriteWidth;
@@ -41,7 +41,7 @@ public class Sprite {
         RUNNING_FRAMES = runningFrames;
         DYING_FRAMES = dyingFrames;
         DEAD_FRAMES = deadFrames;
-        JUMPING_FRAMES = jumpingFrames;
+        ROLLING_FRAMES = rollingFrame;
         ATTACKING_FRAMES = attackingFrames;
     }
 

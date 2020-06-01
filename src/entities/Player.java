@@ -3,6 +3,7 @@ package entities;
 import audio.OpenALManager;
 import scene.Scene;
 import scene.TileMap;
+import text.FloatingTextEntity;
 import utils.MathUtils;
 import utils.Utils;
 import listeners.InputListenerManager;
@@ -94,6 +95,8 @@ public class Player extends LivingDynamicGraphicEntity {
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
         setHealth(getHealth() - damage);
+        String text = String.valueOf((int) damage);
+        new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, text, true, true, true);
     }
 
     @Override
@@ -193,11 +196,11 @@ public class Player extends LivingDynamicGraphicEntity {
                 break;
             case ROLLING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
-                if (frame >= getSprite().JUMPING_FRAMES) {
+                if (frame >= getSprite().ROLLING_FRAMES) {
                     playerStatus = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().JUMPING_FRAMES);
+                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ROLLING_FRAMES);
                 }
                 break;
             case DYING:
@@ -355,7 +358,8 @@ public class Player extends LivingDynamicGraphicEntity {
 
         if (InputListenerManager.leftMouseButtonPressed) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
-                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector, 0.38, musicalMode, attack01Power);
+                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
+                        0.38, musicalMode, attack01Power, 1000.0, false);
                 Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;

@@ -19,8 +19,9 @@ public class Scene {
     private static ArrayList<GraphicEntity> listOfEntities;
     private static ArrayList<StaticGraphicEntity> listOfStaticEntities;
     private static ArrayList<GraphicEntity> listOfEntitiesToUpdate;
+    private static ArrayList<Enemy> listOfEnemies;
     private static ArrayList<MusicalNoteGraphicEntity> listOfMusicalNoteGraphicEntities;
-    private static int enemySpawnPeriod = 7500; // In Milliseconds
+    private static int enemySpawnPeriod; // In Milliseconds
     private static long lastEnemySpawnTime;
 
     private static int renderDistance;
@@ -38,6 +39,7 @@ public class Scene {
         listOfEntities = new ArrayList<>();
         listOfStaticEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
+        listOfEnemies = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         listOfLightSources = new ArrayList<>();
         listOfVisibleLightSources = new ArrayList<>();
@@ -77,6 +79,7 @@ public class Scene {
 
     private void updateEnemiesSpawn() {
         long currentTime = System.currentTimeMillis();
+        enemySpawnPeriod = (int) (5000 * Math.pow(listOfEnemies.size(), 2.0));
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
             int distance = (int) ((Math.random() * 250) + 1500);
             double angle = Math.random() * 2 * Math.PI;
@@ -98,6 +101,7 @@ public class Scene {
         /** UPDATE ENTITIES **/
         if (!listOfEntities.isEmpty() && listOfEntitiesToUpdate != null) {
             listOfEntitiesToUpdate.clear();
+            listOfEnemies.clear();
             for (int i = 0; i < listOfEntities.size(); i++) {
                 GraphicEntity currentEntity = listOfEntities.get(i);
                 if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -107,6 +111,9 @@ public class Scene {
 
                 if (MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCenterOfMassWorldCoordinates()) < updateDistance) {
                     listOfEntitiesToUpdate.add(currentEntity);
+                }
+                if (currentEntity instanceof Enemy && ((Enemy) currentEntity).getStatus() != Enemy.Status.DEAD) {
+                    listOfEnemies.add((Enemy) currentEntity);
                 }
             }
         }

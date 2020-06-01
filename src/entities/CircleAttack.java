@@ -83,16 +83,12 @@ public class CircleAttack {
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     damage *= ((Enemy) entity).getWeakness(musicalMode);
                     ((Enemy) entity).hurt(damage);
-                    String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, false);
                 }
             } else if (entity instanceof Player && enemyAttack) {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
                         && ((Player) entity).getStatus() != Player.Status.ROLLING
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
                     ((Player) entity).hurt(damage);
-                    String text = String.valueOf((int) damage);
-                    new FloatingTextEntity(entity.getCenterOfMassWorldCoordinates().x, entity.getCenterOfMassWorldCoordinates().y, text, true, true, true);
                 }
             }
         }
