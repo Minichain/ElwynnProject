@@ -127,7 +127,7 @@ public class Player extends LivingDynamicGraphicEntity {
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0f)) {
                 playerStatus = Status.ATTACKING;
             }
-            attack(timeElapsed);
+            updateAttack(timeElapsed);
 
             /** UPDATE MOVEMENT VECTOR **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -344,7 +344,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private double[] pointingVector = new double[]{1.0, 1.0};
 
-    private void attack(long timeElapsed) {
+    private void updateAttack(long timeElapsed) {
         /** CONE ATTACK **/
         if (InputListenerManager.isUsingKeyboardAndMouse()) {
             pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,

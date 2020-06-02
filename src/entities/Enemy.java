@@ -21,9 +21,9 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     /** ATTACK **/
-    private int attack01Period = 1000;
+    private int attack01Period = 500;
     private int attack01CoolDown = 0;
-    private float attack01Power = 250f;
+    private float attack01Power = 125f;
     private float attack01ManaCost = 0.1f;
 
     private CircleAttack circleAttack;
@@ -37,11 +37,17 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
     private ChasingMode chasingMode;
     private PathFindingAlgorithm pathFindingAlgorithm;
-    private double distanceToPlayer;
+    private double distanceToGoal;
     private int computePathPeriod = 600;
     private int computePathCoolDown = 0;
 
+    private int checkObstaclesPeriod = 250;
+    private int checkObstaclesCoolDown = 0;
+    private boolean obstacleDetected;
+
     MusicalMode musicalMode;
+
+    Coordinates goalCoordinates;
 
     public Enemy(int x, int y) {
         super(x, y);
@@ -92,13 +98,36 @@ public class Enemy extends LivingDynamicGraphicEntity {
     @Override
     public void update(long timeElapsed) {
         if (health > 0) {   //Enemy is alive
-            distanceToPlayer = MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates());
-            if (Player.getInstance().getStatus() != Player.Status.DEAD && distanceToPlayer < 500.0 && Math.random() < 0.1) {
-                status = Status.ATTACKING;
+            goalCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
+            distanceToGoal = MathUtils.module(getCenterOfMassWorldCoordinates(), goalCoordinates);
+
+            if (distanceToGoal < 2000.0) {
+                status = Status.CHASING;
+            }
+
+            if (status == Status.IDLE) {
+                return;
+            }
+
+//            System.out.println("status: " + status);
+//            System.out.println("distanceToGoal: " + distanceToGoal);
+
+            checkObstacles(timeElapsed);
+
+            if (obstacleDetected) {
+                chasingMode = ChasingMode.DIJKSTRA;
+                if (status == Status.ATTACKING) {
+                    status = Status.CHASING;
+                }
+            } else {
+                chasingMode = ChasingMode.STRAIGHT_LINE;
+                if (status == Status.CHASING && distanceToGoal <= 250) {
+                    status = Status.ATTACKING;
+                }
             }
 
             movementVector = computeMovementVector(timeElapsed);
-            attack(timeElapsed);
+            updateAttack(timeElapsed);
 
             /** CHECK COLLISIONS **/
             double distanceFactor = timeElapsed / 32.0;
@@ -109,7 +138,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             double speed = 0.0;
             if (status == Status.ATTACKING) {
                 speed = this.speed * 0.5;
-            } else if (status == Status.RUNNING) {
+            } else if (status == Status.RUNNING || status == Status.CHASING) {
                 speed = this.speed;
             } else if (status == Status.ROLLING) {
                 speed = this.speed * 1.5;
@@ -141,6 +170,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
                 break;
             case RUNNING:
+            case CHASING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
                 break;
@@ -167,7 +197,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
                 break;
             case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.02));
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
                 if (frame >= getSprite().ATTACKING_FRAMES) {
                     status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
@@ -180,28 +210,45 @@ public class Enemy extends LivingDynamicGraphicEntity {
         updateSpriteCoordinatesToDraw();
     }
 
-    private boolean checkHorizontalCollision(double[] movement, double distanceFactor) {
-        Coordinates collisionCoordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + movement[0] * distanceFactor, getCenterOfMassWorldCoordinates().y);
-        boolean tileCollision = TileMap.checkCollisionWithTile((int) collisionCoordinates.x, (int) collisionCoordinates.y);
+    private boolean checkObstacles(long timeElapsed) {
+        checkObstaclesCoolDown -= timeElapsed;
+        if (checkObstaclesCoolDown > 0) {
+            return obstacleDetected;
+        }
 
-        return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
+        obstacleDetected = false;
+        int numberOfStepsToCheck = 25;
+        double stepDistance = distanceToGoal / (double) numberOfStepsToCheck;
+        double[] vector = new double[]{goalCoordinates.x - getWorldCoordinates().x, goalCoordinates.y - getWorldCoordinates().y};
+        vector = MathUtils.normalizeVector(vector);
+        for (int i = 0; i < numberOfStepsToCheck; i++) {
+            Coordinates coordinatesToCheck = new Coordinates(getWorldCoordinates().x + vector[0] * stepDistance * i, getWorldCoordinates().y + vector[1] * stepDistance * i);
+            if (TileMap.checkCollisionWithTile((int) coordinatesToCheck.x, (int) coordinatesToCheck.y) || Scene.getInstance().checkCollisionWithEntities(coordinatesToCheck)) {
+                obstacleDetected = true;
+                break;
+            }
+        }
+        checkObstaclesCoolDown = checkObstaclesPeriod;
+        return obstacleDetected;
+    }
+
+    private boolean checkHorizontalCollision(double[] movement, double distanceFactor) {
+        Coordinates coordinatesToCheck = new Coordinates(getCenterOfMassWorldCoordinates().x + movement[0] * distanceFactor, getCenterOfMassWorldCoordinates().y);
+        return TileMap.checkCollisionWithTile((int) coordinatesToCheck.x, (int) coordinatesToCheck.y) || Scene.getInstance().checkCollisionWithEntities(coordinatesToCheck);
     }
 
     private boolean checkVerticalCollision(double[] movement, double distanceFactor) {
-        Coordinates collisionCoordinates = new Coordinates(getCenterOfMassWorldCoordinates().x, getCenterOfMassWorldCoordinates().y + movement[1] * distanceFactor);
-        boolean tileCollision = TileMap.checkCollisionWithTile((int) collisionCoordinates.x, (int) collisionCoordinates.y);
-
-        return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
+        Coordinates coordinatesToCheck = new Coordinates(getCenterOfMassWorldCoordinates().x, getCenterOfMassWorldCoordinates().y + movement[1] * distanceFactor);
+        return TileMap.checkCollisionWithTile((int) coordinatesToCheck.x, (int) coordinatesToCheck.y) || Scene.getInstance().checkCollisionWithEntities(coordinatesToCheck);
     }
 
     public double[] computeMovementVector(long timeElapsed) {
         if (status != Status.DYING
                 && status != Status.DEAD
                 && status != Status.ATTACKING
-                && distanceToPlayer > 250
-                && distanceToPlayer < 2000) {
+                && distanceToGoal > 250
+                && distanceToGoal < 2000) {
             status = Status.CHASING;
-            chasingMode = ChasingMode.DIJKSTRA;
         }
 
         if (status != Status.CHASING) {
@@ -209,7 +256,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
         }
 
         double[] movement = new double[2];
-        status = Status.RUNNING;
 
         if (chasingMode == ChasingMode.DIJKSTRA) {
             if (computePathCoolDown <= 0) {
@@ -255,6 +301,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
                 break;
             case RUNNING:
+            case CHASING:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
                     setSpriteCoordinateFromSpriteSheetY(4);
                 } else if (directionFacing == Utils.DirectionFacing.LEFT) {
@@ -300,7 +347,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         return status;
     }
 
-    private void attack(long timeElapsed) {
+    private void updateAttack(long timeElapsed) {
         /** MUSICAL NOTE ATTACK **/
         double[] pointingVector = new double[]{Player.getInstance().getCenterOfMassWorldCoordinates().x - getCenterOfMassWorldCoordinates().x,
                 Player.getInstance().getCenterOfMassWorldCoordinates().y - getCenterOfMassWorldCoordinates().y};
@@ -318,11 +365,13 @@ public class Enemy extends LivingDynamicGraphicEntity {
         }
 
         /** CIRCLE ATTACK **/
-        if (circleAttackCoolDown <= 0) {
-            circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
-                    50, 500, circleAttackPower, true, true, musicalMode);
-            Scene.listOfCircleAttacks.add(circleAttack);
-            circleAttackCoolDown = circleAttackPeriod;
+        if (status == Status.ATTACKING) {
+            if (circleAttackCoolDown <= 0) {
+                circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
+                        50, 500, circleAttackPower, true, true, musicalMode);
+                Scene.listOfCircleAttacks.add(circleAttack);
+                circleAttackCoolDown = circleAttackPeriod;
+            }
         }
         if (circleAttackCoolDown > 0) {
             circleAttackCoolDown -= timeElapsed;
@@ -331,34 +380,49 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     public void drawAttackFX() {
         /** PATH RENDERING **/
-        if (Parameters.isDebugMode() && status != Status.DEAD
-                && pathFindingAlgorithm != null
-                && pathFindingAlgorithm.getPath() != null
-                && pathFindingAlgorithm.getPath().size() > 0) {
+        if (Parameters.isDebugMode() && status != Status.DEAD) {
+            if (chasingMode == ChasingMode.DIJKSTRA
+                    && pathFindingAlgorithm != null
+                    && pathFindingAlgorithm.getPath() != null
+                    && pathFindingAlgorithm.getPath().size() > 0) {
 
-            int start = pathFindingAlgorithm.getPath().size() - 1;
-            Coordinates cameraCoordinates1;
-            Coordinates cameraCoordinates2;
+                int start = pathFindingAlgorithm.getPath().size() - 1;
+                Coordinates cameraCoordinates1;
+                Coordinates cameraCoordinates2;
 
-            glDisable(GL_TEXTURE_2D);
-            glColor4f(1f, 1f, 1f, 0.5f);
-            OpenGLManager.glBegin(GL_LINES);
+                glDisable(GL_TEXTURE_2D);
+                glColor4f(1f, 1f, 1f, 0.5f);
+                OpenGLManager.glBegin(GL_LINES);
 
-            //FIXME: We should check why "y" tile is not correct, therefore we have to add "+ 1"
-            cameraCoordinates1 = Coordinates.tileCoordinatesToWorldCoordinates(
-                    pathFindingAlgorithm.getPath().get(start)[0],
-                    pathFindingAlgorithm.getPath().get(start)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
-            for (int i = start - 1; i >= 0; i--) {
-                cameraCoordinates2 = Coordinates.tileCoordinatesToWorldCoordinates(
-                        pathFindingAlgorithm.getPath().get(i)[0],
-                        pathFindingAlgorithm.getPath().get(i)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
+                //FIXME: We should check why "y" tile is not correct, therefore we have to add "+ 1"
+                cameraCoordinates1 = Coordinates.tileCoordinatesToWorldCoordinates(
+                        pathFindingAlgorithm.getPath().get(start)[0],
+                        pathFindingAlgorithm.getPath().get(start)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
+                for (int i = start - 1; i >= 0; i--) {
+                    cameraCoordinates2 = Coordinates.tileCoordinatesToWorldCoordinates(
+                            pathFindingAlgorithm.getPath().get(i)[0],
+                            pathFindingAlgorithm.getPath().get(i)[1] + 1).toCameraCoordinates(); //FIXME: <-- Here
+                    glVertex2d(cameraCoordinates1.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates1.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
+                    glVertex2d(cameraCoordinates2.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates2.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
+                    cameraCoordinates1 = cameraCoordinates2;
+                }
+
+                glEnd();
+                glEnable(GL_TEXTURE_2D);
+            } else if (chasingMode == ChasingMode.STRAIGHT_LINE && goalCoordinates != null) {
+                glDisable(GL_TEXTURE_2D);
+                glColor4f(1f, 1f, 1f, 0.5f);
+                OpenGLManager.glBegin(GL_LINES);
+
+                Coordinates cameraCoordinates1 = getCenterOfMassCameraCoordinates();
+                Coordinates cameraCoordinates2 = goalCoordinates.toCameraCoordinates();
+
                 glVertex2d(cameraCoordinates1.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates1.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
                 glVertex2d(cameraCoordinates2.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates2.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
-                cameraCoordinates1 = cameraCoordinates2;
-            }
 
-            glEnd();
-            glEnable(GL_TEXTURE_2D);
+                glEnd();
+                glEnable(GL_TEXTURE_2D);
+            }
         }
     }
 

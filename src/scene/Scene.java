@@ -65,7 +65,9 @@ public class Scene {
             return;
         }
 
-        updateEnemiesSpawn();
+        if (listOfEnemies.isEmpty()) {
+            updateEnemiesSpawn();
+        }
 
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
@@ -355,9 +357,9 @@ public class Scene {
         glEnable(GL_TEXTURE_2D);
     }
 
-    public boolean checkCollisionWithEntities(Coordinates collisionCoordinates) {
+    public boolean checkCollisionWithEntities(Coordinates coordinatesToCheck) {
         for (StaticGraphicEntity staticGraphicEntity : getListOfStaticEntities()) {
-            if (staticGraphicEntity.getCollision().isColliding(collisionCoordinates)) {
+            if (staticGraphicEntity.getCollision().isColliding(coordinatesToCheck)) {
                 return true;
             }
         }

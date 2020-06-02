@@ -20,7 +20,7 @@ public class Game {
         Camera.getInstance().update(timeElapsed);
         Scene.getInstance().update(timeElapsed);
         Weather.getInstance().update(timeElapsed);
-        GameTime.update(timeElapsed);
+        GameTime.getInstance().update(timeElapsed);
     }
 
     public static void render(long timeElapsed) {

@@ -18,7 +18,7 @@ public class GameTime {
         return instance;
     }
 
-    public static void update(long timeElapsed) {
+    public void update(long timeElapsed) {
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }

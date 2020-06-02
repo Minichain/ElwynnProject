@@ -70,7 +70,7 @@ public class Weather {
                 Particle[] newParticles = new Particle[5];
                 for (int j = 0; j < 5; j++) {
                     newParticles[j] = new Particle(
-                            new Coordinates(x - j * velocityVector[0], y - j * velocityVector[1]),
+                            new Coordinates(x - j * velocityVector[0] * particleSize / 3.0, y - j * velocityVector[1] * particleSize / 3.0),
                             velocityVector, 0.25, particleSize, new Color(0.25f, 0.25f, 0.5f), 4000.0, false);
                 }
                 ParticleManager.getInstance().addParticles(newParticles);
