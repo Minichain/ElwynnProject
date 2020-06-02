@@ -32,6 +32,14 @@ public class Collision {
         this.collisionType = CollisionType.CIRCLE;
     }
 
+    public double getWidth() {
+        return width;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
     public boolean isColliding(Coordinates coordinates) {
         switch (collisionType) {
             case SQUARE:

@@ -101,7 +101,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             goalCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
             distanceToGoal = MathUtils.module(getCenterOfMassWorldCoordinates(), goalCoordinates);
 
-            if (distanceToGoal < 2000.0) {
+            if (status != Status.ROLLING && distanceToGoal < 2000.0) {
                 status = Status.CHASING;
             }
 
@@ -112,21 +112,29 @@ public class Enemy extends LivingDynamicGraphicEntity {
 //            System.out.println("status: " + status);
 //            System.out.println("distanceToGoal: " + distanceToGoal);
 
-            checkObstacles(timeElapsed);
-
-            if (obstacleDetected) {
-                chasingMode = ChasingMode.DIJKSTRA;
-                if (status == Status.ATTACKING) {
-                    status = Status.CHASING;
-                }
-            } else {
-                chasingMode = ChasingMode.STRAIGHT_LINE;
-                if (status == Status.CHASING && distanceToGoal <= 250) {
-                    status = Status.ATTACKING;
+            if (status != Status.ROLLING) {
+                checkObstacles(timeElapsed);
+                if (obstacleDetected) {
+                    chasingMode = ChasingMode.DIJKSTRA;
+                    if (status == Status.ATTACKING) {
+                        status = Status.CHASING;
+                    }
+                } else {
+                    chasingMode = ChasingMode.STRAIGHT_LINE;
+                    if (status == Status.CHASING && distanceToGoal <= 250) {
+                        status = Status.ATTACKING;
+                    }
                 }
             }
 
-            movementVector = computeMovementVector(timeElapsed);
+            if (Math.random() < 0.001) {
+                roll();
+            }
+
+            if (status != Status.ROLLING) {
+                movementVector = computeMovementVector(timeElapsed);
+            }
+
             updateAttack(timeElapsed);
 
             /** CHECK COLLISIONS **/
@@ -431,6 +439,14 @@ public class Enemy extends LivingDynamicGraphicEntity {
             return 1f;
         } else {
             return 0.15f;
+        }
+    }
+
+    public void roll() {
+        if (status != Status.ATTACKING) {
+            status = Status.ROLLING;
+            setSpriteCoordinateFromSpriteSheetX(0);
+            OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);
         }
     }
 }

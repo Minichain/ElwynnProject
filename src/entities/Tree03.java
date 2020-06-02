@@ -22,7 +22,9 @@ public class Tree03 extends StaticGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
-
+        double frame;
+        frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.005 + Math.random() * 0.01));
+        setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
     }
 
     @Override

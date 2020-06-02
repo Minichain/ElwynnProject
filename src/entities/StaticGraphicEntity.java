@@ -38,20 +38,23 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
         OpenGLManager.glBegin(GL_LINES);
         glColor4f(1f, 1f, 1f, 1f);
 
+        int width = getSprite().SPRITE_WIDTH;
+        int height = getSprite().SPRITE_HEIGHT;
+
         //1st Line
         glVertex2i(x, y);
-        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
+        glVertex2i((int) (x + width * Camera.getZoom()), y);
 
         //2nd Line
-        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), y);
-        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        glVertex2i((int) (x + width * Camera.getZoom()), y);
+        glVertex2i((int) (x + width * Camera.getZoom()), (int) (y - height * Camera.getZoom()));
 
         //3rd Line
-        glVertex2i((int) (x + getSpriteSheet().getWidth() * Camera.getZoom()), (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
-        glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        glVertex2i((int) (x + width * Camera.getZoom()), (int) (y - height * Camera.getZoom()));
+        glVertex2i(x, (int) (y - height * Camera.getZoom()));
 
         //4th Line
-        glVertex2i(x, (int) (y - getSpriteSheet().getHeight() * Camera.getZoom()));
+        glVertex2i(x, (int) (y - height * Camera.getZoom()));
         glVertex2i(x, y);
 
         glEnd();

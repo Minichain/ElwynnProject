@@ -55,11 +55,11 @@ public class SpriteManager {
         /** TREES **/
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);
         TREE02 = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
-        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, -1, -1, -1, -1, -1);
+        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 4, -1, -1, -1, -1);
 
         /** BUILDINGS **/
         BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
-        BUILDING02 = new Sprite("res/sprites/static/building02.png", 96, 80, -1, -1, -1, -1, -1);
+        BUILDING02 = new Sprite("res/sprites/static/building02.png", 96, 80, 4, -1, -1, -1, -1);
 
         /** FENCES **/
         FENCE01 = new Sprite("res/sprites/static/fence01.png", 16, 16, -1, -1, -1, -1, -1);

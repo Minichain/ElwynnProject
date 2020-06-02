@@ -65,9 +65,7 @@ public class Scene {
             return;
         }
 
-        if (listOfEnemies.isEmpty()) {
-            updateEnemiesSpawn();
-        }
+        updateEnemiesSpawn();
 
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);

@@ -22,7 +22,9 @@ public class Building02 extends StaticGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
-
+        double frame;
+        frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.005));
+        setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
     }
 
     @Override
