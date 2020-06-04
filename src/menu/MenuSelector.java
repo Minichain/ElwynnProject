@@ -20,12 +20,18 @@ public class MenuSelector extends MenuComponent {
         nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18, false);
         selectedResolution = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
         selectedValue = selectedResolution.getResolutionValue();
+        this.width = (int) (500f * Parameters.getResolutionFactor());
+        this.height = (int) (45f * Parameters.getResolutionFactor());
+        this.x = 0;
+        this.y = 0;
     }
 
     @Override
     public void update(int position, int gapBetweenComponents) {
-        x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+        this.width = (int) (500f * Parameters.getResolutionFactor());
+        this.height = (int) (45f * Parameters.getResolutionFactor());
+        this.x = (int) Menu.getInstance().getCoordinates().x - width / 2;
+        this.y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
 
         previousSelector.recenter(new int[]{x + 20, y + height / 2});
         nextSelector.recenter(new int[]{x + width - 20, y + height / 2});
@@ -60,9 +66,9 @@ public class MenuSelector extends MenuComponent {
     @Override
     public void renderInfo() {
         String textInfo = getText() + " (" + selectedResolution.toString() + ")";
-        int scale = 2;
-        int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2);
-        int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
+        float scale = 2 * Parameters.getResolutionFactor();
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2f));
+        int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
         TextRendering.renderText(textX, textY, textInfo, scale, true);
     }
 

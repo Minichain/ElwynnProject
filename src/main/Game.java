@@ -21,6 +21,7 @@ public class Game {
         Scene.getInstance().update(timeElapsed);
         Weather.getInstance().update(timeElapsed);
         GameTime.getInstance().update(timeElapsed);
+        UserInterface.getInstance().update(timeElapsed);
     }
 
     public static void render(long timeElapsed) {

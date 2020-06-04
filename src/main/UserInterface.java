@@ -16,8 +16,10 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class UserInterface {
     private static UserInterface instance = null;
+    private ArrayList<String> debugTextList;
 
     public UserInterface() {
+        debugTextList = new ArrayList<>();
         TextRendering.init();
     }
 
@@ -28,75 +30,54 @@ public class UserInterface {
         return instance;
     }
 
-    public void render(long timeElapsed) {
-        renderDebugUI(timeElapsed);
-    }
+    public void update(long timeElapsed) {
+        /** UPDATE FPS **/
+        if (timeElapsed <= 0) timeElapsed = 1;
+        float fps = 1000f / timeElapsed;
+        FramesPerSecond.update(fps);
 
-    private void renderDebugUI(long timeElapsed) {
-        OpenGLManager.releaseCurrentShader();
-//        System.out.println("Render Debug UI");
-
+        /** UPDATE DEBUG TEXT **/
         if (Parameters.isDebugMode()) {
-            if (timeElapsed <= 0) timeElapsed = 1;
-            float fps = 1000f / timeElapsed;
-            FramesPerSecond.update(fps);
+            debugTextList.clear();
 
-            /** DEBUG TEXT **/
-            ArrayList<String> textList = new ArrayList<>();
-            int textScale = 2;
-            int topMargin = 10;
-            int leftMargin = 10;
-            int gapBetweenTexts = 10 * textScale;
-
-            textList.add("Project Version: " + Parameters.getProjectVersion());
-            textList.add("Show/Hide Debug Info: F1");
-            textList.add("Reset Game: F4");
-            textList.add("Save World: F5");
-            textList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
-            textList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
-            textList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
-            textList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
-            textList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
-            textList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
-            textList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
-            textList.add("Camera Zoom: " + (float) Camera.getZoom());
-            textList.add("Player World Coordinates: (" + (float) Player.getInstance().getWorldCoordinates().x + ", " + (float) Player.getInstance().getWorldCoordinates().y + ")");
-            textList.add("Player Camera Coordinates: (" + (float) Player.getInstance().getCameraCoordinates().x + ", " + (float) Player.getInstance().getCameraCoordinates().y + ")");
-            textList.add("Player Health: " + Player.getInstance().getHealth());
-            textList.add("Mouse Camera Coordinates: (" + (float) InputListenerManager.getMouseCameraCoordinates().x + ", " + (float) InputListenerManager.getMouseCameraCoordinates().y + ")");
-            textList.add("Mouse World Coordinates: (" + (float) InputListenerManager.getMouseWorldCoordinates().x + ", " + (float) InputListenerManager.getMouseWorldCoordinates().y + ")");
-            textList.add("Mouse Window Coordinates: (" + InputListenerManager.getMouseWindowCoordinates().x + ", " + InputListenerManager.getMouseWindowCoordinates().y + ")");
+            debugTextList.add("Project Version: " + Parameters.getProjectVersion());
+            debugTextList.add("Show/Hide Debug Info: F1");
+            debugTextList.add("Reset Game: F4");
+            debugTextList.add("Save World: F5");
+            debugTextList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
+            debugTextList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
+            debugTextList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
+            debugTextList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
+            debugTextList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
+            debugTextList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
+            debugTextList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
+            debugTextList.add("Camera Zoom: " + (float) Camera.getZoom());
+            debugTextList.add("Player World Coordinates: (" + (float) Player.getInstance().getWorldCoordinates().x + ", " + (float) Player.getInstance().getWorldCoordinates().y + ")");
+            debugTextList.add("Player Camera Coordinates: (" + (float) Player.getInstance().getCameraCoordinates().x + ", " + (float) Player.getInstance().getCameraCoordinates().y + ")");
+            debugTextList.add("Player Health: " + Player.getInstance().getHealth());
+            debugTextList.add("Mouse Camera Coordinates: (" + (float) InputListenerManager.getMouseCameraCoordinates().x + ", " + (float) InputListenerManager.getMouseCameraCoordinates().y + ")");
+            debugTextList.add("Mouse World Coordinates: (" + (float) InputListenerManager.getMouseWorldCoordinates().x + ", " + (float) InputListenerManager.getMouseWorldCoordinates().y + ")");
+            debugTextList.add("Mouse Window Coordinates: (" + InputListenerManager.getMouseWindowCoordinates().x + ", " + InputListenerManager.getMouseWindowCoordinates().y + ")");
             if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                textList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
+                debugTextList.add("Game Mode: " + GameMode.getGameMode() + ", Creative Mode: " + GameMode.getCreativeMode());
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                    textList.add("Layer Editing: " + GameMode.getLayerEditing());
+                    debugTextList.add("Layer Editing: " + GameMode.getLayerEditing());
                 }
             } else {
-                textList.add("Game Mode: " + " " + GameMode.getGameMode());
+                debugTextList.add("Game Mode: " + " " + GameMode.getGameMode());
             }
-            textList.add("Game time: " + String.format("%.2f", GameTime.getGameTime()) + ", light: " + String.format("%.2f", GameTime.getLight()));
-            textList.add("Current Weather: " + Weather.getWeatherStatus());
+            debugTextList.add("Game time: " + String.format("%.2f", GameTime.getGameTime()) + ", light: " + String.format("%.2f", GameTime.getLight()));
+            debugTextList.add("Current Weather: " + Weather.getWeatherStatus());
             if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
-                textList.add("GAME PAUSED");
+                debugTextList.add("GAME PAUSED");
             }
-
-            TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, textList, textScale);
-
-            /** DEBUG LINES **/
-            glDisable(GL_BLEND);
-
-            OpenGLManager.glBegin(GL_LINES);
-
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            glVertex2i(Parameters.getResolutionWidth() / 2, 0);
-            glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());
-            glVertex2i(0, Parameters.getResolutionHeight() / 2);
-            glVertex2i(Parameters.getResolutionWidth(), Parameters.getResolutionHeight() / 2);
-
-            glEnd();
-
-            glEnable(GL_BLEND);
         }
+    }
+
+    public void render(long timeElapsed) {
+        OpenGLManager.releaseCurrentShader();
+
+        renderDebugUI(timeElapsed);
 
         /** FLOATING TEXT **/
         FloatingText.renderAndUpdate(timeElapsed);
@@ -108,5 +89,36 @@ public class UserInterface {
         if (Menu.getInstance().isShowing()) {
             Menu.getInstance().render(timeElapsed);
         }
+    }
+
+    private void renderDebugUI(long timeElapsed) {
+//        System.out.println("Render Debug UI");
+
+        if (!Parameters.isDebugMode()) {
+            return;
+        }
+
+        /** RENDER DEBUG TEXT **/
+        float textScale = 2f * Parameters.getResolutionFactor();
+        float topMargin = 10;
+        float leftMargin = 10;
+        float gapBetweenTexts = 10 * textScale;
+
+        TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, debugTextList, textScale);
+
+        /** RENDER DEBUG LINES **/
+        glDisable(GL_BLEND);
+
+        OpenGLManager.glBegin(GL_LINES);
+
+        glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+        glVertex2i(Parameters.getResolutionWidth() / 2, 0);
+        glVertex2i(Parameters.getResolutionWidth() / 2, Parameters.getResolutionHeight());
+        glVertex2i(0, Parameters.getResolutionHeight() / 2);
+        glVertex2i(Parameters.getResolutionWidth(), Parameters.getResolutionHeight() / 2);
+
+        glEnd();
+
+        glEnable(GL_BLEND);
     }
 }

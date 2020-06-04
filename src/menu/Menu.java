@@ -64,14 +64,14 @@ public class Menu {
     public void render(long timeElapsed) {
         float menuHeight = 0f;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            if (i > 0) menuHeight += gapBetweenComponents;
+            if (i > 0) menuHeight += gapBetweenComponents * Parameters.getResolutionFactor();
             menuHeight += listOfMenuComponents.get(i).height;
         }
 
         coordinates = new Coordinates((float) Parameters.getResolutionWidth() / 2, (float) Parameters.getResolutionHeight() / 2 - menuHeight / 2);
 
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            listOfMenuComponents.get(i).update(i, gapBetweenComponents);
+            listOfMenuComponents.get(i).update(i, (int) (gapBetweenComponents * Parameters.getResolutionFactor()));
         }
 
         glDisable(GL_TEXTURE_2D);

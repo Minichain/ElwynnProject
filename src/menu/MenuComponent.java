@@ -5,10 +5,10 @@ public abstract class MenuComponent {
     private boolean mouseOver = false;
     private boolean pressed = false;
 
-    public int x = 0;
-    public int y = 0;
-    public int width = 500;
-    public int height = 45;
+    public int x;
+    public int y;
+    public int width;
+    public int height;
 
     public abstract void update(int position, int gapBetweenComponents);
 

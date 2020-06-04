@@ -61,8 +61,8 @@ public class Weather {
             OpenALManager.setSoundGain(OpenALManager.SOUND_RAIN_01, rainingIntensity * Parameters.getEffectSoundLevel());
             int newParticlesToGenerate = (int) (timeElapsed * rainingIntensity);
             for (int i = 0; i < newParticlesToGenerate; i++) {
-                double width = 1400.0 * Window.getWidth() / Resolution.RESOLUTION_1920_1080.getResolution()[0];
-                double height = 600.0 * Window.getHeight() / Resolution.RESOLUTION_1920_1080.getResolution()[1];
+                double width = 1400.0;
+                double height = 600.0;
                 double x = Camera.getInstance().getCoordinates().x - width / 2 + Math.random() * width;
                 double y = Camera.getInstance().getCoordinates().y - height / 2 + Math.random() * (height * 0.1);
                 double[] velocityVector = new double[] {- 0.25 - Math.random() * 0.2, 2.5 + Math.random() * 0.4};

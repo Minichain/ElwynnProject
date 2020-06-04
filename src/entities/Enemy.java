@@ -127,7 +127,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
             }
 
-            if (Math.random() < 0.001) {
+            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.001) {
                 roll();
             }
 
@@ -225,7 +225,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         }
 
         obstacleDetected = false;
-        int numberOfStepsToCheck = 25;
+        int numberOfStepsToCheck = (int) Math.ceil(distanceToGoal / TileMap.TILE_WIDTH);
         double stepDistance = distanceToGoal / (double) numberOfStepsToCheck;
         double[] vector = new double[]{goalCoordinates.x - getWorldCoordinates().x, goalCoordinates.y - getWorldCoordinates().y};
         vector = MathUtils.normalizeVector(vector);

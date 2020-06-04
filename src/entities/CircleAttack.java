@@ -59,9 +59,9 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, new Color(255, 0, 0), true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, new Color(255, 0, 0), true);
                 } else {
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 4, musicalMode.getColor(), true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, musicalMode.getColor(), true);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }

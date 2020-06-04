@@ -32,12 +32,19 @@ public class MenuSlideBar extends MenuComponent {
                 break;
         }
         this.sliderAction = sliderAction;
+        this.width = (int) (500f * Parameters.getResolutionFactor());
+        this.height = (int) (45f * Parameters.getResolutionFactor());
+        this.x = 0;
+        this.y = 0;
     }
 
     @Override
     public void update(int position, int gapBetweenComponents) {
-        x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+        this.width = (int) (500f * Parameters.getResolutionFactor());
+        this.height = (int) (45f * Parameters.getResolutionFactor());
+        this.x = (int) Menu.getInstance().getCoordinates().x - width / 2;
+        this.y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
             progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - x) / (float) width;
@@ -66,9 +73,9 @@ public class MenuSlideBar extends MenuComponent {
     @Override
     public void renderInfo() {
         String textInfo = getText() + " (" + (int) (progress * 100) + "%)";
-        int scale = 2;
-        int textX = x + (width / 2) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2);
-        int textY = y + (height / 2) - (TextRendering.CHARACTER_HEIGHT * scale / 2);
+        float scale = 2 * Parameters.getResolutionFactor();
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2f));
+        int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
         TextRendering.renderText(textX, textY, textInfo, scale, true);
     }
 

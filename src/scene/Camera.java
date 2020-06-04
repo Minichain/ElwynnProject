@@ -1,6 +1,7 @@
 package scene;
 
 import entities.Player;
+import enums.Resolution;
 import listeners.InputListenerManager;
 import main.Coordinates;
 import main.GameMode;
@@ -48,18 +49,18 @@ public class Camera {
      * Amount of pixels we are able to see in the X axis.
      * */
     public static double getWidth() {
-        return Parameters.getResolutionWidth() / zoom;
+        return Parameters.getResolutionWidth() / getZoom();
     }
 
     /**
      * Amount of pixels we are able to see in the Y axis.
      * */
     public static double getHeight() {
-        return Parameters.getResolutionHeight() / zoom;
+        return Parameters.getResolutionHeight() / getZoom();
     }
 
     public static double getZoom() {
-        return zoom;
+        return zoom * Parameters.getResolutionFactor();
     }
 
     public static void setZoom(double zoom) {

@@ -2,6 +2,7 @@ package text;
 
 import main.Coordinates;
 import main.OpenGLManager;
+import main.Parameters;
 
 import java.util.ArrayList;
 
@@ -27,9 +28,11 @@ public class FloatingText {
             float alpha = 1f - (float) (entity.timeLiving / entity.timeToLive);
             Coordinates entityCameraCoordinates = entity.coordinates.toCameraCoordinates();
             if (entity.isDangerText()) {
-                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text, 2, true, alpha, 1f, 0f, 0f);
+                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text,
+                        Parameters.getResolutionFactor() * 2f, true, alpha, 1f, 0f, 0f);
             } else {
-                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text, 2, true, alpha);
+                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text,
+                        Parameters.getResolutionFactor() * 2f, true, alpha);
             }
             if (entity.timeLiving < entity.timeToLive) {
                 entity.timeLiving += timeElapsed;
