@@ -38,10 +38,10 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private ChasingMode chasingMode;
     private PathFindingAlgorithm pathFindingAlgorithm;
     private double distanceToGoal;
-    private int computePathPeriod = 600;
+    private int computePathPeriod = 500;
     private int computePathCoolDown = 0;
 
-    private int checkObstaclesPeriod = 250;
+    private int checkObstaclesPeriod = 500;
     private int checkObstaclesCoolDown = 0;
     private boolean obstacleDetected;
 
@@ -226,6 +226,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
         obstacleDetected = false;
         int numberOfStepsToCheck = (int) Math.ceil(distanceToGoal / TileMap.TILE_WIDTH);
+        if (numberOfStepsToCheck < 10) numberOfStepsToCheck = 10;
         double stepDistance = distanceToGoal / (double) numberOfStepsToCheck;
         double[] vector = new double[]{goalCoordinates.x - getWorldCoordinates().x, goalCoordinates.y - getWorldCoordinates().y};
         vector = MathUtils.normalizeVector(vector);

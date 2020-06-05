@@ -74,11 +74,11 @@ public class Camera {
     }
 
     public static void increaseZoom() {
-        setZoom(getZoom() + 1.0);
+        setZoom(zoom + 1.0);
     }
 
     public static void decreaseZoom() {
-        setZoom(getZoom() - 1.0);
+        setZoom(zoom - 1.0);
     }
 
     public void reset() {
