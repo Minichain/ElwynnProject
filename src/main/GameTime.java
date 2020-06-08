@@ -3,12 +3,12 @@ package main;
 public class GameTime {
     private static GameTime instance = null;
     private static float gameTime;  //InGame time in hours (0f - 24.0f)
-    private static float gameTimeRealTimeFactor = 60f;  //60 times faster than in real life.
-//    private static float gameTimeRealTimeFactor = 1000f;
+    private static float gameTimeRealTimeFactor;
     private static float sunLightIntensity = 0.8f;
 
     private GameTime() {
         gameTime = 0f;
+        gameTimeRealTimeFactor = 60f;   //60 times faster than in real life.
     }
 
     public static GameTime getInstance() {

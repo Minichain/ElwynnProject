@@ -15,10 +15,6 @@ public class MenuButton extends MenuComponent {
     public MenuButton(String text, ButtonAction buttonAction) {
         setText(text);
         this.buttonAction = buttonAction;
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = 0;
-        this.y = 0;
     }
 
     @Override

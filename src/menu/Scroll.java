@@ -8,10 +8,6 @@ import utils.MathUtils;
 public class Scroll extends MenuComponent {
 
     public Scroll(int x, int y, int width, int height) {
-        this.width = width;
-        this.height = height;
-        this.x = 0;
-        this.y = 0;
     }
 
     public void update(int x, int y, int width, int height) {

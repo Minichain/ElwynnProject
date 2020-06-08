@@ -49,6 +49,9 @@ public class Menu {
         MenuButton spawnEnemiesButton = new MenuButton("", MenuButton.ButtonAction.SPAWN_ENEMIES);
         listOfMenuComponents.add(spawnEnemiesButton);
 
+        MenuSlider gameTimeSpeed = new MenuSlider("Game Time Speed", MenuSlider.SliderAction.GAME_TIME_SPEED);
+        listOfMenuComponents.add(gameTimeSpeed);
+
         MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
     }

@@ -11,10 +11,6 @@ public class MenuScrollBar extends MenuComponent {
     private Scroll scroll;
 
     public MenuScrollBar() {
-        this.width = 0;
-        this.height = 0;
-        this.x = 0;
-        this.y = 0;
         scroll = new Scroll(0, 0, 0, 0);
     }
 

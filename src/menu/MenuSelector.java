@@ -20,10 +20,6 @@ public class MenuSelector extends MenuComponent {
         nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18f, false);
         selectedResolution = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
         selectedValue = selectedResolution.getResolutionValue();
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = 0;
-        this.y = 0;
     }
 
     @Override

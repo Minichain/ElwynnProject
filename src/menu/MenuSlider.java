@@ -1,6 +1,7 @@
 package menu;
 
 import listeners.InputListenerManager;
+import main.GameTime;
 import main.OpenGLManager;
 import main.Parameters;
 import text.TextRendering;
@@ -11,7 +12,7 @@ public class MenuSlider extends MenuComponent {
     private SliderAction sliderAction;
 
     public enum SliderAction {
-        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL
+        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL, GAME_TIME_SPEED
     }
 
     public MenuSlider(String text, SliderAction sliderAction) {
@@ -26,16 +27,15 @@ public class MenuSlider extends MenuComponent {
             case AMBIENCE_SOUND_LEVEL:
                 progress = Parameters.getAmbienceSoundLevel();
                 break;
+            case GAME_TIME_SPEED:
+                progress = GameTime.getGameTimeRealTimeFactor() / 6000f;
+                break;
             case NONE:
             default:
                 progress = 0f;
                 break;
         }
         this.sliderAction = sliderAction;
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = 0;
-        this.y = 0;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class MenuSlider extends MenuComponent {
         } else {
             OpenGLManager.drawRectangle(x, y, width, height, 0.5, 0.6f);
         }
-        OpenGLManager.drawRectangle(x, y, width * (float) progress, height, 0.8, 0.8f);
+        OpenGLManager.drawRectangle(x, y, width * progress, height, 0.8, 0.8f);
     }
 
     @Override
@@ -89,6 +89,9 @@ public class MenuSlider extends MenuComponent {
                 break;
             case AMBIENCE_SOUND_LEVEL:
                 Parameters.setAmbienceSoundLevel(this.progress);
+                break;
+            case GAME_TIME_SPEED:
+                GameTime.setGameTimeRealTimeFactor(this.progress * 6000f);
                 break;
             case NONE:
             default:
