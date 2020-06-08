@@ -5,10 +5,11 @@ import enums.Resolution;
 
 public class Parameters {
     private static boolean debugMode = false;
+    private static boolean spawnEnemies = false;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond = 60;
-    private static boolean fullScreen = false;
+    private static boolean fullScreen = true;
     private static Resolution resolution = Resolution.RESOLUTION_1920_1080;
     private static float resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
 
@@ -57,6 +58,14 @@ public class Parameters {
         Parameters.debugMode = debugMode;
     }
 
+    public static boolean isSpawnEnemies() {
+        return spawnEnemies;
+    }
+
+    public static void setSpawnEnemies(boolean spawnEnemies) {
+        Parameters.spawnEnemies = spawnEnemies;
+    }
+
     /** AUDIO PARAMETERS **/
     private static float musicSoundLevel = 0.3f;
     private static float effectSoundLevel = 0.3f;
@@ -85,7 +94,7 @@ public class Parameters {
     }
 
     public static void setAmbienceSoundLevel(float soundLevel) {
-        OpenALManager.onEffectLevelChange(soundLevel);
+        OpenALManager.onAmbienceLevelChange(soundLevel);
         Parameters.ambienceSoundLevel = soundLevel;
     }
 

@@ -58,7 +58,7 @@ public class Weather {
 
         if (rainingIntensity > 0f) {
             OpenALManager.playSound(OpenALManager.SOUND_RAIN_01);
-            OpenALManager.setSoundGain(OpenALManager.SOUND_RAIN_01, rainingIntensity * Parameters.getEffectSoundLevel());
+            OpenALManager.setSoundGain(OpenALManager.SOUND_RAIN_01, rainingIntensity * Parameters.getAmbienceSoundLevel());
             int newParticlesToGenerate = (int) (timeElapsed * rainingIntensity);
             for (int i = 0; i < newParticlesToGenerate; i++) {
                 double width = 1400.0;

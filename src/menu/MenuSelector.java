@@ -16,8 +16,8 @@ public class MenuSelector extends MenuComponent {
 
     public MenuSelector(String text) {
         setText(text);
-        previousSelector = new Selector(new int[]{x + 20, y + height / 2}, 18, true);
-        nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18, false);
+        previousSelector = new Selector(new int[]{x + 20, y + height / 2}, 18f, true);
+        nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18f, false);
         selectedResolution = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
         selectedValue = selectedResolution.getResolutionValue();
         this.width = (int) (500f * Parameters.getResolutionFactor());
@@ -27,12 +27,11 @@ public class MenuSelector extends MenuComponent {
     }
 
     @Override
-    public void update(int position, int gapBetweenComponents) {
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        this.y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
-
+    public void update(int x, int y, int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
         previousSelector.recenter(new int[]{x + 20, y + height / 2});
         nextSelector.recenter(new int[]{x + width - 20, y + height / 2});
 
@@ -78,10 +77,10 @@ public class MenuSelector extends MenuComponent {
         Coordinates vertex3;
         boolean pressed;
         boolean mouseOver;
-        int size;
+        float size;
         boolean leftOriented;
 
-        public Selector(int[] center, int size, boolean leftOriented) {
+        public Selector(int[] center, float size, boolean leftOriented) {
             this.leftOriented = leftOriented;
             this.size = size;
             recenter(center);
@@ -119,7 +118,7 @@ public class MenuSelector extends MenuComponent {
         }
 
         public void recenter(int[] center) {
-            int halfSize = size / 2;
+            int halfSize = (int) ((size / 2f) * Parameters.getResolutionFactor());
             if (leftOriented) {
                 this.vertex1 = new Coordinates(center[0] - halfSize, center[1]);
                 this.vertex2 = new Coordinates(center[0] + halfSize, center[1] + halfSize);

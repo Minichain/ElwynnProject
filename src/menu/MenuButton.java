@@ -9,7 +9,7 @@ public class MenuButton extends MenuComponent {
     private ButtonAction buttonAction;
 
     public enum ButtonAction {
-        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE
+        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE, SPAWN_ENEMIES
     }
 
     public MenuButton(String text, ButtonAction buttonAction) {
@@ -22,11 +22,11 @@ public class MenuButton extends MenuComponent {
     }
 
     @Override
-    public void update(int position, int gapBetweenComponents) {
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        this.y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+    public void update(int x, int y, int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
 
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
@@ -52,10 +52,40 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void renderInfo() {
+        String text;
         float scale = 2 * Parameters.getResolutionFactor();
-        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
+        switch (buttonAction) {
+            case FULL_SCREEN:
+                if (Parameters.isFullScreen()) {
+                    text = "Disable Full Screen";
+                } else {
+                    text = "Enable Full Screen";
+                }
+                break;
+            case CREATIVE_MODE:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    text = "Enable Creative Mode";
+                } else {
+                    text = "Disable Creative Mode";
+                }
+                break;
+            case SPAWN_ENEMIES:
+                if (Parameters.isSpawnEnemies()) {
+                    text = "Disable Enemies Spawn";
+                } else {
+                    text = "Enable Enemies Spawn";
+                }
+                break;
+            case NONE:
+                text = "NONE";
+                break;
+            default:
+                text = getText();
+                break;
+        }
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
-        TextRendering.renderText(textX, textY, getText(), scale, true);
+        TextRendering.renderText(textX, textY, text, scale, true);
     }
 
     private void performAction(ButtonAction buttonAction) {
@@ -72,6 +102,9 @@ public class MenuButton extends MenuComponent {
                 break;
             case LEAVE_MENU:
                 Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
+                break;
+            case SPAWN_ENEMIES:
+                Parameters.setSpawnEnemies(!Parameters.isSpawnEnemies());
                 break;
             case EXIT_GAME:
                 GameStatus.setStatus(GameStatus.Status.STOPPED);

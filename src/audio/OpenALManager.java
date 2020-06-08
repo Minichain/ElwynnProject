@@ -34,8 +34,6 @@ public class OpenALManager {
 
     public static Sound SOUND_ROLLING_01;
 
-    public static Sound SOUND_RAIN_01;
-
     public static Sound SOUND_NOTE_A_01;
     public static Sound SOUND_NOTE_A_SHARP_01;
     public static Sound SOUND_NOTE_B_01;
@@ -48,6 +46,9 @@ public class OpenALManager {
     public static Sound SOUND_NOTE_F_SHARP_01;
     public static Sound SOUND_NOTE_G_01;
     public static Sound SOUND_NOTE_G_SHARP_01;
+
+    /** AMBIENCE **/
+    public static Sound SOUND_RAIN_01;
 
     /** MUSIC **/
     public static Sound SOUND_MUSIC_A_IONIAN_O1;
@@ -108,7 +109,8 @@ public class OpenALManager {
 
         SOUND_ROLLING_01 = loadSound("rolling_01", Sound.SoundType.EFFECT);
 
-        SOUND_RAIN_01 = loadSound("rain_01", Sound.SoundType.EFFECT);
+        /** AMBIENCE **/
+        SOUND_RAIN_01 = loadSound("rain_01", Sound.SoundType.AMBIENCE);
 
         /** MUSIC **/
         SOUND_MUSIC_A_IONIAN_O1 = loadSound("music_a_ionian_01", Sound.SoundType.MUSIC);
@@ -140,7 +142,7 @@ public class OpenALManager {
 
         ShortBuffer rawAudioBuffer = stb_vorbis_decode_filename(fileName, channelsBuffer, sampleRateBuffer);
 
-        //Retreive the extra information that was stored in the buffers by the function
+        //Retrieve the extra information that was stored in the buffers by the function
         int channels = channelsBuffer.get();
         int sampleRate = sampleRateBuffer.get();
         //Free the space we allocated earlier
@@ -230,6 +232,14 @@ public class OpenALManager {
     public static void onEffectLevelChange(float soundLevel) {
         for (Sound listOfSound : listOfSounds) {
             if (listOfSound.getType() == Sound.SoundType.EFFECT) {
+                alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            }
+        }
+    }
+
+    public static void onAmbienceLevelChange(float soundLevel) {
+        for (Sound listOfSound : listOfSounds) {
+            if (listOfSound.getType() == Sound.SoundType.AMBIENCE) {
                 alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
             }
         }

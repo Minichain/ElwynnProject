@@ -6,7 +6,7 @@ import main.Parameters;
 import text.TextRendering;
 import utils.MathUtils;
 
-public class MenuSlideBar extends MenuComponent {
+public class MenuSlider extends MenuComponent {
     private float progress;    // From 0 to 1
     private SliderAction sliderAction;
 
@@ -14,7 +14,7 @@ public class MenuSlideBar extends MenuComponent {
         NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL
     }
 
-    public MenuSlideBar(String text, SliderAction sliderAction) {
+    public MenuSlider(String text, SliderAction sliderAction) {
         setText(text);
         switch (sliderAction) {
             case EFFECT_SOUND_LEVEL:
@@ -39,11 +39,11 @@ public class MenuSlideBar extends MenuComponent {
     }
 
     @Override
-    public void update(int position, int gapBetweenComponents) {
-        this.width = (int) (500f * Parameters.getResolutionFactor());
-        this.height = (int) (45f * Parameters.getResolutionFactor());
-        this.x = (int) Menu.getInstance().getCoordinates().x - width / 2;
-        this.y = (int) Menu.getInstance().getCoordinates().y + (height + gapBetweenComponents) * position;
+    public void update(int x, int y, int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.x = x;
+        this.y = y;
 
         setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
@@ -82,12 +82,14 @@ public class MenuSlideBar extends MenuComponent {
     private void performAction(SliderAction buttonAction) {
         switch (buttonAction) {
             case EFFECT_SOUND_LEVEL:
-                Parameters.setEffectSoundLevel((float) progress);
+                Parameters.setEffectSoundLevel(this.progress);
                 break;
             case MUSIC_SOUND_LEVEL:
-                Parameters.setMusicSoundLevel((float) progress);
+                Parameters.setMusicSoundLevel(this.progress);
                 break;
             case AMBIENCE_SOUND_LEVEL:
+                Parameters.setAmbienceSoundLevel(this.progress);
+                break;
             case NONE:
             default:
                 break;

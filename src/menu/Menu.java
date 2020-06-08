@@ -10,12 +10,19 @@ import static org.lwjgl.opengl.GL11.glEnd;
 
 public class Menu {
     private static Menu instance = null;
-    private ArrayList<MenuComponent> listOfMenuComponents;
     private boolean showing;
-    private int gapBetweenComponents = 30;
     private Coordinates coordinates;
+    private ArrayList<MenuComponent> listOfMenuComponents;
+    private float gapBetweenComponents;
+
+    private MenuScrollBar menuScrollBar;
+    private float maxMenuHeight;
+    private float menuHeight;
 
     public Menu() {
+        gapBetweenComponents = 30f * Parameters.getResolutionFactor();
+        maxMenuHeight = (Window.getHeight() / 2f) * Parameters.getResolutionFactor();
+
         listOfMenuComponents = new ArrayList<>();
 
         MenuButton resumeGame = new MenuButton("Resume Game", MenuButton.ButtonAction.LEAVE_MENU);
@@ -27,14 +34,20 @@ public class Menu {
         MenuButton creativeMode = new MenuButton("Enable/Disable Creative Mode", MenuButton.ButtonAction.CREATIVE_MODE);
         listOfMenuComponents.add(creativeMode);
 
-        MenuSlideBar effectSoundLevel = new MenuSlideBar("Sound Effects", MenuSlideBar.SliderAction.EFFECT_SOUND_LEVEL);
+        MenuSlider musicSoundLevel = new MenuSlider("Music", MenuSlider.SliderAction.MUSIC_SOUND_LEVEL);
+        listOfMenuComponents.add(musicSoundLevel);
+
+        MenuSlider effectSoundLevel = new MenuSlider("Sound Effects", MenuSlider.SliderAction.EFFECT_SOUND_LEVEL);
         listOfMenuComponents.add(effectSoundLevel);
 
-        MenuSlideBar musicSoundLevel = new MenuSlideBar("Music", MenuSlideBar.SliderAction.MUSIC_SOUND_LEVEL);
-        listOfMenuComponents.add(musicSoundLevel);
+        MenuSlider ambienceSoundLevel = new MenuSlider("Ambience", MenuSlider.SliderAction.AMBIENCE_SOUND_LEVEL);
+        listOfMenuComponents.add(ambienceSoundLevel);
 
         MenuSelector resolutionSelector = new MenuSelector("Resolution");
         listOfMenuComponents.add(resolutionSelector);
+
+        MenuButton spawnEnemiesButton = new MenuButton("", MenuButton.ButtonAction.SPAWN_ENEMIES);
+        listOfMenuComponents.add(spawnEnemiesButton);
 
         MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
@@ -61,23 +74,50 @@ public class Menu {
         return listOfMenuComponents;
     }
 
+    public float getMaxMenuHeight() {
+        return maxMenuHeight;
+    }
+
+    public float getMenuHeight() {
+        return menuHeight;
+    }
+
     public void render(long timeElapsed) {
-        float menuHeight = 0f;
+        menuHeight = 0f;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            if (i > 0) menuHeight += gapBetweenComponents * Parameters.getResolutionFactor();
+            if (i > 0) menuHeight += gapBetweenComponents;
             menuHeight += listOfMenuComponents.get(i).height;
         }
 
-        coordinates = new Coordinates((float) Parameters.getResolutionWidth() / 2, (float) Parameters.getResolutionHeight() / 2 - menuHeight / 2);
+        if (menuScrollBar == null && menuHeight > maxMenuHeight) {
+            menuScrollBar = new MenuScrollBar();
+        }
 
+        double menuCoordinateY;
+        if (menuHeight > maxMenuHeight) {
+            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - maxMenuHeight / 2.0;
+        } else {
+            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - menuHeight / 2.0;
+        }
+        coordinates = new Coordinates(Parameters.getResolutionWidth() / 2.0,   menuCoordinateY);
+
+        MenuComponent component;
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            listOfMenuComponents.get(i).update(i, (int) (gapBetweenComponents * Parameters.getResolutionFactor()));
+            component = listOfMenuComponents.get(i);
+
+            int newY = (int) (Menu.getInstance().getCoordinates().y + (component.height + gapBetweenComponents) * i);
+            if (menuScrollBar != null) {
+                newY += (menuScrollBar.y - menuScrollBar.getScroll().y) * menuHeight / maxMenuHeight;
+//                newY *= Parameters.getResolutionFactor();
+            }
+            component.update((int) Menu.getInstance().getCoordinates().x - component.width / 2, (int) (newY * Parameters.getResolutionFactor()),
+                    (int) (500f * Parameters.getResolutionFactor()), (int) (45f * Parameters.getResolutionFactor()));
         }
 
         glDisable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            MenuComponent component = listOfMenuComponents.get(i);
+            component = listOfMenuComponents.get(i);
             component.renderBackground();
         }
         glEnd();
@@ -86,14 +126,27 @@ public class Menu {
         glEnable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
-            MenuComponent component = listOfMenuComponents.get(i);
+            component = listOfMenuComponents.get(i);
             component.renderInfo();
         }
         glEnd();
         glDisable(GL_TEXTURE_2D);
+
+        if (menuScrollBar != null) {
+            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 300f * Parameters.getResolutionFactor()),
+                    (int) (Menu.getInstance().getCoordinates().y),
+                    (int) (20f * Parameters.getResolutionFactor()),
+                    (int) (maxMenuHeight * Parameters.getResolutionFactor()));
+            menuScrollBar.renderBackground();
+            menuScrollBar.renderInfo();
+        }
     }
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public MenuScrollBar getMenuScrollBar() {
+        return menuScrollBar;
     }
 }
