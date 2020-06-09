@@ -82,14 +82,22 @@ public class InputListenerManager {
         scrollCallback = new GLFWScrollCallback() {
             @Override
             public void invoke(long window, double xOffset, double yOffset) {
-                if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                    mouseWheelPosition += yOffset;
-                    if (mouseWheelPosition < 0) mouseWheelPosition = 0;
-                } else {
+                if (Menu.getInstance().isShowing()) {
                     if (yOffset > 0.0) {
-                        Camera.increaseZoom();
+                        Menu.getInstance().getMenuScrollBar().getScroll().y -= 15;
                     } else {
-                        Camera.decreaseZoom();
+                        Menu.getInstance().getMenuScrollBar().getScroll().y += 15;
+                    }
+                } else {
+                    if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                        mouseWheelPosition += yOffset;
+                        if (mouseWheelPosition < 0) mouseWheelPosition = 0;
+                    } else {
+                        if (yOffset > 0.0) {
+                            Camera.increaseZoom();
+                        } else {
+                            Camera.decreaseZoom();
+                        }
                     }
                 }
             }

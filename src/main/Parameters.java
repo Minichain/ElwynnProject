@@ -6,6 +6,7 @@ import enums.Resolution;
 public class Parameters {
     private static boolean debugMode = false;
     private static boolean spawnEnemies = false;
+    private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
@@ -65,6 +66,14 @@ public class Parameters {
 
     public static void setSpawnEnemies(boolean spawnEnemies) {
         Parameters.spawnEnemies = spawnEnemies;
+    }
+
+    public static float getSpawnRate() {
+        return spawnRate;
+    }
+
+    public static void setSpawnRate(float spawnRate) {
+        Parameters.spawnRate = spawnRate;
     }
 
     public static boolean isShadersEnabled() {

@@ -49,6 +49,9 @@ public class Menu {
         MenuButton spawnEnemiesButton = new MenuButton("", MenuButton.ButtonAction.SPAWN_ENEMIES);
         listOfMenuComponents.add(spawnEnemiesButton);
 
+        MenuSlider spawnRate = new MenuSlider("Enemies Spawn Rate", MenuSlider.SliderAction.SPAWN_RATE);
+        listOfMenuComponents.add(spawnRate);
+
         MenuSlider gameTimeSpeed = new MenuSlider("Game Time Speed", MenuSlider.SliderAction.GAME_TIME_SPEED);
         listOfMenuComponents.add(gameTimeSpeed);
 

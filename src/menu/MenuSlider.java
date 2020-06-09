@@ -12,7 +12,7 @@ public class MenuSlider extends MenuComponent {
     private SliderAction sliderAction;
 
     public enum SliderAction {
-        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL, GAME_TIME_SPEED
+        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL, GAME_TIME_SPEED, SPAWN_RATE
     }
 
     public MenuSlider(String text, SliderAction sliderAction) {
@@ -29,6 +29,9 @@ public class MenuSlider extends MenuComponent {
                 break;
             case GAME_TIME_SPEED:
                 progress = GameTime.getGameTimeRealTimeFactor() / 6000f;
+                break;
+            case SPAWN_RATE:
+                progress = Parameters.getSpawnRate() / 10f;
                 break;
             case NONE:
             default:
@@ -79,7 +82,22 @@ public class MenuSlider extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        String textInfo = getText() + " (" + (int) (progress * 100) + "%)";
+        String textInfo = getText();
+        switch (sliderAction) {
+            case SPAWN_RATE:
+                textInfo += " (" + (int) (this.progress * 10) + "x)";
+                break;
+            case GAME_TIME_SPEED:
+                textInfo += " (" + (int) (this.progress * 6000f) + "x)";
+                break;
+            case EFFECT_SOUND_LEVEL:
+            case MUSIC_SOUND_LEVEL:
+            case AMBIENCE_SOUND_LEVEL:
+            case NONE:
+            default:
+                textInfo += " (" + (int) (progress * 100) + "%)";
+                break;
+        }
         float scale = 2 * Parameters.getResolutionFactor();
         int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
@@ -99,6 +117,9 @@ public class MenuSlider extends MenuComponent {
                 break;
             case GAME_TIME_SPEED:
                 GameTime.setGameTimeRealTimeFactor(this.progress * 6000f);
+                break;
+            case SPAWN_RATE:
+                Parameters.setSpawnRate(this.progress * 10f);
                 break;
             case NONE:
             default:
