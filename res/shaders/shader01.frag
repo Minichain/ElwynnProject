@@ -11,7 +11,7 @@ uniform float windowHeight;
 uniform sampler2D texture01;
 
 varying vec4 vertColor;
-varying in vec2 TexCoord;
+varying vec2 TexCoord;
 
 
 void main() {
@@ -40,5 +40,5 @@ void main() {
 
     light += vec3(gameTimeLight);
 
-    gl_FragColor = vertColor * texColor * vec4(light.x, light.y, light.z, 1.0);
+    gl_FragColor = vertColor * texColor * vec4(light.xyz, 1.0);
 }

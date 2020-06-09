@@ -2,7 +2,7 @@ uniform float time; //Time elapsed since the Game has been executed (in millisec
 uniform float rainingIntensity;
 
 varying vec4 vertColor;
-varying out vec2 TexCoord;
+varying vec2 TexCoord;
 
 void main() {
     gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;
