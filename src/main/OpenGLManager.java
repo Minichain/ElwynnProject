@@ -237,6 +237,10 @@ public class OpenGLManager {
     }
 
     public static void useShader(int shader) {
+        if (!Parameters.isShadersEnabled()) {
+            glUseProgram(0);
+            return;
+        }
 //        System.out.println("Use shader " + shader);
         switch (shader) {
             case 0:

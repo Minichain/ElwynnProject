@@ -6,6 +6,7 @@ import enums.Resolution;
 public class Parameters {
     private static boolean debugMode = false;
     private static boolean spawnEnemies = false;
+    private static boolean shadersEnabled = true;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond = 60;
@@ -64,6 +65,14 @@ public class Parameters {
 
     public static void setSpawnEnemies(boolean spawnEnemies) {
         Parameters.spawnEnemies = spawnEnemies;
+    }
+
+    public static boolean isShadersEnabled() {
+        return shadersEnabled;
+    }
+
+    public static void setShadersEnabled(boolean shadersEnabled) {
+        Parameters.shadersEnabled = shadersEnabled;
     }
 
     /** AUDIO PARAMETERS **/

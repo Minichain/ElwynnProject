@@ -9,7 +9,7 @@ public class MenuButton extends MenuComponent {
     private ButtonAction buttonAction;
 
     public enum ButtonAction {
-        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE, SPAWN_ENEMIES
+        NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE, SPAWN_ENEMIES, SHADERS
     }
 
     public MenuButton(String text, ButtonAction buttonAction) {
@@ -72,6 +72,13 @@ public class MenuButton extends MenuComponent {
                     text = "Enable Enemies Spawn";
                 }
                 break;
+            case SHADERS:
+                if (Parameters.isShadersEnabled()) {
+                    text = "Disable Shaders";
+                } else {
+                    text = "Enable Shaders";
+                }
+                break;
             case NONE:
                 text = "NONE";
                 break;
@@ -101,6 +108,9 @@ public class MenuButton extends MenuComponent {
                 break;
             case SPAWN_ENEMIES:
                 Parameters.setSpawnEnemies(!Parameters.isSpawnEnemies());
+                break;
+            case SHADERS:
+                Parameters.setShadersEnabled(!Parameters.isShadersEnabled());
                 break;
             case EXIT_GAME:
                 GameStatus.setStatus(GameStatus.Status.STOPPED);

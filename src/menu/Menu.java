@@ -28,11 +28,14 @@ public class Menu {
         MenuButton resumeGame = new MenuButton("Resume Game", MenuButton.ButtonAction.LEAVE_MENU);
         listOfMenuComponents.add(resumeGame);
 
-        MenuButton fullScreen = new MenuButton("Enable/Disable FullScreen", MenuButton.ButtonAction.FULL_SCREEN);
+        MenuButton fullScreen = new MenuButton("", MenuButton.ButtonAction.FULL_SCREEN);
         listOfMenuComponents.add(fullScreen);
 
-        MenuButton creativeMode = new MenuButton("Enable/Disable Creative Mode", MenuButton.ButtonAction.CREATIVE_MODE);
+        MenuButton creativeMode = new MenuButton("", MenuButton.ButtonAction.CREATIVE_MODE);
         listOfMenuComponents.add(creativeMode);
+
+        MenuButton useShaders = new MenuButton("", MenuButton.ButtonAction.SHADERS);
+        listOfMenuComponents.add(useShaders);
 
         MenuSlider musicSoundLevel = new MenuSlider("Music", MenuSlider.SliderAction.MUSIC_SOUND_LEVEL);
         listOfMenuComponents.add(musicSoundLevel);
