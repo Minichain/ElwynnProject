@@ -76,9 +76,9 @@ public class Parameters {
     }
 
     /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.3f;
-    private static float effectSoundLevel = 0.3f;
-    private static float ambienceSoundLevel = 0.3f;
+    private static float musicSoundLevel = 0f;
+    private static float effectSoundLevel = 0f;
+    private static float ambienceSoundLevel = 0f;
 
     public static float getMusicSoundLevel() {
         return musicSoundLevel;

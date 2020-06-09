@@ -10,6 +10,8 @@ public abstract class MenuComponent {
     public int width = 0;
     public int height = 0;
 
+    public abstract void update(int x, int y);
+
     public abstract void update(int x, int y, int width, int height);
 
     public abstract void renderBackground();

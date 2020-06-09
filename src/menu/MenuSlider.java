@@ -39,15 +39,22 @@ public class MenuSlider extends MenuComponent {
     }
 
     @Override
+    public void update(int x, int y) {
+        int width = (int) (500f * Parameters.getResolutionFactor());
+        int height = (int) (50f * Parameters.getResolutionFactor());
+        update(x, y, width, height);
+    }
+
+    @Override
     public void update(int x, int y, int width, int height) {
         this.width = width;
         this.height = height;
-        this.x = x;
+        this.x = x - width / 2;
         this.y = y;
 
-        setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
+        setMouseOver(MathUtils.isMouseInsideRectangle(this.x, this.y, this.x + this.width, this.y + this.height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
-            progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - x) / (float) width;
+            progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - this.x) / (float) this.width;
             performAction(sliderAction);
             setPressed(true);
         } else {

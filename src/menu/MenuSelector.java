@@ -23,15 +23,22 @@ public class MenuSelector extends MenuComponent {
     }
 
     @Override
+    public void update(int x, int y) {
+        int width = (int) (500f * Parameters.getResolutionFactor());
+        int height = (int) (50f * Parameters.getResolutionFactor());
+        update(x, y, width, height);
+    }
+
+    @Override
     public void update(int x, int y, int width, int height) {
         this.width = width;
         this.height = height;
-        this.x = x;
+        this.x = x - width / 2;
         this.y = y;
-        previousSelector.recenter(new int[]{x + 20, y + height / 2});
-        nextSelector.recenter(new int[]{x + width - 20, y + height / 2});
+        previousSelector.recenter(new int[]{this.x + 20, this.y + this.height / 2});
+        nextSelector.recenter(new int[]{this.x + this.width - 20, y + this.height / 2});
 
-        setMouseOver(MathUtils.isMouseInsideRectangle(x, y, x + width, y + height));
+        setMouseOver(MathUtils.isMouseInsideRectangle(this.x, this.y, this.x + this.width, this.y + this.height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
             setPressed(true);
         } else {

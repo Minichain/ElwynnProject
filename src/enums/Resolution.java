@@ -79,7 +79,7 @@ public enum Resolution {
             case RESOLUTION_1280_720:
                 return "1280x720";
             case RESOLUTION_1024_768:
-                return "12024x720";
+                return "1024x720";
             case RESOLUTION_1600_900:
                 return "1600x900";
             case RESOLUTION_1920_1080:
