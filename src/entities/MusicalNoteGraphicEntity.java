@@ -33,7 +33,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         Sprite randomSprite = getMusicalRandomSprite();
         setSprite(randomSprite);
         this.movementVector = movementVector;
-//        getWorldCoordinates().translate(movementVector[0] * 25, movementVector[1] * 25);
+        getWorldCoordinates().translate(movementVector[0] * 25, movementVector[1] * 25);
         this.speed = speed;
         this.timeLiving = 0;
         this.timeToLive = timeToLive;
@@ -69,8 +69,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }
-        Coordinates newWorldCoordinates = new Coordinates(getWorldCoordinates().x + movementVector[0] * speed * timeElapsed, getWorldCoordinates().y + movementVector[1] * speed * timeElapsed);
-        setWorldCoordinates(newWorldCoordinates);
+        getWorldCoordinates().translate(movementVector[0] * speed * timeElapsed, movementVector[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
         this.lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
         this.lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
@@ -114,7 +113,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
+        getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
                 1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor));
     }
 
