@@ -9,7 +9,6 @@ import text.FloatingTextEntity;
 import utils.MathUtils;
 import utils.Utils;
 
-import static entities.MusicalMode.IONIAN;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends LivingDynamicGraphicEntity {
@@ -57,16 +56,20 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = Math.random() * 0.03 + 0.02;
+        speed = Math.random() * 0.05 + 0.035;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
         int enemyType = (int) (Math.random() * Integer.MAX_VALUE) % MusicalMode.values().length;
         switch (enemyType) {
             case 0:
-            default:
-                musicalMode = IONIAN;
+                musicalMode = MusicalMode.IONIAN;
                 setSprite(SpriteManager.getInstance().ENEMY01);
+                break;
+            case 1:
+            default:
+                musicalMode = MusicalMode.DORIAN;
+                setSprite(SpriteManager.getInstance().ENEMY02);
                 break;
         }
         Scene.getInstance().getListOfEntities().add(this);
@@ -364,7 +367,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         if (status == Status.ATTACKING) {
             if (attack01CoolDown <= 0) {
                 MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
-                        0.3, musicalMode, attack01Power, 1500.0, true);
+                        0.15, musicalMode, attack01Power, 1500.0, true);
                 Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
             }
@@ -377,7 +380,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         if (status == Status.ATTACKING) {
             if (circleAttackCoolDown <= 0) {
                 circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
-                        50, 500, circleAttackPower, true, true, musicalMode);
+                        30, 500, circleAttackPower, true, true, musicalMode);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
             }

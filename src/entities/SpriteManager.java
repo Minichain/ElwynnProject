@@ -43,14 +43,13 @@ public class SpriteManager {
 
         /** ENEMY **/
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);
-//        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
-//        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
+        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** MUSICAL NOTES **/
-        G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white.png", 16, 16, -1, -1, -1, -1, -1);
-        QUARTER_NOTE = new Sprite("res/sprites/dynamic/quarter_note_white.png", 16, 16, -1, -1, -1, -1, -1);
-        EIGHTH_NOTE = new Sprite("res/sprites/dynamic/eighth_note_white.png", 16, 16, -1, -1, -1, -1, -1);
-        DOUBLE_EIGHTH_NOTE = new Sprite("res/sprites/dynamic/double_eighth_note_white.png", 16, 16, -1, -1, -1, -1, -1);
+        G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        QUARTER_NOTE = new Sprite("res/sprites/dynamic/quarter_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        EIGHTH_NOTE = new Sprite("res/sprites/dynamic/eighth_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        DOUBLE_EIGHTH_NOTE = new Sprite("res/sprites/dynamic/double_eighth_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
 
         /** TREES **/
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);

@@ -62,7 +62,7 @@ public class ParticleManager {
         for (int i = 0; i < numberOfParticles; i++) {
             velocityVector = MathUtils.rotateVector(new double[]{1.0, 0.0}, Math.random() * 2 * Math.PI);
             ParticleManager.getInstance().addParticle(new Particle(position, velocityVector, 0.05, 1f, color,
-                    500, true, 5f));
+                    500, true, 2.5f));
         }
     }
 }

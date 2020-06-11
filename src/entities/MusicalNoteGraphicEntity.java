@@ -86,7 +86,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 if (Player.getInstance().getStatus() == Player.Status.DEAD) {
                     continue;
                 }
-                if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 30) {
+                if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
                     Player.getInstance().hurt(damage);
                     explode();
                 }
@@ -95,7 +95,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 if (entity.getStatus() == Enemy.Status.DEAD) {
                     continue;
                 }
-                if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 30) {
+                if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
                     damage *= entity.getWeakness(musicalMode);
                     entity.hurt(damage);
                     explode();

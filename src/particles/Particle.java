@@ -25,7 +25,7 @@ public class Particle {
     }
 
     public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight) {
-        this(center, velocityVector, movingSpeed, size, color, timeToLive, producesLight, 15f);
+        this(center, velocityVector, movingSpeed, size, color, timeToLive, producesLight, 8f);
     }
 
     public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight, float intensity) {

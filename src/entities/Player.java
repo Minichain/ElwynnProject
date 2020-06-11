@@ -61,7 +61,7 @@ public class Player extends LivingDynamicGraphicEntity {
         setWorldCoordinates(Scene.getInitialCoordinates());
         health = 5000f;
         mana = 100f;
-        speed = 0.07;
+        speed = 0.08;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
@@ -359,7 +359,7 @@ public class Player extends LivingDynamicGraphicEntity {
         if (InputListenerManager.leftMouseButtonPressed) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
                 MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
-                        0.38, musicalMode, attack01Power, 1000.0, false);
+                        0.2, musicalMode, attack01Power, 1000.0, false);
                 Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;
@@ -373,7 +373,7 @@ public class Player extends LivingDynamicGraphicEntity {
         if (InputListenerManager.rightMouseButtonPressed) {
             if (mana >= circleAttackManaCost && circleAttackCoolDown <= 0) {
                 circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
-                        100, 500, circleAttackPower, false, true, musicalMode);
+                        50, 500, circleAttackPower, false, true, musicalMode);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
                 mana -= circleAttackManaCost;

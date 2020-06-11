@@ -83,7 +83,7 @@ public class Scene {
         long currentTime = System.currentTimeMillis();
         enemySpawnPeriod = (int) ((5000 / Parameters.getSpawnRate()) * Math.pow(listOfEnemies.size(), 2.0));
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
-            int distance = (int) ((Math.random() * 250) + 1500);
+            int distance = (int) ((Math.random() * 170) + 1000);
             double angle = Math.random() * 2 * Math.PI;
             int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getWorldCoordinates().x);
             int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getWorldCoordinates().y);
