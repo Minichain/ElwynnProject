@@ -10,6 +10,10 @@ public class SpriteManager {
     public Sprite ENEMY01;
     public Sprite ENEMY02;
     public Sprite ENEMY03;
+    public Sprite ENEMY04;
+    public Sprite ENEMY05;
+    public Sprite ENEMY06;
+    public Sprite ENEMY07;
     public Sprite TREE01;
     public Sprite TREE02;
     public Sprite TREE03;
@@ -44,6 +48,11 @@ public class SpriteManager {
         /** ENEMY **/
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);
         ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        ENEMY04 = new Sprite("res/sprites/dynamic/enemy04.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        ENEMY05 = new Sprite("res/sprites/dynamic/enemy05.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        ENEMY06 = new Sprite("res/sprites/dynamic/enemy06.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        ENEMY07 = new Sprite("res/sprites/dynamic/enemy07.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** MUSICAL NOTES **/
         G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);

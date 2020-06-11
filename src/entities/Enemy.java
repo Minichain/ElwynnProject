@@ -67,9 +67,29 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSprite(SpriteManager.getInstance().ENEMY01);
                 break;
             case 1:
-            default:
                 musicalMode = MusicalMode.DORIAN;
                 setSprite(SpriteManager.getInstance().ENEMY02);
+                break;
+            case 2:
+                musicalMode = MusicalMode.PHRYGIAN;
+                setSprite(SpriteManager.getInstance().ENEMY03);
+                break;
+            case 3:
+                musicalMode = MusicalMode.LYDIAN;
+                setSprite(SpriteManager.getInstance().ENEMY04);
+                break;
+            case 4:
+                musicalMode = MusicalMode.MIXOLYDIAN;
+                setSprite(SpriteManager.getInstance().ENEMY05);
+                break;
+            case 5:
+                musicalMode = MusicalMode.AEOLIAN;
+                setSprite(SpriteManager.getInstance().ENEMY06);
+                break;
+            case 6:
+            default:
+                musicalMode = MusicalMode.LOCRIAN;
+                setSprite(SpriteManager.getInstance().ENEMY07);
                 break;
         }
         Scene.getInstance().getListOfEntities().add(this);

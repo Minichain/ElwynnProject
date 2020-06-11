@@ -124,7 +124,7 @@ public class Parameters {
      * Revision: Minor alterations on existing features, small bug fixes, etc.
      * Package: Your code stays the same, external library changes or asset file update.
      */
-    private static String projectVersion = "0.00.04.2";
+    private static String projectVersion = "0.00.04.3";
 
     public static String getProjectVersion() {
         return projectVersion;
