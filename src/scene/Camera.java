@@ -16,14 +16,21 @@ public class Camera {
     private Coordinates coordinates;
     private static double xInitialCoordinate = Scene.getInitialCoordinates().x;
     private static double yInitialCoordinate = Scene.getInitialCoordinates().y;
-    private static double zoom = 2;
-    private static double minZoom = 2;
-    private static double maxZoom = 4;
-    private static double freeCameraSpeed = 1.0;
-    private static double followingSpeed = 0.0025;
+    private static double zoom;
+    private static double initialZoom;
+    private static double minZoom;
+    private static double maxZoom;
+    private static double freeCameraSpeed;
+    private static double followingSpeed;
 
     public Camera() {
         coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);
+        minZoom = 4.0;
+        maxZoom = minZoom + 4.0;
+        initialZoom = minZoom;
+        zoom = initialZoom;
+        freeCameraSpeed = 1.0;
+        followingSpeed = 0.0025;
     }
 
     public static Camera getInstance() {
@@ -84,7 +91,7 @@ public class Camera {
     public void reset() {
         this.setCoordinates((int) Player.getInstance().getWorldCoordinates().x,
                 (int) Player.getInstance().getWorldCoordinates().y);
-        this.zoom = 2.0;
+        this.zoom = initialZoom;
     }
 
     public void update(long timeElapsed) {

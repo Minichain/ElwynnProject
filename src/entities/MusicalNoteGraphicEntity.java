@@ -33,7 +33,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         Sprite randomSprite = getMusicalRandomSprite();
         setSprite(randomSprite);
         this.movementVector = movementVector;
-        getWorldCoordinates().translate(movementVector[0] * 25, movementVector[1] * 25);
+        getWorldCoordinates().translate(movementVector[0] * 10, movementVector[1] * 10);
         this.speed = speed;
         this.timeLiving = 0;
         this.timeToLive = timeToLive;

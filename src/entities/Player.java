@@ -61,7 +61,7 @@ public class Player extends LivingDynamicGraphicEntity {
         setWorldCoordinates(Scene.getInitialCoordinates());
         health = 5000f;
         mana = 100f;
-        speed = 0.125;
+        speed = 0.07;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
@@ -204,8 +204,8 @@ public class Player extends LivingDynamicGraphicEntity {
                 }
                 break;
             case DYING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
-                if (frame >= getSprite().DYING_FRAMES) {
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
+                if (frame > getSprite().DYING_FRAMES) {
                     playerStatus = Status.DEAD;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
@@ -217,7 +217,7 @@ public class Player extends LivingDynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
                 break;
             case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.02));
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115));
                 if (frame >= getSprite().ATTACKING_FRAMES) {
                     playerStatus = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);

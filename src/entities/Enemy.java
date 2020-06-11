@@ -57,7 +57,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = Math.random() * 0.06 + 0.04;
+        speed = Math.random() * 0.03 + 0.02;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
@@ -121,7 +121,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     }
                 } else {
                     chasingMode = ChasingMode.STRAIGHT_LINE;
-                    if (status == Status.CHASING && distanceToGoal <= 250) {
+                    if (status == Status.CHASING && distanceToGoal <= 125) {
                         status = Status.ATTACKING;
                     }
                 }
@@ -192,8 +192,8 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
                 break;
             case DYING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
-                if (frame >= getSprite().DYING_FRAMES) {
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
+                if (frame > getSprite().DYING_FRAMES) {
                     status = Status.DEAD;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
@@ -205,7 +205,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
                 break;
             case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.01));
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0057));
                 if (frame >= getSprite().ATTACKING_FRAMES) {
                     status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
@@ -255,7 +255,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         if (status != Status.DYING
                 && status != Status.DEAD
                 && status != Status.ATTACKING
-                && distanceToGoal > 250
+                && distanceToGoal > 125
                 && distanceToGoal < 2000) {
             status = Status.CHASING;
         }

@@ -39,10 +39,10 @@ public class SpriteManager {
 
     public SpriteManager() {
         /** PLAYER **/
-        PLAYER = new Sprite("res/sprites/dynamic/player01.png", 32, 32, 1, 8, 2, 1, 7, 5);
+        PLAYER = new Sprite("res/sprites/dynamic/player01.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** ENEMY **/
-        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 32, 32, 1, 8, 2, 1, 7, 5);
+        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);
 //        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 32, 32, 1, 8, 2, 1, -1);
 //        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 32, 32, 1, 8, 2, 1, -1);
 
@@ -55,7 +55,7 @@ public class SpriteManager {
         /** TREES **/
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);
         TREE02 = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
-        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 4, -1, -1, -1, -1);
+        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 6, -1, -1, -1, -1);
 
         /** BUILDINGS **/
         BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
@@ -68,7 +68,7 @@ public class SpriteManager {
         FENCE04 = new Sprite("res/sprites/static/fence04.png", 16, 16, -1, -1, -1, -1, -1);
 
         /** LIGHTS **/
-        LIGHT01 = new Sprite("res/sprites/static/light01.png", 16, 64, -1, -1, -1, -1, -1);
+        LIGHT01 = new Sprite("res/sprites/static/light01.png", 16, 48, -1, -1, -1, -1, -1);
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);

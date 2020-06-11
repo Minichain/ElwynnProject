@@ -10,8 +10,8 @@ public class TileMap {
     private static int numOfHorizontalTiles = 1000;
     private static int numOfVerticalTiles = 1000;
 
-    public static int TILE_WIDTH = 16;
-    public static int TILE_HEIGHT = 16;
+    public static int TILE_WIDTH = 8;
+    public static int TILE_HEIGHT = 8;
 
     public static void loadMap() {
         arrayOfTiles = WorldLoader.loadWorld();

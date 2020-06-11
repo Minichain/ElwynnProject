@@ -267,6 +267,7 @@ public class InputListenerManager {
                 if (!pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
+                if (!pressed) Player.getInstance().hurt(Player.MAX_HEALTH);
                 break;
             case GLFW_KEY_F7:
                 break;
