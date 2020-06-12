@@ -123,6 +123,17 @@ public class OpenALManager {
     private static Sound loadSound(String soundName, Sound.SoundType soundType) {
         Sound sound = null;
         try {
+            switch (soundType) {
+                case EFFECT:
+                    soundName = "effects/" + soundName;
+                    break;
+                case MUSIC:
+                    soundName = "music/" + soundName;
+                    break;
+                case AMBIENCE:
+                    soundName = "ambience/" + soundName;
+                    break;
+            }
             sound = new Sound(loadSound(soundName), listOfSounds.size(), soundType);
             listOfSounds.add(sound);
         } catch (Exception e) {

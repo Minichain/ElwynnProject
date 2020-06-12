@@ -25,14 +25,14 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
     public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
         super((int) worldCoordinates.x, (int) worldCoordinates.y);
-        movementVector = MathUtils.normalizeVector(movementVector);
+        this.movementVector = movementVector;
+        this.movementVectorNormalized = MathUtils.normalizeVector(movementVector);
         init(movementVector, speed, musicalMode, damage, timeToLive, enemyAttack);
     }
 
     public void init(double[] movementVector, double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
         Sprite randomSprite = getMusicalRandomSprite();
         setSprite(randomSprite);
-        this.movementVector = movementVector;
         getWorldCoordinates().translate(movementVector[0] * 10, movementVector[1] * 10);
         this.speed = speed;
         this.timeLiving = 0;
@@ -69,7 +69,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }
-        getWorldCoordinates().translate(movementVector[0] * speed * timeElapsed, movementVector[1] * speed * timeElapsed);
+        getWorldCoordinates().translate(movementVectorNormalized[0] * speed * timeElapsed, movementVectorNormalized[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
         this.lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
         this.lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);

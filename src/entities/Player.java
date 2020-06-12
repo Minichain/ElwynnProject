@@ -132,14 +132,13 @@ public class Player extends LivingDynamicGraphicEntity {
             /** UPDATE MOVEMENT VECTOR **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 if (playerStatus != Status.ROLLING) {
-                    movementVector = computeMovementVector(timeElapsed);
+                    computeMovementVector(timeElapsed);
                 }
             }
 
             /** CHECK COLLISIONS **/
-            double distanceFactor = timeElapsed / 32.0;
-            boolean horizontalCollision = checkHorizontalCollision(movementVector, distanceFactor);
-            boolean verticalCollision = checkVerticalCollision(movementVector, distanceFactor);
+            boolean horizontalCollision = checkHorizontalCollision(movementVectorNormalized, 6);
+            boolean verticalCollision = checkVerticalCollision(movementVectorNormalized, 6);
 
             /** MOVE ENTITY **/
             double speed = 0.0;
@@ -148,7 +147,7 @@ public class Player extends LivingDynamicGraphicEntity {
             } else if (playerStatus == Status.RUNNING) {
                 speed = this.speed;
             } else if (playerStatus == Status.ROLLING) {
-                speed = this.speed * 1.5;
+                speed = this.speed * 1.75;
             }
 
             if (!horizontalCollision) {
@@ -244,26 +243,26 @@ public class Player extends LivingDynamicGraphicEntity {
         return Scene.getInstance().checkCollisionWithEntities(collisionCoordinates) || tileCollision;
     }
 
-    public double[] computeMovementVector(long timeElapsed) {
-        double[] movement = new double[2];
+    public void computeMovementVector(long timeElapsed) {
+        movementVector = new double[]{0, 0};
         boolean playerMoving = false;
         if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
-            movement[1] = 1;
+            movementVector[1] = 1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
-            movement[0] = -1;
+            movementVector[0] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
-            movement[1] = -1;
+            movementVector[1] = -1;
         }
         if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
-            movement[0] = 1;
+            movementVector[0] = 1;
         }
 
-        movement[0] += InputListenerManager.getLeftJoystickAxes()[0];
-        movement[1] += InputListenerManager.getLeftJoystickAxes()[1];
+        movementVector[0] += InputListenerManager.getLeftJoystickAxes()[0];
+        movementVector[1] += InputListenerManager.getLeftJoystickAxes()[1];
 
-        if (Math.abs(movement[0]) > 0 || Math.abs(movement[1]) > 0) {
+        if (Math.abs(movementVector[0]) > 0 || Math.abs(movementVector[1]) > 0) {
             playerMoving = true;
         }
 
@@ -275,11 +274,9 @@ public class Player extends LivingDynamicGraphicEntity {
             }
         }
 
-        movement = MathUtils.normalizeVector(movement);
-        movement[0] *= timeElapsed;
-        movement[1] *= timeElapsed;
-
-        return movement;
+        movementVectorNormalized = MathUtils.normalizeVector(movementVector);
+        movementVector[0] = movementVectorNormalized[0] * timeElapsed;
+        movementVector[1] = movementVectorNormalized[1] * timeElapsed;
     }
 
     public void updateSpriteCoordinatesToDraw() {

@@ -155,15 +155,14 @@ public class Enemy extends LivingDynamicGraphicEntity {
             }
 
             if (status != Status.ROLLING) {
-                movementVector = computeMovementVector(timeElapsed);
+                computeMovementVector(timeElapsed);
             }
 
             updateAttack(timeElapsed);
 
             /** CHECK COLLISIONS **/
-            double distanceFactor = timeElapsed / 32.0;
-            boolean horizontalCollision = checkHorizontalCollision(movementVector, distanceFactor);
-            boolean verticalCollision = checkVerticalCollision(movementVector, distanceFactor);
+            boolean horizontalCollision = checkHorizontalCollision(movementVectorNormalized, 6);
+            boolean verticalCollision = checkVerticalCollision(movementVectorNormalized, 6);
 
             /** MOVE ENTITY **/
             double speed = 0.0;
@@ -274,7 +273,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         return TileMap.checkCollisionWithTile((int) coordinatesToCheck.x, (int) coordinatesToCheck.y) || Scene.getInstance().checkCollisionWithEntities(coordinatesToCheck);
     }
 
-    public double[] computeMovementVector(long timeElapsed) {
+    public void computeMovementVector(long timeElapsed) {
         if (status != Status.DYING
                 && status != Status.DEAD
                 && status != Status.ATTACKING
@@ -284,10 +283,10 @@ public class Enemy extends LivingDynamicGraphicEntity {
         }
 
         if (status != Status.CHASING) {
-            return new double[]{0 ,0};
+            return;
         }
 
-        double[] movement = new double[2];
+        movementVector = new double[]{0, 0};
 
         if (chasingMode == ChasingMode.DIJKSTRA) {
             if (computePathCoolDown <= 0) {
@@ -296,21 +295,18 @@ public class Enemy extends LivingDynamicGraphicEntity {
             }
             int[] step = pathFindingAlgorithm.getNextStep(getCenterOfMassWorldCoordinates());
             Coordinates stepWorldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(step[0], step[1]);
-            movement = new double[]{
+            movementVector = new double[]{
                     stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2),
                     stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2)};
             computePathCoolDown -= timeElapsed;
         } else if (chasingMode == ChasingMode.STRAIGHT_LINE) {
-            movement[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
-            movement[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
+            movementVector[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
+            movementVector[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
         }
 
-        movement = MathUtils.normalizeVector(movement);
-
-        movement[0] *= timeElapsed;
-        movement[1] *= timeElapsed;
-
-        return movement;
+        movementVectorNormalized = MathUtils.normalizeVector(movementVector);
+        movementVector[0] = movementVectorNormalized[0] * timeElapsed;
+        movementVector[1] = movementVectorNormalized[1] * timeElapsed;
     }
 
     private void computePath() {
