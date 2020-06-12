@@ -27,13 +27,13 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         super((int) worldCoordinates.x, (int) worldCoordinates.y);
         this.movementVector = movementVector;
         this.movementVectorNormalized = MathUtils.normalizeVector(movementVector);
-        init(movementVector, speed, musicalMode, damage, timeToLive, enemyAttack);
+        init(speed, musicalMode, damage, timeToLive, enemyAttack);
     }
 
-    public void init(double[] movementVector, double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
+    public void init(double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
         Sprite randomSprite = getMusicalRandomSprite();
         setSprite(randomSprite);
-        getWorldCoordinates().translate(movementVector[0] * 10, movementVector[1] * 10);
+        getWorldCoordinates().translate(movementVectorNormalized[0] * 10, movementVectorNormalized[1] * 10);
         this.speed = speed;
         this.timeLiving = 0;
         this.timeToLive = timeToLive;
@@ -83,7 +83,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         Enemy entity;
         for (GraphicEntity graphicEntity : Scene.getInstance().getListOfEntitiesToUpdate()) {
             if (graphicEntity instanceof Player && enemyAttack) {
-                if (Player.getInstance().getStatus() == Player.Status.DEAD) {
+                if (Player.getInstance().getStatus() == Player.Status.DEAD || Player.getInstance().getStatus() == Player.Status.ROLLING) {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
@@ -92,7 +92,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 }
             } else if (graphicEntity instanceof Enemy && !enemyAttack) {
                 entity = (Enemy) graphicEntity;
-                if (entity.getStatus() == Enemy.Status.DEAD) {
+                if (entity.getStatus() == Enemy.Status.DEAD || entity.getStatus() == Enemy.Status.ROLLING) {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {

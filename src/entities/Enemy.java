@@ -282,11 +282,12 @@ public class Enemy extends LivingDynamicGraphicEntity {
             status = Status.CHASING;
         }
 
+        movementVector = new double[]{0, 0};
+        movementVectorNormalized = new double[]{0, 0};
+
         if (status != Status.CHASING) {
             return;
         }
-
-        movementVector = new double[]{0, 0};
 
         if (chasingMode == ChasingMode.DIJKSTRA) {
             if (computePathCoolDown <= 0) {

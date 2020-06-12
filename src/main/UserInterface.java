@@ -41,6 +41,7 @@ public class UserInterface {
             debugTextList.clear();
 
             debugTextList.add("Project Version: " + Parameters.getProjectVersion());
+            debugTextList.add("OpenGL version " + glGetString(GL_VERSION));
             debugTextList.add("Show/Hide Debug Info: F1");
             debugTextList.add("Reset Game: F4");
             debugTextList.add("Save World: F5");

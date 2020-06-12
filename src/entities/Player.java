@@ -245,6 +245,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public void computeMovementVector(long timeElapsed) {
         movementVector = new double[]{0, 0};
+        movementVectorNormalized = new double[]{0, 0};
         boolean playerMoving = false;
         if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
             movementVector[1] = 1;

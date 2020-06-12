@@ -33,7 +33,7 @@ public class Game {
         UserInterface.getInstance().render(timeElapsed);
 
         //After everything rendered...
-        System.out.println("GPU calls: " + OpenGLManager.GPU_CALLS);
+//        System.out.println("GPU calls: " + OpenGLManager.GPU_CALLS);
     }
 
     public static void stopGame() {

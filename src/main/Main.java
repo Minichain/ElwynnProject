@@ -14,6 +14,9 @@ public class Main {
             System.exit(0);
         }
 
+        System.out.println("OS Name " + System.getProperty("os.name"));
+        System.out.println("OS Version " + System.getProperty("os.version"));
+
         Game.startGame();
 
         while (!glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
