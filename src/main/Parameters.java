@@ -17,31 +17,56 @@ public class Parameters {
     private static float resolutionFactor;
 
     public static void init() {
-        /** FPS **/
-        int framesPerSecondDataBaseValue = DataBase.selectParameter("framesPerSecond");
-        if (framesPerSecondDataBaseValue != -1) {
-            framesPerSecond = framesPerSecondDataBaseValue;
+        int dataBaseValue;
+
+        /** FramesPerSecond **/
+        dataBaseValue = DataBase.selectParameter("framesPerSecond");
+        if (dataBaseValue != -1) {
+            framesPerSecond = dataBaseValue;
         } else {
             setFramesPerSecond(60);
         }
 
         /** FullScreen **/
-        int fullScreenDataBaseValue = DataBase.selectParameter("fullScreen");
-        if (fullScreenDataBaseValue != -1) {
-            fullScreen = fullScreenDataBaseValue != 0;
+        dataBaseValue = DataBase.selectParameter("fullScreen");
+        if (dataBaseValue != -1) {
+            fullScreen = dataBaseValue != 0;
         } else {
             setFullScreen(true);
         }
 
         /** Resolution **/
-        int resolutionDataBaseValue = DataBase.selectParameter("resolution");
-        if (resolutionDataBaseValue != -1) {
-            resolution = Resolution.values()[resolutionDataBaseValue];
+        dataBaseValue = DataBase.selectParameter("resolution");
+        if (dataBaseValue != -1) {
+            resolution = Resolution.values()[dataBaseValue];
         } else {
             setResolution(Resolution.RESOLUTION_1920_1080);
         }
-
         resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+
+        /** MusicSoundLevel **/
+        dataBaseValue = DataBase.selectParameter("musicSoundLevel");
+        if (dataBaseValue > 0 && dataBaseValue < 100) {
+            musicSoundLevel = dataBaseValue / 100f;
+        } else {
+            setMusicSoundLevel(0.5f);
+        }
+
+        /** EffectSoundLevel **/
+        dataBaseValue = DataBase.selectParameter("effectSoundLevel");
+        if (dataBaseValue > 0 && dataBaseValue < 100) {
+            effectSoundLevel = dataBaseValue / 100f;
+        } else {
+            setEffectSoundLevel(0.5f);
+        }
+
+        /** AmbienceSoundLevel **/
+        dataBaseValue = DataBase.selectParameter("ambienceSoundLevel");
+        if (dataBaseValue > 0 && dataBaseValue < 100) {
+            ambienceSoundLevel = dataBaseValue / 100f;
+        } else {
+            setAmbienceSoundLevel(0.5f);
+        }
     }
 
     /**
@@ -117,9 +142,9 @@ public class Parameters {
     }
 
     /** AUDIO PARAMETERS **/
-    private static float musicSoundLevel = 0.2f;
-    private static float effectSoundLevel = 0.2f;
-    private static float ambienceSoundLevel = 0.2f;
+    private static float musicSoundLevel;
+    private static float effectSoundLevel;
+    private static float ambienceSoundLevel;
 
     public static float getMusicSoundLevel() {
         return musicSoundLevel;
@@ -128,6 +153,7 @@ public class Parameters {
     public static void setMusicSoundLevel(float soundLevel) {
         OpenALManager.onMusicLevelChange(soundLevel);
         Parameters.musicSoundLevel = soundLevel;
+        DataBase.insertOrUpdateParameter("musicSoundLevel", (int) (soundLevel * 100));
     }
 
     public static float getEffectSoundLevel() {
@@ -137,6 +163,7 @@ public class Parameters {
     public static void setEffectSoundLevel(float soundLevel) {
         OpenALManager.onEffectLevelChange(soundLevel);
         Parameters.effectSoundLevel = soundLevel;
+        DataBase.insertOrUpdateParameter("effectSoundLevel", (int) (soundLevel * 100));
     }
 
     public static float getAmbienceSoundLevel() {
@@ -146,6 +173,7 @@ public class Parameters {
     public static void setAmbienceSoundLevel(float soundLevel) {
         OpenALManager.onAmbienceLevelChange(soundLevel);
         Parameters.ambienceSoundLevel = soundLevel;
+        DataBase.insertOrUpdateParameter("ambienceSoundLevel", (int) (soundLevel * 100));
     }
 
     /** ------------------------ PROJECT VERSION ------------------------

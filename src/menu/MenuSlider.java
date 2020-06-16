@@ -58,11 +58,10 @@ public class MenuSlider extends MenuComponent {
         setMouseOver(MathUtils.isMouseInsideRectangle(this.x, this.y, this.x + this.width, this.y + this.height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
             progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - this.x) / (float) this.width;
-            performAction(sliderAction);
             setPressed(true);
         } else {
             if (isPressed() && isMouseOver()) {
-                // Do nothing
+                performAction(sliderAction);
             }
             setPressed(false);
         }
