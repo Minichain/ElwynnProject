@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         long timeElapsed = 0;
         long lastUpdateTime = System.currentTimeMillis();
-        long maxTimeBetweenFrames = 1000 / Parameters.getFramesPerSecond();
+        long maxTimeBetweenFrames;
         long timeSpentUpdatingAndRendering;
 
         if (!glfwInit()) {
@@ -21,6 +21,8 @@ public class Main {
 
         while (!glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
             try {
+                maxTimeBetweenFrames = 1000 / Parameters.getFramesPerSecond();
+
                 //Compute the time elapsed since the last frame
                 GameStatus.setRuntime(GameStatus.getRuntime() + timeElapsed);
                 timeElapsed = System.currentTimeMillis() - lastUpdateTime;

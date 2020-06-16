@@ -1,6 +1,7 @@
 package main;
 
 import audio.OpenALManager;
+import database.DataBase;
 import enums.Resolution;
 
 public class Parameters {
@@ -10,10 +11,38 @@ public class Parameters {
     private static boolean shadersEnabled = true;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
-    private static int framesPerSecond = 60;
-    private static boolean fullScreen = true;
-    private static Resolution resolution = Resolution.RESOLUTION_1920_1080;
-    private static float resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+    private static int framesPerSecond;
+    private static boolean fullScreen;
+    private static Resolution resolution;
+    private static float resolutionFactor;
+
+    public static void init() {
+        /** FPS **/
+        int framesPerSecondDataBaseValue = DataBase.selectParameter("framesPerSecond");
+        if (framesPerSecondDataBaseValue != -1) {
+            framesPerSecond = framesPerSecondDataBaseValue;
+        } else {
+            setFramesPerSecond(60);
+        }
+
+        /** FullScreen **/
+        int fullScreenDataBaseValue = DataBase.selectParameter("fullScreen");
+        if (fullScreenDataBaseValue != -1) {
+            fullScreen = fullScreenDataBaseValue != 0;
+        } else {
+            setFullScreen(true);
+        }
+
+        /** Resolution **/
+        int resolutionDataBaseValue = DataBase.selectParameter("resolution");
+        if (resolutionDataBaseValue != -1) {
+            resolution = Resolution.values()[resolutionDataBaseValue];
+        } else {
+            setResolution(Resolution.RESOLUTION_1920_1080);
+        }
+
+        resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+    }
 
     /**
      * Frames Per Second we would love to see our game to run at.
@@ -24,6 +53,7 @@ public class Parameters {
 
     public static void setFramesPerSecond(int framesPerSecond) {
         Parameters.framesPerSecond = framesPerSecond;
+        DataBase.insertOrUpdateParameter("framesPerSecond", framesPerSecond);
     }
 
     public static int getResolutionWidth() {
@@ -36,6 +66,7 @@ public class Parameters {
 
     public static void setResolution(Resolution resolution) {
         Parameters.resolution = resolution;
+        DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
         Parameters.resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
         Window.setWindowSize(resolution.getResolution()[0], resolution.getResolution()[1]);
     }
@@ -50,6 +81,7 @@ public class Parameters {
 
     public static void setFullScreen(boolean fullScreen) {
         Parameters.fullScreen = fullScreen;
+        DataBase.insertOrUpdateParameter("fullScreen", fullScreen ? 1 : 0);
     }
 
     public static boolean isDebugMode() {
@@ -124,7 +156,7 @@ public class Parameters {
      * Revision: Minor alterations on existing features, small bug fixes, etc.
      * Package: Your code stays the same, external library changes or asset file update.
      */
-    private static String projectVersion = "0.00.04.3";
+    private static String projectVersion = "0.00.05.0";
 
     public static String getProjectVersion() {
         return projectVersion;

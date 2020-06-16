@@ -1,5 +1,6 @@
 package listeners;
 
+import database.DataBase;
 import entities.*;
 import scene.Camera;
 import scene.Scene;
@@ -267,7 +268,7 @@ public class InputListenerManager {
                 if (!pressed) WorldLoader.saveWorld();
                 break;
             case GLFW_KEY_F6:
-                if (!pressed) Player.getInstance().hurt(Player.MAX_HEALTH);
+                if (!pressed) Player.getInstance().hurt(Player.getInstance().getHealth());
                 break;
             case GLFW_KEY_F7:
                 break;
