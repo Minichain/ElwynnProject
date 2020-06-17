@@ -1,7 +1,6 @@
 package scene;
 
 import entities.Player;
-import enums.Resolution;
 import listeners.InputListenerManager;
 import main.Coordinates;
 import main.GameMode;
@@ -29,7 +28,7 @@ public class Camera {
         maxZoom = minZoom + 4.0;
         initialZoom = minZoom;
         zoom = initialZoom;
-        freeCameraSpeed = 1.0;
+        freeCameraSpeed = 0.5;
         followingSpeed = 0.0025;
     }
 

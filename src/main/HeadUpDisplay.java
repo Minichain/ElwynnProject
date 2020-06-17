@@ -4,7 +4,6 @@ import entities.MusicalMode;
 import entities.Player;
 import entities.SpriteManager;
 import scene.TileMap;
-import enums.Resolution;
 import listeners.InputListenerManager;
 import text.TextRendering;
 
@@ -12,6 +11,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.glEnd;
 
 public class HeadUpDisplay {
+    private static int selectedTile = 0;
+    private static int selectedEntity = 0;
 
     public static void render(long timeElapsed) {
         //Width and Height factors relative to 1920x1080 resolution.
@@ -71,10 +72,10 @@ public class HeadUpDisplay {
                 glEnable(GL_TEXTURE_2D);
                 OpenGLManager.glBegin(GL_QUADS);
                 for (int i = 0; i < 25; i++) {
-                    currentTile = InputListenerManager.getMouseWheelPosition() + i - previousTilesToShow;
+                    currentTile = selectedTile + i - previousTilesToShow;
                     x = 20f * Parameters.getResolutionFactor() + i * 128f * Parameters.getResolutionFactor();
                     y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
-                    if (currentTile == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                    if (currentTile == selectedTile) {   // Highlight the tile we have selected
                         TileMap.drawTile(currentTile, x + 5, y + 10, 10 * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
                         TileMap.drawTile(currentTile, x, y, 10 * Parameters.getResolutionFactor(), 1f, 1f, 1f, true);
                     } else {
@@ -88,10 +89,10 @@ public class HeadUpDisplay {
                 float x, y;
 
                 for (int i = 0; i < 25; i++) {
-                    currentEntity = InputListenerManager.getMouseWheelPosition() + i - previousEntitiesToShow;
+                    currentEntity = selectedEntity + i - previousEntitiesToShow;
                     x = 20f * Parameters.getResolutionFactor() + i * 128f * Parameters.getResolutionFactor();
                     y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
-                    if (currentEntity == InputListenerManager.getMouseWheelPosition()) {   // Highlight the tile we have selected
+                    if (currentEntity == selectedEntity) {   // Highlight the tile we have selected
                         SpriteManager.getStaticEntitySprite(currentEntity).draw((int) x, (int) y, 0, 0, 0.7f, 2f * Parameters.getResolutionFactor());
                     } else {
                         SpriteManager.getStaticEntitySprite(currentEntity).draw((int) x, (int) y, 0, 0, 0.5f, 1.5f * Parameters.getResolutionFactor());
@@ -108,14 +109,14 @@ public class HeadUpDisplay {
                     TileMap.bindTileSetTexture();
                     glEnable(GL_TEXTURE_2D);
                     OpenGLManager.glBegin(GL_QUADS);
-                    TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX + 5, mouseY + 5, 5f * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
-                    TileMap.drawTile(InputListenerManager.getMouseWheelPosition(), mouseX, mouseY, 5f * Parameters.getResolutionFactor(), 1f, 1f, 1f, true);
+                    TileMap.drawTile(selectedTile, mouseX + 5, mouseY + 5, 5f * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
+                    TileMap.drawTile(selectedTile, mouseX, mouseY, 5f * Parameters.getResolutionFactor(), 1f, 1f, 1f, true);
                     glEnd();
                     glDisable(GL_TEXTURE_2D);
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                     Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                     Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
-                    SpriteManager.getStaticEntitySprite(InputListenerManager.getMouseWheelPosition()).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
+                    SpriteManager.getStaticEntitySprite(selectedEntity).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
                 }
             }
         }
@@ -126,5 +127,31 @@ public class HeadUpDisplay {
             float scale = 4f * Parameters.getResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
         }
+    }
+
+    public static int getSelectedTile() {
+        return selectedTile;
+    }
+
+    public static void setSelectedTile(int selectedTile) {
+        if (selectedTile < 0) {
+            selectedTile = (TileMap.getArrayOfTiles().length * TileMap.getArrayOfTiles()[0].length) - 1;
+        } else {
+            selectedTile %= (TileMap.getArrayOfTiles().length * TileMap.getArrayOfTiles()[0].length);
+        }
+        HeadUpDisplay.selectedTile = selectedTile;
+    }
+
+    public static int getSelectedEntity() {
+        return selectedEntity;
+    }
+
+    public static void setSelectedEntity(int selectedEntity) {
+        if (selectedEntity < 0) {
+            selectedEntity = SpriteManager.numOfStaticEntitySprites - 1;
+        } else {
+            selectedEntity %= SpriteManager.numOfStaticEntitySprites;
+        }
+        HeadUpDisplay.selectedEntity = selectedEntity;
     }
 }

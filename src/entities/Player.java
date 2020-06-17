@@ -124,7 +124,8 @@ public class Player extends LivingDynamicGraphicEntity {
             }
 
             /** UPDATE ATTACKS **/
-            if (GameMode.getGameMode() == GameMode.Mode.NORMAL && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0f)) {
+            if (GameMode.getGameMode() == GameMode.Mode.NORMAL
+                    && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
                 playerStatus = Status.ATTACKING;
             }
             updateAttack(timeElapsed);
@@ -354,7 +355,7 @@ public class Player extends LivingDynamicGraphicEntity {
             }
         }
 
-        if (InputListenerManager.leftMouseButtonPressed) {
+        if (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
                 MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
                         0.2, musicalMode, attack01Power, 1000.0, false);
@@ -408,6 +409,16 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public MusicalMode getMusicalMode() {
         return musicalMode;
+    }
+
+    public void setMusicalMode(int musicalMode) {
+        if (musicalMode < 0) {
+            musicalMode = MusicalMode.values().length + musicalMode;
+        } else {
+            musicalMode %= MusicalMode.values().length;
+        }
+
+        this.musicalMode = MusicalMode.values()[musicalMode];
     }
 
     public void setMusicalMode(MusicalMode musicalMode) {

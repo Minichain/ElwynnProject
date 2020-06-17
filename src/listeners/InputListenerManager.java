@@ -1,6 +1,5 @@
 package listeners;
 
-import database.DataBase;
 import entities.*;
 import scene.Camera;
 import scene.Scene;
@@ -91,8 +90,19 @@ public class InputListenerManager {
                     }
                 } else {
                     if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                        mouseWheelPosition += yOffset;
-                        if (mouseWheelPosition < 0) mouseWheelPosition = 0;
+                        if (yOffset > 0.0) {
+                            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                                HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() - 1);
+                            } else {
+                                HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() - 1);
+                            }
+                        } else {
+                            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                                HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() + 1);
+                            } else {
+                                HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() + 1);
+                            }
+                        }
                     } else {
                         if (yOffset > 0.0) {
                             Camera.increaseZoom();
@@ -101,6 +111,8 @@ public class InputListenerManager {
                         }
                     }
                 }
+                mouseWheelPosition += yOffset;
+                if (mouseWheelPosition < 0) mouseWheelPosition = 0;
             }
         };
 
@@ -137,9 +149,9 @@ public class InputListenerManager {
                         layer = 2;
                         break;
                 }
-                TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (InputListenerManager.getMouseWheelPosition()));
+                TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                switch (InputListenerManager.getMouseWheelPosition() % SpriteManager.numOfStaticEntitySprites) {
+                switch (HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites) {
                     case 0:
                         new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                         break;
@@ -241,6 +253,28 @@ public class InputListenerManager {
                 break;
             case GLFW_KEY_D:
                 D_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_Q:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value - 1);
+                } else {
+                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                        if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() - 1);
+                    } else {
+                        if (pressed) HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() - 1);
+                    }
+                }
+                break;
+            case GLFW_KEY_E:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value + 1);
+                } else {
+                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                        if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() + 1);
+                    } else {
+                        if (pressed) HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() + 1);
+                    }
+                }
                 break;
             case GLFW_KEY_SPACE:
                 if (pressed) {
