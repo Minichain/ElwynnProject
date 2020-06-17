@@ -1,8 +1,7 @@
 package text;
 
-import main.Coordinates;
+import main.GameStatus;
 import main.OpenGLManager;
-import main.Parameters;
 
 import java.util.ArrayList;
 
@@ -18,30 +17,23 @@ public class FloatingText {
         listOfFloatingTextEntities.add(floatingTextEntity);
     }
 
-    public static void renderAndUpdate(long timeElapsed) {
+    public static void updateAndRender(long timeElapsed) {
         FloatingTextEntity entity;
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_QUADS);
         for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
             entity = listOfFloatingTextEntities.get(i);
-            float alpha = 1f - (float) (entity.timeLiving / entity.timeToLive);
-            Coordinates entityCameraCoordinates = entity.coordinates.toCameraCoordinates();
-            if (entity.isDangerText()) {
-                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text,
-                        Parameters.getResolutionFactor() * 2f, true, alpha, 1f, 0f, 0f);
-            } else {
-                TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, entity.text,
-                        Parameters.getResolutionFactor() * 2f, true, alpha);
+            if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
+                entity.update(timeElapsed);
             }
-            if (entity.timeLiving < entity.timeToLive) {
-                entity.timeLiving += timeElapsed;
-                entity.coordinates = new Coordinates(entity.coordinates.x, entity.coordinates.y - entity.movingSpeed);
-            } else {
-                listOfFloatingTextEntities.remove(entity);
-            }
+            entity.render();
         }
         glEnd();
         glDisable(GL_TEXTURE_2D);
+    }
+
+    public static ArrayList<FloatingTextEntity> getListOfFloatingTextEntities() {
+        return listOfFloatingTextEntities;
     }
 }

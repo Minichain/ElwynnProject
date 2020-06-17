@@ -60,7 +60,7 @@ public class MenuSlider extends MenuComponent {
             progress = (float) (InputListenerManager.getMouseCameraCoordinates().x - this.x) / (float) this.width;
             setPressed(true);
         } else {
-            if (isPressed() && isMouseOver()) {
+            if (isPressed()) {
                 performAction(sliderAction);
             }
             setPressed(false);

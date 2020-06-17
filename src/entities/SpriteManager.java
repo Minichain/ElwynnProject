@@ -28,6 +28,7 @@ public class SpriteManager {
     public Sprite QUARTER_NOTE;
     public Sprite EIGHTH_NOTE;
     public Sprite DOUBLE_EIGHTH_NOTE;
+    public Sprite GOLD_COIN;
 
     /** TILESET **/
     public Sprite TILESET;
@@ -89,6 +90,9 @@ public class SpriteManager {
         MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon.png", 32, 32, -1, -1, -1, -1, -1);
         AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon.png", 32, 32, -1, -1, -1, -1, -1);
         LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+
+        /** OTHERS **/
+        GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1, -1, -1, -1, -1);
     }
 
     public static SpriteManager getInstance() {

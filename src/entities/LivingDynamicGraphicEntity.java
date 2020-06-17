@@ -36,7 +36,12 @@ public abstract class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
 
     public void setHealth(float health) {
         this.health = health;
+        if (this.health <= 0) {
+            onDying();
+        }
     }
+
+    public abstract void onDying();
 
     public abstract void hurt(float damage);
 }

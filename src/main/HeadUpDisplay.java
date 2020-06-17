@@ -56,12 +56,18 @@ public class HeadUpDisplay {
             for (int i = 0; i < numberOfModes; i++) {
                 currentMusicalMode = MusicalMode.values()[i];
                 if (Player.getInstance().getMusicalMode() == currentMusicalMode) {
-                    currentMusicalMode.getSprite().draw((int) x, (int) y, 1f, 2f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor());
+                    currentMusicalMode.getSprite().draw((int) x, (int) y, 1f, 2.25f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor());
                 } else {
                     currentMusicalMode.getSprite().draw((int) x, (int) y, 0.5f, 2f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor());
                 }
                 x += 32 * scale + spaceBetweenModes;
             }
+
+            /** GOLD COINS **/
+            TextRendering.renderText(Window.getWidth() - 150f * Parameters.getResolutionFactor(), Window.getHeight() - 50f * Parameters.getResolutionFactor(),
+                    "Coins: " + Player.getInstance().getAmountOfGoldCoins(),
+                    2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.9f, 0f);
+
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {

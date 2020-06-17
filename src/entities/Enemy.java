@@ -9,6 +9,8 @@ import text.FloatingTextEntity;
 import utils.MathUtils;
 import utils.Utils;
 
+import java.awt.*;
+
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends LivingDynamicGraphicEntity {
@@ -111,11 +113,22 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     @Override
+    public void onDying() {
+        int numOfCoinsToDrop = (int) (Math.random() * 5) + 5;
+        float areaOfDrop = 25f;
+        for (int i = 0; i < numOfCoinsToDrop; i++) {
+            new GoldCoin((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)));
+        }
+    }
+
+    @Override
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_ENEMY_HURT_01);
         setHealth(getHealth() - damage);
         String text = String.valueOf((int) damage);
-        new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text, true, true, false);
+        new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text,
+                new Color(1f, 1f, 1f), 1.25, new double[]{0, -1});
     }
 
     @Override

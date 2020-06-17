@@ -9,6 +9,8 @@ import utils.Utils;
 import listeners.InputListenerManager;
 import main.*;
 
+import java.awt.*;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends LivingDynamicGraphicEntity {
@@ -45,7 +47,9 @@ public class Player extends LivingDynamicGraphicEntity {
         IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING;
     }
 
-    boolean footstep = true;
+    private boolean footstep = true;
+
+    private int amountOfGoldCoins;
 
     private Player() {
         super((int) Scene.getInitialCoordinates().x,
@@ -65,6 +69,7 @@ public class Player extends LivingDynamicGraphicEntity {
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
+        amountOfGoldCoins = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
     }
 
@@ -92,11 +97,17 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     @Override
+    public void onDying() {
+
+    }
+
+    @Override
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
         setHealth(getHealth() - damage);
         String text = String.valueOf((int) damage);
-        new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, text, true, true, true);
+        new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, text,
+                new Color(1f, 0f, 0f), 1.25, new double[]{0, -1});
     }
 
     @Override
@@ -424,5 +435,13 @@ public class Player extends LivingDynamicGraphicEntity {
     public void setMusicalMode(MusicalMode musicalMode) {
 //        OpenALManager.stopMusicDependingOnMusicalMode(this.musicalMode);
         this.musicalMode = musicalMode;
+    }
+
+    public int getAmountOfGoldCoins() {
+        return amountOfGoldCoins;
+    }
+
+    public void setAmountOfGoldCoins(int amountOfGoldCoins) {
+        this.amountOfGoldCoins = amountOfGoldCoins;
     }
 }
