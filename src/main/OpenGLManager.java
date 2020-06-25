@@ -194,7 +194,7 @@ public class OpenGLManager {
         glUniform1f(windowWidthUniform, (float) Window.getWidth());
         glUniform1f(windowHeightUniform, (float) Window.getHeight());
 
-        int maxNumberOfLightSources = 50;
+        int maxNumberOfLightSources = 25;
 
         int lightSourcesCoordinatesArraySize = maxNumberOfLightSources * 2;
         float[] lightSourceCoordinates = new float[lightSourcesCoordinatesArraySize];

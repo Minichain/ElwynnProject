@@ -1,3 +1,5 @@
+#version 120
+
 uniform float time; //Time elapsed since the Game has been executed (in milliseconds)
 uniform float rainingIntensity;
 
