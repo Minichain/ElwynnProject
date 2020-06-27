@@ -15,6 +15,7 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 ## Screenshots
 <p align="center">
   <img src="/screenshots/gif01.gif" width="1280px"</img> 
+  <img src="/screenshots/gif02.gif" width="1280px"</img> 
 </p>
 
 ## Social Media
