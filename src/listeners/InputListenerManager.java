@@ -1,6 +1,7 @@
 package listeners;
 
 import entities.*;
+import menu.Scroll;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
@@ -83,11 +84,13 @@ public class InputListenerManager {
             @Override
             public void invoke(long window, double xOffset, double yOffset) {
                 if (Menu.getInstance().isShowing()) {
+                    Scroll scroll = Menu.getInstance().getMenuScrollBar().getScroll();
                     if (yOffset > 0.0) {
-                        Menu.getInstance().getMenuScrollBar().getScroll().y -= 15;
+                        scroll.y -= 15;
                     } else {
-                        Menu.getInstance().getMenuScrollBar().getScroll().y += 15;
+                        scroll.y += 15;
                     }
+                    scroll.update(scroll.x, -1, scroll.width, scroll.height);
                 } else {
                     if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                         if (yOffset > 0.0) {

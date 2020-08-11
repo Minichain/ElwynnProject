@@ -5,6 +5,7 @@ import main.OpenGLManager;
 import utils.MathUtils;
 
 public class Scroll extends MenuComponent {
+    int heightRelativeToMouseYPosition;
 
     public Scroll(int x, int y, int width, int height) {
     }
@@ -21,6 +22,10 @@ public class Scroll extends MenuComponent {
 
         setMouseOver(MathUtils.isMouseInsideRectangle(this.x, this.y, this.x + this.width, this.y + this.height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
+            if (!isPressed()) {
+                //This is only updated when we start pressing
+                heightRelativeToMouseYPosition = (int) InputListenerManager.getMouseWindowCoordinates().y - this.y;
+            }
             setPressed(true);
         } else {
             if (!InputListenerManager.leftMouseButtonPressed) {
@@ -29,12 +34,14 @@ public class Scroll extends MenuComponent {
         }
 
         if (isPressed()) {
-            this.y = (int) InputListenerManager.getMouseWindowCoordinates().y - this.height / 2;
+            this.y = (int) InputListenerManager.getMouseWindowCoordinates().y - heightRelativeToMouseYPosition;
         }
 
-        if (this.y < Menu.getInstance().getMenuScrollBar().y) this.y = Menu.getInstance().getMenuScrollBar().y;
-        else if ((this.y + this.height) > (Menu.getInstance().getMenuScrollBar().y + Menu.getInstance().getMenuScrollBar().height))
+        if (this.y < Menu.getInstance().getMenuScrollBar().y) {
+            this.y = Menu.getInstance().getMenuScrollBar().y;
+        } else if ((this.y + this.height) > (Menu.getInstance().getMenuScrollBar().y + Menu.getInstance().getMenuScrollBar().height)) {
             this.y = (int) (Menu.getInstance().getMenuScrollBar().y + Menu.getInstance().getMaxMenuHeight() - this.height);
+        }
     }
 
     public void renderBackground() {
