@@ -1,5 +1,6 @@
 package database;
 
+import java.io.File;
 import java.sql.*;
 
 public class DataBase {
@@ -8,8 +9,15 @@ public class DataBase {
 
     private static void getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
-        connection = DriverManager.getConnection("jdbc:sqlite:elwynn.db");
-        initialise();
+        String dataBasePath = System.getenv("APPDATA") + "\\ElwynnProject";
+        System.out.println("DataBase Path: " + dataBasePath);
+
+        File file = new File(dataBasePath);
+
+        if (file.exists() || file.mkdir()) {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + dataBasePath + "\\elwynn.db");
+            initialise();
+        }
     }
 
     private static void initialise() throws SQLException {
