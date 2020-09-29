@@ -7,6 +7,7 @@ public class SpriteManager {
 
     /** ENTITIES **/
     public Sprite PLAYER;
+    public Sprite NOTCH;
     public Sprite ENEMY01;
     public Sprite ENEMY02;
     public Sprite ENEMY03;
@@ -45,6 +46,9 @@ public class SpriteManager {
     public SpriteManager() {
         /** PLAYER **/
         PLAYER = new Sprite("res/sprites/dynamic/player01.png", 19, 20, 1, 8, 2, 1, 7, 3);
+
+        /** NPC **/
+        NOTCH = new Sprite("res/sprites/dynamic/notch.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** ENEMY **/
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);

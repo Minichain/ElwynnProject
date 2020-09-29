@@ -43,8 +43,8 @@ public class UserInterface {
             debugTextList.add("Project Version: " + Parameters.getProjectVersion());
             debugTextList.add("OpenGL version " + glGetString(GL_VERSION));
             debugTextList.add("Show/Hide Debug Info: F1");
-            debugTextList.add("Reset Game: F4");
-            debugTextList.add("Save World: F5");
+            debugTextList.add("Reset Game: F5");
+            debugTextList.add("Save World: LEFT_CTRL + S");
             debugTextList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
             debugTextList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             debugTextList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());

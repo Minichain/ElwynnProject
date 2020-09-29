@@ -238,9 +238,9 @@ public class OpenALManager {
 
     public static void onMusicLevelChange(float soundLevel) {
         if (listOfSounds != null) {
-            for (Sound listOfSound : listOfSounds) {
-                if (listOfSound.getType() == Sound.SoundType.MUSIC) {
-                    alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            for (Sound sound : listOfSounds) {
+                if (sound.getType() == Sound.SoundType.MUSIC) {
+                    alSourcef(source.get(sound.getIndex()), AL_GAIN, soundLevel);
                 }
             }
         }
@@ -248,9 +248,9 @@ public class OpenALManager {
 
     public static void onEffectLevelChange(float soundLevel) {
         if (listOfSounds != null) {
-            for (Sound listOfSound : listOfSounds) {
-                if (listOfSound.getType() == Sound.SoundType.EFFECT) {
-                    alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            for (Sound sound : listOfSounds) {
+                if (sound.getType() == Sound.SoundType.EFFECT) {
+                    alSourcef(source.get(sound.getIndex()), AL_GAIN, soundLevel);
                 }
             }
         }
@@ -258,9 +258,9 @@ public class OpenALManager {
 
     public static void onAmbienceLevelChange(float soundLevel) {
         if (listOfSounds != null) {
-            for (Sound listOfSound : listOfSounds) {
-                if (listOfSound.getType() == Sound.SoundType.AMBIENCE) {
-                    alSourcef(source.get(listOfSound.getIndex()), AL_GAIN, soundLevel);
+            for (Sound sound : listOfSounds) {
+                if (sound.getType() == Sound.SoundType.AMBIENCE) {
+                    alSourcef(source.get(sound.getIndex()), AL_GAIN, soundLevel);
                 }
             }
         }

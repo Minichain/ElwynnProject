@@ -36,6 +36,8 @@ public class InputListenerManager {
     private static boolean A_KEY_PRESSED;
     private static boolean S_KEY_PRESSED;
     private static boolean D_KEY_PRESSED;
+    private static boolean LEFT_CTRL_KEY_PRESSED;
+    private static boolean LEFT_SHIFT_KEY_PRESSED;
 
     private static boolean usingKeyboardAndMouse = false;
 
@@ -252,7 +254,11 @@ public class InputListenerManager {
                 A_KEY_PRESSED = pressed;
                 break;
             case GLFW_KEY_S:
-                S_KEY_PRESSED = pressed;
+                if (LEFT_CTRL_KEY_PRESSED) {
+                    if (!pressed) WorldLoader.saveWorld();
+                } else {
+                    S_KEY_PRESSED = pressed;
+                }
                 break;
             case GLFW_KEY_D:
                 D_KEY_PRESSED = pressed;
@@ -289,6 +295,12 @@ public class InputListenerManager {
             case GLFW_KEY_ESCAPE:
                 if (!pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
                 break;
+            case GLFW_KEY_LEFT_CONTROL:
+                LEFT_CTRL_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_LEFT_SHIFT:
+                LEFT_SHIFT_KEY_PRESSED = pressed;
+                break;
             case GLFW_KEY_F1:
                 if (!pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
                 break;
@@ -299,10 +311,9 @@ public class InputListenerManager {
                 if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
                 break;
             case GLFW_KEY_F4:
-                if (!pressed) Scene.getInstance().initEntities();
                 break;
             case GLFW_KEY_F5:
-                if (!pressed) WorldLoader.saveWorld();
+                if (!pressed) Scene.getInstance().reset();
                 break;
             case GLFW_KEY_F6:
                 if (!pressed) Player.getInstance().hurt(Player.getInstance().getHealth());
@@ -318,6 +329,15 @@ public class InputListenerManager {
             case GLFW_KEY_F11:
                 break;
             case GLFW_KEY_F12:
+                //FIXME Coins generator only for testing purposes
+                if (!pressed) {
+                    int numOfCoinsToDrop = (int) (Math.random() * 5) + 5;
+                    float areaOfDrop = 25f;
+                    for (int i = 0; i < numOfCoinsToDrop; i++) {
+                        new GoldCoin((int) ((mouseWorldCoordinates.x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                                (int) ((mouseWorldCoordinates.y - areaOfDrop / 2) + (Math.random() * areaOfDrop)));
+                    }
+                }
                 break;
             case GLFW_KEY_1:
                 if (!pressed) {

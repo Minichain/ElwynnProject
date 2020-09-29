@@ -33,6 +33,7 @@ public class Scene {
 
     public static ArrayList<LightSource> listOfLightSources;
     public static ArrayList<LightSource> listOfVisibleLightSources;
+    private double visibleLightSourceDistanceFactor = 30.0;
 
     private Scene() {
         initialCoordinates = new Coordinates(2500, 2500);
@@ -139,7 +140,7 @@ public class Scene {
         if (!listOfLightSources.isEmpty()) {
             for (LightSource lightSource : listOfLightSources) {
                 lightSource.update(timeElapsed);
-                if (MathUtils.module(lightSource.getWorldCoordinates(), Camera.getInstance().getCoordinates()) / lightSource.getIntensity() < 30.0) {
+                if (MathUtils.module(lightSource.getWorldCoordinates(), Camera.getInstance().getCoordinates()) / lightSource.getIntensity() < visibleLightSourceDistanceFactor) {
                     listOfVisibleLightSources.add(lightSource);
                 }
             }
@@ -154,7 +155,6 @@ public class Scene {
                     listOfLightSources.remove(musicalNoteGraphicEntity.getLightSource());
                     listOfMusicalNoteGraphicEntities.remove(musicalNoteGraphicEntity);
                 } else {
-                    musicalNoteGraphicEntity.updateCoordinates();
                     musicalNoteGraphicEntity.update(timeElapsed);
                 }
             }
@@ -189,17 +189,28 @@ public class Scene {
         return initialCoordinates;
     }
 
+    public void reset() {
+        initEntities();
+    }
+
     public void initEntities() {
-        for (int i = 0; i < getListOfEntities().size(); i++) {
-            if (getListOfEntities().get(i) instanceof DynamicGraphicEntity) {
-                getListOfEntities().remove(i);
-                i--;
-            }
-        }
+        resetEntities();
         Player.getInstance().reset();
         Camera.getInstance().reset();
         Scene.getInstance().getListOfEntities().add(Player.getInstance());
         listOfCircleAttacks.clear();
+    }
+
+    private void resetEntities() {
+        for (int i = 0; i < getListOfEntities().size(); i++) {
+            if (getListOfEntities().get(i) instanceof DynamicGraphicEntity) {
+                if (getListOfEntities().get(i) instanceof GoldCoin) {
+                    getListOfLightSources().remove(((GoldCoin) getListOfEntities().get(i)).getLightSource());
+                }
+                getListOfEntities().remove(i);
+                i--;
+            }
+        }
     }
 
     public void render() {

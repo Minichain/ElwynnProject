@@ -66,9 +66,12 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void update(long timeElapsed) {
+        updateCoordinates();
+
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
             return;
         }
+
         getWorldCoordinates().translate(movementVectorNormalized[0] * speed * timeElapsed, movementVectorNormalized[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
         this.lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
