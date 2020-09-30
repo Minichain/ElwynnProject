@@ -113,7 +113,7 @@ public class PathFindingAlgorithm {
     }
 
     private void computeCostsSurroundingNode(int x, int y) {
-        //System.out.println("computeCostsSurroundingNode " + x + ", " + y);
+        //Log.l("computeCostsSurroundingNode " + x + ", " + y);
         for (int i = x - 1; i <= (x + 1); i++) {
             for (int j = y - 1; j <= (y + 1); j++) {
                 if (i == x && j == y) {

@@ -77,7 +77,7 @@ public class OpenGLManager {
     }
 
     public static void prepareFrame() {
-//        System.out.println("Preparing frame!");
+//        Log.l("Preparing frame!");
 
         GPU_CALLS = 0;
 
@@ -241,7 +241,7 @@ public class OpenGLManager {
             glUseProgram(0);
             return;
         }
-//        System.out.println("Use shader " + shader);
+//        Log.l("Use shader " + shader);
         switch (shader) {
             case 0:
             default:

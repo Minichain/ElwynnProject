@@ -265,7 +265,7 @@ public class Scene {
     }
 
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
-//        System.out.println("Render second layer of Tiles and Entities.");
+//        Log.l("Render second layer of Tiles and Entities.");
 
         GraphicEntity entity = null;
         int entityIterator = 0;
@@ -314,7 +314,7 @@ public class Scene {
     }
 
     private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
-//        System.out.println("Render layer " + layerToRender + " of Tiles.");
+//        Log.l("Render layer " + layerToRender + " of Tiles.");
 
         glActiveTexture(GL_TEXTURE0);
         TileMap.bindTileSetTexture();

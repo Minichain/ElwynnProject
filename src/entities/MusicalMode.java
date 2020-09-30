@@ -65,11 +65,11 @@ public enum MusicalMode {
         MusicalNote[] notes = new MusicalNote[8];
         notes[0] = rootNote;
         int[] tonesAndSemitones = this.getTonesAndSemitones();
-//        System.out.println("Mode: " + this);
-//        System.out.println("Root note: " + rootNote);
+//        Log.l("Mode: " + this);
+//        Log.ln("Root note: " + rootNote);
         for (int i = 0; i < tonesAndSemitones.length; i++) {
             notes[i + 1] = MusicalNote.values()[(notes[i].getValue() + tonesAndSemitones[i]) % MusicalNote.values().length];
-//            System.out.println("Note " + i + ": " + notes[i]);
+//            Log.l("Note " + i + ": " + notes[i]);
         }
         return notes;
     }

@@ -15,9 +15,9 @@ public class WorldLoader {
 
     public static void saveWorld() {
         if (saveWorld(TileMap.getArrayOfTiles())) {
-            System.out.println("World saved successfully");
+            Log.l("World saved successfully");
         } else {
-            System.err.println("World could not be saved");
+            Log.e("World could not be saved");
         }
     }
 
@@ -44,7 +44,7 @@ public class WorldLoader {
         for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
             data[dataIterator] = graphicEntity.getEntityCode();
-//            System.out.println("Loading Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
+//            Log.l("Loading Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
             dataIterator++;
             byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
             for (int j = 0; j < xCoordinate.length; j++) {
@@ -74,9 +74,9 @@ public class WorldLoader {
         Tile[][] arrayOfTiles = null;
         try {
             arrayOfTiles = WorldLoader.loadWorld("world");
-            System.out.println("World loaded successfully");
+            Log.l("World loaded successfully");
         } catch (Exception e) {
-            System.err.println("Error loading World. Reason: " + e);
+            Log.e("Error loading World. Reason: " + e);
         }
         return arrayOfTiles;
     }
@@ -124,7 +124,7 @@ public class WorldLoader {
                 yCoordinate[j] = fileData[i];
             }
 
-//            System.out.println("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
+//            Log.l("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
 
             if (entityCode == Tree01.ENTITY_CODE) {
                 new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));

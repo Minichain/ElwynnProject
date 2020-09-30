@@ -211,7 +211,7 @@ public class InputListenerManager {
                         GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
                         if (graphicEntity.isOverEntity(getMouseWorldCoordinates())) {
                             /** DELETE ENTITY **/
-                            System.out.println("Deleting entity!");
+                            Log.l("Deleting entity!");
                             for (LightSource lightSource : graphicEntity.getLightSources()) {
                                 Scene.getInstance().getListOfLightSources().remove(lightSource);
                             }
@@ -244,7 +244,7 @@ public class InputListenerManager {
     }
 
     private static void setKeyPressed(int key, boolean pressed) {
-//        System.out.println("setKeyPressed key: " + key + ", pressed: " + pressed);
+//        Log.l("setKeyPressed key: " + key + ", pressed: " + pressed);
         usingKeyboardAndMouse = true;
         switch(key) {
             case GLFW_KEY_W:
@@ -466,7 +466,7 @@ public class InputListenerManager {
     public static boolean bButtonPressed = false;
 
     public static void updateControllerInputs() {
-//        System.out.println("Controller plugged in: " + glfwGetJoystickName(GLFW_JOYSTICK_1));
+//        Log.l("Controller plugged in: " + glfwGetJoystickName(GLFW_JOYSTICK_1));
 
         FloatBuffer joystickAxes01 = glfwGetJoystickAxes(GLFW_JOYSTICK_1);
         if (joystickAxes01 != null) {
@@ -503,7 +503,7 @@ public class InputListenerManager {
         switch (button) {
             case 0:
                 if (Math.abs(value) > joystickSensibility) {
-//                    System.out.println("Left Stick, X axis, value: " + value);
+//                    Log.l("Left Stick, X axis, value: " + value);
                     leftJoystickAxes[0] = value;
                     usingKeyboardAndMouse = false;
                 } else {
@@ -512,7 +512,7 @@ public class InputListenerManager {
                 break;
             case 1:
                 if (Math.abs(value) > joystickSensibility) {
-//                    System.out.println("Left Stick, Y axis, value: " + value);
+//                    Log.l("Left Stick, Y axis, value: " + value);
                     leftJoystickAxes[1] = value;
                     usingKeyboardAndMouse = false;
                 } else {
@@ -521,7 +521,7 @@ public class InputListenerManager {
                 break;
             case 2:
                 if (Math.abs(value) > joystickSensibility) {
-//                    System.out.println("Right Stick, X axis, value: " + value);
+//                    Log.l("Right Stick, X axis, value: " + value);
                     rightJoystickAxes[0] = value;
                     usingKeyboardAndMouse = false;
                 } else {
@@ -530,7 +530,7 @@ public class InputListenerManager {
                 break;
             case 3:
                 if (Math.abs(value) > joystickSensibility) {
-//                    System.out.println("Right Stick, Y axis, value: " + value);
+//                    Log.l("Right Stick, Y axis, value: " + value);
                     rightJoystickAxes[1] = value;
                     usingKeyboardAndMouse = false;
                 } else {
@@ -539,7 +539,7 @@ public class InputListenerManager {
                 break;
             case 4:
                 if (value > triggersSensibility) {
-//                    System.out.println("Left Trigger, value: " + value);
+//                    Log.l("Left Trigger, value: " + value);
                     leftTriggerValue = value;
                 } else {
                     leftTriggerValue = 0f;
@@ -547,7 +547,7 @@ public class InputListenerManager {
                 break;
             case 5:
                 if (value > triggersSensibility) {
-//                    System.out.println("Right Trigger, value: " + value);
+//                    Log.l("Right Trigger, value: " + value);
                     rightTriggerValue = value;
                 } else {
                     rightTriggerValue = 0f;
@@ -562,50 +562,50 @@ public class InputListenerManager {
         switch (button) {
             case 0: //A
                 if (pressed && !aButtonPressed) {
-//                    System.out.println("A pressed!");
+//                    Log.l("A pressed!");
                     aButtonPressed = true;
                     usingKeyboardAndMouse = false;
                 } else if (!pressed && aButtonPressed) {
-//                    System.out.println("A released!");
+//                    Log.l("A released!");
                     aButtonPressed = false;
                 }
                 break;
             case 1: //B
                 if (pressed && !bButtonPressed) {
-//                    System.out.println("B pressed!");
+//                    Log.l("B pressed!");
                     bButtonPressed = true;
                     usingKeyboardAndMouse = false;
                     if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                         Player.getInstance().roll();
                     }
                 } else if (!pressed && bButtonPressed) {
-//                    System.out.println("B released!");
+//                    Log.l("B released!");
                     bButtonPressed = false;
                 }
                 break;
             case 2: //X
-                if (pressed) System.out.println("X pressed!");
+                if (pressed) Log.l("X pressed!");
                 break;
             case 3: //Y
-                if (pressed) System.out.println("Y pressed!");
+                if (pressed) Log.l("Y pressed!");
                 break;
             case 4: //Left Shoulder
-                if (pressed) System.out.println("Left Shoulder pressed!");
+                if (pressed) Log.l("Left Shoulder pressed!");
                 break;
             case 5: //Right Shoulder
-                if (pressed) System.out.println("Right Shoulder pressed!");
+                if (pressed) Log.l("Right Shoulder pressed!");
                 break;
             case 6: //Back Button
-                if (pressed) System.out.println("Back Button pressed!");
+                if (pressed) Log.l("Back Button pressed!");
                 break;
             case 7: //Start Button
-                if (pressed) System.out.println("Start Button pressed!");
+                if (pressed) Log.l("Start Button pressed!");
                 break;
             case 8: //Left Sticker
-                if (pressed) System.out.println("Left Sticker pressed!");
+                if (pressed) Log.l("Left Sticker pressed!");
                 break;
             case 9: //Right Sticker
-                if (pressed) System.out.println("Right Sticker pressed!");
+                if (pressed) Log.l("Right Sticker pressed!");
                 break;
             default:
                 break;

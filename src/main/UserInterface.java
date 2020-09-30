@@ -94,7 +94,7 @@ public class UserInterface {
     }
 
     private void renderDebugUI(long timeElapsed) {
-//        System.out.println("Render Debug UI");
+//        Log.l("Render Debug UI");
 
         if (!Parameters.isDebugMode()) {
             return;

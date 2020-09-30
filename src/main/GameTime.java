@@ -24,7 +24,7 @@ public class GameTime {
         }
         float hoursElapsed = (float) timeElapsed / (1000.0f * 3600.0f);   //From milliseconds to hours
         gameTime = (gameTime + hoursElapsed * gameTimeRealTimeFactor) % 24.0f;
-//        System.out.println("Updating ingame time. Current time: " + gameTime);
+//        Log.l("Updating ingame time. Current time: " + gameTime);
     }
 
     public static float getGameTime() {

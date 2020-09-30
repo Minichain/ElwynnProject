@@ -1,5 +1,7 @@
 package database;
 
+import main.Log;
+
 import java.io.File;
 import java.sql.*;
 
@@ -10,7 +12,7 @@ public class DataBase {
     private static void getConnection() throws ClassNotFoundException, SQLException {
         Class.forName("org.sqlite.JDBC");
         String dataBasePath = System.getenv("APPDATA") + "\\ElwynnProject";
-        System.out.println("DataBase Path: " + dataBasePath);
+        Log.l("DataBase Path: " + dataBasePath);
 
         File file = new File(dataBasePath);
 
@@ -28,8 +30,6 @@ public class DataBase {
             ResultSet result = statement01.executeQuery(queryString);
 
             if (!result.next()) {
-                System.out.println("");
-
                 Statement statement02 = connection.createStatement();
                 statement02.execute("CREATE TABLE parameter(parameterName varchar(64)," + "parameterValue integer);");
             }
@@ -74,8 +74,10 @@ public class DataBase {
 
         try {
             Statement statement = connection.createStatement();
+            Log.l("Updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
             statement.executeUpdate("UPDATE parameter SET parameterValue = "+ parameterValue + " WHERE parameterName = '" + parameterName + "';");
         } catch (SQLException e) {
+            Log.e("Error updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
             e.printStackTrace();
         }
     }

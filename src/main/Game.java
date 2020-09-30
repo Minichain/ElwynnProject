@@ -1,7 +1,6 @@
 package main;
 
 import audio.OpenALManager;
-import database.DataBase;
 import scene.Camera;
 import scene.Scene;
 import listeners.InputListenerManager;
@@ -35,12 +34,13 @@ public class Game {
         UserInterface.getInstance().render(timeElapsed);
 
         //After everything rendered...
-//        System.out.println("GPU calls: " + OpenGLManager.GPU_CALLS);
+//        Log.l("GPU calls: " + OpenGLManager.GPU_CALLS);
     }
 
     public static void stopGame() {
         OpenALManager.destroy();
         InputListenerManager.release();
+        Log.closeLogFile();
     }
 }
 

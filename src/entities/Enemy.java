@@ -145,8 +145,8 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 return;
             }
 
-//            System.out.println("status: " + status);
-//            System.out.println("distanceToGoal: " + distanceToGoal);
+//            Log.l("status: " + status);
+//            Log.l("distanceToGoal: " + distanceToGoal);
 
             if (status != Status.ROLLING) {
                 checkObstacles(timeElapsed);

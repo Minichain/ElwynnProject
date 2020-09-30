@@ -14,8 +14,8 @@ public class Main {
             System.exit(0);
         }
 
-        System.out.println("OS Name " + System.getProperty("os.name"));
-        System.out.println("OS Version " + System.getProperty("os.version"));
+        Log.l("OS Name " + System.getProperty("os.name"));
+        Log.l("OS Version " + System.getProperty("os.version"));
 
         Game.startGame();
 
@@ -40,7 +40,7 @@ public class Main {
                     Thread.sleep(maxTimeBetweenFrames - timeSpentUpdatingAndRendering);
                 }
             } catch (InterruptedException e) {
-                System.out.println(e);
+                Log.e(String.valueOf(e));
                 exit(1);
             }
         }
