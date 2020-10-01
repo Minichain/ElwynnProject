@@ -411,6 +411,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public void roll() {
         if (stamina >= 25f && playerStatus == Status.RUNNING && playerStatus != Status.ATTACKING) {
+            Log.l("Player rolling");
             playerStatus = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
             OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);
@@ -430,6 +431,7 @@ public class Player extends LivingDynamicGraphicEntity {
         }
 
         this.musicalMode = MusicalMode.values()[musicalMode];
+        Log.l("Set musical mode to " + this.musicalMode);
     }
 
     public void setMusicalMode(MusicalMode musicalMode) {

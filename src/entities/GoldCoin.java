@@ -2,6 +2,7 @@ package entities;
 
 import audio.OpenALManager;
 import main.Coordinates;
+import main.Log;
 import main.Texture;
 import scene.Camera;
 import scene.Scene;
@@ -54,6 +55,7 @@ public class GoldCoin extends DynamicGraphicEntity {
 
     private void onPickedUp() {
         Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() + 1);
+        Log.l("Gold coin picked up. Current amount of gold coins: " + Player.getInstance().getAmountOfGoldCoins());
         OpenALManager.playSound(OpenALManager.SOUND_GOLD_COIN_PICKED_UP_01);
         new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, "+1",
                 new Color(1f, 0.9f, 0f), 1.25, new double[]{0, -1});

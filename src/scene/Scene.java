@@ -94,6 +94,7 @@ public class Scene {
             if (0 < i && i < TileMap.getArrayOfTiles().length
                     && 0 < j && j < TileMap.getArrayOfTiles()[0].length
                     && !TileMap.getArrayOfTiles()[i][j].isCollidable()) {
+                Log.l("Spawn enemy at x: " + x + ", y: " + y);
                 new Enemy(x, y);
                 lastEnemySpawnTime = currentTime;
             }

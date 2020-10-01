@@ -7,21 +7,21 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Log {
-    public static final String ANSI_RESET = "\u001B[0m";
-    public static final String ANSI_BLACK = "\u001B[30m";
-    public static final String ANSI_RED = "\u001B[31m";
-    public static final String ANSI_GREEN = "\u001B[32m";
-    public static final String ANSI_YELLOW = "\u001B[33m";
-    public static final String ANSI_BLUE = "\u001B[34m";
-    public static final String ANSI_PURPLE = "\u001B[35m";
-    public static final String ANSI_CYAN = "\u001B[36m";
-    public static final String ANSI_WHITE = "\u001B[37m";
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_BLACK = "\u001B[30m";
+    private static final String ANSI_RED = "\u001B[31m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_YELLOW = "\u001B[33m";
+    private static final String ANSI_BLUE = "\u001B[34m";
+    private static final String ANSI_PURPLE = "\u001B[35m";
+    private static final String ANSI_CYAN = "\u001B[36m";
+    private static final String ANSI_WHITE = "\u001B[37m";
 
-    public static final String logFilePath = System.getenv("APPDATA") + "\\ElwynnProject";
-    public static final String logFileName = "log_file.txt";
-    public static File file;
-    public static FileWriter fileWriter;
-    public static boolean fileCreated = false;
+    private static final String logFilePath = System.getenv("APPDATA") + "\\ElwynnProject";
+    private static final String logFileName = "log_file.txt";
+    private static File file;
+    private static FileWriter fileWriter;
+    private static boolean fileCreated = false;
 
     private static void createLogFile() {
         try {
@@ -42,9 +42,7 @@ public class Log {
         try {
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
-            fileWriter.append("[" + dtf.format(now) + "]: ");
-            fileWriter.append(log);
-            fileWriter.append("\n");
+            fileWriter.append("[" + dtf.format(now) + "]: ").append(log).append("\n");
         } catch (IOException e) {
             e.printStackTrace();
         }

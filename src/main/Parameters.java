@@ -77,6 +77,7 @@ public class Parameters {
     }
 
     public static void setFramesPerSecond(int framesPerSecond) {
+        Log.l("setFramesPerSecond to " + framesPerSecond);
         Parameters.framesPerSecond = framesPerSecond;
         DataBase.insertOrUpdateParameter("framesPerSecond", framesPerSecond);
     }
@@ -90,6 +91,7 @@ public class Parameters {
     }
 
     public static void setResolution(Resolution resolution) {
+        Log.l("setResolution to " + resolution);
         Parameters.resolution = resolution;
         DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
         Parameters.resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
@@ -105,6 +107,7 @@ public class Parameters {
     }
 
     public static void setFullScreen(boolean fullScreen) {
+        Log.l("setFullScreen to " + fullScreen);
         Parameters.fullScreen = fullScreen;
         DataBase.insertOrUpdateParameter("fullScreen", fullScreen ? 1 : 0);
     }
@@ -114,6 +117,7 @@ public class Parameters {
     }
 
     public static void setDebugMode(boolean debugMode) {
+        Log.l("setDebugMode to " + debugMode);
         Parameters.debugMode = debugMode;
     }
 
@@ -122,6 +126,7 @@ public class Parameters {
     }
 
     public static void setSpawnEnemies(boolean spawnEnemies) {
+        Log.l("setSpawnEnemies to " + spawnEnemies);
         Parameters.spawnEnemies = spawnEnemies;
     }
 
@@ -130,6 +135,7 @@ public class Parameters {
     }
 
     public static void setSpawnRate(float spawnRate) {
+        Log.l("setSpawnRate to " + spawnRate);
         Parameters.spawnRate = spawnRate;
     }
 
@@ -138,6 +144,7 @@ public class Parameters {
     }
 
     public static void setShadersEnabled(boolean shadersEnabled) {
+        Log.l("setShadersEnabled to " + shadersEnabled);
         Parameters.shadersEnabled = shadersEnabled;
     }
 
@@ -151,6 +158,7 @@ public class Parameters {
     }
 
     public static void setMusicSoundLevel(float soundLevel) {
+        Log.l("setMusicSoundLevel to " + soundLevel);
         OpenALManager.onMusicLevelChange(soundLevel);
         Parameters.musicSoundLevel = soundLevel;
         DataBase.insertOrUpdateParameter("musicSoundLevel", (int) (soundLevel * 100));
@@ -161,6 +169,7 @@ public class Parameters {
     }
 
     public static void setEffectSoundLevel(float soundLevel) {
+        Log.l("setEffectSoundLevel to " + soundLevel);
         OpenALManager.onEffectLevelChange(soundLevel);
         Parameters.effectSoundLevel = soundLevel;
         DataBase.insertOrUpdateParameter("effectSoundLevel", (int) (soundLevel * 100));
@@ -171,6 +180,7 @@ public class Parameters {
     }
 
     public static void setAmbienceSoundLevel(float soundLevel) {
+        Log.l("setAmbienceSoundLevel to " + soundLevel);
         OpenALManager.onAmbienceLevelChange(soundLevel);
         Parameters.ambienceSoundLevel = soundLevel;
         DataBase.insertOrUpdateParameter("ambienceSoundLevel", (int) (soundLevel * 100));
