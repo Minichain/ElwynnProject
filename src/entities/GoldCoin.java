@@ -13,7 +13,6 @@ import java.awt.*;
 
 public class GoldCoin extends DynamicGraphicEntity {
     public static byte ENTITY_CODE = 71;
-    private LightSource lightSource;
     private float interactionDistance = 25f;
 
     public GoldCoin(int x, int y) {
@@ -25,8 +24,9 @@ public class GoldCoin extends DynamicGraphicEntity {
         setWorldCoordinates(new Coordinates(x, y));
         setSprite(SpriteManager.getInstance().GOLD_COIN);
         Scene.getInstance().getListOfEntities().add(this);
-        this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), 7.5f, new Color(1f, 0.9f, 0f));
-        Scene.getInstance().getListOfLightSources().add(this.lightSource);
+        LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), 7.5f, new Color(1f, 0.9f, 0f));
+        getLightSources().add(lightSource);
+        Scene.getInstance().getListOfLightSources().add(lightSource);
     }
 
     @Override
@@ -64,10 +64,8 @@ public class GoldCoin extends DynamicGraphicEntity {
 
     private void onDestroy() {
         Scene.getInstance().getListOfEntities().remove(this);
-        Scene.getInstance().getListOfLightSources().remove(this.lightSource);
-    }
-
-    public LightSource getLightSource() {
-        return lightSource;
+        for (int i = 0; i < getLightSources().size(); i++) {
+            Scene.getInstance().getListOfLightSources().remove(getLightSources().get(i));
+        }
     }
 }

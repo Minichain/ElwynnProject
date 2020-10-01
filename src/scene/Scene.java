@@ -204,9 +204,11 @@ public class Scene {
 
     private void resetEntities() {
         for (int i = 0; i < getListOfEntities().size(); i++) {
-            if (getListOfEntities().get(i) instanceof DynamicGraphicEntity) {
-                if (getListOfEntities().get(i) instanceof GoldCoin) {
-                    getListOfLightSources().remove(((GoldCoin) getListOfEntities().get(i)).getLightSource());
+            Entity entity = getListOfEntities().get(i);
+            if (entity instanceof DynamicGraphicEntity) {
+                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) getListOfEntities().get(i);
+                for (int j = 0; j < dynamicGraphicEntity.getLightSources().size(); j++) {
+                    getListOfLightSources().remove(dynamicGraphicEntity.getLightSources().get(j));
                 }
                 getListOfEntities().remove(i);
                 i--;
