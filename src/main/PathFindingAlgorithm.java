@@ -9,6 +9,8 @@ public class PathFindingAlgorithm {
     private Coordinates initialCoordinates;
     private Coordinates initialTileCoordinates;
     private Coordinates goalTileCoordinates;
+    private final int maxNumberOfIterations = 1000;
+    private int iteration;
 
     private int tilesInXAxis;
     private int tilesInYAxis;
@@ -31,6 +33,7 @@ public class PathFindingAlgorithm {
         this.initialCoordinates = new Coordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
         this.initialTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
         this.goalTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
+        this.iteration = 0;
 
         int[] toTileMapCoordinates = new int[2];
 
@@ -114,6 +117,12 @@ public class PathFindingAlgorithm {
 
     private void computeCostsSurroundingNode(int x, int y) {
         //Log.l("computeCostsSurroundingNode " + x + ", " + y);
+        if (iteration >= maxNumberOfIterations) {
+            Log.l("Path finding algorithm. Max number of Iterations reached! iteration: " + iteration);
+            return;
+        }
+        iteration++;
+
         for (int i = x - 1; i <= (x + 1); i++) {
             for (int j = y - 1; j <= (y + 1); j++) {
                 if (i == x && j == y) {
