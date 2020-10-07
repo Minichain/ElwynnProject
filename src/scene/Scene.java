@@ -36,7 +36,7 @@ public class Scene {
     private double visibleLightSourceDistanceFactor = 30.0;
 
     private Scene() {
-        initialCoordinates = new Coordinates(2500, 2500);
+        initialCoordinates = new Coordinates(2481, 1747);
         listOfEntities = new ArrayList<>();
         listOfStaticEntities = new ArrayList<>();
         listOfEntitiesToUpdate = new ArrayList<>();
@@ -153,7 +153,9 @@ public class Scene {
             for (int i = 0; i < listOfMusicalNoteGraphicEntities.size(); i++) {
                 musicalNoteGraphicEntity = listOfMusicalNoteGraphicEntities.get(i);
                 if (musicalNoteGraphicEntity.isDead()) {
-                    listOfLightSources.remove(musicalNoteGraphicEntity.getLightSource());
+                    for (LightSource lightSource : musicalNoteGraphicEntity.getLightSources()) {
+                        listOfLightSources.remove(lightSource);
+                    }
                     listOfMusicalNoteGraphicEntities.remove(musicalNoteGraphicEntity);
                 } else {
                     musicalNoteGraphicEntity.update(timeElapsed);
@@ -207,8 +209,8 @@ public class Scene {
             Entity entity = getListOfEntities().get(i);
             if (entity instanceof DynamicGraphicEntity) {
                 DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) getListOfEntities().get(i);
-                for (int j = 0; j < dynamicGraphicEntity.getLightSources().size(); j++) {
-                    getListOfLightSources().remove(dynamicGraphicEntity.getLightSources().get(j));
+                for (LightSource lightSource : dynamicGraphicEntity.getLightSources()) {
+                    getListOfLightSources().remove(lightSource);
                 }
                 getListOfEntities().remove(i);
                 i--;

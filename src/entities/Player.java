@@ -31,13 +31,13 @@ public class Player extends LivingDynamicGraphicEntity {
 
     /** ATTACK **/
     private int attack01Period = 250;
-    private int attack01CoolDown = 0;
+    private int attack01CoolDown;
     private float attack01Power = 250f;
     private float attack01ManaCost = 0.1f;
 
     private CircleAttack circleAttack;
     private int circleAttackPeriod = 10000;
-    private int circleAttackCoolDown = 0;
+    private int circleAttackCoolDown;
     private float circleAttackPower = 100f;
     private float circleAttackManaCost = 25f;
 
@@ -66,6 +66,8 @@ public class Player extends LivingDynamicGraphicEntity {
         health = 5000f;
         mana = 100f;
         speed = 0.08;
+        attack01CoolDown = 0;
+        circleAttackCoolDown = 0;
         playerStatus = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;

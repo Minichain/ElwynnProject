@@ -15,7 +15,6 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private double timeLiving = 0;
     private boolean dead = false;
     private double timeToLive;
-    private LightSource lightSource;
     private MusicalMode musicalMode;
     private Color color;
     private float damage;
@@ -43,9 +42,10 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         } else {
             this.color = this.musicalMode.getColor();
         }
-        this.lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
+        LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
+        getLightSources().add(lightSource);
+        Scene.getInstance().getListOfLightSources().add(lightSource);
         this.damage = damage;
-        Scene.getInstance().getListOfLightSources().add(this.lightSource);
         this.musicalMode.getRandomNote(MusicalNote.A).play();
         this.enemyAttack = enemyAttack;
     }
@@ -74,9 +74,9 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
         getWorldCoordinates().translate(movementVectorNormalized[0] * speed * timeElapsed, movementVectorNormalized[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
-        this.lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
-        this.lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
-        this.lightSource.update(timeElapsed);
+
+        updateLightSources(timeElapsed);
+
         this.timeLiving += timeElapsed;
 
         if (timeLiving >= timeToLive) {
@@ -111,6 +111,14 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         }
     }
 
+    private void updateLightSources(Long timeElapsed) {
+        for (LightSource lightSource : getLightSources()) {
+            lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
+            lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
+            lightSource.update(timeElapsed);
+        }
+    }
+
     public Texture getSpriteSheet() {
         return getSprite().getSpriteSheet();
     }
@@ -126,10 +134,6 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
     public boolean isDead() {
         return dead;
-    }
-
-    public LightSource getLightSource() {
-        return lightSource;
     }
 
     public void explode() {
