@@ -54,6 +54,7 @@ public class OpenALManager {
 
     /** MUSIC **/
     public static Sound SOUND_MUSIC_A_IONIAN_O1;
+    public static Sound SOUND_MUSIC_A_IONIAN_O2;
     public static Sound SOUND_MUSIC_A_DORIAN_O1;
     public static Sound SOUND_MUSIC_A_PHRYGIAN_O1;
 
@@ -118,6 +119,7 @@ public class OpenALManager {
 
         /** MUSIC **/
         SOUND_MUSIC_A_IONIAN_O1 = loadSound("music_a_ionian_01", Sound.SoundType.MUSIC);
+        SOUND_MUSIC_A_IONIAN_O2 = loadSound("music_a_ionian_02", Sound.SoundType.MUSIC);
         SOUND_MUSIC_A_DORIAN_O1 = loadSound("music_a_dorian_01", Sound.SoundType.MUSIC);
         SOUND_MUSIC_A_PHRYGIAN_O1 = loadSound("music_a_phrygian_01", Sound.SoundType.MUSIC);
 
@@ -275,7 +277,7 @@ public class OpenALManager {
         switch (musicalMode) {
             case IONIAN:
             default:
-                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O1);
+                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O2);
                 break;
 //            case DORIAN:
 //                OpenALManager.playSound(OpenALManager.SOUND_MUSIC_A_DORIAN_O1);
@@ -291,7 +293,7 @@ public class OpenALManager {
         switch (musicalMode) {
             case IONIAN:
             default:
-                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O1);
+                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_IONIAN_O2);
                 break;
 //            case DORIAN:
 //                OpenALManager.stopPlayingSound(OpenALManager.SOUND_MUSIC_A_DORIAN_O1);

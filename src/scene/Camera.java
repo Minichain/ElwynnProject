@@ -28,8 +28,6 @@ public class Camera {
         maxZoom = minZoom + 4.0;
         initialZoom = minZoom;
         zoom = initialZoom;
-        freeCameraSpeed = 0.5;
-        followingSpeed = 0.0025;
     }
 
     public static Camera getInstance() {
@@ -95,6 +93,7 @@ public class Camera {
 
     public void update(long timeElapsed) {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            followingSpeed = 0.0015 * zoom;
             double[] cameraVelocityVector = new double[2];
             cameraVelocityVector[0] = Player.getInstance().getCenterOfMassWorldCoordinates().x - Camera.getInstance().getCoordinates().x;
             cameraVelocityVector[1] = Player.getInstance().getCenterOfMassWorldCoordinates().y - Camera.getInstance().getCoordinates().y;
@@ -110,6 +109,7 @@ public class Camera {
             Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (cameraVelocityVector[0] * cameraSpeed)),
                     (Camera.getInstance().getCoordinates().y + (cameraVelocityVector[1] * cameraSpeed)));
         } else {
+            freeCameraSpeed = 2.0 / zoom;
             double[] movement = computeMovementVector(timeElapsed, freeCameraSpeed);
             Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (movement[0])),
                     (Camera.getInstance().getCoordinates().y + (movement[1])));
