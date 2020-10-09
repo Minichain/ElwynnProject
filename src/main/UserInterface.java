@@ -16,6 +16,7 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class UserInterface {
     private static UserInterface instance = null;
+    private static boolean HUDVisibility = true;
     private ArrayList<String> debugTextList;
 
     public UserInterface() {
@@ -85,7 +86,9 @@ public class UserInterface {
         FloatingText.updateAndRender(timeElapsed);
 
         /** HUD **/
-        HeadUpDisplay.render(timeElapsed);
+        if (HUDVisibility) {
+            HeadUpDisplay.render(timeElapsed);
+        }
 
         /** MENU **/
         if (Menu.getInstance().isShowing()) {
@@ -122,5 +125,14 @@ public class UserInterface {
         glEnd();
 
         glEnable(GL_BLEND);
+    }
+
+    public static boolean getHUDVisibility() {
+        return HUDVisibility;
+    }
+
+    public static void setHUDVisibility(boolean showInterface) {
+        Log.l("Set HUD visibility to " + showInterface);
+        UserInterface.HUDVisibility = showInterface;
     }
 }

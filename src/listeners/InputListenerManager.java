@@ -38,6 +38,7 @@ public class InputListenerManager {
     private static boolean D_KEY_PRESSED;
     private static boolean LEFT_CTRL_KEY_PRESSED;
     private static boolean LEFT_SHIFT_KEY_PRESSED;
+    private static boolean LEFT_ALT_KEY_PRESSED;
 
     private static boolean usingKeyboardAndMouse = false;
 
@@ -285,6 +286,11 @@ public class InputListenerManager {
                     }
                 }
                 break;
+            case GLFW_KEY_Z:
+                if (LEFT_ALT_KEY_PRESSED) {
+                    if (!pressed) UserInterface.setHUDVisibility(!UserInterface.getHUDVisibility());
+                }
+                break;
             case GLFW_KEY_SPACE:
                 if (pressed) {
                     if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -300,6 +306,9 @@ public class InputListenerManager {
                 break;
             case GLFW_KEY_LEFT_SHIFT:
                 LEFT_SHIFT_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_LEFT_ALT:
+                LEFT_ALT_KEY_PRESSED = pressed;
                 break;
             case GLFW_KEY_F1:
                 if (!pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
