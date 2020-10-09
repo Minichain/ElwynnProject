@@ -21,6 +21,7 @@ public class Scene {
     private static ArrayList<GraphicEntity> listOfEntitiesToUpdate;
     private static ArrayList<Enemy> listOfEnemies;
     private static ArrayList<MusicalNoteGraphicEntity> listOfMusicalNoteGraphicEntities;
+    private static ArrayList<NonPlayerCharacter> listOfNonPlayerCharacters;
     private static int enemySpawnPeriod; // In Milliseconds
     private static long lastEnemySpawnTime;
 
@@ -36,6 +37,18 @@ public class Scene {
     private double visibleLightSourceDistanceFactor = 30.0;
 
     private Scene() {
+
+    }
+
+    public static Scene getInstance() {
+        if (instance == null) {
+            instance = new Scene();
+        }
+        return instance;
+    }
+
+    public void init() {
+        Log.l("Initiating Scene");
         initialCoordinates = new Coordinates(2481, 1747);
         listOfEntities = new ArrayList<>();
         listOfStaticEntities = new ArrayList<>();
@@ -45,13 +58,14 @@ public class Scene {
         listOfLightSources = new ArrayList<>();
         listOfVisibleLightSources = new ArrayList<>();
         listOfMusicalNoteGraphicEntities = new ArrayList<>();
-    }
+        listOfNonPlayerCharacters = new ArrayList<>();
 
-    public static Scene getInstance() {
-        if (instance == null) {
-            instance = new Scene();
-        }
-        return instance;
+        TileMap.loadMap();
+
+        //TODO: NPC testing
+        new Notch(2450, 1705);
+        new Notch(2470, 1705);
+        new Notch(2500, 1705);
     }
 
     public void update(long timeElapsed) {
@@ -188,19 +202,22 @@ public class Scene {
         return listOfMusicalNoteGraphicEntities;
     }
 
+    public ArrayList<NonPlayerCharacter> getListOfNonPlayerCharacters() {
+        return listOfNonPlayerCharacters;
+    }
+
     public static Coordinates getInitialCoordinates() {
         return initialCoordinates;
     }
 
     public void reset() {
-        initEntities();
-    }
-
-    public void initEntities() {
+        Log.l("Reseting Scene");
         resetEntities();
         Player.getInstance().reset();
         Camera.getInstance().reset();
-        Scene.getInstance().getListOfEntities().add(Player.getInstance());
+
+        init();
+        getListOfEntities().add(Player.getInstance());
         listOfCircleAttacks.clear();
     }
 

@@ -114,6 +114,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
+//        Log.l("Updating player. TimeElapsed: " + timeElapsed);
         if (health > 0)  {  //Player is alive
             /** UPDATE MANA, HEALTH AND STAMINA **/
             if (mana < MAX_MANA) {
@@ -180,6 +181,9 @@ public class Player extends LivingDynamicGraphicEntity {
             } else if (movementVector[0] != 0 || movementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(movementVector);
             }
+
+            checkAnyInteractiveNPC();
+
         } else if (playerStatus != Status.DEAD) {   //Player is dying
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             playerStatus = Status.DYING;
@@ -241,6 +245,27 @@ public class Player extends LivingDynamicGraphicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
+    }
+
+    private void checkAnyInteractiveNPC() {
+        NonPlayerCharacter interactiveNPC = null;
+        double smallestDistance = 25;
+
+        for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
+            nonPlayerCharacter.setInteractionEntity(null);
+            double distance = MathUtils.module(getWorldCoordinates(), nonPlayerCharacter.getWorldCoordinates());
+            if (distance < nonPlayerCharacter.getInteractionDistance() && distance < smallestDistance) {
+//                Log.l("NPC close enough to interact");
+                smallestDistance = distance;
+                interactiveNPC = nonPlayerCharacter;
+            }
+        }
+
+        if (interactiveNPC != null) {
+            interactiveNPC.setInteractionEntity(new InteractionEntity(
+                    (int) interactiveNPC.getWorldCoordinates().x,
+                    (int) interactiveNPC.getWorldCoordinates().y - 20));
+        }
     }
 
     private boolean checkHorizontalCollision(double[] movement, double distanceFactor) {
