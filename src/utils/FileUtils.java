@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 
 public class FileUtils {
+
     public static String readFileAsString(String filename) throws Exception {
         StringBuilder source = new StringBuilder();
 

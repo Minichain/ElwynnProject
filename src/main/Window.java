@@ -2,13 +2,21 @@ package main;
 
 import audio.OpenALManager;
 import listeners.InputListenerManager;
+import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.glfw.GLFWWindowPosCallback;
 import org.lwjgl.glfw.GLFWWindowSizeCallback;
 
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
+
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.glfw.GLFW.glfwPollEvents;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.stb.STBImage.*;
+import static org.lwjgl.system.MemoryUtil.memAllocInt;
+import static org.lwjgl.system.MemoryUtil.memFree;
+import static utils.IOUtils.ioResourceToByteBuffer;
 
 public class Window {
     private static GLFWWindowSizeCallback windowSizeCallback;
@@ -24,6 +32,7 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         long window = glfwCreateWindow(Window.getWidth(), Window.getHeight(), "ElwynnProject", 0, 0);
         setWindow(window);
+        setWindowIcon();
         glfwShowWindow(window);
         glfwMakeContextCurrent(window);
         OpenGLManager.prepareOpenGL();
@@ -112,5 +121,40 @@ public class Window {
 
     public static float[] getCameraWindowScaleFactor() {
         return cameraWindowScaleFactor;
+    }
+
+    /**
+     * Example extracted from "https://github.com/LWJGL/lwjgl3/blob/7e1dcb80160d9dbce2b041cbf84eec0da15f2661/modules/core/src/test/java/org/lwjgl/demo/glfw/Events.java#L87"
+     **/
+    private static void setWindowIcon() {
+        ByteBuffer icon16;
+        ByteBuffer icon32;
+        IntBuffer w = memAllocInt(1);
+        IntBuffer h = memAllocInt(1);
+        IntBuffer comp = memAllocInt(1);
+        try {
+            icon16 = ioResourceToByteBuffer("res/icons/icon_16x16.png", 2048);
+            icon32 = ioResourceToByteBuffer("res/icons/icon_32x32.png", 4096);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        try (GLFWImage.Buffer icons = GLFWImage.malloc(2)) {
+            ByteBuffer pixels16 = stbi_load_from_memory(icon16, w, h, comp, 4);
+            icons.position(0).width(w.get(0)).height(h.get(0)).pixels(pixels16);
+
+            ByteBuffer pixels32 = stbi_load_from_memory(icon32, w, h, comp, 4);
+            icons.position(1).width(w.get(0)).height(h.get(0)).pixels(pixels32);
+
+            icons.position(0);
+            glfwSetWindowIcon(window, icons);
+
+            stbi_image_free(pixels32);
+            stbi_image_free(pixels16);
+        }
+
+        memFree(comp);
+        memFree(h);
+        memFree(w);
     }
 }
