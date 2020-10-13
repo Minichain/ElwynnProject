@@ -473,7 +473,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
         //Stop interaction with any NPC if we are not interacting with them anymore
         for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
-            if (interactiveNPC != null && !interactiveNPC.equals(nonPlayerCharacter) && nonPlayerCharacter.isInteracting()) {
+            if ((interactiveNPC == null || !interactiveNPC.equals(nonPlayerCharacter)) && nonPlayerCharacter.isInteracting()) {
                 nonPlayerCharacter.onStopInteraction();
             }
         }
