@@ -25,13 +25,16 @@ public class Log {
 
     private static void createLogFile() {
         try {
-            file = new File(logFilePath + "\\" + logFileName);
-            if (file.createNewFile()) {
-                System.out.println("File created: " + logFileName);
-            } else {
-                System.out.println("File " + logFileName + " already exists.");
+            File directory = new File(logFilePath);
+            if (directory.exists() || directory.mkdir()) {
+                file = new File(logFilePath + "\\" + logFileName);
+                if (file.createNewFile()) {
+                    System.out.println("File created: " + logFileName);
+                } else {
+                    System.out.println("File " + logFileName + " already exists.");
+                }
+                fileCreated = true;
             }
-            fileCreated = true;
         } catch (IOException e) {
             System.out.println("Error creating " + logFileName);
             e.printStackTrace();
