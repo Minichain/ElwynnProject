@@ -31,6 +31,10 @@ public class GameTime {
         return gameTime;
     }
 
+    public static void setGameTime(float gameTime) {
+        GameTime.gameTime = gameTime;
+    }
+
     /**
      * This function translates hours into light using "sigmoid" function.
      */

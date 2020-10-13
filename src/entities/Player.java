@@ -51,6 +51,8 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private int amountOfGoldCoins;
 
+    private NonPlayerCharacter interactiveNPC = null;
+
     private Player() {
         super((int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y);
@@ -245,27 +247,6 @@ public class Player extends LivingDynamicGraphicEntity {
         }
 
         updateSpriteCoordinatesToDraw();
-    }
-
-    private void checkAnyInteractiveNPC() {
-        NonPlayerCharacter interactiveNPC = null;
-        double smallestDistance = 25;
-
-        for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
-            nonPlayerCharacter.setInteractionEntity(null);
-            double distance = MathUtils.module(getWorldCoordinates(), nonPlayerCharacter.getWorldCoordinates());
-            if (distance < nonPlayerCharacter.getInteractionDistance() && distance < smallestDistance) {
-//                Log.l("NPC close enough to interact");
-                smallestDistance = distance;
-                interactiveNPC = nonPlayerCharacter;
-            }
-        }
-
-        if (interactiveNPC != null) {
-            interactiveNPC.setInteractionEntity(new InteractionEntity(
-                    (int) interactiveNPC.getWorldCoordinates().x,
-                    (int) interactiveNPC.getWorldCoordinates().y - 20));
-        }
     }
 
     private boolean checkHorizontalCollision(double[] movement, double distanceFactor) {
@@ -472,5 +453,58 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public void setAmountOfGoldCoins(int amountOfGoldCoins) {
         this.amountOfGoldCoins = amountOfGoldCoins;
+    }
+
+    private void checkAnyInteractiveNPC() {
+        double smallestDistance = 25;
+        interactiveNPC = null;
+
+        //Check the closest NPC to interact with
+        for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
+            nonPlayerCharacter.setInteractionEntity(null);
+            double distance = MathUtils.module(getWorldCoordinates(), nonPlayerCharacter.getWorldCoordinates());
+
+            if (distance < nonPlayerCharacter.getInteractionDistance() && distance < smallestDistance) {
+//                Log.l("NPC close enough to interact");
+                smallestDistance = distance;
+                interactiveNPC = nonPlayerCharacter;
+            }
+        }
+
+        //Stop interaction with any NPC if we are not interacting with them anymore
+        for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
+            if (interactiveNPC != null && !interactiveNPC.equals(nonPlayerCharacter) && nonPlayerCharacter.isInteracting()) {
+                nonPlayerCharacter.onStopInteraction();
+            }
+        }
+
+        //Set an interaction entity if there is an NPC close enough to interact with
+        if (interactiveNPC != null) {
+            //NPC close! Interaction available.
+            double distance = MathUtils.module(getWorldCoordinates(), interactiveNPC.getWorldCoordinates());
+            if (distance < interactiveNPC.getInteractionDistance()) {
+                interactiveNPC.setInteractionEntity(new InteractionEntity(
+                        (int) interactiveNPC.getWorldCoordinates().x,
+                        (int) interactiveNPC.getWorldCoordinates().y - 20));
+            }
+        }
+    }
+
+    public void interactWithNPC() {
+        if (interactiveNPC != null) {   //If we are close to an NPC we can interact with...
+            double distance = MathUtils.module(getWorldCoordinates(), interactiveNPC.getWorldCoordinates());
+            if (distance < interactiveNPC.getInteractionDistance()) {
+                if (!interactiveNPC.isInteracting()) {
+                    NonPlayerCharacter.Interaction interaction = NonPlayerCharacter.Interaction.TALKING;
+                    interactiveNPC.onInteraction(interaction);
+                    interactiveNPC.setTalkTextPage(0);
+                } else if (interactiveNPC.getTalkTextPage() < (interactiveNPC.getTalkText().size() - 1)) {
+                    interactiveNPC.setTalkTextPage(interactiveNPC.getTalkTextPage() + 1);
+                } else {    //If we press the interaction button and we are already interacting with the NPC...
+                    interactiveNPC.onStopInteraction();
+                    interactiveNPC.setTalkTextPage(0);
+                }
+            }
+        }
     }
 }

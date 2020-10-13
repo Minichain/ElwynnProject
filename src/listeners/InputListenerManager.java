@@ -286,9 +286,14 @@ public class InputListenerManager {
                     }
                 }
                 break;
+            case GLFW_KEY_F:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    if (!pressed) Player.getInstance().interactWithNPC();
+                }
+                break;
             case GLFW_KEY_Z:
                 if (LEFT_ALT_KEY_PRESSED) {
-                    if (!pressed) UserInterface.setHUDVisibility(!UserInterface.getHUDVisibility());
+                    if (pressed) UserInterface.setHUDVisibility(!UserInterface.getHUDVisibility());
                 }
                 break;
             case GLFW_KEY_SPACE:

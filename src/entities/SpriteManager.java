@@ -31,6 +31,7 @@ public class SpriteManager {
     public Sprite DOUBLE_EIGHTH_NOTE;
     public Sprite GOLD_COIN;
     public Sprite A_CONTROLLER_BUTTON;
+    public Sprite F_KEYBOARD_KEY;
 
     /** TILESET **/
     public Sprite TILESET;
@@ -99,6 +100,7 @@ public class SpriteManager {
         /** OTHERS **/
         GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1, -1, -1, -1, -1);
         A_CONTROLLER_BUTTON = new Sprite("res/sprites/dynamic/a_controller_button_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        F_KEYBOARD_KEY = new Sprite("res/sprites/dynamic/f_keyboard_key_8x8.png", 8, 8, -1, -1, -1, -1, -1);
     }
 
     public static SpriteManager getInstance() {

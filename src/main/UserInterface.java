@@ -1,5 +1,7 @@
 package main;
 
+import entities.InteractionEntity;
+import entities.NonPlayerCharacter;
 import entities.Player;
 import listeners.InputListenerManager;
 import menu.Menu;
@@ -93,6 +95,28 @@ public class UserInterface {
         /** MENU **/
         if (Menu.getInstance().isShowing()) {
             Menu.getInstance().render(timeElapsed);
+        }
+
+        /** NPC interactions **/
+        renderNPCInteractions();
+    }
+
+    private void renderNPCInteractions() {
+        for (NonPlayerCharacter nonPlayerCharacter : Scene.getInstance().getListOfNonPlayerCharacters()) {
+            InteractionEntity interactionEntity = nonPlayerCharacter.getInteractionEntity();
+            if (interactionEntity != null) {
+                interactionEntity.drawSprite((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y);
+
+                if (nonPlayerCharacter.isInteracting()) {
+                    TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 25,
+                            nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), 2f);
+
+                    if (nonPlayerCharacter.getTalkText().size() > 1) {
+                        TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 50,
+                                (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), 2f);
+                    }
+                }
+            }
         }
     }
 

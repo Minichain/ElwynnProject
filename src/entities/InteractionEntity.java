@@ -11,7 +11,11 @@ public class InteractionEntity extends GraphicEntity {
     }
 
     private void init(int x, int y) {
-        setSprite(SpriteManager.getInstance().A_CONTROLLER_BUTTON);
+        if (true) { //TODO
+            setSprite(SpriteManager.getInstance().F_KEYBOARD_KEY);
+        } else {
+            setSprite(SpriteManager.getInstance().A_CONTROLLER_BUTTON);
+        }
     }
 
     @Override
@@ -22,7 +26,7 @@ public class InteractionEntity extends GraphicEntity {
     @Override
     public void drawSprite(int x, int y) {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
-        TextRendering.renderText(x, y, "Talk", 2f);
+        TextRendering.renderText(x + 25, y - 25, "Talk", 2f);
     }
 
     @Override

@@ -84,6 +84,7 @@ public class Weather {
     }
 
     public static void setWeatherStatus(WeatherStatus weatherStatus) {
+        Log.l("Set Weather to " + weatherStatus);
         Weather.weatherStatus = weatherStatus;
     }
 
