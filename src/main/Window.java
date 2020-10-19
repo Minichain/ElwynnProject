@@ -28,7 +28,7 @@ public class Window {
     private static int positionY = 50;
     private static float[] cameraWindowScaleFactor;
 
-    public static void start() {
+    public static void init() {
         glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
         long window = glfwCreateWindow(Window.getWidth(), Window.getHeight(), "ElwynnProject", 0, 0);
         setWindow(window);
@@ -42,6 +42,7 @@ public class Window {
         /** INPUT LISTENER **/
         InputListenerManager.initMyInputListener();
         setFullScreen(Parameters.isFullScreen());
+        setWindowSize(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
 
         /** CALLBACKS **/
 //        initWindowSizeCallBack();

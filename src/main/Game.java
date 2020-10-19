@@ -8,8 +8,8 @@ import listeners.InputListenerManager;
 public class Game {
     public static void startGame() {
         Parameters.init();
+        Window.init();
         Log.l("Project Version: " + Parameters.getProjectVersion());
-        Window.start();
         Scene.getInstance().init();
         GameStatus.setStatus(GameStatus.Status.RUNNING);
     }

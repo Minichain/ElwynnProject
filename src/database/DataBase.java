@@ -26,13 +26,20 @@ public class DataBase {
         if (!connected) {
             connected = true;
             Statement statement01 = connection.createStatement();
-            String queryString = "SELECT name FROM sqlite_master WHERE type='table' AND name='parameter'";
-            ResultSet result = statement01.executeQuery(queryString);
+            String queryString;
+            ResultSet result;
+
+            queryString = "SELECT name FROM sqlite_master WHERE type='table' AND name='parameter'";
+            result = statement01.executeQuery(queryString);
 
             if (!result.next()) {
                 Statement statement02 = connection.createStatement();
-                statement02.execute("CREATE TABLE parameter(parameterName varchar(64)," + "parameterValue integer);");
+                queryString = "CREATE TABLE IF NOT EXISTS parameter(parameterName varchar(64)," + "parameterValue integer);";
+                statement02.execute(queryString);
+                Log.l("DataBase initialized!");
+                statement02.close();
             }
+            statement01.close();
         }
     }
 
@@ -56,8 +63,10 @@ public class DataBase {
     public static void insertOrUpdateParameter(String parameterName, int parameterValue) {
         if (doestParameterExist(parameterName)) {
             updateParameter(parameterName, parameterValue);
+//            Log.l(parameterName + "value updated into database!");
         } else {
             insertParameter(parameterName, parameterValue);
+//            Log.l(parameterName + "value inserted into database!");
         }
     }
 
@@ -76,6 +85,7 @@ public class DataBase {
             Statement statement = connection.createStatement();
             Log.l("Updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
             statement.executeUpdate("UPDATE parameter SET parameterValue = "+ parameterValue + " WHERE parameterName = '" + parameterName + "';");
+            statement.close();
         } catch (SQLException e) {
             Log.e("Error updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
             e.printStackTrace();
@@ -98,6 +108,7 @@ public class DataBase {
             statement.setString(1, parameterName);
             statement.setInt(2, parameterValue);
             statement.execute();
+            statement.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }

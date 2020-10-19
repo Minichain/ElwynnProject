@@ -95,7 +95,6 @@ public class Parameters {
         Parameters.resolution = resolution;
         DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
         Parameters.resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
-        Window.setWindowSize(resolution.getResolution()[0], resolution.getResolution()[1]);
     }
 
     public static float getResolutionFactor() {
@@ -194,7 +193,7 @@ public class Parameters {
      * Revision: Minor alterations on existing features, small bug fixes, etc.
      * Package: Your code stays the same, external library changes or asset file update.
      */
-    private static String projectVersion = "0.00.09.0";
+    private static String projectVersion = "0.00.10.0";
 
     public static String getProjectVersion() {
         return projectVersion;
