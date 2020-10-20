@@ -5,6 +5,7 @@ import listeners.InputListenerManager;
 import main.Coordinates;
 import main.OpenGLManager;
 import main.Parameters;
+import main.Window;
 import text.TextRendering;
 import utils.MathUtils;
 
@@ -105,6 +106,7 @@ public class MenuSelector extends MenuComponent {
                     selectedValue = selectedValue % Resolution.values().length;
                     selectedResolution = Resolution.values()[selectedValue];
                     Parameters.setResolution(selectedResolution);
+                    Window.setWindowSize(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
                 }
                 pressed = false;
             }

@@ -12,6 +12,7 @@ public class Game {
         Log.l("Project Version: " + Parameters.getProjectVersion());
         Scene.getInstance().init();
         GameStatus.setStatus(GameStatus.Status.RUNNING);
+        Log.l("------------ GAME INITIATED! ------------");
     }
 
     public static void update(long timeElapsed) {
