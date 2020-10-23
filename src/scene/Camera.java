@@ -1,14 +1,11 @@
 package scene;
 
 import entities.Player;
-import listeners.InputListenerManager;
+import listeners.ActionManager;
 import main.Coordinates;
 import main.GameMode;
 import main.Parameters;
 import utils.MathUtils;
-
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_D;
 
 public class Camera {
     private static Camera instance = null;
@@ -117,18 +114,19 @@ public class Camera {
     }
 
     public double[] computeMovementVector(long timeElapsed, double speed) {
-        double[] movement = new double[2];
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
-            movement[1] = 1;
+        double[] movement = new double[]{0, 0};
+
+        if (ActionManager.MOVING_DOWN) {
+            movement[1] += 1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
-            movement[0] = -1;
+        if (ActionManager.MOVING_LEFT) {
+            movement[0] += -1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
-            movement[1] = -1;
+        if (ActionManager.MOVING_UP) {
+            movement[1] += -1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
-            movement[0] = 1;
+        if (ActionManager.MOVING_RIGHT) {
+            movement[0] += 1;
         }
 
         movement = MathUtils.normalizeVector(movement);

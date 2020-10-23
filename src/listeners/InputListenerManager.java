@@ -32,10 +32,6 @@ public class InputListenerManager {
     public static boolean rightMouseButtonPressed;
 
     /** KEYBOARD **/
-    private static boolean W_KEY_PRESSED;
-    private static boolean A_KEY_PRESSED;
-    private static boolean S_KEY_PRESSED;
-    private static boolean D_KEY_PRESSED;
     private static boolean LEFT_CTRL_KEY_PRESSED;
     private static boolean LEFT_SHIFT_KEY_PRESSED;
     private static boolean LEFT_ALT_KEY_PRESSED;
@@ -58,19 +54,10 @@ public class InputListenerManager {
         mouseCallback = new GLFWMouseButtonCallback() {
             @Override
             public void invoke(long window, int button, int action, int mods) {
-                if (button == GLFW_MOUSE_BUTTON_1) {
-                    if (action == GLFW_PRESS) {
-                        processLeftMouseButtonPressed();
-                    } else if (action == GLFW_RELEASE) {
-                        processLeftMouseButtonReleased();
-                    }
-                } else if (button == GLFW_MOUSE_BUTTON_2) {
-                    if (action == GLFW_PRESS) {
-                        processRightMouseButtonPressed();
-                    } else if (action == GLFW_RELEASE) {
-                        processRightMouseButtonReleased();
-                    }
-                }
+                setKeyPressed(button, action == GLFW_PRESS);
+                usingKeyboardAndMouse = true;
+                leftMouseButtonPressed = (button == GLFW_MOUSE_BUTTON_1) && (action == GLFW_PRESS);
+                rightMouseButtonPressed = (button == GLFW_MOUSE_BUTTON_2) && (action == GLFW_PRESS);
             }
         };
 
@@ -136,176 +123,10 @@ public class InputListenerManager {
         glfwSetCursorEnterCallback(window, enterCallback);
     }
 
-    private static void processLeftMouseButtonPressed() {
-        leftMouseButtonPressed = true;
-        usingKeyboardAndMouse = true;
-        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-            if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                int layer;
-                switch (GameMode.getLayerEditing()) {
-                    case FIRST_LAYER:
-                    default:
-                        layer = 0;
-                        break;
-                    case SECOND_LAYER:
-                        layer = 1;
-                        break;
-                    case THIRD_LAYER:
-                        layer = 2;
-                        break;
-                }
-                TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
-            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                switch (HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites) {
-                    case 0:
-                        new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 1:
-                        new Tree02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 2:
-                        new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 3:
-                        new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 4:
-                        new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 5:
-                        new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 6:
-                        new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 7:
-                        new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 8:
-                        new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                    case 9:
-                    default:
-                        new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                        break;
-                }
-            }
-        }
-    }
-
-    private static void processLeftMouseButtonReleased() {
-        leftMouseButtonPressed = false;
-    }
-
-    private static void processRightMouseButtonPressed() {
-        rightMouseButtonPressed = true;
-        usingKeyboardAndMouse = true;
-        if (!Menu.getInstance().isShowing() ) {
-            if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                    // Change Tile's collision behaviour
-                    Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                    TileMap.getArrayOfTiles()[(int) tileCoordinates.x][(int) tileCoordinates.y].changeCollisionBehaviour();
-                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                    for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
-                        GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
-                        if (graphicEntity.isOverEntity(getMouseWorldCoordinates())) {
-                            /** DELETE ENTITY **/
-                            Log.l("Deleting entity!");
-                            for (LightSource lightSource : graphicEntity.getLightSources()) {
-                                Scene.getInstance().getListOfLightSources().remove(lightSource);
-                            }
-                            Scene.getInstance().getListOfStaticEntities().remove(graphicEntity);
-                            Scene.getInstance().getListOfEntities().remove(graphicEntity);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    private static void processRightMouseButtonReleased() {
-        rightMouseButtonPressed = false;
-    }
-
-    public static boolean isKeyPressed(int key) {
-        switch (key) {
-            case GLFW_KEY_W:
-                return W_KEY_PRESSED;
-            case GLFW_KEY_A:
-                return A_KEY_PRESSED;
-            case GLFW_KEY_S:
-                return S_KEY_PRESSED;
-            case GLFW_KEY_D:
-                return D_KEY_PRESSED;
-        }
-        return false;
-    }
-
     private static void setKeyPressed(int key, boolean pressed) {
 //        Log.l("setKeyPressed key: " + key + ", pressed: " + pressed);
         usingKeyboardAndMouse = true;
-        switch(key) {
-            case GLFW_KEY_W:
-                W_KEY_PRESSED = pressed;
-                break;
-            case GLFW_KEY_A:
-                A_KEY_PRESSED = pressed;
-                break;
-            case GLFW_KEY_S:
-                if (LEFT_CTRL_KEY_PRESSED) {
-                    if (!pressed) WorldLoader.saveWorld();
-                } else {
-                    S_KEY_PRESSED = pressed;
-                }
-                break;
-            case GLFW_KEY_D:
-                D_KEY_PRESSED = pressed;
-                break;
-            case GLFW_KEY_Q:
-                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                    if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value - 1);
-                } else {
-                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                        if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() - 1);
-                    } else {
-                        if (pressed) HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() - 1);
-                    }
-                }
-                break;
-            case GLFW_KEY_E:
-                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                    if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value + 1);
-                } else {
-                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                        if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() + 1);
-                    } else {
-                        if (pressed) HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() + 1);
-                    }
-                }
-                break;
-            case GLFW_KEY_F:
-                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                    if (!pressed) Player.getInstance().interactWithNPC();
-                }
-                break;
-            case GLFW_KEY_Z:
-                if (LEFT_ALT_KEY_PRESSED) {
-                    if (pressed) UserInterface.setHUDVisibility(!UserInterface.getHUDVisibility());
-                }
-                break;
-            case GLFW_KEY_SPACE:
-                if (pressed) {
-                    if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                        Player.getInstance().roll();
-                    }
-                }
-                break;
-            case GLFW_KEY_ESCAPE:
-                if (!pressed) Menu.getInstance().setShowing(!Menu.getInstance().isShowing());
-                break;
+        switch (key) {
             case GLFW_KEY_LEFT_CONTROL:
                 LEFT_CTRL_KEY_PRESSED = pressed;
                 break;
@@ -315,126 +136,26 @@ public class InputListenerManager {
             case GLFW_KEY_LEFT_ALT:
                 LEFT_ALT_KEY_PRESSED = pressed;
                 break;
-            case GLFW_KEY_F1:
-                if (!pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
-                break;
-            case GLFW_KEY_F2:
-                if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
-                break;
-            case GLFW_KEY_F3:
-                if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
-                break;
-            case GLFW_KEY_F4:
-                break;
-            case GLFW_KEY_F5:
-                if (!pressed) Scene.getInstance().reset();
-                break;
-            case GLFW_KEY_F6:
-                if (!pressed) Player.getInstance().hurt(Player.getInstance().getHealth());
-                break;
-            case GLFW_KEY_F7:
-                break;
-            case GLFW_KEY_F8:
-                break;
-            case GLFW_KEY_F9:
-                break;
-            case GLFW_KEY_F10:
-                break;
-            case GLFW_KEY_F11:
-                break;
-            case GLFW_KEY_F12:
-                //FIXME Coins generator only for testing purposes
-                if (!pressed) {
-                    int numOfCoinsToDrop = (int) (Math.random() * 5) + 5;
-                    float areaOfDrop = 25f;
-                    for (int i = 0; i < numOfCoinsToDrop; i++) {
-                        new GoldCoin((int) ((mouseWorldCoordinates.x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
-                                (int) ((mouseWorldCoordinates.y - areaOfDrop / 2) + (Math.random() * areaOfDrop)));
-                    }
-                }
-                break;
-            case GLFW_KEY_1:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.IONIAN);
-                            break;
-                        case CREATIVE:
-                        default:
-                            GameMode.setLayerEditing(GameMode.LayerEditing.FIRST_LAYER);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_2:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.DORIAN);
-                            break;
-                        case CREATIVE:
-                        default:
-                            GameMode.setLayerEditing(GameMode.LayerEditing.SECOND_LAYER);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_3:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.PHRYGIAN);
-                            break;
-                        case CREATIVE:
-                        default:
-                            GameMode.setLayerEditing(GameMode.LayerEditing.THIRD_LAYER);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_4:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.LYDIAN);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_5:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.MIXOLYDIAN);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_6:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.AEOLIAN);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_7:
-                if (!pressed) {
-                    switch (GameMode.getGameMode()) {
-                        case NORMAL:
-                            Player.getInstance().setMusicalMode(MusicalMode.LOCRIAN);
-                            break;
-                    }
-                }
-                break;
-            case GLFW_KEY_UP:
-                if (pressed) Camera.increaseZoom();
-                break;
-            case GLFW_KEY_DOWN:
-                if (pressed) Camera.decreaseZoom();
-                break;
         }
+
+        sendInputToActionManager(key, pressed);
+    }
+
+    private static void sendInputToActionManager(int key, boolean pressed) {
+        int[] keyCombination = new int[]{-1, -1};
+        if (LEFT_CTRL_KEY_PRESSED) {
+            keyCombination[0] = GLFW_KEY_LEFT_CONTROL;
+            keyCombination[1] = key;
+        } else if (LEFT_SHIFT_KEY_PRESSED) {
+            keyCombination[0] = GLFW_KEY_LEFT_SHIFT;
+            keyCombination[1] = key;
+        } else if (LEFT_ALT_KEY_PRESSED) {
+            keyCombination[0] = GLFW_KEY_LEFT_ALT;
+            keyCombination[1] = key;
+        } else {
+            keyCombination[0] = key;
+        }
+        ActionManager.processKeyPressed(keyCombination, pressed);
     }
 
     public static void release() {

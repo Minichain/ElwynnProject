@@ -3,6 +3,7 @@ package main;
 import entities.InteractionEntity;
 import entities.NonPlayerCharacter;
 import entities.Player;
+import listeners.ActionManager;
 import listeners.InputListenerManager;
 import menu.Menu;
 import scene.Camera;
@@ -45,9 +46,9 @@ public class UserInterface {
 
             debugTextList.add("Project Version: " + Parameters.getProjectVersion());
             debugTextList.add("OpenGL version " + glGetString(GL_VERSION));
-            debugTextList.add("Show/Hide Debug Info: F1");
-            debugTextList.add("Reset Game: F5");
-            debugTextList.add("Save World: LEFT_CTRL + S");
+            debugTextList.add("Show/Hide Debug Info: " + ActionManager.Action.DEBUG_MENU.getActionKeyString());
+            debugTextList.add("Reset Game: " + ActionManager.Action.RESET.getActionKeyString());
+            debugTextList.add("Save World: " + ActionManager.Action.SAVE_WORLD.getActionKeyString());
             debugTextList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
             debugTextList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             debugTextList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());

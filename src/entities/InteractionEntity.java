@@ -1,5 +1,6 @@
 package entities;
 
+import listeners.InputListenerManager;
 import main.Texture;
 import text.TextRendering;
 
@@ -11,7 +12,7 @@ public class InteractionEntity extends GraphicEntity {
     }
 
     private void init(int x, int y) {
-        if (true) { //TODO
+        if (InputListenerManager.isUsingKeyboardAndMouse()) {
             setSprite(SpriteManager.getInstance().F_KEYBOARD_KEY);
         } else {
             setSprite(SpriteManager.getInstance().A_CONTROLLER_BUTTON);

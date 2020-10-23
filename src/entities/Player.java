@@ -1,6 +1,7 @@
 package entities;
 
 import audio.OpenALManager;
+import listeners.ActionManager;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
@@ -10,8 +11,6 @@ import listeners.InputListenerManager;
 import main.*;
 
 import java.awt.*;
-
-import static org.lwjgl.glfw.GLFW.*;
 
 public class Player extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 41;
@@ -267,17 +266,17 @@ public class Player extends LivingDynamicGraphicEntity {
         movementVector = new double[]{0, 0};
         movementVectorNormalized = new double[]{0, 0};
         boolean playerMoving = false;
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_S)) {
-            movementVector[1] = 1;
+        if (ActionManager.MOVING_DOWN) {
+            movementVector[1] += 1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_A)) {
-            movementVector[0] = -1;
+        if (ActionManager.MOVING_LEFT) {
+            movementVector[0] += -1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_W)) {
-            movementVector[1] = -1;
+        if (ActionManager.MOVING_UP) {
+            movementVector[1] += -1;
         }
-        if (InputListenerManager.isKeyPressed(GLFW_KEY_D)) {
-            movementVector[0] = 1;
+        if (ActionManager.MOVING_RIGHT) {
+            movementVector[0] += 1;
         }
 
         movementVector[0] += InputListenerManager.getLeftJoystickAxes()[0];
