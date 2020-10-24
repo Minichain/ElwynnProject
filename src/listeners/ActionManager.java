@@ -7,6 +7,7 @@ import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
 
+import static listeners.MyGLFW.myGlfwGetKeyName;
 import static org.lwjgl.glfw.GLFW.*;
 
 public class ActionManager {
@@ -142,10 +143,10 @@ public class ActionManager {
             int[] actionKey = this.getActionKey();
             String actionKeyString = "";
             if (actionKey[0] > 0) {
-                actionKeyString = glfwGetKeyName(actionKey[0], 1);
+                actionKeyString = myGlfwGetKeyName(actionKey[0]);
             }
             if (actionKey[1] > 0) {
-                actionKeyString = actionKeyString + " + " + glfwGetKeyName(actionKey[1], 1);
+                actionKeyString = actionKeyString + " + " + myGlfwGetKeyName(actionKey[1]);
             }
             return actionKeyString;
         }
