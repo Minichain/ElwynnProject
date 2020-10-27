@@ -1,9 +1,13 @@
 package main;
 
+import java.io.File;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
     public static void main(String[] args) {
+        System.setProperty("org.lwjgl.librarypath", new File("natives/windows/x64").getAbsolutePath());
+
         long timeElapsed = 0;
         long lastUpdateTime = System.currentTimeMillis();
         long maxTimeBetweenFrames;

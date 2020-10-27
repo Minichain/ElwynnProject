@@ -73,7 +73,7 @@ public class WorldLoader {
     public static Tile[][] loadWorld() {
         Tile[][] arrayOfTiles = null;
         try {
-            arrayOfTiles = WorldLoader.loadWorld("world");
+            arrayOfTiles = WorldLoader.loadWorld("res/world");
             Log.l("World loaded successfully");
         } catch (Exception e) {
             Log.e("Error loading World. Reason: " + e);
