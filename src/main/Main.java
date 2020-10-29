@@ -6,6 +6,7 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class Main {
     public static void main(String[] args) {
+        //Load natives files
         System.setProperty("org.lwjgl.librarypath", new File("natives/windows/x64").getAbsolutePath());
 
         long timeElapsed = 0;

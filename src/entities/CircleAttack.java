@@ -53,7 +53,7 @@ public class CircleAttack {
             double randomAngle;
             double[] generationVector;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
-                randomAngle = Math.random() * 2.0 * Math.PI;
+                randomAngle = MathUtils.random(0, 2.0 * Math.PI);
                 generationVector = new double[]{radius * Math.random(), 0};
                 generationVector = MathUtils.rotateVector(generationVector, randomAngle);
                 velocityVector = new double[]{0, -0.1};
@@ -76,7 +76,7 @@ public class CircleAttack {
         GraphicEntity entity;
         for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
             entity = Scene.getInstance().getListOfEntities().get(i);
-            float damage = (float) (attackPower + (Math.random() * 10));
+            float damage = (float) (attackPower + (MathUtils.random(0, 10)));
             double radius = this.radius * Camera.getZoom();
             if (entity instanceof Enemy && !enemyAttack) {
                 if (((Enemy) entity).getStatus() != Enemy.Status.DEAD

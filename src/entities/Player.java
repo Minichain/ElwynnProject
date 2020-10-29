@@ -2,6 +2,8 @@ package entities;
 
 import audio.OpenALManager;
 import listeners.ActionManager;
+import particles.Particle;
+import particles.ParticleManager;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
@@ -52,6 +54,10 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private NonPlayerCharacter interactiveNPC = null;
 
+    /** RUNNING PARTICLES **/
+    private int runningParticlePeriod = 200;
+    private int runningParticleCoolDown;
+
     private Player() {
         super((int) Scene.getInitialCoordinates().x,
                 (int) Scene.getInitialCoordinates().y);
@@ -73,6 +79,7 @@ public class Player extends LivingDynamicGraphicEntity {
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
         amountOfGoldCoins = 0;
+        runningParticleCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
     }
 
@@ -165,6 +172,14 @@ public class Player extends LivingDynamicGraphicEntity {
             } else if (playerStatus == Status.ROLLING) {
                 speed = this.speed * 1.75;
             }
+
+            if (speed > 0.0 && runningParticleCoolDown <= 0) {
+                Coordinates coordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + MathUtils.random(-2.5, 2.5),
+                        getCenterOfMassWorldCoordinates().y + MathUtils.random(-2.5, 2.5) + 10);
+                new Smoke01((int) coordinates.x, (int) coordinates.y, 300);
+                runningParticleCoolDown = runningParticlePeriod;
+            }
+            runningParticleCoolDown -= timeElapsed;
 
             if (!horizontalCollision) {
                 getWorldCoordinates().x += movementVector[0] * speed;

@@ -55,7 +55,7 @@ public class ConeAttack {
             double amountOfParticles = 0.02;
             double randomAngle;
             for (int i = 0; i < (timeElapsed * amountOfParticles); i++) {
-                randomAngle = Math.random() * angle;
+                randomAngle = MathUtils.random(0, angle);
                 rotatedVector = MathUtils.rotateVector(MathUtils.rotateVector(pointingVector, - angle / 2.0), randomAngle);
                 double distanceFromEntity = 40;
                 particleCoordinates = new Coordinates(

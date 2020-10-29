@@ -2,6 +2,7 @@ package text;
 
 import main.Coordinates;
 import main.Parameters;
+import utils.MathUtils;
 
 import java.awt.*;
 
@@ -15,9 +16,9 @@ public class FloatingTextEntity {
     public Color color;
 
     public FloatingTextEntity(double x, double y, String text, Color color, double movingSpeed, double[] movingVector) {
-        float randomness = 10;
-        x = x - (randomness / 2f) + (int) (Math.random() * randomness);
-        y = y - (randomness / 2f) + (int) (Math.random() * randomness);
+        float randomness = 5f;
+        x = x - MathUtils.random(-randomness, randomness);
+        y = y - MathUtils.random(-randomness, randomness);
         this.text = text;
         this.coordinates = new Coordinates(x, y);
         this.color = color;

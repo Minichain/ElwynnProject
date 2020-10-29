@@ -109,4 +109,8 @@ public class MathUtils {
     public static float cubicFunction(float x) {
         return (float) Math.pow(x, 3);
     }
+
+    public static double random(double min, double max) {
+        return (Math.random() * (max - min)) + min;
+    }
 }

@@ -99,7 +99,9 @@ public class UserInterface {
         }
 
         /** NPC interactions **/
-        renderNPCInteractions();
+        if (!Menu.getInstance().isShowing()) {
+            renderNPCInteractions();
+        }
     }
 
     private void renderNPCInteractions() {

@@ -7,6 +7,7 @@ public class SpriteManager {
 
     /** ENTITIES **/
     public Sprite PLAYER;
+    public Sprite SMOKE01;
     public Sprite NOTCH;
     public Sprite ENEMY01;
     public Sprite ENEMY02;
@@ -87,6 +88,9 @@ public class SpriteManager {
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
+
+        /** SMOKE **/
+        SMOKE01 = new Sprite("res/sprites/dynamic/smoke01-sheet.png", 8, 8, 6, -1, -1, -1, -1);
 
         /** INTERFACE **/
         IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon.png", 32, 32, -1, -1, -1, -1, -1);

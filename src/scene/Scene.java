@@ -120,8 +120,8 @@ public class Scene {
         long currentTime = System.currentTimeMillis();
         enemySpawnPeriod = (int) ((5000 / Parameters.getSpawnRate()) * Math.pow(listOfEnemies.size(), 2.0));
         if ((currentTime - lastEnemySpawnTime) > enemySpawnPeriod) {
-            int distance = (int) ((Math.random() * 170) + 1000);
-            double angle = Math.random() * 2 * Math.PI;
+            int distance = (int) (MathUtils.random(1000, 1170));
+            double angle = MathUtils.random(0, 2 * Math.PI);
             int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getWorldCoordinates().x);
             int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getWorldCoordinates().y);
             Coordinates tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
@@ -240,19 +240,19 @@ public class Scene {
         GameTime.setGameTime(0);
 
         init();
-        getListOfEntities().add(Player.getInstance());
+        listOfEntities.add(Player.getInstance());
         listOfCircleAttacks.clear();
     }
 
     private void resetEntities() {
-        for (int i = 0; i < getListOfEntities().size(); i++) {
-            Entity entity = getListOfEntities().get(i);
+        for (int i = 0; i < listOfEntities.size(); i++) {
+            Entity entity = listOfEntities.get(i);
             if (entity instanceof DynamicGraphicEntity) {
-                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) getListOfEntities().get(i);
+                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) listOfEntities.get(i);
                 for (LightSource lightSource : dynamicGraphicEntity.getLightSources()) {
                     getListOfLightSources().remove(lightSource);
                 }
-                getListOfEntities().remove(i);
+                listOfEntities.remove(i);
                 i--;
             }
         }

@@ -62,7 +62,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
-        int enemyType = (int) (Math.random() * Integer.MAX_VALUE) % MusicalMode.values().length;
+        int enemyType = (int) (MathUtils.random(0, Integer.MAX_VALUE)) % MusicalMode.values().length;
         switch (enemyType) {
             case 0:
                 musicalMode = MusicalMode.IONIAN;
@@ -114,7 +114,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     @Override
     public void onDying() {
-        int numOfCoinsToDrop = (int) (Math.random() * 5) + 5;
+        int numOfCoinsToDrop = (int) (MathUtils.random(5, 10));
         float areaOfDrop = 25f;
         for (int i = 0; i < numOfCoinsToDrop; i++) {
             new GoldCoin((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
@@ -409,7 +409,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         /** CIRCLE ATTACK **/
         if (status == Status.ATTACKING) {
             if (circleAttackCoolDown <= 0) {
-                circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - 100 + Math.random() * 200, getWorldCoordinates().y - 100 + Math.random() * 200),
+                circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - MathUtils.random(-100, 100), getWorldCoordinates().y - 100 + Math.random() * 200),
                         30, 500, circleAttackPower, true, true, musicalMode);
                 Scene.listOfCircleAttacks.add(circleAttack);
                 circleAttackCoolDown = circleAttackPeriod;
