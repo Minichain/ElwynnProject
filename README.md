@@ -14,8 +14,7 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 
 ## Screenshots
 <p align="center">
-  <img src="/screenshots/gif01.gif" width="1280px"</img> 
-  <img src="/screenshots/gif02.gif" width="1280px"</img> 
+  [![Elwynn Project Demo](/screenshots/Elwynn_Project_v0.01.04.0.gif)](https://www.youtube.com/watch?v=nGwv175yuIk)
 </p>
 
 ## Social Media

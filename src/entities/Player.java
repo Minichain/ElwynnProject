@@ -59,8 +59,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private int runningParticleCoolDown;
 
     private Player() {
-        super((int) Scene.getInitialCoordinates().x,
-                (int) Scene.getInitialCoordinates().y);
+        super((int) Scene.getInitialCoordinates().x, (int) Scene.getInitialCoordinates().y);
         init();
     }
 
