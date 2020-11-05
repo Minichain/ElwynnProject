@@ -55,6 +55,12 @@ public class Menu {
         MenuSlider gameTimeSpeed = new MenuSlider("Game Time Speed", MenuSlider.SliderAction.GAME_TIME_SPEED);
         listOfMenuComponents.add(gameTimeSpeed);
 
+        MenuSlider renderDistance = new MenuSlider("Render Distance", MenuSlider.SliderAction.RENDER_DISTANCE);
+        listOfMenuComponents.add(renderDistance);
+
+        MenuSlider updateDistance = new MenuSlider("Update Distance", MenuSlider.SliderAction.UPDATE_DISTANCE);
+        listOfMenuComponents.add(updateDistance);
+
         MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
     }

@@ -12,7 +12,8 @@ public class MenuSlider extends MenuComponent {
     private SliderAction sliderAction;
 
     public enum SliderAction {
-        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL, GAME_TIME_SPEED, SPAWN_RATE
+        NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL,
+        GAME_TIME_SPEED, SPAWN_RATE, RENDER_DISTANCE, UPDATE_DISTANCE
     }
 
     public MenuSlider(String text, SliderAction sliderAction) {
@@ -32,6 +33,12 @@ public class MenuSlider extends MenuComponent {
                 break;
             case SPAWN_RATE:
                 progress = Parameters.getSpawnRate() / 10f;
+                break;
+            case RENDER_DISTANCE:
+                progress = Parameters.getRenderDistance() / 10f;
+                break;
+            case UPDATE_DISTANCE:
+                progress = Parameters.getUpdateDistance() / 10000f;
                 break;
             case NONE:
             default:
@@ -119,6 +126,12 @@ public class MenuSlider extends MenuComponent {
                 break;
             case SPAWN_RATE:
                 Parameters.setSpawnRate(this.progress * 10f);
+                break;
+            case RENDER_DISTANCE:
+                Parameters.setRenderDistance(this.progress * 10f);
+                break;
+            case UPDATE_DISTANCE:
+                Parameters.setUpdateDistance(this.progress * 10000f);
                 break;
             case NONE:
             default:

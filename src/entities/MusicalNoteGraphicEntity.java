@@ -42,12 +42,13 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         } else {
             this.color = this.musicalMode.getColor();
         }
-        LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
-        getLightSources().add(lightSource);
-        Scene.getInstance().getListOfLightSources().add(lightSource);
         this.damage = damage;
         this.musicalMode.getRandomNote(MusicalNote.A).play();
         this.enemyAttack = enemyAttack;
+        LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
+        getLightSources().add(lightSource);
+        Scene.getInstance().getListOfLightSources().add(lightSource);
+        Scene.getInstance().getListOfEntities().add(this);
     }
 
     private Sprite getMusicalRandomSprite() {
@@ -72,6 +73,14 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
             return;
         }
 
+        if (isDead()) {
+            for (LightSource lightSource : getLightSources()) {
+                Scene.getInstance().getListOfLightSources().remove(lightSource);
+            }
+            Scene.getInstance().getListOfEntities().remove(this);
+            return;
+        }
+
         getWorldCoordinates().translate(movementVectorNormalized[0] * speed * timeElapsed, movementVectorNormalized[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
 
@@ -84,7 +93,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         }
 
         Enemy entity;
-        for (GraphicEntity graphicEntity : Scene.getInstance().getListOfEntitiesToUpdate()) {
+        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
+            GraphicEntity graphicEntity = Scene.getInstance().getListOfEntities().get(i);
             if (graphicEntity instanceof Player && enemyAttack) {
                 if (Player.getInstance().getStatus() == Player.Status.DEAD || Player.getInstance().getStatus() == Player.Status.ROLLING) {
                     continue;

@@ -396,9 +396,8 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
         if (status == Status.ATTACKING) {
             if (attack01CoolDown <= 0) {
-                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
+                new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
                         0.15, musicalMode, attack01Power, 1500.0, true);
-                Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
             }
         }

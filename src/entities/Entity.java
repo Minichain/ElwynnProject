@@ -5,6 +5,7 @@ import main.Coordinates;
 public abstract class Entity {
     private Coordinates worldCoordinates;
     private Coordinates cameraCoordinates;
+    public boolean render = false;
 
     public Entity(int x, int y) {
         worldCoordinates = new Coordinates(x, y);

@@ -9,6 +9,8 @@ public class Parameters {
     private static boolean spawnEnemies = true;
     private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
+    private static float renderDistance = 1.2f;
+    private static float updateDistance = 6000.0f;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond;
@@ -147,6 +149,24 @@ public class Parameters {
         Parameters.shadersEnabled = shadersEnabled;
     }
 
+    public static float getRenderDistance() {
+        return Parameters.renderDistance;
+    }
+
+    public static void setRenderDistance(float renderDistance) {
+        Log.l("setRenderDistance to " + renderDistance);
+        Parameters.renderDistance = renderDistance;
+    }
+
+    public static float getUpdateDistance() {
+        return Parameters.updateDistance;
+    }
+
+    public static void setUpdateDistance(float updateDistance) {
+        Log.l("setUpdateDistance to " + updateDistance);
+        Parameters.updateDistance = updateDistance;
+    }
+
     /** AUDIO PARAMETERS **/
     private static float musicSoundLevel;
     private static float effectSoundLevel;
@@ -193,7 +213,7 @@ public class Parameters {
      * Revision: Minor alterations on existing features, small bug fixes, etc.
      * Package: Your code stays the same, external library changes or asset file update.
      */
-    private static String projectVersion = "0.01.04.0";
+    private static String projectVersion = "0.01.05.0";
 
     public static String getProjectVersion() {
         return projectVersion;

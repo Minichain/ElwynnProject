@@ -44,7 +44,7 @@ public class Main {
                 if (timeSpentUpdatingAndRendering < maxTimeBetweenFrames) {
                     Thread.sleep(maxTimeBetweenFrames - timeSpentUpdatingAndRendering);
                 }
-            } catch (InterruptedException e) {
+            } catch (Exception e) {
                 Log.e(String.valueOf(e));
                 exit(1);
             }

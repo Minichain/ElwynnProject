@@ -10,8 +10,6 @@ import utils.MathUtils;
 public class Camera {
     private static Camera instance = null;
     private Coordinates coordinates;
-    private static double xInitialCoordinate = Scene.getInitialCoordinates().x;
-    private static double yInitialCoordinate = Scene.getInitialCoordinates().y;
     private static double zoom;
     private static double initialZoom;
     private static double minZoom;
@@ -20,7 +18,11 @@ public class Camera {
     private static double followingSpeed;
 
     public Camera() {
-        coordinates = new Coordinates(xInitialCoordinate, yInitialCoordinate);
+        init();
+    }
+
+    public void init() {
+        coordinates = new Coordinates(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
         minZoom = 4.0;
         maxZoom = minZoom + 4.0;
         initialZoom = minZoom;
@@ -80,12 +82,6 @@ public class Camera {
 
     public static void decreaseZoom() {
         setZoom(zoom - 1.0);
-    }
-
-    public void reset() {
-        this.setCoordinates((int) Player.getInstance().getWorldCoordinates().x,
-                (int) Player.getInstance().getWorldCoordinates().y);
-        this.zoom = initialZoom;
     }
 
     public void update(long timeElapsed) {

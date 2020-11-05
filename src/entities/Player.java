@@ -2,8 +2,6 @@ package entities;
 
 import audio.OpenALManager;
 import listeners.ActionManager;
-import particles.Particle;
-import particles.ParticleManager;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
@@ -63,11 +61,8 @@ public class Player extends LivingDynamicGraphicEntity {
         init();
     }
 
-    public void reset() {
-        init();
-    }
-
-    private void init() {
+    public void init() {
+        Log.l("init player!");
         setWorldCoordinates(Scene.getInitialCoordinates());
         health = 5000f;
         mana = 100f;
@@ -85,7 +80,6 @@ public class Player extends LivingDynamicGraphicEntity {
     public static Player getInstance() {
         if (instance == null) {
             instance = new Player();
-            Scene.getInstance().getListOfEntities().add(instance);
         }
         return instance;
     }
@@ -389,9 +383,8 @@ public class Player extends LivingDynamicGraphicEntity {
 
         if (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
-                MusicalNoteGraphicEntity musicalNoteGraphicEntity = new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
+                new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
                         0.2, musicalMode, attack01Power, 1000.0, false);
-                Scene.getInstance().getListOfMusicalNoteGraphicEntities().add(musicalNoteGraphicEntity);
                 attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;
             }
