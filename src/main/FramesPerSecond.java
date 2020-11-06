@@ -9,15 +9,40 @@ import utils.MathUtils;
  */
 public class FramesPerSecond {
     private static int sizeOfArray = 10;
+
     private static float[] arrayOfFramesPerSecond = new float[sizeOfArray];
     private static int framesPerSecondIterator = 0;
+
+    private static float[] arrayOfUpdatingTimeNanoseconds = new float[sizeOfArray];
+    private static int updatingTimeIterator = 0;
+
+    private static float[] arrayOfRenderingTimeNanoseconds = new float[sizeOfArray];
+    private static int renderingTimeIterator = 0;
 
     public static void update(float fps) {
         arrayOfFramesPerSecond[framesPerSecondIterator] = fps;
         framesPerSecondIterator = (framesPerSecondIterator + 1) % arrayOfFramesPerSecond.length;
     }
 
+    public static void updateUpdatingTimeNanoseconds(long nanoseconds) {
+        arrayOfUpdatingTimeNanoseconds[updatingTimeIterator] = nanoseconds;
+        updatingTimeIterator = (updatingTimeIterator + 1) % arrayOfUpdatingTimeNanoseconds.length;
+    }
+
+    public static void updateRenderingTimeNanoseconds(long nanoseconds) {
+        arrayOfRenderingTimeNanoseconds[renderingTimeIterator] = nanoseconds;
+        renderingTimeIterator = (renderingTimeIterator + 1) % arrayOfRenderingTimeNanoseconds.length;
+    }
+
     public static float getFramesPerSecond() {
         return MathUtils.computeMean(arrayOfFramesPerSecond);
+    }
+
+    public static float getUpdatingTime() {
+        return MathUtils.computeMean(arrayOfUpdatingTimeNanoseconds);
+    }
+
+    public static float getRenderingTime() {
+        return MathUtils.computeMean(arrayOfRenderingTimeNanoseconds);
     }
 }

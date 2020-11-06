@@ -50,6 +50,8 @@ public class UserInterface {
             debugTextList.add("Reset Game: " + ActionManager.Action.RESET.getActionKeyString());
             debugTextList.add("Save World: " + ActionManager.Action.SAVE_WORLD.getActionKeyString());
             debugTextList.add("FPS: " + String.format("%.2f", FramesPerSecond.getFramesPerSecond()));
+            debugTextList.add("Update time: " + String.format("%.2f", FramesPerSecond.getUpdatingTime()) + " nanoseconds");
+            debugTextList.add("Render time: " + String.format("%.2f", FramesPerSecond.getRenderingTime()) + " nanoseconds");
             debugTextList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             debugTextList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
             debugTextList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
