@@ -6,7 +6,9 @@ import main.Coordinates;
 import main.Log;
 import main.Texture;
 import scene.Scene;
+import text.FloatingTextEntity;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class GenericNPC01 extends NonPlayerCharacter {
@@ -114,6 +116,20 @@ public class GenericNPC01 extends NonPlayerCharacter {
                 Item itemToBuy = getListOfItems().get(selectedItem);
                 Log.l("Buying " + itemToBuy.getName());
                 Player.getInstance().getListOfItems().add(itemToBuy);
+                String text = "Buying " + itemToBuy.getName();
+                new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
+                        new Color(1f, 1f, 1f), 1, new double[]{0, -1});
+            } else {
+                onInteraction(NonPlayerCharacterInteractionState.NONE);
+            }
+        } else if (isBuying()) {
+            if (selectedItem < Player.getInstance().getListOfItems().size()) {
+                Item itemToSell = Player.getInstance().getListOfItems().get(selectedItem);
+                Log.l("Selling " + itemToSell.getName());
+                Player.getInstance().getListOfItems().remove(itemToSell);
+                String text = "Selling " + itemToSell.getName();
+                new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
+                        new Color(1f, 1f, 1f), 1, new double[]{0, -1});
             } else {
                 onInteraction(NonPlayerCharacterInteractionState.NONE);
             }
