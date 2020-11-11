@@ -116,12 +116,14 @@ public class UserInterface {
 
                 if (nonPlayerCharacter.isInteracting()) {
                     if (nonPlayerCharacter.isTalking()) {
-                        TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 25,
-                                nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), 2f);
+                        int x = (int) interactionEntity.getCameraCoordinates().x;
+                        int y = (int) (interactionEntity.getCameraCoordinates().y + 25 * Parameters.getResolutionFactor());
+                        float scale = 2f * Parameters.getResolutionFactor();
+                        TextRendering.renderText(x, y, nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), scale);
 
                         if (nonPlayerCharacter.getTalkText().size() > 1) {
-                            TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 50,
-                                    (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), 2f);
+                            y = (int) (interactionEntity.getCameraCoordinates().y + 50 * Parameters.getResolutionFactor());
+                            TextRendering.renderText(x, y, (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), scale);
                         }
                     } else {
                         ArrayList<NonPlayerCharacterAction> listOfActions = null;
@@ -141,11 +143,12 @@ public class UserInterface {
 
                         glDisable(GL_TEXTURE_2D);
                         OpenGLManager.glBegin(GL_TRIANGLES);
-                        int x = (int) nonPlayerCharacter.getCameraCoordinates().x;
-                        int y = (int) nonPlayerCharacter.getCameraCoordinates().y;
-                        OpenGLManager.drawRectangle(x - 325, y - 75 * size, 300, size * 25 + 50, 0.8, 0.2f);
+                        int x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (325f * Parameters.getResolutionFactor());
+                        int y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (25f * size * Parameters.getResolutionFactor());
+                        OpenGLManager.drawRectangle(x, y, 300, size * 25 + 50, 0.8, 0.2f);
                         glEnd();
 
+                        x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (300f * Parameters.getResolutionFactor());
                         for (int i = 0; i < size; i++) {
                             String text;
                             if (nonPlayerCharacter.isWaitingForInteractionSelection()) {
@@ -157,7 +160,8 @@ public class UserInterface {
                             if (i == nonPlayerCharacter.getSelectedItem()) {
                                 text += " <-";
                             }
-                            TextRendering.renderText(x - 300, y - ((75 * size - 25) - i * 25), text, 2f);
+                            y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (((25f * size - 25f) - i * 25f) * Parameters.getResolutionFactor());
+                            TextRendering.renderText(x, y, text, 2f * Parameters.getResolutionFactor());
                         }
                     }
                 }
