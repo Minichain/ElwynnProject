@@ -24,7 +24,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     /** ATTACK **/
     private int attack01Period = 500;
     private int attack01CoolDown = 0;
-    private float attack01Power = 125f;
+    private float attack01Power = 300f;
     private float attack01ManaCost = 0.1f;
 
     private CircleAttack circleAttack;

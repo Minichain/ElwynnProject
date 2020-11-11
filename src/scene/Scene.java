@@ -62,32 +62,7 @@ public class Scene {
         Scene.getInstance().getListOfEntities().add(Player.getInstance());
         GameTime.setGameTime(0);
 
-        //TODO: NPC testing
-        GenericNPC01 npc;
-        ArrayList<String> textList;
-        npc = new GenericNPC01(2455, 1725);
-        npc.setTalkText("Press SPACE when moving to roll.");
-        npc = new GenericNPC01(2485, 1720);
-        npc.setTalkText("Press LEFT or RIGHT mouse buttons to attack.");
-        npc = new GenericNPC01(2500, 1725);
-        npc.setTalkText("Use Q and E to change the musical mode.");
-        npc = new GenericNPC01(2460, 1810);
-        textList = new ArrayList<>();
-        textList.add("There is a village south from here.");
-        textList.add("Just follow the path...");
-        textList.add("...you won't get lost.");
-        npc.setTalkText(textList);
-        npc = new GenericNPC01(2456, 2442);
-        npc.setTalkText("Welcome, outsider. This village doesn't even have a name.");
-        npc = new GenericNPC01(2622, 2471);
-        npc.setTalkText("It won't stop raining...");
-        npc = new GenericNPC01(2427, 2583);
-        textList = new ArrayList<>();
-        textList.add("Uh...?");
-        textList.add("An outsider!");
-        textList.add("Uh...");
-        textList.add("Do you come from afar?");
-        npc.setTalkText(textList);
+        createNonPlayerCharacters();
     }
 
     public void reset() {
@@ -399,5 +374,41 @@ public class Scene {
             }
         }
         return false;
+    }
+
+    private void createNonPlayerCharacters() {
+        //TODO: NPC testing
+        GenericNPC01 npc;
+        ArrayList<String> textList;
+
+        npc = new GenericNPC01(2455, 1725);
+        npc.setTalkText("Press SPACE when moving to roll.");
+
+        npc = new GenericNPC01(2485, 1720);
+        npc.setTalkText("Press LEFT or RIGHT mouse buttons to attack.");
+
+        npc = new GenericNPC01(2500, 1725);
+        npc.setTalkText("Use Q and E to change the musical mode.");
+
+        npc = new GenericNPC01(2460, 1810, true, true);
+        textList = new ArrayList<>();
+        textList.add("There is a village south from here.");
+        textList.add("Just follow the path...");
+        textList.add("...you won't get lost.");
+        npc.setTalkText(textList);
+
+        npc = new GenericNPC01(2456, 2442, true, false);
+        npc.setTalkText("Welcome, outsider. This village doesn't even have a name.");
+
+        npc = new GenericNPC01(2622, 2471, true, false);
+        npc.setTalkText("It won't stop raining...");
+
+        npc = new GenericNPC01(2427, 2583, true, true);
+        textList = new ArrayList<>();
+        textList.add("Uh...?");
+        textList.add("An outsider!");
+        textList.add("Uh...");
+        textList.add("Do you come from afar?");
+        npc.setTalkText(textList);
     }
 }

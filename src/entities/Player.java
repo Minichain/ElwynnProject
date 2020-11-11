@@ -11,6 +11,7 @@ import listeners.InputListenerManager;
 import main.*;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class Player extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 41;
@@ -31,14 +32,14 @@ public class Player extends LivingDynamicGraphicEntity {
     /** ATTACK **/
     private int attack01Period = 250;
     private int attack01CoolDown;
-    private float attack01Power = 250f;
-    private float attack01ManaCost = 0.1f;
+    private float attack01Power = 400f;
+    private float attack01ManaCost = 0.25f;
 
     private CircleAttack circleAttack;
     private int circleAttackPeriod = 10000;
     private int circleAttackCoolDown;
-    private float circleAttackPower = 100f;
-    private float circleAttackManaCost = 25f;
+    private float circleAttackPower = 200f;
+    private float circleAttackManaCost = 40f;
 
     private MusicalMode musicalMode;
 
@@ -55,6 +56,8 @@ public class Player extends LivingDynamicGraphicEntity {
     /** RUNNING PARTICLES **/
     private int runningParticlePeriod = 200;
     private int runningParticleCoolDown;
+
+    private ArrayList<Item> listOfItems;
 
     private Player() {
         super((int) Scene.getInitialCoordinates().x, (int) Scene.getInitialCoordinates().y);
@@ -75,6 +78,7 @@ public class Player extends LivingDynamicGraphicEntity {
         amountOfGoldCoins = 0;
         runningParticleCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
+        listOfItems = new ArrayList<>();
     }
 
     public static Player getInstance() {
@@ -500,17 +504,16 @@ public class Player extends LivingDynamicGraphicEntity {
         if (interactiveNPC != null) {   //If we are close to an NPC we can interact with...
             double distance = MathUtils.module(getWorldCoordinates(), interactiveNPC.getWorldCoordinates());
             if (distance < interactiveNPC.getInteractionDistance()) {
-                if (!interactiveNPC.isInteracting()) {
-                    NonPlayerCharacter.Interaction interaction = NonPlayerCharacter.Interaction.TALKING;
-                    interactiveNPC.onInteraction(interaction);
-                    interactiveNPC.setTalkTextPage(0);
-                } else if (interactiveNPC.getTalkTextPage() < (interactiveNPC.getTalkText().size() - 1)) {
-                    interactiveNPC.setTalkTextPage(interactiveNPC.getTalkTextPage() + 1);
-                } else {    //If we press the interaction button and we are already interacting with the NPC...
-                    interactiveNPC.onStopInteraction();
-                    interactiveNPC.setTalkTextPage(0);
-                }
+                interactiveNPC.onInteraction();
             }
         }
+    }
+
+    public NonPlayerCharacter getInteractiveNPC() {
+        return interactiveNPC;
+    }
+
+    public ArrayList<Item> getListOfItems() {
+        return listOfItems;
     }
 }

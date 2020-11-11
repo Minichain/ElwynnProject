@@ -1,8 +1,10 @@
 package main;
 
 import entities.InteractionEntity;
+import entities.Item;
 import entities.NonPlayerCharacter;
 import entities.Player;
+import enums.NonPlayerCharacterAction;
 import listeners.ActionManager;
 import listeners.InputListenerManager;
 import menu.Menu;
@@ -113,12 +115,50 @@ public class UserInterface {
                 interactionEntity.drawSprite((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y);
 
                 if (nonPlayerCharacter.isInteracting()) {
-                    TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 25,
-                            nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), 2f);
+                    if (nonPlayerCharacter.isTalking()) {
+                        TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 25,
+                                nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), 2f);
 
-                    if (nonPlayerCharacter.getTalkText().size() > 1) {
-                        TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 50,
-                                (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), 2f);
+                        if (nonPlayerCharacter.getTalkText().size() > 1) {
+                            TextRendering.renderText((int) interactionEntity.getCameraCoordinates().x, (int) interactionEntity.getCameraCoordinates().y + 50,
+                                    (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), 2f);
+                        }
+                    } else {
+                        ArrayList<NonPlayerCharacterAction> listOfActions = null;
+                        ArrayList<Item> listOfItems = null;
+                        int size = 0;
+
+                        if (nonPlayerCharacter.isWaitingForInteractionSelection()) {
+                            listOfActions = nonPlayerCharacter.getAvailableActions();
+                            size = listOfActions.size();
+                        } else if (nonPlayerCharacter.isSelling()) {
+                            listOfItems = nonPlayerCharacter.getListOfItems();
+                            size = listOfItems.size() + 1;
+                        } else if (nonPlayerCharacter.isBuying()) {
+                            listOfItems = Player.getInstance().getListOfItems();
+                            size = listOfItems.size() + 1;
+                        }
+
+                        glDisable(GL_TEXTURE_2D);
+                        OpenGLManager.glBegin(GL_TRIANGLES);
+                        int x = (int) nonPlayerCharacter.getCameraCoordinates().x;
+                        int y = (int) nonPlayerCharacter.getCameraCoordinates().y;
+                        OpenGLManager.drawRectangle(x - 325, y - 75 * size, 300, size * 25 + 50, 0.8, 0.2f);
+                        glEnd();
+
+                        for (int i = 0; i < size; i++) {
+                            String text;
+                            if (nonPlayerCharacter.isWaitingForInteractionSelection()) {
+                                text = listOfActions.get(i).toString();
+                            } else {
+                                if (i == size - 1) text = "Quit";
+                                else text = listOfItems.get(i).getName();
+                            }
+                            if (i == nonPlayerCharacter.getSelectedItem()) {
+                                text += " <-";
+                            }
+                            TextRendering.renderText(x - 300, y - ((75 * size - 25) - i * 25), text, 2f);
+                        }
                     }
                 }
             }

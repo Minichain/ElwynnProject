@@ -38,6 +38,7 @@ public class ActionManager {
         MIXOLYDIAN_MODE (23),
         AEOLIAN_MODE (24),
         LOCRIAN_MODE (25),
+        CHOOSE_NPC_ACTION (26),
         ;
 
         int actionValue;
@@ -133,6 +134,8 @@ public class ActionManager {
                 case LOCRIAN_MODE:
                     key[0] = GLFW_KEY_7;
                     break;
+                case CHOOSE_NPC_ACTION:
+                    key[0] = GLFW_KEY_ENTER;
                 default:
                     break;
             }
@@ -212,9 +215,23 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.DEBUG_MENU.getActionKey())) {
             if (!pressed) Parameters.setDebugMode(!Parameters.isDebugMode());
         } else if (isSameKeyCombination(key, Action.INCREASE_CAMERA_ZOOM.getActionKey())) {
-            if (pressed) Camera.increaseZoom();
+            if (pressed) {
+                NonPlayerCharacter nonPlayerCharacter = Player.getInstance().getInteractiveNPC();
+                if (nonPlayerCharacter != null) {
+                    nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() - 1);
+                } else {
+                    Camera.increaseZoom();
+                }
+            }
         } else if (isSameKeyCombination(key, Action.DECREASE_CAMERA_ZOOM.getActionKey())) {
-            if (pressed) Camera.decreaseZoom();
+            if (pressed) {
+                NonPlayerCharacter nonPlayerCharacter = Player.getInstance().getInteractiveNPC();
+                if (nonPlayerCharacter != null) {
+                    nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() + 1);
+                } else {
+                    Camera.decreaseZoom();
+                }
+            }
         } else if (isSameKeyCombination(key, Action.RESET.getActionKey())) {
             if (!pressed) Scene.getInstance().reset();
         } else if (isSameKeyCombination(key, Action.CREATIVE_TILES_MODE.getActionKey())) {
@@ -316,6 +333,8 @@ public class ActionManager {
                     }
                 }
             }
+        } else if (isSameKeyCombination(key, Action.CHOOSE_NPC_ACTION.getActionKey())) {
+
         }
     }
 

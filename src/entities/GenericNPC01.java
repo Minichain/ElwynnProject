@@ -1,5 +1,7 @@
 package entities;
 
+import enums.NonPlayerCharacterAction;
+import enums.NonPlayerCharacterInteractionState;
 import main.Coordinates;
 import main.Log;
 import main.Texture;
@@ -12,21 +14,37 @@ public class GenericNPC01 extends NonPlayerCharacter {
     private final double interactionDistance = 25;
     private ArrayList<String> talkText;
     private int talkTextPage;
-    private boolean talking = false;
-    private boolean selling = false;
+
+    private NonPlayerCharacterInteractionState interactionState = NonPlayerCharacterInteractionState.NONE;
+    private ArrayList<NonPlayerCharacterAction> availableActions = new ArrayList<>();
+    private int selectedItem = 0;
+
+    public ArrayList<Item> listOfItems = new ArrayList<>();
 
     public GenericNPC01(int x, int y) {
         super(x, y);
-        init(x, y);
+        init(x, y, false, false);
     }
 
-    private void init(int x, int y) {
+    public GenericNPC01(int x, int y, boolean sells, boolean buys) {
+        super(x, y);
+        init(x, y, sells, buys);
+    }
+
+    private void init(int x, int y, boolean sells, boolean buys) {
+        availableActions.add(NonPlayerCharacterAction.TALK);
+        if (sells) availableActions.add(NonPlayerCharacterAction.SELL);
+        if (buys) availableActions.add(NonPlayerCharacterAction.BUY);
+        availableActions.add(NonPlayerCharacterAction.QUIT);
         setWorldCoordinates(new Coordinates(x, y));
         setSprite(SpriteManager.getInstance().NOTCH);
         talkText = new ArrayList<>();
         talkTextPage = 0;
         Scene.getInstance().getListOfEntities().add(this);
         Scene.getInstance().getListOfNonPlayerCharacters().add(this);
+        listOfItems = new ArrayList<>();
+        listOfItems.add(new HealthPotion());
+        listOfItems.add(new ManaPotion());
     }
 
     @Override
@@ -65,29 +83,113 @@ public class GenericNPC01 extends NonPlayerCharacter {
     }
 
     @Override
-    public void onInteraction(Interaction interaction) {
+    public void onInteraction() {
+        if (!isInteracting()) {
+            onInteraction(NonPlayerCharacterInteractionState.INTERACTION_SEL);
+        } else if (isWaitingForInteractionSelection()) {
+            switch (availableActions.get(selectedItem)) {
+                case TALK:
+                    onInteraction(NonPlayerCharacterInteractionState.TALKING);
+                    break;
+                case BUY:
+                    onInteraction(NonPlayerCharacterInteractionState.BUYING);
+                    break;
+                case SELL:
+                    onInteraction(NonPlayerCharacterInteractionState.SELLING);
+                    break;
+                case QUIT:
+                default:
+                    onInteraction(NonPlayerCharacterInteractionState.NONE);
+                    break;
+            }
+        } else if (isTalking()) {
+            if (getTalkTextPage() < (getTalkText().size() - 1)) {
+                setTalkTextPage(getTalkTextPage() + 1);
+            } else {    //If we press the interaction button and we are already interacting with the NPC...
+                onStopInteraction();
+                setTalkTextPage(0);
+            }
+        } else if (isSelling()) {
+            if (selectedItem < getListOfItems().size()) {
+                Item itemToBuy = getListOfItems().get(selectedItem);
+                Log.l("Buying " + itemToBuy.getName());
+                Player.getInstance().getListOfItems().add(itemToBuy);
+            } else {
+                onInteraction(NonPlayerCharacterInteractionState.NONE);
+            }
+        } else {    //If we press the interaction button and we are already interacting with the NPC...
+            onStopInteraction();
+            setTalkTextPage(0);
+        }
+    }
+
+    @Override
+    public void onInteraction(NonPlayerCharacterInteractionState interaction) {
         Log.l("Interacting with NPC. Interaction: " + interaction);
+        selectedItem = 0;
+        if (interaction == NonPlayerCharacterInteractionState.INTERACTION_SEL && availableActions.size() <= 2) {
+            switch (availableActions.get(0)) {
+                case TALK:
+                default:
+                    interactionState = NonPlayerCharacterInteractionState.TALKING;
+                    break;
+                case BUY:
+                    interactionState = NonPlayerCharacterInteractionState.BUYING;
+                    break;
+                case SELL:
+                    interactionState = NonPlayerCharacterInteractionState.SELLING;
+                    break;
+            }
+        } else {
+            interactionState = interaction;
+        }
         switch (interaction) {
+            case INTERACTION_SEL:
+                Log.l("Interaction selection.");
+                break;
             case TALKING:
                 Log.l("Talking Text: \"" + talkText + "\"");
-                talking = true;
                 break;
             case SELLING:
+                Log.l("Selling");
+                break;
+            case BUYING:
+                Log.l("Buying");
+                break;
             default:
-                selling = true;
+                break;
         }
     }
 
     @Override
     public void onStopInteraction() {
         Log.l("Stop interacting with an NPC.");
-        talking = false;
-        selling = false;
+        interactionState = NonPlayerCharacterInteractionState.NONE;
     }
 
     @Override
     public boolean isInteracting() {
-        return talking || selling;
+        return interactionState != NonPlayerCharacterInteractionState.NONE;
+    }
+
+    @Override
+    public boolean isWaitingForInteractionSelection() {
+        return interactionState == NonPlayerCharacterInteractionState.INTERACTION_SEL;
+    }
+
+    @Override
+    public boolean isTalking() {
+        return interactionState == NonPlayerCharacterInteractionState.TALKING;
+    }
+
+    @Override
+    public boolean isSelling() {
+        return interactionState == NonPlayerCharacterInteractionState.SELLING;
+    }
+
+    @Override
+    public boolean isBuying() {
+        return interactionState == NonPlayerCharacterInteractionState.BUYING;
     }
 
     public void setTalkText(String talkText) {
@@ -113,5 +215,39 @@ public class GenericNPC01 extends NonPlayerCharacter {
     public void setTalkTextPage(int ttp) {
         if (ttp >= talkText.size()) ttp = talkText.size() - 1;
         talkTextPage = ttp;
+    }
+
+    @Override
+    public ArrayList<NonPlayerCharacterAction> getAvailableActions() {
+        return availableActions;
+    }
+
+    @Override
+    public int getSelectedItem() {
+        return selectedItem;
+    }
+
+    @Override
+    public void setSelectedItem(int selectedItem) {
+        int size = 0;
+        if (isWaitingForInteractionSelection()) {
+            size = availableActions.size();
+            if (selectedItem < 0) selectedItem = size - 1;
+            else selectedItem = selectedItem % size;
+        } else if (isSelling()) {
+            size = getListOfItems().size() + 1;
+            if (selectedItem < 0) selectedItem = size - 1;
+            else selectedItem = selectedItem % size;
+        } else if (isBuying()) {
+            size = Player.getInstance().getListOfItems().size() + 1;
+            if (selectedItem < 0) selectedItem = size - 1;
+            else selectedItem = selectedItem % size;
+        }
+        this.selectedItem = selectedItem;
+    }
+
+    @Override
+    public ArrayList<Item> getListOfItems() {
+        return listOfItems;
     }
 }

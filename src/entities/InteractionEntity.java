@@ -27,7 +27,7 @@ public class InteractionEntity extends GraphicEntity {
     @Override
     public void drawSprite(int x, int y) {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f, 3.0);
-        TextRendering.renderText(x + 25, y - 20, "Talk", 2f);
+        TextRendering.renderText(x + 25, y - 20, "Interact", 2f);
     }
 
     @Override

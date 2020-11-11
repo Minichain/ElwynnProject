@@ -118,7 +118,7 @@ public class PathFindingAlgorithm {
     private void computeCostsSurroundingNode(int x, int y) {
         //Log.l("computeCostsSurroundingNode " + x + ", " + y);
         if (iteration >= maxNumberOfIterations) {
-            Log.l("Path finding algorithm. Max number of Iterations reached! iteration: " + iteration);
+//            Log.l("Path finding algorithm. Max number of Iterations reached! iteration: " + iteration);
             return;
         }
         iteration++;
