@@ -1,5 +1,6 @@
 package entities;
 
+import audio.OpenALManager;
 import enums.NonPlayerCharacterAction;
 import enums.NonPlayerCharacterInteractionState;
 import main.Coordinates;
@@ -116,6 +117,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
                 Item itemToBuy = getListOfItems().get(selectedItem);
                 Log.l("Buying " + itemToBuy.getName());
                 Player.getInstance().getListOfItems().add(itemToBuy);
+                OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
                 String text = "Buying " + itemToBuy.getName();
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                         new Color(1f, 1f, 1f), 1, new double[]{0, -1});
@@ -127,6 +129,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
                 Item itemToSell = Player.getInstance().getListOfItems().get(selectedItem);
                 Log.l("Selling " + itemToSell.getName());
                 Player.getInstance().getListOfItems().remove(itemToSell);
+                OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
                 String text = "Selling " + itemToSell.getName();
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                         new Color(1f, 1f, 1f), 1, new double[]{0, -1});

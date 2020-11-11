@@ -501,7 +501,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void interactWithNPC() {
-        if (interactiveNPC != null) {   //If we are close to an NPC we can interact with...
+        if (interactiveNPC != null && playerStatus != Status.DEAD) {   //If we are close to an NPC we can interact with...
             double distance = MathUtils.module(getWorldCoordinates(), interactiveNPC.getWorldCoordinates());
             if (distance < interactiveNPC.getInteractionDistance()) {
                 interactiveNPC.onInteraction();
