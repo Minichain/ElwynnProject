@@ -36,6 +36,7 @@ public class OpenALManager {
 
     public static Sound SOUND_GOLD_COIN_PICKED_UP_01;
     public static Sound SOUND_CASH_01;
+    public static Sound SOUND_DRINK_01;
 
     public static Sound SOUND_NOTE_A_01;
     public static Sound SOUND_NOTE_A_SHARP_01;
@@ -116,6 +117,8 @@ public class OpenALManager {
         SOUND_GOLD_COIN_PICKED_UP_01 = loadSound("gold_coin_picked_up_01", Sound.SoundType.EFFECT);
 
         SOUND_CASH_01 = loadSound("cash_01", Sound.SoundType.EFFECT);
+
+        SOUND_DRINK_01 = loadSound("drink_01", Sound.SoundType.EFFECT);
 
         /** AMBIENCE **/
         SOUND_RAIN_01 = loadSound("rain_01", Sound.SoundType.AMBIENCE);

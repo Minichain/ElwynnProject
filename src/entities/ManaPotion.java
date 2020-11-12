@@ -1,5 +1,7 @@
 package entities;
 
+import audio.OpenALManager;
+
 public class ManaPotion extends Item {
     private static String name = "Mana Potion";
     private int cost;
@@ -14,6 +16,7 @@ public class ManaPotion extends Item {
     @Override
     public void use() {
         Player.getInstance().setMana(Player.getInstance().getMana() + restoreValue);
+        OpenALManager.playSound(OpenALManager.SOUND_DRINK_01);
     }
 
     @Override

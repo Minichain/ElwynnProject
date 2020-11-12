@@ -1,5 +1,7 @@
 package entities;
 
+import audio.OpenALManager;
+
 public class HealthPotion extends Item {
     private static String name = "Health Potion";
     private int cost;
@@ -14,6 +16,7 @@ public class HealthPotion extends Item {
     @Override
     public void use() {
         Player.getInstance().setHealth(Player.getInstance().getHealth() + restoreValue);
+        OpenALManager.playSound(OpenALManager.SOUND_DRINK_01);
     }
 
     @Override
