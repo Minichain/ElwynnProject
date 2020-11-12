@@ -115,12 +115,20 @@ public class GenericNPC01 extends NonPlayerCharacter {
         } else if (isSelling()) {
             if (selectedItem < getListOfItems().size()) {
                 Item itemToBuy = getListOfItems().get(selectedItem);
-                Log.l("Buying " + itemToBuy.getName());
-                Player.getInstance().getListOfItems().add(itemToBuy);
-                OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
-                String text = "Buying " + itemToBuy.getName();
-                new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                        new Color(1f, 1f, 1f), 1, new double[]{0, -1});
+                if (itemToBuy.getCost() <= Player.getInstance().getAmountOfGoldCoins()) {
+                    Log.l("Buying " + itemToBuy.getName());
+                    Player.getInstance().getListOfItems().add(itemToBuy);
+                    Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() - itemToBuy.getCost());
+                    OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
+                    String text = "Buying " + itemToBuy.getName();
+                    new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
+                            new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
+                } else {
+                    Log.l("Not enough money to buy " + itemToBuy.getName());
+                    String text = "Not enough money";
+                    new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
+                            new Color(1f, 0f, 0f), 0.75, new double[]{0, -1});
+                }
             } else {
                 onInteraction(NonPlayerCharacterInteractionState.NONE);
             }
@@ -129,10 +137,11 @@ public class GenericNPC01 extends NonPlayerCharacter {
                 Item itemToSell = Player.getInstance().getListOfItems().get(selectedItem);
                 Log.l("Selling " + itemToSell.getName());
                 Player.getInstance().getListOfItems().remove(itemToSell);
+                Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() + itemToSell.getCost());
                 OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
                 String text = "Selling " + itemToSell.getName();
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                        new Color(1f, 1f, 1f), 1, new double[]{0, -1});
+                        new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
             } else {
                 onInteraction(NonPlayerCharacterInteractionState.NONE);
             }
