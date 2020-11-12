@@ -39,6 +39,8 @@ public class ActionManager {
         AEOLIAN_MODE (24),
         LOCRIAN_MODE (25),
         CHOOSE_NPC_ACTION (26),
+        USE_HEALTH_POTION (27),
+        USE_MANA_POTION (28)
         ;
 
         int actionValue;
@@ -136,6 +138,13 @@ public class ActionManager {
                     break;
                 case CHOOSE_NPC_ACTION:
                     key[0] = GLFW_KEY_ENTER;
+                    break;
+                case USE_HEALTH_POTION:
+                    key[0] = GLFW_KEY_H;
+                    break;
+                case USE_MANA_POTION:
+                    key[0] = GLFW_KEY_M;
+                    break;
                 default:
                     break;
             }
@@ -335,6 +344,28 @@ public class ActionManager {
             }
         } else if (isSameKeyCombination(key, Action.CHOOSE_NPC_ACTION.getActionKey())) {
 
+        } else if (isSameKeyCombination(key, Action.USE_HEALTH_POTION.getActionKey())) {
+            if (!pressed) {
+                Item healthPotion = Player.getInstance().hasHealthPotion();
+                if (healthPotion != null) {
+                    Log.l("Using health potion!");
+                    healthPotion.use();
+                    Player.getInstance().getListOfItems().remove(healthPotion);
+                } else {
+                    Log.l("No health potions left!");
+                }
+            }
+        } else if (isSameKeyCombination(key, Action.USE_MANA_POTION.getActionKey())) {
+            if (!pressed) {
+                Item manaPotion = Player.getInstance().hasManaPotion();
+                if (manaPotion != null) {
+                    Log.l("Using mana potion!");
+                    manaPotion.use();
+                    Player.getInstance().getListOfItems().remove(manaPotion);
+                } else {
+                    Log.l("No mana potions left!");
+                }
+            }
         }
     }
 

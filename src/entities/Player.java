@@ -516,4 +516,22 @@ public class Player extends LivingDynamicGraphicEntity {
     public ArrayList<Item> getListOfItems() {
         return listOfItems;
     }
+
+    public Item hasHealthPotion() {
+        for (Item item : getListOfItems()) {
+            if (item instanceof HealthPotion) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public Item hasManaPotion() {
+        for (Item item : getListOfItems()) {
+            if (item instanceof ManaPotion) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

@@ -3,8 +3,6 @@ package listeners;
 import entities.*;
 import menu.Scroll;
 import scene.Camera;
-import scene.Scene;
-import scene.TileMap;
 import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;

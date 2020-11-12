@@ -1,18 +1,19 @@
 package entities;
 
 public class HealthPotion extends Item {
-    private String name;
+    private static String name = "Health Potion";
     private int cost;
+    private float restoreValue;
 
     public HealthPotion() {
         super();
-        name = "Health Potion";
         cost = 10;
+        restoreValue = 500f;
     }
 
     @Override
     public void use() {
-
+        Player.getInstance().setHealth(Player.getInstance().getHealth() + restoreValue);
     }
 
     @Override
