@@ -155,7 +155,7 @@ public class UserInterface {
                                 text = listOfActions.get(i).toString();
                             } else {
                                 if (i == size - 1) text = "Quit";
-                                else text = listOfItems.get(i).getName();
+                                else text = listOfItems.get(i).getName().concat(" ").concat(String.valueOf(listOfItems.get(i).getCost())).concat("gc");
                             }
                             if (i == nonPlayerCharacter.getSelectedItem()) {
                                 text += " <-";

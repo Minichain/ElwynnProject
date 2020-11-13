@@ -48,6 +48,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
         listOfItems = new ArrayList<>();
         listOfItems.add(new HealthPotion());
         listOfItems.add(new ManaPotion());
+        listOfItems.add(new HastePotion());
     }
 
     @Override

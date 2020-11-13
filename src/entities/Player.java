@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class Player extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 41;
     private static Player instance = null;
-    private static Status playerStatus;
     private static Utils.DirectionFacing directionFacing;
 
     public static float MAX_HEALTH = 5000f;
@@ -36,7 +35,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private float attack01ManaCost = 0.25f;
 
     private CircleAttack circleAttack;
-    private int circleAttackPeriod = 10000;
+    private int circleAttackPeriod = 2500;
     private int circleAttackCoolDown;
     private float circleAttackPower = 200f;
     private float circleAttackManaCost = 40f;
@@ -44,8 +43,17 @@ public class Player extends LivingDynamicGraphicEntity {
     private MusicalMode musicalMode;
 
     public enum Status {
-        IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING;
+        IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING
     }
+
+    private static Status status;
+
+    public enum StatusEffect {
+        NONE, HASTE
+    }
+
+    private static boolean hasteEffect;
+    private static int hasteEffectDuration;
 
     private boolean footstep = true;
 
@@ -72,13 +80,17 @@ public class Player extends LivingDynamicGraphicEntity {
         speed = 0.08;
         attack01CoolDown = 0;
         circleAttackCoolDown = 0;
-        playerStatus = Status.IDLE;
+        status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
         amountOfGoldCoins = 0;
         runningParticleCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
         listOfItems = new ArrayList<>();
+        listOfItems.add(new HealthPotion());
+        listOfItems.add(new HealthPotion());
+        listOfItems.add(new HealthPotion());
+        listOfItems.add(new HealthPotion());
     }
 
     public static Player getInstance() {
@@ -133,7 +145,7 @@ public class Player extends LivingDynamicGraphicEntity {
                 health = MAX_HEALTH;
             }
             if (stamina < MAX_STAMINA) {
-                if (playerStatus == Status.ATTACKING) {
+                if (status == Status.ATTACKING) {
                     stamina += (STAMINA_REGENERATION_WHEN_ATTACKING * timeElapsed);
                 } else {
                     stamina += (STAMINA_REGENERATION * timeElapsed);
@@ -145,13 +157,13 @@ public class Player extends LivingDynamicGraphicEntity {
             /** UPDATE ATTACKS **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL
                     && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
-                playerStatus = Status.ATTACKING;
+                status = Status.ATTACKING;
             }
             updateAttack(timeElapsed);
 
             /** UPDATE MOVEMENT VECTOR **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                if (playerStatus != Status.ROLLING) {
+                if (status != Status.ROLLING) {
                     computeMovementVector(timeElapsed);
                 }
             }
@@ -162,11 +174,11 @@ public class Player extends LivingDynamicGraphicEntity {
 
             /** MOVE ENTITY **/
             double speed = 0.0;
-            if (playerStatus == Status.ATTACKING) {
+            if (status == Status.ATTACKING) {
                 speed = this.speed * 0.5;
-            } else if (playerStatus == Status.RUNNING) {
+            } else if (status == Status.RUNNING) {
                 speed = this.speed;
-            } else if (playerStatus == Status.ROLLING) {
+            } else if (status == Status.ROLLING) {
                 speed = this.speed * 1.75;
             }
 
@@ -187,7 +199,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
             /** WHERE IS IT FACING? **/
             facingVector = null;
-            if (playerStatus == Status.ATTACKING) {
+            if (status == Status.ATTACKING) {
                 facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCameraCoordinates().x,
                         InputListenerManager.getMouseCameraCoordinates().y - getCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
@@ -197,15 +209,20 @@ public class Player extends LivingDynamicGraphicEntity {
 
             checkAnyInteractiveNPC();
 
-        } else if (playerStatus != Status.DEAD) {   //Player is dying
+            if (hasteEffect) {
+                hasteEffectDuration -= timeElapsed;
+                hasteEffect = hasteEffectDuration > 0;
+            }
+
+        } else if (status != Status.DEAD) {   //Player is dying
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
-            playerStatus = Status.DYING;
+            status = Status.DYING;
         } else {    //Player is dead
 
         }
 
         double frame;
-        switch (playerStatus) {
+        switch (status) {
             case IDLE:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
@@ -227,7 +244,7 @@ public class Player extends LivingDynamicGraphicEntity {
             case ROLLING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 if (frame >= getSprite().ROLLING_FRAMES) {
-                    playerStatus = Status.IDLE;
+                    status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ROLLING_FRAMES);
@@ -236,7 +253,7 @@ public class Player extends LivingDynamicGraphicEntity {
             case DYING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
                 if (frame > getSprite().DYING_FRAMES) {
-                    playerStatus = Status.DEAD;
+                    status = Status.DEAD;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
@@ -249,7 +266,7 @@ public class Player extends LivingDynamicGraphicEntity {
             case ATTACKING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115));
                 if (frame >= getSprite().ATTACKING_FRAMES) {
-                    playerStatus = Status.IDLE;
+                    status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
@@ -298,11 +315,11 @@ public class Player extends LivingDynamicGraphicEntity {
             playerMoving = true;
         }
 
-        if (playerStatus != Status.ATTACKING) {
+        if (status != Status.ATTACKING) {
             if (playerMoving) {
-                playerStatus = Status.RUNNING;
+                status = Status.RUNNING;
             } else {
-                playerStatus = Status.IDLE;
+                status = Status.IDLE;
             }
         }
 
@@ -312,7 +329,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void updateSpriteCoordinatesToDraw() {
-        switch (playerStatus) {
+        switch (status) {
             default:
             case IDLE:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
@@ -368,7 +385,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public Status getStatus() {
-        return playerStatus;
+        return status;
     }
 
     private double[] pointingVector = new double[]{1.0, 1.0};
@@ -389,7 +406,8 @@ public class Player extends LivingDynamicGraphicEntity {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
                 new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
                         0.2, musicalMode, attack01Power, 1000.0, false);
-                attack01CoolDown = attack01Period;
+                if (hasteEffect) attack01CoolDown = (attack01Period / 2);
+                else attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;
             }
         }
@@ -428,9 +446,9 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void roll() {
-        if (stamina >= 25f && playerStatus == Status.RUNNING && playerStatus != Status.ATTACKING) {
+        if (stamina >= 25f && status == Status.RUNNING && status != Status.ATTACKING) {
             Log.l("Player rolling");
-            playerStatus = Status.ROLLING;
+            status = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
             OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);
             stamina -= 25f;
@@ -501,7 +519,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void interactWithNPC() {
-        if (interactiveNPC != null && playerStatus != Status.DEAD) {   //If we are close to an NPC we can interact with...
+        if (interactiveNPC != null && status != Status.DEAD) {   //If we are close to an NPC we can interact with...
             double distance = MathUtils.module(getWorldCoordinates(), interactiveNPC.getWorldCoordinates());
             if (distance < interactiveNPC.getInteractionDistance()) {
                 interactiveNPC.onInteraction();
@@ -518,20 +536,80 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public Item hasHealthPotion() {
+        return hasPotion(HealthPotion.class);
+    }
+
+    public Item hasManaPotion() {
+        return hasPotion(ManaPotion.class);
+    }
+
+    public Item hasHastePotion() {
+        return hasPotion(HastePotion.class);
+    }
+
+    public Item hasPotion(Class<?> type) {
         for (Item item : getListOfItems()) {
-            if (item instanceof HealthPotion) {
+            if (type == item.getClass()) {
                 return item;
             }
         }
         return null;
     }
 
-    public Item hasManaPotion() {
+    public void useHealthPotion() {
+        Item healthPotion = hasHealthPotion();
+        if (healthPotion != null) useItem(healthPotion);
+        else Log.l("No HEALTH POTIONS left!");
+    }
+
+    public void useManaPotion() {
+        Item manaPotion = hasManaPotion();
+        if (manaPotion != null) useItem(manaPotion);
+        else Log.l("No MANA POTIONS left!");
+    }
+
+    public void useHastePotion() {
+        Item hastePotion = hasHastePotion();
+        if (hastePotion != null) useItem(hastePotion);
+        else Log.l("No HASTE POTIONS left!");
+    }
+
+    public void useItem(Item item) {
+        Log.l("Using " + item.getName());
+        item.use();
+        getListOfItems().remove(item);
+    }
+
+    public int getAmountOfHealthPotions() {
+        return getAmountOfPotions(HealthPotion.class);
+    }
+
+    public int getAmountOfManaPotions() {
+        return getAmountOfPotions(ManaPotion.class);
+    }
+
+    public int getAmountOfHastePotions() {
+        return getAmountOfPotions(HastePotion.class);
+    }
+
+    private int getAmountOfPotions(Class<?> type) {
+        int amount = 0;
         for (Item item : getListOfItems()) {
-            if (item instanceof ManaPotion) {
-                return item;
-            }
+            if (type == item.getClass()) amount++;
         }
-        return null;
+        return amount;
+    }
+
+    public void setStatusEffect(StatusEffect statusEffect, int statusDuration) {
+        switch (statusEffect) {
+            case NONE:
+                break;
+            case HASTE:
+                hasteEffect = true;
+                hasteEffectDuration = statusDuration;
+                break;
+            default:
+                break;
+        }
     }
 }

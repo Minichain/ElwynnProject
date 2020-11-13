@@ -40,7 +40,8 @@ public class ActionManager {
         LOCRIAN_MODE (25),
         CHOOSE_NPC_ACTION (26),
         USE_HEALTH_POTION (27),
-        USE_MANA_POTION (28)
+        USE_MANA_POTION (28),
+        USE_HASTE_POTION (29)
         ;
 
         int actionValue;
@@ -144,6 +145,9 @@ public class ActionManager {
                     break;
                 case USE_MANA_POTION:
                     key[0] = GLFW_KEY_M;
+                    break;
+                case USE_HASTE_POTION:
+                    key[0] = GLFW_KEY_B;
                     break;
                 default:
                     break;
@@ -345,27 +349,11 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.CHOOSE_NPC_ACTION.getActionKey())) {
 
         } else if (isSameKeyCombination(key, Action.USE_HEALTH_POTION.getActionKey())) {
-            if (!pressed) {
-                Item healthPotion = Player.getInstance().hasHealthPotion();
-                if (healthPotion != null) {
-                    Log.l("Using health potion!");
-                    healthPotion.use();
-                    Player.getInstance().getListOfItems().remove(healthPotion);
-                } else {
-                    Log.l("No health potions left!");
-                }
-            }
+            if (!pressed) Player.getInstance().useHealthPotion();
         } else if (isSameKeyCombination(key, Action.USE_MANA_POTION.getActionKey())) {
-            if (!pressed) {
-                Item manaPotion = Player.getInstance().hasManaPotion();
-                if (manaPotion != null) {
-                    Log.l("Using mana potion!");
-                    manaPotion.use();
-                    Player.getInstance().getListOfItems().remove(manaPotion);
-                } else {
-                    Log.l("No mana potions left!");
-                }
-            }
+            if (!pressed) Player.getInstance().useManaPotion();
+        } else if (isSameKeyCombination(key, Action.USE_HASTE_POTION.getActionKey())) {
+            if (!pressed) Player.getInstance().useHastePotion();
         }
     }
 

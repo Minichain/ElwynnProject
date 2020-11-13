@@ -1,8 +1,6 @@
 package main;
 
-import entities.MusicalMode;
-import entities.Player;
-import entities.SpriteManager;
+import entities.*;
 import scene.TileMap;
 import listeners.InputListenerManager;
 import text.TextRendering;
@@ -63,10 +61,32 @@ public class HeadUpDisplay {
                 x += 32 * scale + spaceBetweenModes;
             }
 
+            String text;
+            float rightPadding;
+
             /** GOLD COINS **/
-            TextRendering.renderText(Window.getWidth() - 150f * Parameters.getResolutionFactor(), Window.getHeight() - 50f * Parameters.getResolutionFactor(),
-                    "Coins: " + Player.getInstance().getAmountOfGoldCoins(),
-                    2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.9f, 0f);
+            text = "Coins: " + Player.getInstance().getAmountOfGoldCoins();
+            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
+            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 50f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.9f, 0f);
+
+            /** HEALTH POTIONS **/
+            text = "Health Potions: " + Player.getInstance().getAmountOfHealthPotions();
+            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
+            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 75f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0f, 0f);
+
+            /** MANA POTIONS **/
+            text = "Mana Potions: " + Player.getInstance().getAmountOfManaPotions();
+            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
+            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 100f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 0f, 0.1f, 1f);
+
+            /** HASTE POTIONS **/
+            text = "Haste Potions: " + Player.getInstance().getAmountOfHastePotions();
+            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
+            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 125f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.5f, 0f);
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/

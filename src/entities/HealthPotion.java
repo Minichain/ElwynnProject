@@ -2,8 +2,8 @@ package entities;
 
 import audio.OpenALManager;
 
-public class HealthPotion extends Item {
-    private static String name = "Health Potion";
+public class HealthPotion implements Item {
+    private String name = "Health Potion";
     private int cost;
     private float restoreValue;
 

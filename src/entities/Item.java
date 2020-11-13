@@ -1,13 +1,9 @@
 package entities;
 
-public abstract class Item {
-    public Item() {
+public interface Item {
+    void use();
 
-    }
+    String getName();
 
-    public abstract void use();
-
-    public abstract String getName();
-
-    public abstract int getCost();
+    int getCost();
 }
