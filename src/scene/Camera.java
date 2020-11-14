@@ -11,7 +11,6 @@ public class Camera {
     private static Camera instance = null;
     private Coordinates coordinates;
     private static double zoom;
-    private static double initialZoom;
     private static double minZoom;
     private static double maxZoom;
     private static double freeCameraSpeed;
@@ -23,10 +22,9 @@ public class Camera {
 
     public void init() {
         coordinates = new Coordinates(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
-        minZoom = 4.0;
-        maxZoom = minZoom + 4.0;
-        initialZoom = minZoom;
-        zoom = initialZoom;
+        minZoom = 1.0;
+        maxZoom = 8.0;
+        zoom = 4.0;
     }
 
     public static Camera getInstance() {

@@ -73,7 +73,8 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
-        renderDistance = (int) (Parameters.getRenderDistance() * (Parameters.getResolutionWidth() / 2.0) / Camera.getZoom());
+//        renderDistance = (int) (Parameters.getRenderDistance() * (Parameters.getResolutionWidth() / 2.0) / (Camera.getZoom() / 2.0));
+        renderDistance = (int) (Parameters.getRenderDistance() * 240);
         updateDistance = (int) Parameters.getUpdateDistance();
 
         OpenALManager.playMusicDependingOnMusicalMode(Player.getInstance().getMusicalMode());

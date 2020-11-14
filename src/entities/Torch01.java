@@ -24,7 +24,7 @@ public class Torch01 extends StaticGraphicEntity {
         /** LIGHT SOURCES **/
         Coordinates lightSourceCoordinates = new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - getSprite().SPRITE_HEIGHT + 16);
         float intensity = 75f;
-        getLightSources().add(new LightSource(lightSourceCoordinates, intensity, new Color(255, 220, 170)));
+        getLightSources().add(new LightSource(lightSourceCoordinates, intensity, new Color(255, 240, 170)));
         for (LightSource lightSource : getLightSources()) {
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
