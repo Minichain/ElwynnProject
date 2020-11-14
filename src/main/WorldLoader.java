@@ -44,7 +44,12 @@ public class WorldLoader {
         for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
             data[dataIterator] = graphicEntity.getEntityCode();
-//            Log.l("Loading Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
+
+            if (graphicEntity.getEntityCode() == Torch01.ENTITY_CODE) {
+                Log.l("Saving Torch01");
+            }
+
+//            Log.l("Saving Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
             dataIterator++;
             byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
             for (int j = 0; j < xCoordinate.length; j++) {
@@ -60,7 +65,7 @@ public class WorldLoader {
 
         FileOutputStream dataOutput;
         try {
-            dataOutput = new FileOutputStream("world");
+            dataOutput = new FileOutputStream("res/world");
             dataOutput.write(data);
             dataOutput.close();
             return true;   // Success
@@ -126,6 +131,10 @@ public class WorldLoader {
 
 //            Log.l("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
 
+            if (entityCode == Torch01.ENTITY_CODE) {
+                Log.l("Loading Torch01");
+            }
+
             if (entityCode == Tree01.ENTITY_CODE) {
                 new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Tree02.ENTITY_CODE) {
@@ -142,10 +151,10 @@ public class WorldLoader {
                 new Fence04((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Light01.ENTITY_CODE) {
                 new Light01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Torch01.ENTITY_CODE) {
+                new Torch01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Building01.ENTITY_CODE) {
                 new Building01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Building02.ENTITY_CODE) {
-                new Building02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Building02.ENTITY_CODE) {
                 new Building02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             }

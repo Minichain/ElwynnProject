@@ -118,10 +118,18 @@ public class HeadUpDisplay {
                     currentEntity = selectedEntity + i - previousEntitiesToShow;
                     x = 20f * Parameters.getResolutionFactor() + i * 128f * Parameters.getResolutionFactor();
                     y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+                    Sprite sprite = SpriteManager.getStaticEntitySprite(currentEntity);
+                    float transparency;
+                    float scale;
                     if (currentEntity == selectedEntity) {   // Highlight the tile we have selected
-                        SpriteManager.getStaticEntitySprite(currentEntity).draw((int) x, (int) y, 0, 0, 0.7f, 2f * Parameters.getResolutionFactor());
+                        transparency = 0.7f;
+                        scale = 2f;
                     } else {
-                        SpriteManager.getStaticEntitySprite(currentEntity).draw((int) x, (int) y, 0, 0, 0.5f, 1.5f * Parameters.getResolutionFactor());
+                        transparency = 0.5f;
+                        scale = 1.5f;
+                    }
+                    if (sprite != null) {
+                        sprite.draw((int) x, (int) y, 0, 0, transparency, scale * Parameters.getResolutionFactor());
                     }
                 }
             }

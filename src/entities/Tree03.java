@@ -15,7 +15,7 @@ public class Tree03 extends StaticGraphicEntity {
     private void init() {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
         setSprite(SpriteManager.getInstance().TREE03);
-        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 16, getWorldCoordinates().y - 8), 32, 16));   //Square collision
+        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 16, getWorldCoordinates().y - 8), 16, 16));   //Square collision
         Scene.getInstance().getListOfEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
     }

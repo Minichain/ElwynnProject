@@ -266,7 +266,7 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.LOCRIAN_MODE.getActionKey())) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.LOCRIAN);
         } else if (isSameKeyCombination(key, Action.ATTACK_01.getActionKey())) {
-            if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+            if (!pressed && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                     Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();
                     Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
@@ -286,7 +286,9 @@ public class ActionManager {
                     TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                     Coordinates mouseWorldCoordinates = InputListenerManager.getMouseWorldCoordinates();
-                    switch (HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites) {
+                    int entity = HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites;
+                    Log.l("Adding a new Static Entity " + entity);
+                    switch (entity) {
                         case 0:
                             new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
@@ -315,14 +317,18 @@ public class ActionManager {
                             new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 9:
-                        default:
                             new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            break;
+                        case 10:
+                            new Torch01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            break;
+                        default:
                             break;
                     }
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
-            if (!Menu.getInstance().isShowing() ) {
+            if (!pressed && !Menu.getInstance().isShowing() ) {
                 if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                     if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                         // Change Tile's collision behaviour

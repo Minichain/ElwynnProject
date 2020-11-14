@@ -26,6 +26,7 @@ public class SpriteManager {
     public Sprite FENCE03;
     public Sprite FENCE04;
     public Sprite LIGHT01;
+    public Sprite TORCH01;
     public Sprite G_CLEF;
     public Sprite QUARTER_NOTE;
     public Sprite EIGHTH_NOTE;
@@ -85,6 +86,7 @@ public class SpriteManager {
 
         /** LIGHTS **/
         LIGHT01 = new Sprite("res/sprites/static/light01.png", 16, 48, -1, -1, -1, -1, -1);
+        TORCH01 = new Sprite("res/sprites/static/torch01.png", 16, 48, 3, -1, -1, -1, -1);
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
@@ -114,10 +116,10 @@ public class SpriteManager {
         return instance;
     }
 
-    public static int numOfStaticEntitySprites = 10;
+    public static int numOfStaticEntitySprites = 11;
 
     public static Sprite getStaticEntitySprite(int i) {
-        Sprite sprite;
+        Sprite sprite = null;
         switch (i % numOfStaticEntitySprites) {
             case 0:
                 sprite = SpriteManager.getInstance().TREE01;
@@ -147,8 +149,12 @@ public class SpriteManager {
                 sprite = SpriteManager.getInstance().FENCE04;
                 break;
             case 9:
-            default:
                 sprite = SpriteManager.getInstance().LIGHT01;
+                break;
+            case 10:
+                sprite = SpriteManager.getInstance().TORCH01;
+                break;
+            default:
                 break;
         }
         return sprite;
