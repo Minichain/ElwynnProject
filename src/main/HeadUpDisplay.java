@@ -66,7 +66,7 @@ public class HeadUpDisplay {
             float rightPaddingSprite = 150f * Parameters.getResolutionFactor();
 
             /** GOLD COINS **/
-            SpriteManager.getInstance().GOLD_COIN.draw((int) (Window.getWidth() - rightPaddingSprite),
+            SpriteManager.getInstance().GOLD_COIN_INTERFACE.draw((int) (Window.getWidth() - rightPaddingSprite),
                     (int) (Window.getHeight() - 25f * Parameters.getResolutionFactor()),
                     0, 0, 1f, 4f * Parameters.getResolutionFactor());
             text = "x" + Player.getInstance().getAmountOfGoldCoins();
