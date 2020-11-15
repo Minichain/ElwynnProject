@@ -27,6 +27,10 @@ public class Sprite {
     public int TILES_IN_TILESET_X_AXIS;
     public int TILES_IN_TILESET_Y_AXIS;
 
+    public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames) {
+        this(path, spriteWidth, spriteHeight, idleFrames, -1, -1, -1, -1);
+    }
+
     public Sprite(String path, int spriteWidth, int spriteHeight, int idleFrames, int runningFrames, int dyingFrames, int deadFrames, int rollingFrame) {
         this(path, spriteWidth, spriteHeight, idleFrames, runningFrames, dyingFrames, deadFrames, rollingFrame, -1);
     }

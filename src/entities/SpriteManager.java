@@ -15,7 +15,8 @@ public class SpriteManager {
     public Sprite TILESET;
 
     /** INTERFACE **/
-    public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON;
+    public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
+            HEALTH_POTION, MANA_POTION, HASTE_POTION;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -34,50 +35,54 @@ public class SpriteManager {
         ENEMY07 = new Sprite("res/sprites/dynamic/enemy07.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** MUSICAL NOTES **/
-        G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
-        QUARTER_NOTE = new Sprite("res/sprites/dynamic/quarter_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
-        EIGHTH_NOTE = new Sprite("res/sprites/dynamic/eighth_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
-        DOUBLE_EIGHTH_NOTE = new Sprite("res/sprites/dynamic/double_eighth_note_white_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1);
+        QUARTER_NOTE = new Sprite("res/sprites/dynamic/quarter_note_white_8x8.png", 8, 8, -1);
+        EIGHTH_NOTE = new Sprite("res/sprites/dynamic/eighth_note_white_8x8.png", 8, 8, -1);
+        DOUBLE_EIGHTH_NOTE = new Sprite("res/sprites/dynamic/double_eighth_note_white_8x8.png", 8, 8, -1);
 
         /** TREES **/
-        TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);
-        TREE02 = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
-        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 6, -1, -1, -1, -1);
-        TREE04 = new Sprite("res/sprites/static/tree04.png", 32, 32, -1, -1, -1, -1, -1);
+        TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1);
+        TREE02 = new Sprite("res/sprites/static/tree02.png", 16, 64, -1);
+        TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 6);
+        TREE04 = new Sprite("res/sprites/static/tree04.png", 32, 32, -1);
 
         /** BUILDINGS **/
-        BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
-        BUILDING02 = new Sprite("res/sprites/static/building02.png", 96, 80, 4, -1, -1, -1, -1);
+        BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1);
+        BUILDING02 = new Sprite("res/sprites/static/building02.png", 96, 80, 4);
 
         /** FENCES **/
-        FENCE01 = new Sprite("res/sprites/static/fence01.png", 16, 16, -1, -1, -1, -1, -1);
-        FENCE02 = new Sprite("res/sprites/static/fence02.png", 16, 16, -1, -1, -1, -1, -1);
-        FENCE03 = new Sprite("res/sprites/static/fence03.png", 16, 16, -1, -1, -1, -1, -1);
-        FENCE04 = new Sprite("res/sprites/static/fence04.png", 16, 16, -1, -1, -1, -1, -1);
+        FENCE01 = new Sprite("res/sprites/static/fence01.png", 16, 16, -1);
+        FENCE02 = new Sprite("res/sprites/static/fence02.png", 16, 16, -1);
+        FENCE03 = new Sprite("res/sprites/static/fence03.png", 16, 16, -1);
+        FENCE04 = new Sprite("res/sprites/static/fence04.png", 16, 16, -1);
 
         /** LIGHTS **/
-        LIGHT01 = new Sprite("res/sprites/static/light01.png", 16, 48, -1, -1, -1, -1, -1);
-        TORCH01 = new Sprite("res/sprites/static/torch01.png", 16, 48, 3, -1, -1, -1, -1);
+        LIGHT01 = new Sprite("res/sprites/static/light01.png", 16, 48, -1);
+        TORCH01 = new Sprite("res/sprites/static/torch01.png", 16, 48, 3);
 
         /** TILESET **/
         TILESET = new Sprite("res/sprites/tiles/tileset.png", TileMap.TILE_WIDTH, TileMap.TILE_HEIGHT);
 
         /** SMOKE **/
-        SMOKE01 = new Sprite("res/sprites/dynamic/smoke01-sheet.png", 8, 8, 6, -1, -1, -1, -1);
+        SMOKE01 = new Sprite("res/sprites/dynamic/smoke01-sheet.png", 8, 8, 6);
 
         /** INTERFACE **/
-        IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        DORIAN_ICON = new Sprite("res/sprites/interface/dorian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        PHRYGIAN_ICON = new Sprite("res/sprites/interface/phrygian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        LYDIAN_ICON = new Sprite("res/sprites/interface/lydian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon.png", 32, 32, -1, -1, -1, -1, -1);
-        LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon.png", 32, 32, -1, -1, -1, -1, -1);
+        IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon.png", 32, 32, -1);
+        DORIAN_ICON = new Sprite("res/sprites/interface/dorian_icon.png", 32, 32, -1);
+        PHRYGIAN_ICON = new Sprite("res/sprites/interface/phrygian_icon.png", 32, 32, -1);
+        LYDIAN_ICON = new Sprite("res/sprites/interface/lydian_icon.png", 32, 32, -1);
+        MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon.png", 32, 32, -1);
+        AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon.png", 32, 32, -1);
+        LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon.png", 32, 32, -1);
+
+        HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
+        MANA_POTION = new Sprite("res/sprites/interface/mana_potion_8x8.png", 8, 8, -1);
+        HASTE_POTION = new Sprite("res/sprites/interface/haste_potion_8x8.png", 8, 8, -1);
 
         /** OTHERS **/
-        GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1, -1, -1, -1, -1);
-        A_CONTROLLER_BUTTON = new Sprite("res/sprites/dynamic/a_controller_button_8x8.png", 8, 8, -1, -1, -1, -1, -1);
-        F_KEYBOARD_KEY = new Sprite("res/sprites/dynamic/f_keyboard_key_8x8.png", 8, 8, -1, -1, -1, -1, -1);
+        GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1);
+        A_CONTROLLER_BUTTON = new Sprite("res/sprites/dynamic/a_controller_button_8x8.png", 8, 8, -1);
+        F_KEYBOARD_KEY = new Sprite("res/sprites/dynamic/f_keyboard_key_8x8.png", 8, 8, -1);
     }
 
     public static SpriteManager getInstance() {

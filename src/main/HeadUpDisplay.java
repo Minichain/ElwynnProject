@@ -62,31 +62,40 @@ public class HeadUpDisplay {
             }
 
             String text;
-            float rightPadding;
+            float rightPaddingText = 100f * Parameters.getResolutionFactor();
+            float rightPaddingSprite = 150f * Parameters.getResolutionFactor();
 
             /** GOLD COINS **/
-            text = "Coins: " + Player.getInstance().getAmountOfGoldCoins();
-            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
-            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 50f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.9f, 0f);
+            SpriteManager.getInstance().GOLD_COIN.draw((int) (Window.getWidth() - rightPaddingSprite),
+                    (int) (Window.getHeight() - 25f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            text = "x" + Player.getInstance().getAmountOfGoldCoins();
+            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 50f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
 
             /** HEALTH POTIONS **/
-            text = "Health Potions: " + Player.getInstance().getAmountOfHealthPotions();
-            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
-            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 75f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0f, 0f);
+            SpriteManager.getInstance().HEALTH_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
+                    (int) (Window.getHeight() - 75f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            text = "x" + Player.getInstance().getAmountOfHealthPotions();
+            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 100f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
 
             /** MANA POTIONS **/
-            text = "Mana Potions: " + Player.getInstance().getAmountOfManaPotions();
-            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
-            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 100f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 0f, 0.1f, 1f);
+            SpriteManager.getInstance().MANA_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
+                    (int) (Window.getHeight() - 125f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            text = "x" + Player.getInstance().getAmountOfManaPotions();
+            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 150f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
 
             /** HASTE POTIONS **/
-            text = "Haste Potions: " + Player.getInstance().getAmountOfHastePotions();
-            rightPadding = (text.length() * TextRendering.CHARACTER_WIDTH + 150f) * Parameters.getResolutionFactor();
-            TextRendering.renderText(Window.getWidth() - rightPadding, Window.getHeight() - 125f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f, 1f, 0.5f, 0f);
+            SpriteManager.getInstance().HASTE_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
+                    (int) (Window.getHeight() - 175f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            text = "x" + Player.getInstance().getAmountOfHastePotions();
+            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 200f * Parameters.getResolutionFactor(),
+                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
