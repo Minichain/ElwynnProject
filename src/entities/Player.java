@@ -1,6 +1,10 @@
 package entities;
 
 import audio.OpenALManager;
+import items.HastePotion;
+import items.HealthPotion;
+import items.Item;
+import items.ManaPotion;
 import listeners.ActionManager;
 import scene.Scene;
 import scene.TileMap;

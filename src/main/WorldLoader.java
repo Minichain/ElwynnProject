@@ -131,6 +131,8 @@ public class WorldLoader {
                 new Tree02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Tree03.ENTITY_CODE) {
                 new Tree03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Tree04.ENTITY_CODE) {
+                new Tree04((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Fence01.ENTITY_CODE) {
                 new Fence01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Fence02.ENTITY_CODE) {

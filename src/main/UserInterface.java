@@ -1,7 +1,7 @@
 package main;
 
 import entities.InteractionEntity;
-import entities.Item;
+import items.Item;
 import entities.NonPlayerCharacter;
 import entities.Player;
 import enums.NonPlayerCharacterAction;

@@ -2,6 +2,7 @@ package entities;
 
 import enums.NonPlayerCharacterAction;
 import enums.NonPlayerCharacterInteractionState;
+import items.Item;
 
 import java.util.ArrayList;
 

@@ -6,46 +6,16 @@ public class SpriteManager {
     private static SpriteManager instance = null;
 
     /** ENTITIES **/
-    public Sprite PLAYER;
-    public Sprite SMOKE01;
-    public Sprite NOTCH;
-    public Sprite ENEMY01;
-    public Sprite ENEMY02;
-    public Sprite ENEMY03;
-    public Sprite ENEMY04;
-    public Sprite ENEMY05;
-    public Sprite ENEMY06;
-    public Sprite ENEMY07;
-    public Sprite TREE01;
-    public Sprite TREE02;
-    public Sprite TREE03;
-    public Sprite BUILDING01;
-    public Sprite BUILDING02;
-    public Sprite FENCE01;
-    public Sprite FENCE02;
-    public Sprite FENCE03;
-    public Sprite FENCE04;
-    public Sprite LIGHT01;
-    public Sprite TORCH01;
-    public Sprite G_CLEF;
-    public Sprite QUARTER_NOTE;
-    public Sprite EIGHTH_NOTE;
-    public Sprite DOUBLE_EIGHTH_NOTE;
-    public Sprite GOLD_COIN;
-    public Sprite A_CONTROLLER_BUTTON;
-    public Sprite F_KEYBOARD_KEY;
+    public Sprite PLAYER, SMOKE01, NOTCH, ENEMY01, ENEMY02, ENEMY03, ENEMY04, ENEMY05, ENEMY06, ENEMY07,
+            TREE01, TREE02, TREE03, TREE04, BUILDING01, BUILDING02, FENCE01, FENCE02, FENCE03, FENCE04,
+            LIGHT01, TORCH01, G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
+            A_CONTROLLER_BUTTON, F_KEYBOARD_KEY;
 
     /** TILESET **/
     public Sprite TILESET;
 
     /** INTERFACE **/
-    public Sprite IONIAN_ICON;
-    public Sprite DORIAN_ICON;
-    public Sprite PHRYGIAN_ICON;
-    public Sprite LYDIAN_ICON;
-    public Sprite MIXOLYDIAN_ICON;
-    public Sprite AEOLIAN_ICON;
-    public Sprite LOCRIAN_ICON;
+    public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -73,6 +43,7 @@ public class SpriteManager {
         TREE01 = new Sprite("res/sprites/static/tree01.png", 16, 64, -1, -1, -1, -1, -1);
         TREE02 = new Sprite("res/sprites/static/tree02.png", 16, 64, -1, -1, -1, -1, -1);
         TREE03 = new Sprite("res/sprites/static/tree03.png", 32, 64, 6, -1, -1, -1, -1);
+        TREE04 = new Sprite("res/sprites/static/tree04.png", 32, 32, -1, -1, -1, -1, -1);
 
         /** BUILDINGS **/
         BUILDING01 = new Sprite("res/sprites/static/building01.png", 64, 64, -1, -1, -1, -1, -1);
@@ -116,7 +87,7 @@ public class SpriteManager {
         return instance;
     }
 
-    public static int numOfStaticEntitySprites = 11;
+    public static int numOfStaticEntitySprites = 12;
 
     public static Sprite getStaticEntitySprite(int i) {
         Sprite sprite = null;
@@ -131,27 +102,30 @@ public class SpriteManager {
                 sprite = SpriteManager.getInstance().TREE03;
                 break;
             case 3:
-                sprite = SpriteManager.getInstance().BUILDING01;
+                sprite = SpriteManager.getInstance().TREE04;
                 break;
             case 4:
-                sprite = SpriteManager.getInstance().BUILDING02;
+                sprite = SpriteManager.getInstance().BUILDING01;
                 break;
             case 5:
-                sprite = SpriteManager.getInstance().FENCE01;
+                sprite = SpriteManager.getInstance().BUILDING02;
                 break;
             case 6:
-                sprite = SpriteManager.getInstance().FENCE02;
+                sprite = SpriteManager.getInstance().FENCE01;
                 break;
             case 7:
-                sprite = SpriteManager.getInstance().FENCE03;
+                sprite = SpriteManager.getInstance().FENCE02;
                 break;
             case 8:
-                sprite = SpriteManager.getInstance().FENCE04;
+                sprite = SpriteManager.getInstance().FENCE03;
                 break;
             case 9:
-                sprite = SpriteManager.getInstance().LIGHT01;
+                sprite = SpriteManager.getInstance().FENCE04;
                 break;
             case 10:
+                sprite = SpriteManager.getInstance().LIGHT01;
+                break;
+            case 11:
                 sprite = SpriteManager.getInstance().TORCH01;
                 break;
             default:

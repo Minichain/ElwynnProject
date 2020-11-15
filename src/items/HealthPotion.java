@@ -1,6 +1,7 @@
-package entities;
+package items;
 
 import audio.OpenALManager;
+import entities.Player;
 
 public class HealthPotion implements Item {
     private String name = "Health Potion";

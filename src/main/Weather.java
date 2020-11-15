@@ -60,7 +60,7 @@ public class Weather {
             OpenALManager.setSoundGain(OpenALManager.SOUND_RAIN_01, rainingIntensity * Parameters.getAmbienceSoundLevel());
             int newParticlesToGenerate = (int) (timeElapsed * rainingIntensity);
             for (int i = 0; i < newParticlesToGenerate; i++) {
-                double width = 1400.0;
+                double width = 1000.0;
                 double height = 600.0;
                 double x = Camera.getInstance().getCoordinates().x - width / 2 + Math.random() * width;
                 double y = Camera.getInstance().getCoordinates().y - height / 2 + Math.random() * (height * 0.1);
@@ -70,7 +70,7 @@ public class Weather {
                 for (int j = 0; j < 5; j++) {
                     newParticles[j] = new Particle(
                             new Coordinates(x - j * velocityVector[0] * particleSize / 3.0, y - j * velocityVector[1] * particleSize / 3.0),
-                            velocityVector, 0.25, particleSize, new Color(0.25f, 0.25f, 0.5f), 4000.0, false);
+                            velocityVector, 0.25, particleSize, new Color(0.25f, 0.25f, 0.5f), 2000.0, false);
                 }
                 ParticleManager.getInstance().addParticles(newParticles);
             }

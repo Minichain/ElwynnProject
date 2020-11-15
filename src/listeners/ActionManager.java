@@ -299,27 +299,30 @@ public class ActionManager {
                             new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 3:
-                            new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Tree04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 4:
-                            new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 5:
-                            new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 6:
-                            new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 7:
-                            new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 8:
-                            new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 9:
-                            new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         case 10:
+                            new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                            break;
+                        case 11:
                             new Torch01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                             break;
                         default:

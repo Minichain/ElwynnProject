@@ -1,21 +1,20 @@
-package entities;
+package items;
 
 import audio.OpenALManager;
+import entities.Player;
 
-public class ManaPotion implements Item {
-    private String name = "Mana Potion";
+public class HastePotion implements Item {
+    private String name = "Haste Potion";
     private int cost;
-    private float restoreValue;
 
-    public ManaPotion() {
+    public HastePotion() {
         super();
-        cost = 15;
-        restoreValue = 10f;
+        cost = 25;
     }
 
     @Override
     public void use() {
-        Player.getInstance().setMana(Player.getInstance().getMana() + restoreValue);
+        Player.getInstance().setStatusEffect(Player.StatusEffect.HASTE, 10000);
         OpenALManager.playSound(OpenALManager.SOUND_DRINK_01);
     }
 
