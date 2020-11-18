@@ -50,6 +50,10 @@ public class Window {
 
         setWindowPosition(positionX, positionY);
         setWindowSize(width, height);
+
+        Log.l("OpenGL Version: " + glGetString(GL_VERSION));
+        Log.l("OpenGL Vendor: " + glGetString(GL_VENDOR));
+        Log.l("OpenGL Renderer: " + glGetString(GL_RENDERER));
     }
 
     private static void setWindowPosition(int x, int y) {
@@ -96,7 +100,7 @@ public class Window {
                     glfwSetWindowMonitor(getWindow(), monitor, 0, 0, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), Parameters.getFramesPerSecond());
                 }
             } else {
-                glfwSetWindowMonitor(getWindow(), 0, positionX, positionY, Window.getWidth(), Window.getHeight(), 0);
+                glfwSetWindowMonitor(getWindow(), 0, positionX, positionY, Window.getWidth(), Window.getHeight(), Parameters.getFramesPerSecond());
             }
         } catch (Exception e) {
             System.err.print("Error setting full screen to " + fullScreen);

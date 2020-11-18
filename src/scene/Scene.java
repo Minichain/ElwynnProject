@@ -130,12 +130,12 @@ public class Scene {
                 double entityDistance = MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCenterOfMassWorldCoordinates());
 
                 //update "update" boolean
+                currentEntity.updateCoordinates();
                 if (entityDistance < updateDistance) {
                     if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                         currentEntity.update(timeElapsed);
                     }
                 }
-                currentEntity.updateCoordinates();
 
                 //update "render" boolean
                 if (entityDistance < renderDistance) {
@@ -265,6 +265,7 @@ public class Scene {
         }
     }
 
+    //For now, this method is useless
     private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
 //        GraphicEntity entity = null;
 //        int entityIterator = 0;

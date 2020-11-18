@@ -67,13 +67,13 @@ public class SpriteManager {
         SMOKE01 = new Sprite("res/sprites/dynamic/smoke01-sheet.png", 8, 8, 6);
 
         /** INTERFACE **/
-        IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon.png", 32, 32, -1);
-        DORIAN_ICON = new Sprite("res/sprites/interface/dorian_icon.png", 32, 32, -1);
-        PHRYGIAN_ICON = new Sprite("res/sprites/interface/phrygian_icon.png", 32, 32, -1);
-        LYDIAN_ICON = new Sprite("res/sprites/interface/lydian_icon.png", 32, 32, -1);
-        MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon.png", 32, 32, -1);
-        AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon.png", 32, 32, -1);
-        LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon.png", 32, 32, -1);
+        IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon_16x16.png", 16, 16, -1);
+        DORIAN_ICON = new Sprite("res/sprites/interface/dorian_icon_16x16.png", 16, 16, -1);
+        PHRYGIAN_ICON = new Sprite("res/sprites/interface/phrygian_icon_16x16.png", 16, 16, -1);
+        LYDIAN_ICON = new Sprite("res/sprites/interface/lydian_icon_16x16.png", 16, 16, -1);
+        MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon_16x16.png", 16, 16, -1);
+        AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon_16x16.png", 16, 16, -1);
+        LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon_16x16.png", 16, 16, -1);
 
         HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
         MANA_POTION = new Sprite("res/sprites/interface/mana_potion_8x8.png", 8, 8, -1);

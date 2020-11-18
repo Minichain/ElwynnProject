@@ -123,7 +123,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
     private void updateLightSources(Long timeElapsed) {
         for (LightSource lightSource : getLightSources()) {
-            lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
+            lightSource.setWorldCoordinates(getWorldCoordinates());
             lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
             lightSource.update(timeElapsed);
         }
@@ -134,8 +134,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     }
 
     public void drawSprite(int x, int y) {
-        getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
-                1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor));
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
+                1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor), true);
     }
 
     public byte getEntityCode() {

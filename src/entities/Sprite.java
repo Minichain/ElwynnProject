@@ -68,7 +68,11 @@ public class Sprite {
     }
 
     public void draw(int x, int y, float transparency, double scale, Color color) {
-        draw(x, y, 0, 0, transparency, scale, color);
+        draw(x, y, 0, 0, transparency, scale, color, false);
+    }
+
+    public void draw(int x, int y, float transparency, double scale, Color color, boolean centered) {
+        draw(x, y, 0, 0, transparency, scale, color, centered);
     }
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency) {
@@ -76,10 +80,15 @@ public class Sprite {
     }
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale) {
-        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, scale, new Color(1f, 1f, 1f));
+        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, scale, new Color(1f, 1f, 1f), false);
     }
 
-    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale, Color color) {
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY, float transparency, double scale, boolean centered) {
+        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, scale, new Color(1f, 1f, 1f), centered);
+    }
+
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY,
+                     float transparency, double scale, Color color, boolean centered) {
         glActiveTexture(GL_TEXTURE0);
         spriteSheet.bind();
 
@@ -97,7 +106,12 @@ public class Sprite {
 
         OpenGLManager.glBegin(GL_QUADS);
 
-        y -= (int) (SPRITE_HEIGHT * scale);
+        if (centered) {
+            y -= (int) (SPRITE_HEIGHT * scale / 2.0);
+            x -= (int) (SPRITE_WIDTH * scale / 2.0);
+        } else {
+            y -= (int) (SPRITE_HEIGHT * scale);
+        }
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency,
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 

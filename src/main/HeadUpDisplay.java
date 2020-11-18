@@ -45,21 +45,7 @@ public class HeadUpDisplay {
             glEnable(GL_TEXTURE_2D);
 
             /** MUSICAL MODE **/
-            int numberOfModes = MusicalMode.values().length;
-            int spaceBetweenModes = (int) (16f * Parameters.getResolutionFactor());
-            float scale = 2f * Parameters.getResolutionFactor();
-            width = numberOfModes * 32 * scale + spaceBetweenModes * (numberOfModes - 1);
-            x = Parameters.getResolutionWidth() / 2f - width / 2f;
-            MusicalMode currentMusicalMode;
-            for (int i = 0; i < numberOfModes; i++) {
-                currentMusicalMode = MusicalMode.values()[i];
-                if (Player.getInstance().getMusicalMode() == currentMusicalMode) {
-                    currentMusicalMode.getSprite().draw((int) x, (int) y, 1f, 2.25f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor());
-                } else {
-                    currentMusicalMode.getSprite().draw((int) x, (int) y, 0.5f, 2f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor());
-                }
-                x += 32 * scale + spaceBetweenModes;
-            }
+            renderMusicalModes();
 
             String text;
             float rightPaddingText = 100f * Parameters.getResolutionFactor();
@@ -169,6 +155,31 @@ public class HeadUpDisplay {
             String text = "YOU DIED";
             float scale = 4f * Parameters.getResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
+        }
+    }
+
+    private static void renderMusicalModes() {
+        int numberOfModes = MusicalMode.values().length;
+        int spaceBetweenModes = (int) (16f * Parameters.getResolutionFactor());
+        float modeRoom = 64f * Parameters.getResolutionFactor();
+        float scale;
+        float width = (modeRoom + spaceBetweenModes) * (numberOfModes - 1);
+        float x = Parameters.getResolutionWidth() / 2f - width / 2f;
+        float y = Parameters.getResolutionHeight() - 80f * Parameters.getResolutionFactor();
+        MusicalMode currentMusicalMode;
+        float transparency;
+        for (int i = 0; i < numberOfModes; i++) {
+            currentMusicalMode = MusicalMode.values()[i];
+            if (Player.getInstance().getMusicalMode() == currentMusicalMode) {
+                transparency = 1f;
+                scale = 4.5f;
+            } else {
+                transparency = 0.5f;
+                scale = 4f;
+            }
+            currentMusicalMode.getSprite().draw((int) x, (int) y, transparency,
+                    scale * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor(), true);
+            x += modeRoom + spaceBetweenModes;
         }
     }
 
