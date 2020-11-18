@@ -19,30 +19,7 @@ public class HeadUpDisplay {
             /** NORMAL MODE HUD **/
 
             /** HEALTH, MANA AND STAMINA **/
-            float x = 30f * Parameters.getResolutionFactor();
-            float y = Parameters.getResolutionHeight() - 70f * Parameters.getResolutionFactor();
-            float width = 500f * Parameters.getResolutionFactor();
-            float height = 10f * Parameters.getResolutionFactor();
-            float healthPercentage = Player.getInstance().getHealth() / Player.MAX_HEALTH;
-            float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
-            float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
-
-            glDisable(GL_TEXTURE_2D);
-
-            OpenGLManager.glBegin(GL_TRIANGLES);
-            OpenGLManager.drawRectangle((int) x, (int) y, width, height, 0.5, 1f, 0.25f, 0.25f);
-            OpenGLManager.drawRectangle((int) x, (int) y, width * healthPercentage, height, 1.0, 1f, 0.25f, 0.25f);
-
-            y += 20f * Parameters.getResolutionFactor();
-            OpenGLManager.drawRectangle((int) x, (int) y, width, height, 0.5, 0.25f, 0.25f, 1f);
-            OpenGLManager.drawRectangle((int) x, (int) y, width * manaPercentage, height, 1.0, 0.25f, 0.25f, 1f);
-
-            y += 20f * Parameters.getResolutionFactor();
-            OpenGLManager.drawRectangle((int) x, (int) y, width, height, 0.5, 0.25f, 1f, 0.25f);
-            OpenGLManager.drawRectangle((int) x, (int) y, width * staminaPercentage, height, 1.0, 0.25f, 1f, 0.25f);
-            glEnd();
-
-            glEnable(GL_TEXTURE_2D);
+            renderHealthManaAndStaminaBars();
 
             /** MUSICAL MODE **/
             renderMusicalModes();
@@ -156,6 +133,35 @@ public class HeadUpDisplay {
             float scale = 4f * Parameters.getResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
         }
+    }
+
+    private static void renderHealthManaAndStaminaBars() {
+        float x = 30f * Parameters.getResolutionFactor();
+        float y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+        float scale = 4f;
+        float width = (SpriteManager.getInstance().EMPTY_BAR.SPRITE_WIDTH * Parameters.getResolutionFactor() * scale);
+        float height = SpriteManager.getInstance().EMPTY_BAR.SPRITE_HEIGHT * Parameters.getResolutionFactor() * scale;
+        float healthPercentage = Player.getInstance().getHealth() / Player.MAX_HEALTH;
+        float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
+        float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
+
+        SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
+                0, 0, 1f, scale * Parameters.getResolutionFactor());
+        SpriteManager.getInstance().HEALTH_BAR.customDraw((int) (x), (int) (y), (int) (healthPercentage * width), (int) (height),
+                0, 1, healthPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
+
+        y += 40f * Parameters.getResolutionFactor();
+
+        SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
+                0, 0, 1f, scale * Parameters.getResolutionFactor());
+        SpriteManager.getInstance().MANA_BAR.customDraw((int) (x), (int) (y), (int) (manaPercentage * width), (int) (height),
+                0, 1, manaPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
+        y += 40f * Parameters.getResolutionFactor();
+
+        SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
+                0, 0, 1f, scale * Parameters.getResolutionFactor());
+        SpriteManager.getInstance().STAMINA_BAR.customDraw((int) (x), (int) (y), (int) (staminaPercentage * width), (int) (height),
+                0, 1, staminaPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
     }
 
     private static void renderMusicalModes() {

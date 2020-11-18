@@ -36,9 +36,8 @@ public class GoldCoin extends DynamicGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2,
-                (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
-                1f, Camera.getZoom());
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
+                1f, Camera.getZoom(), true);
     }
 
     @Override

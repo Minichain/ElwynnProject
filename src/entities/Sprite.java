@@ -112,7 +112,44 @@ public class Sprite {
         } else {
             y -= (int) (SPRITE_HEIGHT * scale);
         }
+
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency,
+                color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+
+        glDisable(GL_BLEND);
+        glDisable(GL_TEXTURE_2D);
+
+        glEnd();
+    }
+
+    public void customDraw(int x, int y, int width, int height, float u, float v, float u2, float v2, float transparency, double scale) {
+        customDraw(x, y, width, height, u, v, u2, v2, transparency, scale, new Color(255, 255, 255), false);
+    }
+
+    public void customDraw(int x, int y, int width, int height, float u, float v, float u2, float v2,
+                     float transparency, double scale, boolean centered) {
+        customDraw(x, y, width, height, u, v, u2, v2, transparency, scale, new Color(255, 255, 255), centered);
+    }
+
+    public void customDraw(int x, int y, int width, int height, float u, float v, float u2, float v2,
+                     float transparency, double scale, Color color, boolean centered) {
+        glActiveTexture(GL_TEXTURE0);
+        spriteSheet.bind();
+
+        glEnable(GL_BLEND);
+        glEnable(GL_TEXTURE_2D);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        OpenGLManager.glBegin(GL_QUADS);
+
+        if (centered) {
+            y -= (int) (SPRITE_HEIGHT * scale / 2.0);
+            x -= (int) (SPRITE_WIDTH * scale / 2.0);
+        } else {
+            y -= (int) (SPRITE_HEIGHT * scale);
+        }
+
+        OpenGLManager.drawTexture(x, y, u, v, u2, v2, width, height, transparency,
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
         glDisable(GL_BLEND);

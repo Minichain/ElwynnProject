@@ -16,7 +16,7 @@ public class SpriteManager {
 
     /** INTERFACE **/
     public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
-            HEALTH_POTION, MANA_POTION, HASTE_POTION, GOLD_COIN_INTERFACE;
+            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, HEALTH_POTION, MANA_POTION, HASTE_POTION, GOLD_COIN_INTERFACE;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -74,6 +74,11 @@ public class SpriteManager {
         MIXOLYDIAN_ICON = new Sprite("res/sprites/interface/mixolydian_icon_16x16.png", 16, 16, -1);
         AEOLIAN_ICON = new Sprite("res/sprites/interface/aeolian_icon_16x16.png", 16, 16, -1);
         LOCRIAN_ICON = new Sprite("res/sprites/interface/locrian_icon_16x16.png", 16, 16, -1);
+
+        HEALTH_BAR = new Sprite("res/sprites/interface/health_bar_64x8.png", 64, 8, -1);
+        MANA_BAR = new Sprite("res/sprites/interface/mana_bar_64x8.png", 64, 8, -1);
+        STAMINA_BAR = new Sprite("res/sprites/interface/stamina_bar_64x8.png", 64, 8, -1);
+        EMPTY_BAR = new Sprite("res/sprites/interface/empty_bar_64x8.png", 64, 8, -1);
 
         HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
         MANA_POTION = new Sprite("res/sprites/interface/mana_potion_8x8.png", 8, 8, -1);
