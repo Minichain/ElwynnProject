@@ -24,41 +24,24 @@ public class HeadUpDisplay {
             /** MUSICAL MODE **/
             renderMusicalModes();
 
-            String text;
             float rightPaddingText = 100f * Parameters.getResolutionFactor();
             float rightPaddingSprite = 150f * Parameters.getResolutionFactor();
 
             /** GOLD COINS **/
-            SpriteManager.getInstance().GOLD_COIN_INTERFACE.draw((int) (Window.getWidth() - rightPaddingSprite),
-                    (int) (Window.getHeight() - 25f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
-            text = "x" + Player.getInstance().getAmountOfGoldCoins();
-            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 50f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
+            renderItemInfo(SpriteManager.getInstance().GOLD_COIN_INTERFACE, Player.getInstance().getAmountOfGoldCoins(), rightPaddingSprite,
+                    25f * Parameters.getResolutionFactor(), rightPaddingText, 50f * Parameters.getResolutionFactor());
 
             /** HEALTH POTIONS **/
-            SpriteManager.getInstance().HEALTH_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
-                    (int) (Window.getHeight() - 75f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
-            text = "x" + Player.getInstance().getAmountOfHealthPotions();
-            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 100f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
+            renderItemInfo(SpriteManager.getInstance().HEALTH_POTION, Player.getInstance().getAmountOfHealthPotions(), rightPaddingSprite,
+                    75f * Parameters.getResolutionFactor(), rightPaddingText, 100f * Parameters.getResolutionFactor());
 
             /** MANA POTIONS **/
-            SpriteManager.getInstance().MANA_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
-                    (int) (Window.getHeight() - 125f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
-            text = "x" + Player.getInstance().getAmountOfManaPotions();
-            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 150f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
+            renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
+                    125f * Parameters.getResolutionFactor(), rightPaddingText, 150f * Parameters.getResolutionFactor());
 
             /** HASTE POTIONS **/
-            SpriteManager.getInstance().HASTE_POTION.draw((int) (Window.getWidth() - rightPaddingSprite),
-                    (int) (Window.getHeight() - 175f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
-            text = "x" + Player.getInstance().getAmountOfHastePotions();
-            TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - 200f * Parameters.getResolutionFactor(),
-                    text, 2f * Parameters.getResolutionFactor(), false, 1f);
+            renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
+                    175f * Parameters.getResolutionFactor(), rightPaddingText, 200f * Parameters.getResolutionFactor());
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
@@ -135,6 +118,13 @@ public class HeadUpDisplay {
         }
     }
 
+    private static void renderItemInfo(Sprite sprite, int amount, float rightPaddingSprite, float bottomPaddingSprite, float rightPaddingText, float bottomPaddingText) {
+        sprite.draw((int) (Window.getWidth() - rightPaddingSprite), (int) (Window.getHeight() - bottomPaddingSprite),
+                0, 0, 1f, 4f * Parameters.getResolutionFactor());
+        TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - bottomPaddingText,
+                "x" + amount, 2f * Parameters.getResolutionFactor(), false, 1f);
+    }
+
     private static void renderHealthManaAndStaminaBars() {
         float x = 30f * Parameters.getResolutionFactor();
         float y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
@@ -145,23 +135,18 @@ public class HeadUpDisplay {
         float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
         float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
 
-        SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
-                0, 0, 1f, scale * Parameters.getResolutionFactor());
-        SpriteManager.getInstance().HEALTH_BAR.customDraw((int) (x), (int) (y), (int) (healthPercentage * width), (int) (height),
-                0, 1, healthPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
-
+        renderBar(SpriteManager.getInstance().HEALTH_BAR, x, y, width, height, healthPercentage, scale);
         y += 40f * Parameters.getResolutionFactor();
-
-        SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
-                0, 0, 1f, scale * Parameters.getResolutionFactor());
-        SpriteManager.getInstance().MANA_BAR.customDraw((int) (x), (int) (y), (int) (manaPercentage * width), (int) (height),
-                0, 1, manaPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
+        renderBar(SpriteManager.getInstance().MANA_BAR, x, y, width, height, manaPercentage, scale);
         y += 40f * Parameters.getResolutionFactor();
+        renderBar(SpriteManager.getInstance().STAMINA_BAR, x, y, width, height, staminaPercentage, scale);
+    }
 
+    private static void renderBar(Sprite sprite, float x, float y, float width, float height, float percentage, float scale) {
         SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
                 0, 0, 1f, scale * Parameters.getResolutionFactor());
-        SpriteManager.getInstance().STAMINA_BAR.customDraw((int) (x), (int) (y), (int) (staminaPercentage * width), (int) (height),
-                0, 1, staminaPercentage, 0, 1f, scale * Parameters.getResolutionFactor());
+        sprite.customDraw((int) (x), (int) (y), (int) (percentage * width), (int) (height),
+                0, 1, percentage, 0, 1f, scale * Parameters.getResolutionFactor());
     }
 
     private static void renderMusicalModes() {
