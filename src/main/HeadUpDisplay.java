@@ -67,17 +67,31 @@ public class HeadUpDisplay {
                 glEnd();
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                 int previousEntitiesToShow = 5, currentEntity;
-                float x, y;
+                float x = 0, y = 0;
+
+                glDisable(GL_TEXTURE_2D);
+                OpenGLManager.glBegin(GL_TRIANGLES);
+                OpenGLManager.drawRectangle(0, (int) (Window.getHeight() - (250f * Parameters.getResolutionFactor())),
+                        Window.getWidth(), 200f * Parameters.getResolutionFactor(), 0.7, 0);
+                glEnd();
 
                 for (int i = 0; i < 25; i++) {
                     currentEntity = selectedEntity + i - previousEntitiesToShow;
-                    x = 20f * Parameters.getResolutionFactor() + i * 128f * Parameters.getResolutionFactor();
-                    y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
                     Sprite sprite = SpriteManager.getStaticEntitySprite(currentEntity);
+
+                    float width;
+                    if (sprite != null && (20f + sprite.SPRITE_WIDTH * 2f) > 125f) {
+                        width = (20f + sprite.SPRITE_WIDTH * 2f) * Parameters.getResolutionFactor();
+                    } else {
+                        width = 125f * Parameters.getResolutionFactor();
+                    }
+
+                    y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+
                     float transparency;
                     float scale;
                     if (currentEntity == selectedEntity) {   // Highlight the tile we have selected
-                        transparency = 0.7f;
+                        transparency = 1f;
                         scale = 2f;
                     } else {
                         transparency = 0.5f;
@@ -86,6 +100,8 @@ public class HeadUpDisplay {
                     if (sprite != null) {
                         sprite.draw((int) x, (int) y, 0, 0, transparency, scale * Parameters.getResolutionFactor());
                     }
+
+                    x += width;
                 }
             }
 

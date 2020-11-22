@@ -135,7 +135,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
                             new Color(1f, 0f, 0f), 0.75, new double[]{0, -1});
                 }
             } else {
-                onInteraction(NonPlayerCharacterInteractionState.NONE);
+                onInteraction(NonPlayerCharacterInteractionState.INTERACTION_SEL);
             }
         } else if (isBuying()) {
             if (selectedItem < Player.getInstance().getListOfItems().size()) {
@@ -148,7 +148,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                         new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
             } else {
-                onInteraction(NonPlayerCharacterInteractionState.NONE);
+                onInteraction(NonPlayerCharacterInteractionState.INTERACTION_SEL);
             }
         } else {    //If we press the interaction button and we are already interacting with the NPC...
             onStopInteraction();
@@ -160,6 +160,7 @@ public class GenericNPC01 extends NonPlayerCharacter {
     public void onInteraction(NonPlayerCharacterInteractionState interaction) {
         Log.l("Interacting with NPC. Interaction: " + interaction);
         selectedItem = 0;
+        interactionState = interaction;
         if (interaction == NonPlayerCharacterInteractionState.INTERACTION_SEL && availableActions.size() <= 2) {
             switch (availableActions.get(0)) {
                 case TALK:
@@ -173,24 +174,10 @@ public class GenericNPC01 extends NonPlayerCharacter {
                     interactionState = NonPlayerCharacterInteractionState.SELLING;
                     break;
             }
-        } else {
-            interactionState = interaction;
         }
-        switch (interaction) {
-            case INTERACTION_SEL:
-                Log.l("Interaction selection.");
-                break;
-            case TALKING:
-                Log.l("Talking Text: \"" + talkText + "\"");
-                break;
-            case SELLING:
-                Log.l("Selling");
-                break;
-            case BUYING:
-                Log.l("Buying");
-                break;
-            default:
-                break;
+
+        if (interaction == NonPlayerCharacterInteractionState.TALKING) {
+            Log.l("Talking Text: \"" + talkText + "\"");
         }
     }
 

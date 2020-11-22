@@ -90,11 +90,8 @@ public class Player extends LivingDynamicGraphicEntity {
         amountOfGoldCoins = 0;
         runningParticleCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
+        setAmountOfGoldCoins(50);
         listOfItems = new ArrayList<>();
-        listOfItems.add(new HealthPotion());
-        listOfItems.add(new HealthPotion());
-        listOfItems.add(new HealthPotion());
-        listOfItems.add(new HealthPotion());
     }
 
     public static Player getInstance() {

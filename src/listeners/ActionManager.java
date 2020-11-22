@@ -110,16 +110,12 @@ public class ActionManager {
                 case RESET:
                     key[0] = GLFW_KEY_F5;
                     break;
-                case CREATIVE_TILES_MODE:
-                    key[0] = GLFW_KEY_F2;
-                    break;
-                case CREATIVE_STATIC_ENTITIES_MODE:
-                    key[0] = GLFW_KEY_F3;
-                    break;
                 case IONIAN_MODE:
+                case CREATIVE_TILES_MODE:
                     key[0] = GLFW_KEY_1;
                     break;
                 case DORIAN_MODE:
+                case CREATIVE_STATIC_ENTITIES_MODE:
                     key[0] = GLFW_KEY_2;
                     break;
                 case PHRYGIAN_MODE:
@@ -247,87 +243,30 @@ public class ActionManager {
             }
         } else if (isSameKeyCombination(key, Action.RESET.getActionKey())) {
             if (!pressed) Scene.getInstance().reset();
-        } else if (isSameKeyCombination(key, Action.CREATIVE_TILES_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.CREATIVE_TILES_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
-        } else if (isSameKeyCombination(key, Action.CREATIVE_STATIC_ENTITIES_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.CREATIVE_STATIC_ENTITIES_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
-        } else if (isSameKeyCombination(key, Action.IONIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.IONIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.IONIAN);
-        } else if (isSameKeyCombination(key, Action.DORIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.DORIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.DORIAN);
-        } else if (isSameKeyCombination(key, Action.PHRYGIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.PHRYGIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.PHRYGIAN);
-        } else if (isSameKeyCombination(key, Action.LYDIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.LYDIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.LYDIAN);
-        } else if (isSameKeyCombination(key, Action.MIXOLYDIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.MIXOLYDIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.MIXOLYDIAN);
-        } else if (isSameKeyCombination(key, Action.AEOLIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.AEOLIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.AEOLIAN);
-        } else if (isSameKeyCombination(key, Action.LOCRIAN_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.LOCRIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.LOCRIAN);
         } else if (isSameKeyCombination(key, Action.ATTACK_01.getActionKey())) {
             if (!pressed && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                    Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();
-                    Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                    int layer;
-                    switch (GameMode.getLayerEditing()) {
-                        case FIRST_LAYER:
-                        default:
-                            layer = 0;
-                            break;
-                        case SECOND_LAYER:
-                            layer = 1;
-                            break;
-                        case THIRD_LAYER:
-                            layer = 2;
-                            break;
-                    }
-                    TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
+                    putTile();
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                    Coordinates mouseWorldCoordinates = InputListenerManager.getMouseWorldCoordinates();
-                    int entity = HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites;
-                    Log.l("Adding a new Static Entity " + entity);
-                    switch (entity) {
-                        case 0:
-                            new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 1:
-                            new Tree02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 2:
-                            new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 3:
-                            new Tree04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 4:
-                            new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 5:
-                            new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 6:
-                            new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 7:
-                            new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 8:
-                            new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 9:
-                            new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 10:
-                            new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        case 11:
-                            new Torch01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
-                            break;
-                        default:
-                            break;
-                    }
+                    putStaticEntity();
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
@@ -371,5 +310,70 @@ public class ActionManager {
             return input2[1] == -1 || input1[1] == input2[1];
         }
         return false;
+    }
+
+    private static void putTile() {
+        Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();
+        Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
+        int layer;
+        switch (GameMode.getLayerEditing()) {
+            case FIRST_LAYER:
+            default:
+                layer = 0;
+                break;
+            case SECOND_LAYER:
+                layer = 1;
+                break;
+            case THIRD_LAYER:
+                layer = 2;
+                break;
+        }
+        TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
+    }
+
+    private static void putStaticEntity() {
+        Coordinates mouseWorldCoordinates = InputListenerManager.getMouseWorldCoordinates();
+        int entity = HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites;
+        Log.l("Adding a new Static Entity " + entity);
+        switch (entity) {
+            case 0:
+                new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 1:
+                new Tree02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 2:
+                new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 3:
+                new Tree04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 4:
+                new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 5:
+                new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 6:
+                new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 7:
+                new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 8:
+                new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 9:
+                new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 10:
+                new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            case 11:
+                new Torch01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            default:
+                break;
+        }
     }
 }

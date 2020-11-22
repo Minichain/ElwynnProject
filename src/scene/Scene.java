@@ -390,17 +390,22 @@ public class Scene {
         npc.setTalkText("Press LEFT or RIGHT mouse buttons to attack.");
 
         npc = new GenericNPC01(2500, 1725);
-        npc.setTalkText("Use Q and E to change the musical mode.");
+        textList = new ArrayList<>();
+        textList.add("Use Q and E to change the musical mode.");
+        textList.add("You can also use the numbers from 1 to 7.");
+        npc.setTalkText(textList);
 
         npc = new GenericNPC01(2460, 1810, true, true);
         textList = new ArrayList<>();
         textList.add("There is a village south from here.");
         textList.add("Just follow the path...");
         textList.add("...you won't get lost.");
+        textList.add("I sell potions if you need any.");
+        textList.add("Good luck!");
         npc.setTalkText(textList);
 
         npc = new GenericNPC01(2456, 2442, true, false);
-        npc.setTalkText("Welcome, outsider. This village doesn't even have a name.");
+        npc.setTalkText("Welcome...");
 
         npc = new GenericNPC01(2622, 2471, true, false);
         npc.setTalkText("It won't stop raining...");
