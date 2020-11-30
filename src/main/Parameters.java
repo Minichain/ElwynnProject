@@ -9,7 +9,7 @@ public class Parameters {
     private static boolean spawnEnemies = false;
     private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
-    private static float renderDistance = 1.2f;
+    private static float renderDistance = 1.4f;
     private static float updateDistance = 6000.0f;
 
     /** GRAPHIC/DISPLAY SETTINGS **/

@@ -129,9 +129,9 @@ public class MenuSelector extends MenuComponent {
                 this.vertex2 = new Coordinates(center[0] + halfSize, center[1] + halfSize);
                 this.vertex3 = new Coordinates(center[0] + halfSize, center[1] - halfSize);
             } else {
-                this.vertex1 = new Coordinates(center[0] + halfSize, center[1]);
+                this.vertex1 = new Coordinates(center[0] - halfSize, center[1] - halfSize);
                 this.vertex2 = new Coordinates(center[0] - halfSize, center[1] + halfSize);
-                this.vertex3 = new Coordinates(center[0] - halfSize, center[1] - halfSize);
+                this.vertex3 = new Coordinates(center[0] + halfSize, center[1]);
             }
         }
     }

@@ -86,6 +86,10 @@ public class OpenGLManager {
 
         glLoadIdentity(); //Cleans out any matrix mode
         glOrtho(0f, Parameters.getResolutionWidth(), Parameters.getResolutionHeight(), 0f, 1f, -1f);
+
+        //Face Culling
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
     }
 
     public static void drawTexture(int x, int y, float u, float v, float u2, float v2, float spriteWidth, float spriteHeight) {
