@@ -337,16 +337,16 @@ public class ActionManager {
         Log.l("Adding a new Static Entity " + entity);
         switch (entity) {
             case 0:
-                new Tree01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 0);
                 break;
             case 1:
-                new Tree02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 1);
                 break;
             case 2:
-                new Tree03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 2);
                 break;
             case 3:
-                new Tree04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 3);
                 break;
             case 4:
                 new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
@@ -355,16 +355,16 @@ public class ActionManager {
                 new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                 break;
             case 6:
-                new Fence01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 0);
                 break;
             case 7:
-                new Fence02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 1);
                 break;
             case 8:
-                new Fence03((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 2);
                 break;
             case 9:
-                new Fence04((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 3);
                 break;
             case 10:
                 new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);

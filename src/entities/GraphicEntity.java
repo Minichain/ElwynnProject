@@ -13,6 +13,7 @@ public abstract class GraphicEntity extends Entity {
     private Coordinates centerOfMassWorldCoordinates;
     private Coordinates centerOfMassCameraCoordinates;
     private ArrayList<LightSource> lightSources;
+    public int type;
 
     public GraphicEntity(int x, int y) {
         super(x, y);
@@ -74,5 +75,9 @@ public abstract class GraphicEntity extends Entity {
 
     public ArrayList<LightSource> getLightSources() {
         return lightSources;
+    }
+
+    public int getType() {
+        return type;
     }
 }

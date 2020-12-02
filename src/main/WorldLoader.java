@@ -24,7 +24,7 @@ public class WorldLoader {
     public static boolean saveWorld(Tile[][] arrayOfTiles) {
         // The array of Tiles is stored into a 1-Dimensional byte array
         int dataArraySize = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
-        dataArraySize += Scene.getInstance().getListOfStaticEntities().size() * (Double.BYTES * 2 + 1);
+        dataArraySize += Scene.getInstance().getListOfStaticEntities().size() * (Double.BYTES * 3 + 1);
         byte[] data = new byte[dataArraySize];
         int dataIterator = 0;
 
@@ -45,6 +45,8 @@ public class WorldLoader {
             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
             data[dataIterator] = graphicEntity.getEntityCode();
 //            Log.l("Saving Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
+            dataIterator++;
+            data[dataIterator] = (new Integer(graphicEntity.getType())).byteValue();
             dataIterator++;
             byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
             for (int j = 0; j < xCoordinate.length; j++) {
@@ -112,6 +114,8 @@ public class WorldLoader {
         int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
         while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
             byte entityCode = fileData[i];
+            i++;
+            byte entityType = fileData[i];
 
             byte[] xCoordinate = new byte[Double.BYTES];
             for (int j = 0; j < Double.BYTES; j++) {
@@ -125,22 +129,10 @@ public class WorldLoader {
             }
 
 //            Log.l("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
-            if (entityCode == Tree01.ENTITY_CODE) {
-                new Tree01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Tree02.ENTITY_CODE) {
-                new Tree02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Tree03.ENTITY_CODE) {
-                new Tree03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Tree04.ENTITY_CODE) {
-                new Tree04((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Fence01.ENTITY_CODE) {
-                new Fence01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Fence02.ENTITY_CODE) {
-                new Fence02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Fence03.ENTITY_CODE) {
-                new Fence03((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Fence04.ENTITY_CODE) {
-                new Fence04((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            if (entityCode == Tree.ENTITY_CODE) {
+                new Tree((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
+            } else if (entityCode == Fence.ENTITY_CODE) {
+                new Fence((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
             } else if (entityCode == Light01.ENTITY_CODE) {
                 new Light01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
             } else if (entityCode == Torch01.ENTITY_CODE) {

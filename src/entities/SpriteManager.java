@@ -8,7 +8,8 @@ public class SpriteManager {
     /** ENTITIES **/
     public Sprite PLAYER, SMOKE01, NOTCH, ENEMY01, ENEMY02, ENEMY03, ENEMY04, ENEMY05, ENEMY06, ENEMY07,
             TREE01, TREE02, TREE03, TREE04, BUILDING01, BUILDING02, FENCE01, FENCE02, FENCE03, FENCE04,
-            LIGHT01, TORCH01, G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
+            LIGHT01, TORCH01, UTILITY_POLE_01,
+            G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
             A_CONTROLLER_BUTTON, F_KEYBOARD_KEY;
 
     /** TILESET **/
@@ -65,6 +66,8 @@ public class SpriteManager {
 
         /** SMOKE **/
         SMOKE01 = new Sprite("res/sprites/dynamic/smoke01-sheet.png", 8, 8, 6);
+
+        UTILITY_POLE_01 = new Sprite("res/sprites/static/utilityPole01.png", 16, 48, -1);
 
         /** INTERFACE **/
         IONIAN_ICON = new Sprite("res/sprites/interface/ionian_icon_16x16.png", 16, 16, -1);
