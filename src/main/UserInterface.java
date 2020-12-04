@@ -103,7 +103,7 @@ public class UserInterface {
         }
 
         /** NPC interactions **/
-        if (!Menu.getInstance().isShowing()) {
+        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             renderNPCInteractions();
         }
     }

@@ -14,7 +14,7 @@ import java.awt.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Enemy extends LivingDynamicGraphicEntity {
-    public static byte ENTITY_CODE = 51;
+    public static byte ENTITY_CODE = 7;
     private Utils.DirectionFacing directionFacing;
     private Status status;
     public enum Status {

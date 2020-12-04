@@ -8,7 +8,6 @@ import utils.MathUtils;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Collision {
-
     private Coordinates center;
     private double width;
     private double height;

@@ -4,11 +4,11 @@ import main.Texture;
 import scene.Camera;
 import scene.Scene;
 
-public class Smoke01 extends GraphicEntity {
+public class Smoke extends GraphicEntity {
     public int timeToLive;
     public int timeLiving;
 
-    public Smoke01(int x, int y, int timeToLive) {
+    public Smoke(int x, int y, int timeToLive) {
         super(x, y);
         init(timeToLive);
     }

@@ -4,27 +4,25 @@ import main.Coordinates;
 import main.Texture;
 import scene.Scene;
 
-import java.awt.*;
+public class Light extends StaticGraphicEntity {
+    public static byte ENTITY_CODE = 4;
 
-public class Torch01 extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 52;
-
-    public Torch01(int x, int y) {
+    public Light(int x, int y) {
         super(x, y);
         init();
     }
 
     private void init() {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
-        setSprite(SpriteManager.getInstance().TORCH01);
-        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 8), 8, 8));   //Square collision
+        setSprite(SpriteManager.getInstance().LIGHT01);
+        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 12, getWorldCoordinates().y - 4), 8));   //Square collision
         Scene.getInstance().getListOfEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
 
         /** LIGHT SOURCES **/
-        Coordinates lightSourceCoordinates = new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - getSprite().SPRITE_HEIGHT + 16);
+        Coordinates lightSourceCoordinates = new Coordinates(getWorldCoordinates().x + 6, getWorldCoordinates().y - getSprite().SPRITE_HEIGHT + 5);
         float intensity = 75f;
-        getLightSources().add(new LightSource(lightSourceCoordinates, intensity, new Color(255, 240, 170)));
+        getLightSources().add(new LightSource(lightSourceCoordinates, intensity));
         for (LightSource lightSource : getLightSources()) {
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
@@ -32,9 +30,7 @@ public class Torch01 extends StaticGraphicEntity {
 
     @Override
     public void update(long timeElapsed) {
-        double frame;
-        frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.005));
-        setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
+
     }
 
     @Override

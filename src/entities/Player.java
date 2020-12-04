@@ -18,7 +18,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player extends LivingDynamicGraphicEntity {
-    public static byte ENTITY_CODE = 41;
+    public static byte ENTITY_CODE = 6;
     private static Player instance = null;
     private static Utils.DirectionFacing directionFacing;
 
@@ -186,7 +186,7 @@ public class Player extends LivingDynamicGraphicEntity {
             if (speed > 0.0 && runningParticleCoolDown <= 0) {
                 Coordinates coordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + MathUtils.random(-2.5, 2.5),
                         getCenterOfMassWorldCoordinates().y + MathUtils.random(-2.5, 2.5) + 10);
-                new Smoke01((int) coordinates.x, (int) coordinates.y, 300);
+                new Smoke((int) coordinates.x, (int) coordinates.y, 300);
                 runningParticleCoolDown = runningParticlePeriod;
             }
             runningParticleCoolDown -= timeElapsed;

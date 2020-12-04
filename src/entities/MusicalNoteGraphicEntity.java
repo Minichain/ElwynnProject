@@ -11,7 +11,7 @@ import utils.MathUtils;
 import java.awt.*;
 
 public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
-    public static byte ENTITY_CODE = 61;
+    public static byte ENTITY_CODE = 8;
     private double timeLiving = 0;
     private boolean dead = false;
     private double timeToLive;

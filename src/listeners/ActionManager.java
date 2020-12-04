@@ -349,10 +349,10 @@ public class ActionManager {
                 new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 3);
                 break;
             case 4:
-                new Building01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Building((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 0);
                 break;
             case 5:
-                new Building02((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Building((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 1);
                 break;
             case 6:
                 new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 0);
@@ -367,10 +367,10 @@ public class ActionManager {
                 new Fence((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 3);
                 break;
             case 10:
-                new Light01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Light((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                 break;
             case 11:
-                new Torch01((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                new Torch((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                 break;
             default:
                 break;

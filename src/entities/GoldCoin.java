@@ -12,7 +12,7 @@ import utils.MathUtils;
 import java.awt.*;
 
 public class GoldCoin extends DynamicGraphicEntity {
-    public static byte ENTITY_CODE = 71;
+    public static byte ENTITY_CODE = 10;
     private float interactionDistance = 25f;
 
     public GoldCoin(int x, int y) {

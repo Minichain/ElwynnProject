@@ -17,7 +17,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class GenericNPC01 extends NonPlayerCharacter {
-    public static byte ENTITY_CODE = 81;
+    public static byte ENTITY_CODE = 9;
     private final double interactionDistance = 25;
     private ArrayList<String> talkText;
     private int talkTextPage;

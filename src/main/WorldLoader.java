@@ -133,14 +133,12 @@ public class WorldLoader {
                 new Tree((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
             } else if (entityCode == Fence.ENTITY_CODE) {
                 new Fence((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
-            } else if (entityCode == Light01.ENTITY_CODE) {
-                new Light01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Torch01.ENTITY_CODE) {
-                new Torch01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Building01.ENTITY_CODE) {
-                new Building01((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Building02.ENTITY_CODE) {
-                new Building02((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Light.ENTITY_CODE) {
+                new Light((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Torch.ENTITY_CODE) {
+                new Torch((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
+            } else if (entityCode == Building.ENTITY_CODE) {
+                new Building((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
             }
             i++;
         }

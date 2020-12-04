@@ -229,14 +229,7 @@ public class Scene {
 
         OpenGLManager.useShader(1);
 
-        /** FIRST LAYER OF TILES IS DRAWN FIRST **/
         renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 0);
-
-        /** SECOND LAYER IS DRAWN AT THE SAME TIME AS ENTITIES, BY ORDER OF DEPTH **/
-//        renderSecondLayerOfTilesAndEntities(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates);
-
-        /** THIRD AND LAST LAYER OF TILES IS DRAWN LAST **/
-//        renderLayerOfTiles(topLeftTileCoordinates, topRightTileCoordinates, bottomLeftTileCoordinates, 2);
 
         renderEntities();
 
@@ -263,55 +256,6 @@ public class Scene {
                 entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y);
             }
         }
-    }
-
-    //For now, this method is useless
-    private void renderSecondLayerOfTilesAndEntities(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
-//        GraphicEntity entity = null;
-//        int entityIterator = 0;
-//        int firstTileRowToDraw = (int) topLeftTileCoordinates.y;
-//        int lastTileRowToDraw = (int) bottomLeftTileCoordinates.y;
-//        int tileRowIterator = firstTileRowToDraw;
-//
-//        while (tileRowIterator < lastTileRowToDraw) {
-//            if (entityIterator < listOfEntitiesToUpdate.size()) {
-//                entity = listOfEntitiesToUpdate.get(entityIterator);
-//            }
-//            if (entity != null
-//                    && entity.getWorldCoordinates().y > Coordinates.tileCoordinatesToWorldCoordinates(0, tileRowIterator).y) {
-//                entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y);
-//                entity = null;
-//                entityIterator++;
-//            } else {
-//                glActiveTexture(GL_TEXTURE0);
-//                TileMap.bindTileSetTexture();
-//
-//                glEnable(GL_BLEND);
-//                glEnable(GL_TEXTURE_2D);
-//                glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-//
-//                OpenGLManager.glBegin(GL_QUADS);
-//
-//                for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
-//                    int k = 1;
-//                    if (0 < i && i < TileMap.getArrayOfTiles().length
-//                            && 0 < tileRowIterator && tileRowIterator < TileMap.getArrayOfTiles()[0].length
-//                            && TileMap.getArrayOfTiles()[i][tileRowIterator].getLayerValue(k) != 0) {
-//                        double scale = Camera.getZoom();
-//                        int x = i * TileMap.TILE_WIDTH;
-//                        int y = tileRowIterator * TileMap.TILE_HEIGHT;
-//                        TileMap.drawTile(i, tileRowIterator, k, x, y, scale);
-//                    }
-//                }
-//
-//                glDisable(GL_BLEND);
-//                glDisable(GL_TEXTURE_2D);
-//
-//                glEnd();
-//
-//                tileRowIterator++;
-//            }
-//        }
     }
 
     private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
