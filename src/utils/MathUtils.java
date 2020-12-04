@@ -113,4 +113,12 @@ public class MathUtils {
     public static double random(double min, double max) {
         return (Math.random() * (max - min)) + min;
     }
+
+    public static float customExponentialFunction(float x) {
+        return (float) (1f - Math.exp(-10f * x));
+    }
+
+    public static double customExponentialFunction(double x) {
+        return (1f - Math.exp(-10f * x));
+    }
 }

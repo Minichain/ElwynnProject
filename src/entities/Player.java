@@ -42,7 +42,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private int circleAttackPeriod = 2500;
     private int circleAttackCoolDown;
     private float circleAttackPower = 200f;
-    private float circleAttackManaCost = 40f;
+    private float circleAttackManaCost = 10f;
 
     private MusicalMode musicalMode;
 

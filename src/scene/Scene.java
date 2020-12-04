@@ -91,9 +91,6 @@ public class Scene {
 
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
-            if (listOfCircleAttacks.get(i).isDead()) {
-                listOfCircleAttacks.remove(listOfCircleAttacks.get(i));
-            }
         }
 
         ParticleManager.getInstance().updateParticles(timeElapsed);
@@ -194,6 +191,10 @@ public class Scene {
 
     public ArrayList<NonPlayerCharacter> getListOfNonPlayerCharacters() {
         return listOfNonPlayerCharacters;
+    }
+
+    public ArrayList<CircleAttack> getListOfCircleAttacks() {
+        return listOfCircleAttacks;
     }
 
     public static Coordinates getInitialCoordinates() {

@@ -28,6 +28,8 @@ public class CircleAttack {
     private double timeLiving = 0;
     private double timeToLive = 5000;
     private MusicalMode musicalMode;
+    private LightSource lightSource;
+    private float lightSourceIntensity = 50f;
 
     public CircleAttack(Coordinates center, double radius, int attackPeriod, float attackPower, boolean enemyAttack, boolean attacking, MusicalMode musicalMode) {
         this.center = center;
@@ -37,12 +39,22 @@ public class CircleAttack {
         this.attackPower = attackPower;
         this.attackCoolDown = 0;
         this.musicalMode = musicalMode;
+        this.lightSource = new LightSource(center, lightSourceIntensity, musicalMode.getColor());
+        Scene.getInstance().getListOfLightSources().add(lightSource);
         update(0, attacking);
     }
 
     public void update(long timeElapsed, boolean attacking) {
         timeLiving += timeElapsed;
         this.attacking = attacking;
+
+        if (isDead()) {
+            onDestroy();
+            return;
+        }
+
+        lightSource.setIntensity(lightSourceIntensity * MathUtils.customExponentialFunction(1f - 1f * (float) (timeLiving / timeToLive)));
+
         Particle particle;
         double[] velocityVector;
 
@@ -59,9 +71,9 @@ public class CircleAttack {
                 velocityVector = new double[]{0, -0.1};
                 particleCoordinates = new Coordinates(this.center.x + generationVector[0], this.center.y + generationVector[1]);
                 if (enemyAttack) {
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, new Color(255, 0, 0), true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, new Color(255, 0, 0), false);
                 } else {
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, musicalMode.getColor(), true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 2, musicalMode.getColor(), false);
                 }
                 ParticleManager.getInstance().addParticle(particle);
             }
@@ -94,6 +106,11 @@ public class CircleAttack {
         }
 
         attackCoolDown = attackPeriod;
+    }
+
+    private void onDestroy() {
+        Scene.getInstance().getListOfCircleAttacks().remove(this);
+        Scene.getInstance().getListOfLightSources().remove(lightSource);
     }
 
     public void render() {
