@@ -73,7 +73,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private Player() {
         super((int) Scene.getInitialCoordinates().x, (int) Scene.getInitialCoordinates().y);
-        init();
+        //init();
     }
 
     public void init() {
@@ -447,7 +447,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void roll() {
-        if (stamina >= 25f && status == Status.RUNNING && status != Status.ATTACKING) {
+        if (stamina >= 25f && status == Status.RUNNING) {
             Log.l("Player rolling");
             status = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);

@@ -2,7 +2,6 @@ package main;
 
 public class GameStatus {
     private static Status status;
-    private static long RUNTIME = 0;
 
     public enum Status {
         RUNNING, PAUSED, STOPPED
@@ -15,6 +14,9 @@ public class GameStatus {
     public static void setStatus(Status status) {
         GameStatus.status = status;
     }
+
+    /** Time game has been running in milliseconds **/
+    private static long RUNTIME = 0;
 
     public static long getRuntime() {
         return RUNTIME;

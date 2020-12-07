@@ -15,26 +15,29 @@ public class Game {
         Log.l("------------ GAME INITIATED! ------------");
     }
 
-    public static void update(long timeElapsed) {
+    public static void update(long timeElapsedNanos) {
         long startTime = System.nanoTime();
+        long timeElapsedMillis = timeElapsedNanos / 1000000;
+        GameStatus.setRuntime(GameStatus.getRuntime() + timeElapsedMillis);
         InputListenerManager.updateMouseWorldCoordinates();
         InputListenerManager.updateControllerInputs();
-        Camera.getInstance().update(timeElapsed);
-        Scene.getInstance().update(timeElapsed);
-        Weather.getInstance().update(timeElapsed);
-        GameTime.getInstance().update(timeElapsed);
-        UserInterface.getInstance().update(timeElapsed);
+        Camera.getInstance().update(timeElapsedMillis);
+        Scene.getInstance().update(timeElapsedMillis);
+        Weather.getInstance().update(timeElapsedMillis);
+        GameTime.getInstance().update(timeElapsedMillis);
+        UserInterface.getInstance().update(timeElapsedNanos);
         FramesPerSecond.updateUpdatingTimeNanoseconds(System.nanoTime() - startTime);
     }
 
     public static void render(long timeElapsed) {
         long startTime = System.nanoTime();
+        long timeElapsedMillis = timeElapsed / 1000000;
         OpenGLManager.prepareFrame();
         OpenGLManager.updateShadersUniforms();
 
         Scene.getInstance().render();
         SpecialEffects.render();
-        UserInterface.getInstance().render(timeElapsed);
+        UserInterface.getInstance().render(timeElapsedMillis);
         FramesPerSecond.updateRenderingTimeNanoseconds(System.nanoTime() - startTime);
     }
 

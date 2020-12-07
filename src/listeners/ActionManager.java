@@ -188,7 +188,7 @@ public class ActionManager {
                 WorldLoader.saveWorld();
             }
         } else if (isSameKeyCombination(key, Action.ROLL.getActionKey())) {
-            if (pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().roll();
             }
         } else if (isSameKeyCombination(key, Action.PREVIOUS_MUSICAL_MODE.getActionKey())) {
