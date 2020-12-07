@@ -73,8 +73,7 @@ public class Scene {
     }
 
     public void update(long timeElapsed) {
-//        renderDistance = (int) (Parameters.getRenderDistance() * (Parameters.getResolutionWidth() / 2.0) / (Camera.getZoom() / 2.0));
-        renderDistance = (int) (Parameters.getRenderDistance() * 240);
+        renderDistance = (int) Parameters.getRenderDistance();
         updateDistance = (int) Parameters.getUpdateDistance();
 
         OpenALManager.playMusicDependingOnMusicalMode(Player.getInstance().getMusicalMode());
@@ -126,20 +125,15 @@ public class Scene {
 
                 double entityDistance = MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCenterOfMassWorldCoordinates());
 
-                //update "update" boolean
-                currentEntity.updateCoordinates();
                 if (entityDistance < updateDistance) {
                     if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                         currentEntity.update(timeElapsed);
                     }
                 }
+                currentEntity.updateCoordinates();
 
-                //update "render" boolean
-                if (entityDistance < renderDistance) {
-                    currentEntity.render = true;
-                } else {
-                    currentEntity.render = false;
-                }
+                //Set "render" flag
+                currentEntity.render = entityDistance < renderDistance;
 
                 if (currentEntity instanceof Enemy && ((Enemy) currentEntity).getStatus() != Enemy.Status.DEAD) {
                     listOfEnemies.add((Enemy) currentEntity);
@@ -153,9 +147,9 @@ public class Scene {
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < (n - i); j++) {
                 GraphicEntity entity1 = listOfEntities.get(j + 1);
-                GraphicEntity graphicEntity2 = listOfEntities.get(j);
-                if (entity1.getWorldCoordinates().y < graphicEntity2.getWorldCoordinates().y) {
-                    listOfEntities.set(j + 1, graphicEntity2);
+                GraphicEntity entity2 = listOfEntities.get(j);
+                if (entity1.getWorldCoordinates().y < entity2.getWorldCoordinates().y) {
+                    listOfEntities.set(j + 1, entity2);
                     listOfEntities.set(j, entity1);
                 }
             }

@@ -72,8 +72,8 @@ public class Player extends LivingDynamicGraphicEntity {
     private ArrayList<Item> listOfItems;
 
     private Player() {
-        super((int) Scene.getInitialCoordinates().x, (int) Scene.getInitialCoordinates().y);
-        //init();
+        super(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
+        init();
     }
 
     public void init() {

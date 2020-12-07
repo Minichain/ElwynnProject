@@ -23,7 +23,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private boolean enemyAttack;
 
     public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
-        super((int) worldCoordinates.x, (int) worldCoordinates.y);
+        super(worldCoordinates.x, worldCoordinates.y);
         this.movementVector = movementVector;
         this.movementVectorNormalized = MathUtils.normalizeVector(movementVector);
         init(speed, musicalMode, damage, timeToLive, enemyAttack);

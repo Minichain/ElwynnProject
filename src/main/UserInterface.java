@@ -36,12 +36,7 @@ public class UserInterface {
         return instance;
     }
 
-    public void update(long timeElapsedNanos) {
-        /** UPDATE FPS **/
-        if (timeElapsedNanos <= 0) timeElapsedNanos = 1;
-        float fps = 1000000000f / timeElapsedNanos;
-        FramesPerSecond.update(fps);
-
+    public void update(long timeElapsed) {
         /** UPDATE DEBUG TEXT **/
         if (Parameters.isDebugMode()) {
             debugTextList.clear();

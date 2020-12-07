@@ -4,7 +4,7 @@ public abstract class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
     public float health;
     public double[] facingVector;
 
-    public LivingDynamicGraphicEntity(int x, int y) {
+    public LivingDynamicGraphicEntity(double x, double y) {
         super(x, y);
     }
 

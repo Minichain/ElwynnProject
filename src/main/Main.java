@@ -10,6 +10,7 @@ public class Main {
         System.setProperty("org.lwjgl.librarypath", new File("natives/windows/x64").getAbsolutePath());
 
         long timeElapsedNanos = 0;
+        long timeElapsedMillis = 0;
         long lastUpdateTime = System.nanoTime();
         long maxTimeBetweenFrames;
 
@@ -25,9 +26,12 @@ public class Main {
 
         while (!glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
             maxTimeBetweenFrames = 1000000000 / Parameters.getFramesPerSecond();
+            timeElapsedMillis = timeElapsedNanos / 1000000;
 
-            Game.update(timeElapsedNanos);
-            Game.render(timeElapsedNanos);
+            FramesPerSecond.update(1000000000f / timeElapsedNanos);
+
+            Game.update(timeElapsedMillis);
+            Game.render(timeElapsedMillis);
 
             glfwSwapBuffers(Window.getWindow());
             glfwPollEvents();

@@ -115,10 +115,10 @@ public class MathUtils {
     }
 
     public static float customExponentialFunction(float x) {
-        return (float) (1f - Math.exp(-10f * x));
+        return (float) ((1f - Math.exp(-10f * x)) + (Math.sin(200f * x) * 0.05f));
     }
 
     public static double customExponentialFunction(double x) {
-        return (1f - Math.exp(-10f * x));
+        return (1f - Math.exp(-10f * x)) + (Math.sin(200f * x) * 0.05f);
     }
 }

@@ -61,6 +61,9 @@ public class Menu {
         MenuSlider updateDistance = new MenuSlider("Update Distance", MenuSlider.SliderAction.UPDATE_DISTANCE);
         listOfMenuComponents.add(updateDistance);
 
+        MenuSlider framesPerSecond = new MenuSlider("Frames Per Second", MenuSlider.SliderAction.FRAMES_PER_SECOND);
+        listOfMenuComponents.add(framesPerSecond);
+
         MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
     }

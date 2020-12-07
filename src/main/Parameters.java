@@ -6,11 +6,11 @@ import enums.Resolution;
 
 public class Parameters {
     private static boolean debugMode = false;
-    private static boolean spawnEnemies = false;
+    private static boolean spawnEnemies = true;
     private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
-    private static float renderDistance = 1.4f;
-    private static float updateDistance = 6000.0f;
+    private static float renderDistance = 336f;
+    private static float updateDistance = 2000f;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond;
@@ -79,6 +79,8 @@ public class Parameters {
     }
 
     public static void setFramesPerSecond(int framesPerSecond) {
+        if (framesPerSecond < 10) framesPerSecond = 10;
+        else if (framesPerSecond > 250) framesPerSecond = 250;
         Log.l("setFramesPerSecond to " + framesPerSecond);
         Parameters.framesPerSecond = framesPerSecond;
         DataBase.insertOrUpdateParameter("framesPerSecond", framesPerSecond);

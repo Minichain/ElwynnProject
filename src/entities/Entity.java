@@ -7,7 +7,7 @@ public abstract class Entity {
     private Coordinates cameraCoordinates;
     public boolean render = false;
 
-    public Entity(int x, int y) {
+    public Entity(double x, double y) {
         worldCoordinates = new Coordinates(x, y);
         cameraCoordinates = worldCoordinates.toCameraCoordinates();
     }

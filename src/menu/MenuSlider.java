@@ -13,7 +13,7 @@ public class MenuSlider extends MenuComponent {
 
     public enum SliderAction {
         NONE, MUSIC_SOUND_LEVEL, EFFECT_SOUND_LEVEL, AMBIENCE_SOUND_LEVEL,
-        GAME_TIME_SPEED, SPAWN_RATE, RENDER_DISTANCE, UPDATE_DISTANCE
+        GAME_TIME_SPEED, SPAWN_RATE, RENDER_DISTANCE, UPDATE_DISTANCE, FRAMES_PER_SECOND
     }
 
     public MenuSlider(String text, SliderAction sliderAction) {
@@ -35,10 +35,13 @@ public class MenuSlider extends MenuComponent {
                 progress = Parameters.getSpawnRate() / 10f;
                 break;
             case RENDER_DISTANCE:
-                progress = Parameters.getRenderDistance() / 10f;
+                progress = Parameters.getRenderDistance() / 2500f;
                 break;
             case UPDATE_DISTANCE:
-                progress = Parameters.getUpdateDistance() / 10000f;
+                progress = Parameters.getUpdateDistance() / 2500f;
+                break;
+            case FRAMES_PER_SECOND:
+                progress = Parameters.getFramesPerSecond() / 200f;
                 break;
             case NONE:
             default:
@@ -91,10 +94,17 @@ public class MenuSlider extends MenuComponent {
         String textInfo = getText();
         switch (sliderAction) {
             case SPAWN_RATE:
-                textInfo += " (" + (int) (this.progress * 10) + "x)";
+                textInfo += " (" + (int) (progress * 10) + "x)";
                 break;
             case GAME_TIME_SPEED:
-                textInfo += " (" + (int) (this.progress * 6000f) + "x)";
+                textInfo += " (" + (int) (progress * 6000f) + "x)";
+                break;
+            case FRAMES_PER_SECOND:
+                textInfo += " (" + (int) (progress * 200f) + " fps)";
+                break;
+            case UPDATE_DISTANCE:
+            case RENDER_DISTANCE:
+                textInfo += " (" + (int) (progress * 2500f) + " px)";
                 break;
             case EFFECT_SOUND_LEVEL:
             case MUSIC_SOUND_LEVEL:
@@ -128,10 +138,13 @@ public class MenuSlider extends MenuComponent {
                 Parameters.setSpawnRate(this.progress * 10f);
                 break;
             case RENDER_DISTANCE:
-                Parameters.setRenderDistance(this.progress * 10f);
+                Parameters.setRenderDistance(this.progress * 2500f);
                 break;
             case UPDATE_DISTANCE:
-                Parameters.setUpdateDistance(this.progress * 10000f);
+                Parameters.setUpdateDistance(this.progress * 2500f);
+                break;
+            case FRAMES_PER_SECOND:
+                Parameters.setFramesPerSecond((int) (this.progress * 200f));
                 break;
             case NONE:
             default:
