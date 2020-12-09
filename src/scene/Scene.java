@@ -319,22 +319,22 @@ public class Scene {
 
     private void createNonPlayerCharacters() {
         //TODO: NPC testing
-        GenericNPC01 npc;
+        NonPlayerCharacter npc;
         ArrayList<String> textList;
 
-        npc = new GenericNPC01(2455, 1725);
+        npc = new NonPlayerCharacter(2455, 1725, 0);
         npc.setTalkText("Press SPACE when moving to roll.");
 
-        npc = new GenericNPC01(2485, 1720);
+        npc = new NonPlayerCharacter(2485, 1720, 1);
         npc.setTalkText("Press LEFT or RIGHT mouse buttons to attack.");
 
-        npc = new GenericNPC01(2500, 1725);
+        npc = new NonPlayerCharacter(2500, 1725, 2);
         textList = new ArrayList<>();
         textList.add("Use Q and E to change the musical mode.");
         textList.add("You can also use the numbers from 1 to 7.");
         npc.setTalkText(textList);
 
-        npc = new GenericNPC01(2460, 1810, true, true);
+        npc = new NonPlayerCharacter(2460, 1810, true, true, 0);
         textList = new ArrayList<>();
         textList.add("There is a village south from here.");
         textList.add("Just follow the path...");
@@ -343,13 +343,13 @@ public class Scene {
         textList.add("Good luck!");
         npc.setTalkText(textList);
 
-        npc = new GenericNPC01(2456, 2442, true, false);
+        npc = new NonPlayerCharacter(2456, 2442, true, false, 1);
         npc.setTalkText("Welcome...");
 
-        npc = new GenericNPC01(2622, 2471, true, false);
-        npc.setTalkText("It won't stop raining...");
+        npc = new NonPlayerCharacter(2622, 2471, true, false, 3);
+        npc.setTalkText("Holi Putoncio! <3");
 
-        npc = new GenericNPC01(2427, 2583, true, true);
+        npc = new NonPlayerCharacter(2427, 2583, true, true, 1);
         textList = new ArrayList<>();
         textList.add("Uh...?");
         textList.add("An outsider!");

@@ -6,9 +6,9 @@ public class SpriteManager {
     private static SpriteManager instance = null;
 
     /** ENTITIES **/
-    public Sprite PLAYER, SMOKE01, NOTCH, ENEMY01, ENEMY02, ENEMY03, ENEMY04, ENEMY05, ENEMY06, ENEMY07,
-            TREE01, TREE02, TREE03, TREE04, BUILDING01, BUILDING02, FENCE01, FENCE02, FENCE03, FENCE04,
-            LIGHT01, TORCH01, UTILITY_POLE_01,
+    public Sprite PLAYER, SMOKE01, NOTCH, SARA, NPC01, NPC02, ENEMY01, ENEMY02, ENEMY03, ENEMY04,
+            ENEMY05, ENEMY06, ENEMY07, TREE01, TREE02, TREE03, TREE04, BUILDING01,
+            BUILDING02, FENCE01, FENCE02, FENCE03, FENCE04, LIGHT01, TORCH01, UTILITY_POLE_01,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
             A_CONTROLLER_BUTTON, F_KEYBOARD_KEY;
 
@@ -25,6 +25,9 @@ public class SpriteManager {
 
         /** NPC **/
         NOTCH = new Sprite("res/sprites/dynamic/notch.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        SARA = new Sprite("res/sprites/dynamic/sara.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        NPC01 = new Sprite("res/sprites/dynamic/npc01.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        NPC02 = new Sprite("res/sprites/dynamic/npc02.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** ENEMY **/
         ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);
