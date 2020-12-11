@@ -5,7 +5,8 @@ import main.Coordinates;
 public abstract class Entity {
     private Coordinates worldCoordinates;
     private Coordinates cameraCoordinates;
-    public boolean render = false;
+    private boolean render = false;
+    private boolean dead = false;
 
     public Entity(double x, double y) {
         worldCoordinates = new Coordinates(x, y);
@@ -30,5 +31,21 @@ public abstract class Entity {
 
     public void updateCoordinates() {
         cameraCoordinates = worldCoordinates.toCameraCoordinates();
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+    }
+
+    public boolean isRender() {
+        return render;
+    }
+
+    public void setRender(boolean render) {
+        this.render = render;
     }
 }

@@ -46,7 +46,7 @@ public class Fence extends StaticGraphicEntity {
         FenceType treeType = FenceType.values()[type];
         setSprite(treeType.getSprite());
         setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 8), 16, 16));   //Square collision
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
     }
 

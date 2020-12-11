@@ -26,7 +26,7 @@ public class GoldCoin extends DynamicGraphicEntity {
         LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), 7.5f, new Color(1f, 0.9f, 0f));
         getLightSources().add(lightSource);
         Scene.getInstance().getListOfLightSources().add(lightSource);
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 
     @Override
@@ -58,13 +58,6 @@ public class GoldCoin extends DynamicGraphicEntity {
         OpenALManager.playSound(OpenALManager.SOUND_GOLD_COIN_PICKED_UP_01);
         new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, "+1",
                 new Color(1f, 0.9f, 0f), 1.25, new double[]{0, -1});
-        onDestroy();
-    }
-
-    private void onDestroy() {
-        Scene.getInstance().getListOfEntities().remove(this);
-        for (int i = 0; i < getLightSources().size(); i++) {
-            Scene.getInstance().getListOfLightSources().remove(getLightSources().get(i));
-        }
+        setDead(true);
     }
 }

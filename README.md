@@ -15,6 +15,8 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 ## Video Demo
 [![Elwynn Project Demo](/screenshots/Elwynn_Project_v0.01.04.0.gif)](https://www.youtube.com/watch?v=nGwv175yuIk)
 
+## [Download](https://drive.google.com/drive/folders/1ouFLMoRi2XZKDLciLRhzkJsJ3ALuE3bf?usp=sharing)
+
 ## Social Media
 - LinkedIn: www.linkedin.com/in/adria-cadena-rubio
 - Twitter: https://twitter.com/itsminichain

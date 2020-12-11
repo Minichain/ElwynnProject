@@ -77,7 +77,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
         setSprite(nonPlayerCharacterType.getSprite());
         talkText = new ArrayList<>();
         talkTextPage = 0;
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfNonPlayerCharacters().add(this);
         listOfItems = new ArrayList<>();
         listOfItems.add(new HealthPotion());

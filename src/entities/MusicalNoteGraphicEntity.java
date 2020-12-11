@@ -13,7 +13,6 @@ import java.awt.*;
 public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     public static byte ENTITY_CODE = 8;
     private double timeLiving = 0;
-    private boolean dead = false;
     private double timeToLive;
     private MusicalMode musicalMode;
     private Color color;
@@ -48,7 +47,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
         getLightSources().add(lightSource);
         Scene.getInstance().getListOfLightSources().add(lightSource);
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 
     private Sprite getMusicalRandomSprite() {
@@ -73,14 +72,6 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
             return;
         }
 
-        if (isDead()) {
-            for (LightSource lightSource : getLightSources()) {
-                Scene.getInstance().getListOfLightSources().remove(lightSource);
-            }
-            Scene.getInstance().getListOfEntities().remove(this);
-            return;
-        }
-
         getWorldCoordinates().translate(movementVectorNormalized[0] * speed * timeElapsed, movementVectorNormalized[1] * speed * timeElapsed);
         this.intensityFactor = (float) MathUtils.cubicFunction(timeLiving / timeToLive);
 
@@ -93,8 +84,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         }
 
         Enemy entity;
-        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
-            GraphicEntity graphicEntity = Scene.getInstance().getListOfEntities().get(i);
+        for (int i = 0; i < Scene.getInstance().getListOfGraphicEntities().size(); i++) {
+            GraphicEntity graphicEntity = Scene.getInstance().getListOfGraphicEntities().get(i);
             if (graphicEntity instanceof Player && enemyAttack) {
                 if (Player.getInstance().getStatus() == Player.Status.DEAD || Player.getInstance().getStatus() == Player.Status.ROLLING) {
                     continue;
@@ -142,12 +133,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         return ENTITY_CODE;
     }
 
-    public boolean isDead() {
-        return dead;
-    }
-
     public void explode() {
-        this.dead = true;
+        setDead(true);
         ParticleManager.particlesExplosion(getCenterOfMassWorldCoordinates(), 10, color);
     }
 }

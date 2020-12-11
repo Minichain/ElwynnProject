@@ -282,12 +282,9 @@ public class ActionManager {
                             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
                             if (graphicEntity.isOverEntity(InputListenerManager.getMouseWorldCoordinates())) {
                                 /** DELETE ENTITY **/
-                                Log.l("Deleting entity!");
-                                for (LightSource lightSource : graphicEntity.getLightSources()) {
-                                    Scene.getInstance().getListOfLightSources().remove(lightSource);
-                                }
+                                Log.l("Deleting graphicEntity " + graphicEntity.getEntityCode());
+                                graphicEntity.setDead(true);
                                 Scene.getInstance().getListOfStaticEntities().remove(graphicEntity);
-                                Scene.getInstance().getListOfEntities().remove(graphicEntity);
                                 break;
                             }
                         }
@@ -334,7 +331,7 @@ public class ActionManager {
     private static void putStaticEntity() {
         Coordinates mouseWorldCoordinates = InputListenerManager.getMouseWorldCoordinates();
         int entity = HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfStaticEntitySprites;
-        Log.l("Adding a new Static Entity " + entity);
+        Log.l("Adding a new Static Entity ");
         switch (entity) {
             case 0:
                 new Tree((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, 0);

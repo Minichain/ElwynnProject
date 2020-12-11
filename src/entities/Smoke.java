@@ -17,7 +17,7 @@ public class Smoke extends GraphicEntity {
         this.timeToLive = timeToLive;
         this.timeLiving = 0;
         setSprite(SpriteManager.getInstance().SMOKE01);
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class Smoke extends GraphicEntity {
     public void update(long timeElapsed) {
         timeLiving += timeElapsed;
         if (timeLiving >= timeToLive) {
-            onDestroy();
+            setDead(true);
         } else {
             double frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * ((double) getSprite().IDLE_FRAMES / (double) timeToLive)));
             setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
@@ -46,9 +46,5 @@ public class Smoke extends GraphicEntity {
         getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2,
                 (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
                 0.25f, Camera.getZoom() * 0.5f);
-    }
-
-    public void onDestroy() {
-        Scene.getInstance().getListOfEntities().remove(this);
     }
 }

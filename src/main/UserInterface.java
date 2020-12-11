@@ -52,7 +52,7 @@ public class UserInterface {
             debugTextList.add("GPU calls: " + OpenGLManager.GPU_CALLS);
             debugTextList.add("Resolution: " + Parameters.getResolutionWidth() + " x " + Parameters.getResolutionHeight());
             debugTextList.add("Window Size: " + Window.getWidth() + " x " + Window.getHeight());
-            debugTextList.add("Num of Entities: " + Scene.getInstance().getListOfEntities().size());
+            debugTextList.add("Num of Graphic Entities: " + Scene.getInstance().getListOfGraphicEntities().size());
             debugTextList.add("Num of Tiles: " + TileMap.getArrayOfTiles().length + " x " + TileMap.getArrayOfTiles()[0].length + " x " + Tile.getNumOfLayers());
             debugTextList.add("Camera World Coordinates: (" + (float) Camera.getInstance().getCoordinates().x + ", " + (float) Camera.getInstance().getCoordinates().y + ")");
             debugTextList.add("Camera Zoom: " + (float) Camera.getZoom());

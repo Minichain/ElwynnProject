@@ -18,7 +18,7 @@ public class Torch extends StaticGraphicEntity {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
         setSprite(SpriteManager.getInstance().TORCH01);
         setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 8), 8, 8));   //Square collision
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
 
         /** LIGHT SOURCES **/

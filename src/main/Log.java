@@ -43,9 +43,7 @@ public class Log {
 
     private static void appendToLogFile(String log) {
         try {
-            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-            LocalDateTime now = LocalDateTime.now();
-            fileWriter.append("[" + dtf.format(now) + "]: ").append(log).append("\n");
+            fileWriter.append(log).append("\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -77,10 +75,16 @@ public class Log {
     }
 
     public static void l(String log) {
-        l(log, ANSI_WHITE);
+        l(getTimeStamp() + log, ANSI_WHITE);
     }
 
     public static void e(String log) {
-        l(log, ANSI_RED);
+        l(getTimeStamp() + log, ANSI_RED);
+    }
+
+    private static String getTimeStamp() {
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        return "[" + dtf.format(now) + "]: ";
     }
 }

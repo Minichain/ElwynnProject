@@ -10,7 +10,7 @@ public class SpecialEffects {
         OpenGLManager.releaseCurrentShader();
 //        Log.l("Render Special Effects");
 
-        for (GraphicEntity entity : Scene.getInstance().getListOfEntities()) {
+        for (GraphicEntity entity : Scene.getInstance().getListOfGraphicEntities()) {
             if (entity instanceof Enemy) {
                 ((Enemy) entity).drawAttackFX();
             } else if (entity instanceof Player) {

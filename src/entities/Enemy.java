@@ -94,7 +94,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSprite(SpriteManager.getInstance().ENEMY07);
                 break;
         }
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 
     @Override

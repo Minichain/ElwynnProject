@@ -52,7 +52,7 @@ public class Building extends StaticGraphicEntity {
                 break;
         }
         setCollision(collision);
-        Scene.getInstance().getListOfEntities().add(this);
+        Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
     }
 

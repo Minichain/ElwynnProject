@@ -16,8 +16,8 @@ public class Scene {
     private static Scene instance = null;
 
     /** ENTITIES **/
-    private static ArrayList<GraphicEntity> listOfEntities;
-    private static ArrayList<StaticGraphicEntity> listOfStaticEntities;
+    private static ArrayList<GraphicEntity> listOfGraphicEntities;
+    private static ArrayList<StaticGraphicEntity> listOfStaticGraphicEntities;
     private static ArrayList<Enemy> listOfEnemies;
     private static ArrayList<NonPlayerCharacter> listOfNonPlayerCharacters;
     private static int enemySpawnPeriod; // In Milliseconds
@@ -48,8 +48,8 @@ public class Scene {
     public void init() {
         Log.l("Initiating Scene");
         initialCoordinates = new Coordinates(2481, 1747);
-        listOfEntities = new ArrayList<>();
-        listOfStaticEntities = new ArrayList<>();
+        listOfGraphicEntities = new ArrayList<>();
+        listOfStaticGraphicEntities = new ArrayList<>();
         listOfEnemies = new ArrayList<>();
         listOfCircleAttacks = new ArrayList<>();
         listOfLightSources = new ArrayList<>();
@@ -59,7 +59,7 @@ public class Scene {
         TileMap.loadMap();
         Player.getInstance().init();
         Camera.getInstance().init();
-        Scene.getInstance().getListOfEntities().add(Player.getInstance());
+        Scene.getInstance().getListOfGraphicEntities().add(Player.getInstance());
         GameTime.setGameTime(0);
 
         createNonPlayerCharacters();
@@ -79,14 +79,8 @@ public class Scene {
         OpenALManager.playMusicDependingOnMusicalMode(Player.getInstance().getMusicalMode());
 
         updateAndSortEntities(timeElapsed);
-
-        if (GameStatus.getStatus() == GameStatus.Status.PAUSED) {
-            return;
-        }
-
-        if (Parameters.isSpawnEnemies()) {
-            updateEnemiesSpawn();
-        }
+        if (GameStatus.getStatus() == GameStatus.Status.PAUSED) return;
+        if (Parameters.isSpawnEnemies()) updateEnemiesSpawn();
 
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
@@ -118,39 +112,38 @@ public class Scene {
 
     private void updateAndSortEntities(long timeElapsed) {
         /** UPDATE ENTITIES **/
-        if (!listOfEntities.isEmpty()) {
+        if (!listOfGraphicEntities.isEmpty()) {
             listOfEnemies.clear();
-            for (int i = 0; i < listOfEntities.size(); i++) {
-                GraphicEntity currentEntity = listOfEntities.get(i);
-
-                double entityDistance = MathUtils.module(Camera.getInstance().getCoordinates(), currentEntity.getCenterOfMassWorldCoordinates());
-
+            removeDeadEntities();
+            for (int i = 0; i < listOfGraphicEntities.size(); i++) {
+                GraphicEntity graphicEntity = listOfGraphicEntities.get(i);
+                graphicEntity.updateCoordinates();
+                double entityDistance = MathUtils.module(Camera.getInstance().getCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates());
                 if (entityDistance < updateDistance) {
                     if (GameStatus.getStatus() == GameStatus.Status.RUNNING && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                        currentEntity.update(timeElapsed);
+                        graphicEntity.update(timeElapsed);
                     }
                 }
-                currentEntity.updateCoordinates();
 
                 //Set "render" flag
-                currentEntity.render = entityDistance < renderDistance;
+                graphicEntity.setRender(entityDistance < renderDistance);
 
-                if (currentEntity instanceof Enemy && ((Enemy) currentEntity).getStatus() != Enemy.Status.DEAD) {
-                    listOfEnemies.add((Enemy) currentEntity);
+                if (graphicEntity instanceof Enemy && ((Enemy) graphicEntity).getStatus() != Enemy.Status.DEAD) {
+                    listOfEnemies.add((Enemy) graphicEntity);
                 }
             }
         }
 
         /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/
         //TODO Replace Bubble Algorithm by Insertion Sort Algorithm or Quick Sort Algorithm to improve performance.
-        int n = listOfEntities.size() - 1;
+        int n = listOfGraphicEntities.size() - 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < (n - i); j++) {
-                GraphicEntity entity1 = listOfEntities.get(j + 1);
-                GraphicEntity entity2 = listOfEntities.get(j);
+                GraphicEntity entity1 = listOfGraphicEntities.get(j + 1);
+                GraphicEntity entity2 = listOfGraphicEntities.get(j);
                 if (entity1.getWorldCoordinates().y < entity2.getWorldCoordinates().y) {
-                    listOfEntities.set(j + 1, entity2);
-                    listOfEntities.set(j, entity1);
+                    listOfGraphicEntities.set(j + 1, entity2);
+                    listOfGraphicEntities.set(j, entity1);
                 }
             }
         }
@@ -167,12 +160,26 @@ public class Scene {
         }
     }
 
-    public List<GraphicEntity> getListOfEntities() {
-        return listOfEntities;
+    private void removeDeadEntities() {
+        ArrayList<GraphicEntity> tempList = new ArrayList<>();
+        for (GraphicEntity graphicEntity : listOfGraphicEntities) {
+            if (!graphicEntity.isDead()) {
+                tempList.add(graphicEntity);
+            } else {
+                for (LightSource lightSource : graphicEntity.getLightSources()) {
+                    Scene.getInstance().getListOfLightSources().remove(lightSource);
+                }
+            }
+        }
+        listOfGraphicEntities = tempList;
+    }
+
+    public List<GraphicEntity> getListOfGraphicEntities() {
+        return listOfGraphicEntities;
     }
 
     public List<StaticGraphicEntity> getListOfStaticEntities() {
-        return listOfStaticEntities;
+        return listOfStaticGraphicEntities;
     }
 
     public ArrayList<LightSource> getListOfLightSources() {
@@ -196,14 +203,14 @@ public class Scene {
     }
 
     private void resetEntities() {
-        for (int i = 0; i < listOfEntities.size(); i++) {
-            Entity entity = listOfEntities.get(i);
+        for (int i = 0; i < listOfGraphicEntities.size(); i++) {
+            Entity entity = listOfGraphicEntities.get(i);
             if (entity instanceof DynamicGraphicEntity) {
-                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) listOfEntities.get(i);
+                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) listOfGraphicEntities.get(i);
                 for (LightSource lightSource : dynamicGraphicEntity.getLightSources()) {
                     getListOfLightSources().remove(lightSource);
                 }
-                listOfEntities.remove(i);
+                listOfGraphicEntities.remove(i);
                 i--;
             }
         }
@@ -237,8 +244,8 @@ public class Scene {
 
         /** ENTITIES HITBOX **/
         if (Parameters.isDebugMode()) {
-            for (GraphicEntity graphicEntity : listOfEntities) {
-                if (graphicEntity instanceof StaticGraphicEntity && graphicEntity.render) {
+            for (GraphicEntity graphicEntity : listOfGraphicEntities) {
+                if (graphicEntity instanceof StaticGraphicEntity && graphicEntity.isRender()) {
                     ((StaticGraphicEntity) graphicEntity).drawHitBox((int) graphicEntity.getCameraCoordinates().x, (int) graphicEntity.getCameraCoordinates().y);
                 }
             }
@@ -246,8 +253,8 @@ public class Scene {
     }
 
     private void renderEntities() {
-        for (GraphicEntity entity: listOfEntities) {
-            if (entity.render) {
+        for (GraphicEntity entity: listOfGraphicEntities) {
+            if (entity.isRender()) {
                 entity.drawSprite((int) entity.getCameraCoordinates().x, (int) entity.getCameraCoordinates().y);
             }
         }

@@ -7,7 +7,6 @@ import particles.Particle;
 import particles.ParticleManager;
 import scene.Camera;
 import scene.Scene;
-import text.FloatingTextEntity;
 import utils.MathUtils;
 
 import java.awt.*;
@@ -86,8 +85,8 @@ public class CircleAttack {
         }
 
         GraphicEntity entity;
-        for (int i = 0; i < Scene.getInstance().getListOfEntities().size(); i++) {
-            entity = Scene.getInstance().getListOfEntities().get(i);
+        for (int i = 0; i < Scene.getInstance().getListOfGraphicEntities().size(); i++) {
+            entity = Scene.getInstance().getListOfGraphicEntities().get(i);
             float damage = (float) (attackPower + (MathUtils.random(0, 10)));
             double radius = this.radius * Camera.getZoom();
             if (entity instanceof Enemy && !enemyAttack) {
