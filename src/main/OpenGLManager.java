@@ -12,6 +12,7 @@ import static org.lwjgl.opengl.GL20.*;
 
 public class OpenGLManager {
     public static int GPU_CALLS;
+    public static int MAX_NUMBER_LIGHT_SOURCES = 25;
 
     public static void glBegin(int mode) {
         GL11.glBegin(mode);
@@ -198,19 +199,17 @@ public class OpenGLManager {
         glUniform1f(windowWidthUniform, (float) Window.getWidth());
         glUniform1f(windowHeightUniform, (float) Window.getHeight());
 
-        int maxNumberOfLightSources = 25;
-
-        int lightSourcesCoordinatesArraySize = maxNumberOfLightSources * 2;
+        int lightSourcesCoordinatesArraySize = MAX_NUMBER_LIGHT_SOURCES * 2;
         float[] lightSourceCoordinates = new float[lightSourcesCoordinatesArraySize];
 
-        int lightSourcesIntensityArraySize = maxNumberOfLightSources;
+        int lightSourcesIntensityArraySize = MAX_NUMBER_LIGHT_SOURCES;
         float[] lightSourceIntensity = new float[lightSourcesIntensityArraySize];
         Arrays.fill(lightSourceIntensity, -1f);
 
-        int lightSourceColorArraySize = maxNumberOfLightSources * 3;
+        int lightSourceColorArraySize = MAX_NUMBER_LIGHT_SOURCES * 3;
         float[] lightSourceColor = new float[lightSourceColorArraySize];
 
-        for (int i = 0; i < Scene.getInstance().getListOfVisibleLightSources().size() && i < maxNumberOfLightSources; i++) {
+        for (int i = 0; i < Scene.getInstance().getListOfVisibleLightSources().size() && i < MAX_NUMBER_LIGHT_SOURCES; i++) {
             LightSource lightSource = Scene.getInstance().getListOfVisibleLightSources().get(i);
             Coordinates lightSourceOpenGLCoordinates = Coordinates.cameraToFragmentCoordinates(lightSource.getCameraCoordinates());
 

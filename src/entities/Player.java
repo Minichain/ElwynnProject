@@ -6,6 +6,8 @@ import items.HealthPotion;
 import items.Item;
 import items.ManaPotion;
 import listeners.ActionManager;
+import particles.Particle;
+import particles.ParticleManager;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
@@ -23,9 +25,9 @@ public class Player extends LivingDynamicGraphicEntity {
     private static Utils.DirectionFacing directionFacing;
 
     public static float MAX_HEALTH = 5000f;
-    public static float HEALTH_REGENERATION = 0.01f;
+    public static float HEALTH_REGENERATION = 0.02f;
     public static float MAX_MANA = 100f;
-    public static float MANA_REGENERATION = 0.0003f;
+    public static float MANA_REGENERATION = 0.001f;
     private float mana = 100f;
     public static float MAX_STAMINA = 100f;
     public static float STAMINA_REGENERATION = 0.018f;
@@ -45,6 +47,9 @@ public class Player extends LivingDynamicGraphicEntity {
     private float circleAttackManaCost = 10f;
 
     private MusicalMode musicalMode;
+    private int changeMusicalModePeriod = 500;
+    private int changeMusicalModeCoolDown;
+    private float changeMusicalModeManaCost = 2.5f;
 
     public enum Status {
         IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING
@@ -89,6 +94,7 @@ public class Player extends LivingDynamicGraphicEntity {
         musicalMode = MusicalMode.IONIAN;
         amountOfGoldCoins = 0;
         runningParticleCoolDown = 0;
+        changeMusicalModeCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
         setAmountOfGoldCoins(50);
         listOfItems = new ArrayList<>();
@@ -214,6 +220,8 @@ public class Player extends LivingDynamicGraphicEntity {
                 hasteEffectDuration -= timeElapsed;
                 hasteEffect = hasteEffectDuration > 0;
             }
+
+            if (changeMusicalModeCoolDown >= 0) changeMusicalModeCoolDown -= timeElapsed;
 
         } else if (status != Status.DEAD) {   //Player is dying
             OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
@@ -467,13 +475,61 @@ public class Player extends LivingDynamicGraphicEntity {
             musicalMode %= MusicalMode.values().length;
         }
 
-        this.musicalMode = MusicalMode.values()[musicalMode];
-        Log.l("Set musical mode to " + this.musicalMode);
+        setMusicalMode(MusicalMode.values()[musicalMode]);
     }
 
     public void setMusicalMode(MusicalMode musicalMode) {
+        Log.l("Set musical mode to " + musicalMode);
 //        OpenALManager.stopMusicDependingOnMusicalMode(this.musicalMode);
-        this.musicalMode = musicalMode;
+
+        if (changeMusicalModeCoolDown <= 0) {
+            switch (musicalMode) {
+                case IONIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_IONIAN);
+                    break;
+                case DORIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_DORIAN);
+                    break;
+                case PHRYGIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_PHRYGIAN);
+                    break;
+                case LYDIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_LYDIAN);
+                    break;
+                case MIXOLYDIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_MIXOLYDIAN);
+                    break;
+                case AEOLIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_AEOLIAN);
+                    break;
+                case LOCRIAN:
+                    OpenALManager.playSound(OpenALManager.SOUND_CHANGE_MUSICAL_MODE_LOCRIAN);
+                    break;
+                default:
+                    break;
+            }
+
+            //Generate particles with the colour of the musical mode
+            Coordinates particleCoordinates;
+            double randomAngle;
+            double[] generationVector;
+            Particle particle;
+            double[] velocityVector;
+            int numberOfParticles = 4;
+            for (int i = 0; i < numberOfParticles; i++) {
+                randomAngle = MathUtils.random(0, 2.0 * Math.PI);
+                generationVector = new double[]{15 * Math.random(), 0};
+                generationVector = MathUtils.rotateVector(generationVector, randomAngle);
+                velocityVector = new double[]{0, -0.1};
+                particleCoordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + generationVector[0], getCenterOfMassWorldCoordinates().y + generationVector[1]);
+                particle = new Particle(particleCoordinates, velocityVector, 0.25, 1.5f, musicalMode.getColor(), true);
+                ParticleManager.getInstance().addParticle(particle);
+            }
+
+            changeMusicalModeCoolDown = changeMusicalModePeriod;
+            mana -= changeMusicalModeManaCost;
+            this.musicalMode = musicalMode;
+        }
     }
 
     public int getAmountOfGoldCoins() {

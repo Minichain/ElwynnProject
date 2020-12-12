@@ -13,7 +13,7 @@ public enum MusicalMode {
 
     public int value;
 
-    private MusicalMode(final int value) {
+    MusicalMode(final int value) {
         this.value = value;
     }
 
@@ -43,20 +43,27 @@ public enum MusicalMode {
 
     public int[] getTonesAndSemitones() {
         switch (this) {
+            default:
             case IONIAN:
+                //Starting at A: A, B, C#, D, E, F#, G#
                 return new int[]{2, 2, 1, 2, 2, 2, 1};
             case DORIAN:
+                //Starting at A: A, B, C, D, E, F#, G
                 return new int[]{2, 1, 2, 2, 2, 1, 2};
             case PHRYGIAN:
+                //Starting at A: A, A#, C, D, E, F, G
                 return new int[]{1, 2, 2, 2, 1, 2, 2};
             case LYDIAN:
+                //Starting at A: A, B, C#, D#, E, F#, G#
                 return new int[]{2, 2, 2, 1, 2, 2, 1};
             case MIXOLYDIAN:
+                //Starting at A: A, B, C#, D, E, F#, G
                 return new int[]{2, 2, 1, 2, 2, 1, 2};
             case AEOLIAN:
+                //Starting at A: A, B, C, D, E, F, G
                 return new int[]{2, 1, 2, 2, 1, 2, 2};
             case LOCRIAN:
-            default:
+                //Starting at A: A, A#, C, D, D#, F, G
                 return new int[]{1, 2, 2, 1, 2, 2, 2};
         }
     }

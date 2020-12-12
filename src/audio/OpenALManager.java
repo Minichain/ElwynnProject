@@ -51,6 +51,14 @@ public class OpenALManager {
     public static Sound SOUND_NOTE_G_01;
     public static Sound SOUND_NOTE_G_SHARP_01;
 
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_IONIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_DORIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_PHRYGIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_LYDIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_MIXOLYDIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_AEOLIAN;
+    public static Sound SOUND_CHANGE_MUSICAL_MODE_LOCRIAN;
+
     /** AMBIENCE **/
     public static Sound SOUND_RAIN_01;
 
@@ -103,6 +111,14 @@ public class OpenALManager {
         SOUND_NOTE_F_SHARP_01 = loadSound("note_f_sharp_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_G_01 = loadSound("note_g_01", Sound.SoundType.EFFECT);
         SOUND_NOTE_G_SHARP_01 = loadSound("note_g_sharp_01", Sound.SoundType.EFFECT);
+
+        SOUND_CHANGE_MUSICAL_MODE_IONIAN = loadSound("change_musical_mode_ionian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_DORIAN = loadSound("change_musical_mode_dorian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_PHRYGIAN = loadSound("change_musical_mode_phrygian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_LYDIAN = loadSound("change_musical_mode_lydian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_MIXOLYDIAN = loadSound("change_musical_mode_mixolydian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_AEOLIAN = loadSound("change_musical_mode_aeolian", Sound.SoundType.EFFECT);
+        SOUND_CHANGE_MUSICAL_MODE_LOCRIAN = loadSound("change_musical_mode_locrian", Sound.SoundType.EFFECT);
 
         SOUND_PLAYER_HURT_01 = loadSound("player_hurt_01", Sound.SoundType.EFFECT);
         SOUND_PLAYER_DYING_01 = loadSound("player_die_01", Sound.SoundType.EFFECT);

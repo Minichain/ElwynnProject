@@ -18,7 +18,7 @@ public enum MusicalNote {
 
     private int value;
 
-    private MusicalNote(final int value) {
+    MusicalNote(final int value) {
         this.value = value;
     }
 
