@@ -22,10 +22,7 @@ public class GoldCoin extends DynamicGraphicEntity {
 
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
-        setSprite(SpriteManager.getInstance().GOLD_COIN);
-        LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), 7.5f, new Color(1f, 0.9f, 0f));
-        getLightSources().add(lightSource);
-        Scene.getInstance().getListOfLightSources().add(lightSource);
+        setSprite(SpriteManager.getInstance().GOLD_COIN_INTERFACE);
         Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 

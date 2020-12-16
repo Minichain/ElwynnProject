@@ -45,6 +45,6 @@ public class Smoke extends GraphicEntity {
     public void drawSprite(int x, int y) {
         getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2,
                 (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
-                0.25f, Camera.getZoom() * 0.5f);
+                0.75f, Camera.getZoom() * 0.5f);
     }
 }
