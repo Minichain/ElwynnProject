@@ -6,9 +6,12 @@ public class SpriteManager {
     private static SpriteManager instance = null;
 
     /** ENTITIES **/
-    public Sprite PLAYER, SMOKE01, NOTCH, SARA, NPC01, NPC02, ENEMY01, ENEMY02, ENEMY03, ENEMY04,
-            ENEMY05, ENEMY06, ENEMY07, TREE01, TREE02, TREE03, TREE04, BUILDING01,
-            BUILDING02, FENCE01, FENCE02, FENCE03, FENCE04, LIGHT01, TORCH01, UTILITY_POLE_01,
+    public Sprite PLAYER, SMOKE01, NOTCH, SARA, NPC01, NPC02,
+            GHOST_IONIAN, GHOST_DORIAN, GHOST_PHRYGIAN, GHOST_LYDIAN, GHOST_MIXOLYDIAN, GHOST_AEOLIAN, GHOST_LOCRIAN,
+            TREE01, TREE02, TREE03, TREE04,
+            BUILDING01, BUILDING02,
+            FENCE01, FENCE02, FENCE03, FENCE04,
+            LIGHT01, TORCH01, UTILITY_POLE_01,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
             A_CONTROLLER_BUTTON, F_KEYBOARD_KEY;
 
@@ -30,13 +33,13 @@ public class SpriteManager {
         NPC02 = new Sprite("res/sprites/dynamic/npc02.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** ENEMY **/
-        ENEMY01 = new Sprite("res/sprites/dynamic/enemy01.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY02 = new Sprite("res/sprites/dynamic/enemy02.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY03 = new Sprite("res/sprites/dynamic/enemy03.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY04 = new Sprite("res/sprites/dynamic/enemy04.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY05 = new Sprite("res/sprites/dynamic/enemy05.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY06 = new Sprite("res/sprites/dynamic/enemy06.png", 19, 20, 1, 8, 2, 1, 7, 3);
-        ENEMY07 = new Sprite("res/sprites/dynamic/enemy07.png", 19, 20, 1, 8, 2, 1, 7, 3);
+        GHOST_IONIAN = new Sprite("res/sprites/dynamic/ghost_enemy_ionian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_DORIAN = new Sprite("res/sprites/dynamic/ghost_enemy_dorian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_PHRYGIAN = new Sprite("res/sprites/dynamic/ghost_enemy_phrygian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_LYDIAN = new Sprite("res/sprites/dynamic/ghost_enemy_lydian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_MIXOLYDIAN = new Sprite("res/sprites/dynamic/ghost_enemy_mixolydian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_AEOLIAN = new Sprite("res/sprites/dynamic/ghost_enemy_aeolian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        GHOST_LOCRIAN = new Sprite("res/sprites/dynamic/ghost_enemy_locrian.png", 32, 32, 1, 4, 6, 1, 1, 1);
 
         /** MUSICAL NOTES **/
         G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1);

@@ -124,13 +124,15 @@ public class Player extends LivingDynamicGraphicEntity {
 
     @Override
     public void onDying() {
-
+        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
     }
 
     @Override
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
-        setHealth(getHealth() - damage);
+        float previousHealth = getHealth();
+        setHealth(previousHealth - damage);
+        if (getHealth() <= 0 && previousHealth > 0) onDying();
         String text = String.valueOf((int) damage);
         new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, text,
                 new Color(1f, 0f, 0f), 1.25, new double[]{0, -1});
@@ -224,7 +226,6 @@ public class Player extends LivingDynamicGraphicEntity {
             if (changeMusicalModeCoolDown >= 0) changeMusicalModeCoolDown -= timeElapsed;
 
         } else if (status != Status.DEAD) {   //Player is dying
-            OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             status = Status.DYING;
         } else {    //Player is dead
 

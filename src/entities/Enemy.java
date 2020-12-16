@@ -66,32 +66,32 @@ public class Enemy extends LivingDynamicGraphicEntity {
         switch (enemyType) {
             case 0:
                 musicalMode = MusicalMode.IONIAN;
-                setSprite(SpriteManager.getInstance().ENEMY01);
+                setSprite(SpriteManager.getInstance().GHOST_IONIAN);
                 break;
             case 1:
                 musicalMode = MusicalMode.DORIAN;
-                setSprite(SpriteManager.getInstance().ENEMY02);
+                setSprite(SpriteManager.getInstance().GHOST_DORIAN);
                 break;
             case 2:
                 musicalMode = MusicalMode.PHRYGIAN;
-                setSprite(SpriteManager.getInstance().ENEMY03);
+                setSprite(SpriteManager.getInstance().GHOST_PHRYGIAN);
                 break;
             case 3:
                 musicalMode = MusicalMode.LYDIAN;
-                setSprite(SpriteManager.getInstance().ENEMY04);
+                setSprite(SpriteManager.getInstance().GHOST_LYDIAN);
                 break;
             case 4:
                 musicalMode = MusicalMode.MIXOLYDIAN;
-                setSprite(SpriteManager.getInstance().ENEMY05);
+                setSprite(SpriteManager.getInstance().GHOST_MIXOLYDIAN);
                 break;
             case 5:
                 musicalMode = MusicalMode.AEOLIAN;
-                setSprite(SpriteManager.getInstance().ENEMY06);
+                setSprite(SpriteManager.getInstance().GHOST_DORIAN);
                 break;
             case 6:
             default:
                 musicalMode = MusicalMode.LOCRIAN;
-                setSprite(SpriteManager.getInstance().ENEMY07);
+                setSprite(SpriteManager.getInstance().GHOST_LOCRIAN);
                 break;
         }
         Scene.getInstance().getListOfGraphicEntities().add(this);
@@ -104,7 +104,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 0.5f);
     }
 
     @Override
@@ -114,6 +114,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     @Override
     public void onDying() {
+        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
         int numOfCoinsToDrop = (int) (MathUtils.random(5, 10));
         float areaOfDrop = 25f;
         for (int i = 0; i < numOfCoinsToDrop; i++) {
@@ -125,7 +126,9 @@ public class Enemy extends LivingDynamicGraphicEntity {
     @Override
     public void hurt(float damage) {
         OpenALManager.playSound(OpenALManager.SOUND_ENEMY_HURT_01);
-        setHealth(getHealth() - damage);
+        float previousHealth = getHealth();
+        setHealth(previousHealth - damage);
+        if (getHealth() <= 0 && previousHealth > 0) onDying();
         String text = String.valueOf((int) damage);
         new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text,
                 new Color(1f, 1f, 1f), 1.25, new double[]{0, -1});
@@ -184,7 +187,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             } else if (status == Status.RUNNING || status == Status.CHASING) {
                 speed = this.speed;
             } else if (status == Status.ROLLING) {
-                speed = this.speed * 1.5;
+                speed = this.speed * 3.0;
             }
 
             if (!horizontalCollision) {
@@ -200,7 +203,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 directionFacing = Utils.checkDirectionFacing(movementVector);
             }
         } else if (status != Status.DEAD) {   //Enemy is dying
-            OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
             status = Status.DYING;
         } else {
             //Enemy is dead
@@ -209,6 +211,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         double frame;
         switch (status) {
             case IDLE:
+            default:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().IDLE_FRAMES);
                 break;
@@ -218,13 +221,17 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
                 break;
             case ROLLING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.005));
                 if (frame >= getSprite().ROLLING_FRAMES) {
                     status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ROLLING_FRAMES);
                 }
+                break;
+            case ATTACKING:
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
+                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
                 break;
             case DYING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
@@ -238,15 +245,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
             case DEAD:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
-                break;
-            case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0057));
-                if (frame >= getSprite().ATTACKING_FRAMES) {
-                    status = Status.IDLE;
-                    setSpriteCoordinateFromSpriteSheetX(0);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
-                }
                 break;
         }
 
@@ -332,55 +330,27 @@ public class Enemy extends LivingDynamicGraphicEntity {
         switch (status) {
             default:
             case IDLE:
-                if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromSpriteSheetY(0);
-                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromSpriteSheetY(3);
-                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromSpriteSheetY(1);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetY(2);
-                }
+                setSpriteCoordinateFromSpriteSheetY(0);
+                break;
+            case ROLLING:
+                setSpriteCoordinateFromSpriteSheetY(5);
+                break;
+            case ATTACKING:
+                setSpriteCoordinateFromSpriteSheetY(6);
                 break;
             case RUNNING:
             case CHASING:
-                if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromSpriteSheetY(4);
-                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromSpriteSheetY(7);
-                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromSpriteSheetY(5);
+                if (movementVectorNormalized[0] < 0) {
+                    setSpriteCoordinateFromSpriteSheetY(2);
                 } else {
-                    setSpriteCoordinateFromSpriteSheetY(6);
-                }
-                break;
-            case ROLLING:
-                if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromSpriteSheetY(10);
-                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromSpriteSheetY(13);
-                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromSpriteSheetY(11);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetY(12);
+                    setSpriteCoordinateFromSpriteSheetY(1);
                 }
                 break;
             case DYING:
-                setSpriteCoordinateFromSpriteSheetY(8);
+                setSpriteCoordinateFromSpriteSheetY(3);
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetY(9);
-                break;
-            case ATTACKING:
-                if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromSpriteSheetY(14);
-                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromSpriteSheetY(15);
-                } else if (directionFacing == Utils.DirectionFacing.UP) {
-                    setSpriteCoordinateFromSpriteSheetY(16);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetY(17);
-                }
+                setSpriteCoordinateFromSpriteSheetY(4);
                 break;
         }
     }
