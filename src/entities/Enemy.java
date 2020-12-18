@@ -86,7 +86,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 break;
             case 5:
                 musicalMode = MusicalMode.AEOLIAN;
-                setSprite(SpriteManager.getInstance().GHOST_DORIAN);
+                setSprite(SpriteManager.getInstance().GHOST_AEOLIAN);
                 break;
             case 6:
             default:
