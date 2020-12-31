@@ -32,42 +32,42 @@ public class MenuButton extends MenuComponent {
 
         switch (buttonAction) {
             case LEAVE_MENU:
-                setText(Strings.RESUME_GAME);
+                setText(Strings.getString("resume_game"));
                 break;
             case FULL_SCREEN:
                 if (Parameters.isFullScreen()) {
-                    setText(Strings.DISABLE_FULL_SCREEN);
+                    setText(Strings.getString("disable_full_screen"));
                 } else {
-                    setText(Strings.ENABLE_FULL_SCREEN);
+                    setText(Strings.getString("enable_full_screen"));
                 }
                 break;
             case CREATIVE_MODE:
                 if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                    setText(Strings.ENABLE_CREATIVE_MODE);
+                    setText(Strings.getString("enable_creative_mode"));
                 } else {
-                    setText(Strings.DISABLE_CREATIVE_MODE);
+                    setText(Strings.getString("disable_creative_mode"));
                 }
                 break;
             case SPAWN_ENEMIES:
                 if (Parameters.isSpawnEnemies()) {
-                    setText(Strings.DISABLE_ENEMIES_SPAWN);
+                    setText(Strings.getString("disable_enemies_spawn"));
                 } else {
-                    setText(Strings.ENABLE_ENEMIES_SPAWN);
+                    setText(Strings.getString("enable_enemies_spawn"));
                 }
                 break;
             case SHADERS:
                 if (Parameters.isShadersEnabled()) {
-                    setText(Strings.DISABLE_SHADERS);
+                    setText(Strings.getString("disable_shaders"));
                 } else {
-                    setText(Strings.ENABLE_SHADERS);
+                    setText(Strings.getString("enable_shaders"));
                 }
                 break;
             case EXIT_GAME:
-                setText(Strings.EXIT_GAME);
+                setText(Strings.getString("exit_game"));
                 break;
             case NONE:
             default:
-                setText(Strings.NONE);
+                setText("");
                 break;
         }
 

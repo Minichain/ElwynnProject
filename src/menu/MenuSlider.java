@@ -78,28 +78,28 @@ public class MenuSlider extends MenuComponent {
 
         switch (sliderAction) {
             case SPAWN_RATE:
-                setText(Strings.getString(Strings.SPAWN_RATE, (int) (progress * 10) + "x"));
+                setText(Strings.getString("spawn_rate", (int) (progress * 10) + "x"));
                 break;
             case GAME_TIME_SPEED:
-                setText(Strings.getString(Strings.FRAMES_PER_SECOND, (int) (progress * 6000f) + "x"));
+                setText(Strings.getString("game_time_speed", (int) (progress * 6000f) + "x"));
                 break;
             case FRAMES_PER_SECOND:
-                setText(Strings.getString(Strings.FRAMES_PER_SECOND, (int) (progress * 200f) + "fps"));
+                setText(Strings.getString("frames_per_second", (int) (progress * 200f) + "fps"));
                 break;
             case UPDATE_DISTANCE:
-                setText(Strings.getString(Strings.UPDATE_DISTANCE, (int) (progress * 2500f) + "px"));
+                setText(Strings.getString("update_distance", (int) (progress * 2500f) + "px"));
                 break;
             case RENDER_DISTANCE:
-                setText(Strings.getString(Strings.RENDER_DISTANCE, (int) (progress * 2500f) + "px"));
+                setText(Strings.getString("render_distance", (int) (progress * 2500f) + "px"));
                 break;
             case EFFECT_SOUND_LEVEL:
-                setText(Strings.getString(Strings.EFFECT_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                setText(Strings.getString("effect_sound_level", (int) (progress * 100) + "%"));
                 break;
             case MUSIC_SOUND_LEVEL:
-                setText(Strings.getString(Strings.MUSIC_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                setText(Strings.getString("music_sound_level", (int) (progress * 100) + "%"));
                 break;
             case AMBIENCE_SOUND_LEVEL:
-                setText(Strings.getString(Strings.AMBIENCE_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                setText(Strings.getString("ambience_sound_level", (int) (progress * 100) + "%"));
                 break;
             case NONE:
             default:

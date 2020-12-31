@@ -63,10 +63,10 @@ public class MenuSelector extends MenuComponent {
 
         switch (selectorAction) {
             case LANGUAGE:
-                setText(Strings.getString(Strings.LANGUAGE, Language.values()[selectedValue].toString()));
+                setText(Strings.getString("language", Language.values()[selectedValue].toString()));
                 break;
             case RESOLUTION:
-                setText(Strings.getString(Strings.RESOLUTION, Resolution.values()[selectedValue].toString()));
+                setText(Strings.getString("resolution", Resolution.values()[selectedValue].toString()));
                 break;
             case NONE:
             default:
