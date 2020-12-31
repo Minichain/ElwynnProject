@@ -22,49 +22,52 @@ public class Menu {
     public Menu() {
         listOfMenuComponents = new ArrayList<>();
 
-        MenuButton resumeGame = new MenuButton("Resume Game", MenuButton.ButtonAction.LEAVE_MENU);
+        MenuButton resumeGame = new MenuButton(MenuButton.ButtonAction.LEAVE_MENU);
         listOfMenuComponents.add(resumeGame);
 
-        MenuButton fullScreen = new MenuButton("", MenuButton.ButtonAction.FULL_SCREEN);
+        MenuButton fullScreen = new MenuButton(MenuButton.ButtonAction.FULL_SCREEN);
         listOfMenuComponents.add(fullScreen);
 
-        MenuButton creativeMode = new MenuButton("", MenuButton.ButtonAction.CREATIVE_MODE);
+        MenuButton creativeMode = new MenuButton(MenuButton.ButtonAction.CREATIVE_MODE);
         listOfMenuComponents.add(creativeMode);
 
-        MenuButton useShaders = new MenuButton("", MenuButton.ButtonAction.SHADERS);
+        MenuButton useShaders = new MenuButton(MenuButton.ButtonAction.SHADERS);
         listOfMenuComponents.add(useShaders);
 
-        MenuSlider musicSoundLevel = new MenuSlider("Music", MenuSlider.SliderAction.MUSIC_SOUND_LEVEL);
+        MenuSlider musicSoundLevel = new MenuSlider(MenuSlider.SliderAction.MUSIC_SOUND_LEVEL);
         listOfMenuComponents.add(musicSoundLevel);
 
-        MenuSlider effectSoundLevel = new MenuSlider("Sound Effects", MenuSlider.SliderAction.EFFECT_SOUND_LEVEL);
+        MenuSlider effectSoundLevel = new MenuSlider(MenuSlider.SliderAction.EFFECT_SOUND_LEVEL);
         listOfMenuComponents.add(effectSoundLevel);
 
-        MenuSlider ambienceSoundLevel = new MenuSlider("Ambience", MenuSlider.SliderAction.AMBIENCE_SOUND_LEVEL);
+        MenuSlider ambienceSoundLevel = new MenuSlider(MenuSlider.SliderAction.AMBIENCE_SOUND_LEVEL);
         listOfMenuComponents.add(ambienceSoundLevel);
 
-        MenuSelector resolutionSelector = new MenuSelector("Resolution");
+        MenuSelector resolutionSelector = new MenuSelector(MenuSelector.SelectorAction.RESOLUTION);
         listOfMenuComponents.add(resolutionSelector);
 
-        MenuButton spawnEnemiesButton = new MenuButton("", MenuButton.ButtonAction.SPAWN_ENEMIES);
+        MenuSelector languageSelector = new MenuSelector(MenuSelector.SelectorAction.LANGUAGE);
+        listOfMenuComponents.add(languageSelector);
+
+        MenuButton spawnEnemiesButton = new MenuButton(MenuButton.ButtonAction.SPAWN_ENEMIES);
         listOfMenuComponents.add(spawnEnemiesButton);
 
-        MenuSlider spawnRate = new MenuSlider("Enemies Spawn Rate", MenuSlider.SliderAction.SPAWN_RATE);
+        MenuSlider spawnRate = new MenuSlider(MenuSlider.SliderAction.SPAWN_RATE);
         listOfMenuComponents.add(spawnRate);
 
-        MenuSlider gameTimeSpeed = new MenuSlider("Game Time Speed", MenuSlider.SliderAction.GAME_TIME_SPEED);
+        MenuSlider gameTimeSpeed = new MenuSlider(MenuSlider.SliderAction.GAME_TIME_SPEED);
         listOfMenuComponents.add(gameTimeSpeed);
 
-        MenuSlider renderDistance = new MenuSlider("Render Distance", MenuSlider.SliderAction.RENDER_DISTANCE);
+        MenuSlider renderDistance = new MenuSlider(MenuSlider.SliderAction.RENDER_DISTANCE);
         listOfMenuComponents.add(renderDistance);
 
-        MenuSlider updateDistance = new MenuSlider("Update Distance", MenuSlider.SliderAction.UPDATE_DISTANCE);
+        MenuSlider updateDistance = new MenuSlider(MenuSlider.SliderAction.UPDATE_DISTANCE);
         listOfMenuComponents.add(updateDistance);
 
-        MenuSlider framesPerSecond = new MenuSlider("Frames Per Second", MenuSlider.SliderAction.FRAMES_PER_SECOND);
+        MenuSlider framesPerSecond = new MenuSlider(MenuSlider.SliderAction.FRAMES_PER_SECOND);
         listOfMenuComponents.add(framesPerSecond);
 
-        MenuButton exitGame = new MenuButton("Exit Game", MenuButton.ButtonAction.EXIT_GAME);
+        MenuButton exitGame = new MenuButton(MenuButton.ButtonAction.EXIT_GAME);
         listOfMenuComponents.add(exitGame);
     }
 

@@ -41,8 +41,8 @@ public class UserInterface {
         if (Parameters.isDebugMode()) {
             debugTextList.clear();
 
-            debugTextList.add("Project Version: " + Parameters.getProjectVersion());
-            debugTextList.add("OpenGL version " + glGetString(GL_VERSION));
+            debugTextList.add(Strings.getString(Strings.PROJECT_VERSION, Parameters.getProjectVersion()));
+            debugTextList.add(Strings.getString(Strings.OPENGL_VERSION, glGetString(GL_VERSION)));
             debugTextList.add("Show/Hide Debug Info: " + ActionManager.Action.DEBUG_MENU.getActionKeyString());
             debugTextList.add("Reset Game: " + ActionManager.Action.RESET.getActionKeyString());
             debugTextList.add("Save World: " + ActionManager.Action.SAVE_WORLD.getActionKeyString());

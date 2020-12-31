@@ -1,11 +1,9 @@
 package menu;
 
+import enums.Language;
 import enums.Resolution;
 import listeners.InputListenerManager;
-import main.Coordinates;
-import main.OpenGLManager;
-import main.Parameters;
-import main.Window;
+import main.*;
 import text.TextRendering;
 import utils.MathUtils;
 
@@ -13,14 +11,28 @@ public class MenuSelector extends MenuComponent {
     private Selector previousSelector;
     private Selector nextSelector;
     private int selectedValue;
-    private Resolution selectedResolution;
 
-    public MenuSelector(String text) {
-        setText(text);
+    private SelectorAction selectorAction;
+
+    public enum SelectorAction {
+        NONE, RESOLUTION, LANGUAGE
+    }
+
+    public MenuSelector(SelectorAction sa) {
+        selectorAction = sa;
         previousSelector = new Selector(new int[]{x + 20, y + height / 2}, 18f, true);
         nextSelector = new Selector(new int[]{x + width - 20, y + height / 2}, 18f, false);
-        selectedResolution = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
-        selectedValue = selectedResolution.getResolutionValue();
+        switch (selectorAction) {
+            case RESOLUTION:
+                selectedValue = Resolution.getResolution(Parameters.getResolutionWidth(), Parameters.getResolutionHeight()).getResolutionValue();
+                break;
+            case LANGUAGE:
+                selectedValue = Parameters.getLanguage().getValue();
+                break;
+            case NONE:
+            default:
+                break;
+        }
     }
 
     @Override
@@ -49,6 +61,18 @@ public class MenuSelector extends MenuComponent {
             setPressed(false);
         }
 
+        switch (selectorAction) {
+            case LANGUAGE:
+                setText(Strings.getString(Strings.LANGUAGE, Language.values()[selectedValue].toString()));
+                break;
+            case RESOLUTION:
+                setText(Strings.getString(Strings.RESOLUTION, Resolution.values()[selectedValue].toString()));
+                break;
+            case NONE:
+            default:
+                break;
+        }
+
         previousSelector.update();
         nextSelector.update();
     }
@@ -68,11 +92,10 @@ public class MenuSelector extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        String textInfo = getText() + " (" + selectedResolution.toString() + ")";
         float scale = 2 * Parameters.getResolutionFactor();
-        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2f));
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
-        TextRendering.renderText(textX, textY, textInfo, scale, true);
+        TextRendering.renderText(textX, textY, getText(), scale, true);
     }
 
     public class Selector {
@@ -99,13 +122,35 @@ public class MenuSelector extends MenuComponent {
                     if (leftOriented) {
                         if (selectedValue > 0) {
                             selectedValue--;
+                        } else {
+                            switch (selectorAction) {
+                                case RESOLUTION:
+                                    selectedValue = Resolution.values().length - 1;
+                                    break;
+                                case LANGUAGE:
+                                    selectedValue = Language.values().length - 1;
+                                    break;
+                                case NONE:
+                                default:
+                                    break;
+                            }
                         }
                     } else {
                         selectedValue++;
                     }
-                    selectedValue = selectedValue % Resolution.values().length;
-                    selectedResolution = Resolution.values()[selectedValue];
-                    Parameters.setResolution(selectedResolution);
+                    switch (selectorAction) {
+                        case RESOLUTION:
+                            selectedValue = selectedValue % Resolution.values().length;
+                            Parameters.setResolution(Resolution.values()[selectedValue]);
+                            break;
+                        case LANGUAGE:
+                            selectedValue = selectedValue % Language.values().length;
+                            Parameters.setLanguage(Language.values()[selectedValue]);
+                            break;
+                        case NONE:
+                        default:
+                            break;
+                    }
                     Window.setWindowSize(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
                 }
                 pressed = false;

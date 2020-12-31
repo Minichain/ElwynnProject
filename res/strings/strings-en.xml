@@ -1,0 +1,24 @@
+<resources>
+    <string name="project_version">Project Version: %1$</string>
+    <string name="opengl_version">OpenGL version: %1$</string>
+    <string name="resume_game">Resume Game</string>
+    <string name="enable_full_screen">Enable Full Screen</string>
+    <string name="disable_full_screen">Disable Full Screen</string>
+    <string name="enable_creative_mode">Enable Creative Mode</string>
+    <string name="disable_creative_mode">Disable Creative Mode</string>
+    <string name="enable_enemies_spawn">Enable Enemies Spawn</string>
+    <string name="disable_enemies_spawn">Disable Enemies Spawn</string>
+    <string name="enable_shaders">Enable Shaders</string>
+    <string name="disable_shaders">Disable Shaders</string>
+    <string name="exit_game">Exit Game</string>
+    <string name="resolution">Resolution (%1$)</string>
+    <string name="language">Language (%1$)</string>
+    <string name="effect_sound_level">Effect (%1$)</string>
+    <string name="music_sound_level">Music (%1$)</string>
+    <string name="ambience_sound_level">Ambience (%1$)</string>
+    <string name="update_distance">Update Distance (%1$)</string>
+    <string name="render_distance">Render Distance (%1$)</string>
+    <string name="frames_per_second">Frames Per Second (%1$)</string>
+    <string name="spawn_rate">Enemies Spawn Rate (%1$)</string>
+    <string name="game_time_speed">Game Time Speed (%1$)</string>
+</resources>

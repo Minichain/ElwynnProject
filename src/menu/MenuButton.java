@@ -12,8 +12,7 @@ public class MenuButton extends MenuComponent {
         NONE, LEAVE_MENU, EXIT_GAME, FULL_SCREEN, CREATIVE_MODE, SPAWN_ENEMIES, SHADERS
     }
 
-    public MenuButton(String text, ButtonAction buttonAction) {
-        setText(text);
+    public MenuButton(ButtonAction buttonAction) {
         this.buttonAction = buttonAction;
     }
 
@@ -30,6 +29,47 @@ public class MenuButton extends MenuComponent {
         this.height = height;
         this.x = x - width / 2;
         this.y = y;
+
+        switch (buttonAction) {
+            case LEAVE_MENU:
+                setText(Strings.RESUME_GAME);
+                break;
+            case FULL_SCREEN:
+                if (Parameters.isFullScreen()) {
+                    setText(Strings.DISABLE_FULL_SCREEN);
+                } else {
+                    setText(Strings.ENABLE_FULL_SCREEN);
+                }
+                break;
+            case CREATIVE_MODE:
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                    setText(Strings.ENABLE_CREATIVE_MODE);
+                } else {
+                    setText(Strings.DISABLE_CREATIVE_MODE);
+                }
+                break;
+            case SPAWN_ENEMIES:
+                if (Parameters.isSpawnEnemies()) {
+                    setText(Strings.DISABLE_ENEMIES_SPAWN);
+                } else {
+                    setText(Strings.ENABLE_ENEMIES_SPAWN);
+                }
+                break;
+            case SHADERS:
+                if (Parameters.isShadersEnabled()) {
+                    setText(Strings.DISABLE_SHADERS);
+                } else {
+                    setText(Strings.ENABLE_SHADERS);
+                }
+                break;
+            case EXIT_GAME:
+                setText(Strings.EXIT_GAME);
+                break;
+            case NONE:
+            default:
+                setText(Strings.NONE);
+                break;
+        }
 
         setMouseOver(MathUtils.isMouseInsideRectangle(this.x, this.y, this.x + this.width, this.y + this.height));
         if (isMouseOver() && InputListenerManager.leftMouseButtonPressed) {
@@ -55,47 +95,10 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        String text;
         float scale = 2 * Parameters.getResolutionFactor();
-        switch (buttonAction) {
-            case FULL_SCREEN:
-                if (Parameters.isFullScreen()) {
-                    text = "Disable Full Screen";
-                } else {
-                    text = "Enable Full Screen";
-                }
-                break;
-            case CREATIVE_MODE:
-                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                    text = "Enable Creative Mode";
-                } else {
-                    text = "Disable Creative Mode";
-                }
-                break;
-            case SPAWN_ENEMIES:
-                if (Parameters.isSpawnEnemies()) {
-                    text = "Disable Enemies Spawn";
-                } else {
-                    text = "Enable Enemies Spawn";
-                }
-                break;
-            case SHADERS:
-                if (Parameters.isShadersEnabled()) {
-                    text = "Disable Shaders";
-                } else {
-                    text = "Enable Shaders";
-                }
-                break;
-            case NONE:
-                text = "NONE";
-                break;
-            default:
-                text = getText();
-                break;
-        }
-        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f));
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
-        TextRendering.renderText(textX, textY, text, scale, true);
+        TextRendering.renderText(textX, textY, getText(), scale, true);
     }
 
     private void performAction(ButtonAction buttonAction) {

@@ -4,6 +4,7 @@ import listeners.InputListenerManager;
 import main.GameTime;
 import main.OpenGLManager;
 import main.Parameters;
+import main.Strings;
 import text.TextRendering;
 import utils.MathUtils;
 
@@ -16,8 +17,7 @@ public class MenuSlider extends MenuComponent {
         GAME_TIME_SPEED, SPAWN_RATE, RENDER_DISTANCE, UPDATE_DISTANCE, FRAMES_PER_SECOND
     }
 
-    public MenuSlider(String text, SliderAction sliderAction) {
-        setText(text);
+    public MenuSlider(SliderAction sliderAction) {
         switch (sliderAction) {
             case EFFECT_SOUND_LEVEL:
                 progress = Parameters.getEffectSoundLevel();
@@ -75,6 +75,37 @@ public class MenuSlider extends MenuComponent {
             }
             setPressed(false);
         }
+
+        switch (sliderAction) {
+            case SPAWN_RATE:
+                setText(Strings.getString(Strings.SPAWN_RATE, (int) (progress * 10) + "x"));
+                break;
+            case GAME_TIME_SPEED:
+                setText(Strings.getString(Strings.FRAMES_PER_SECOND, (int) (progress * 6000f) + "x"));
+                break;
+            case FRAMES_PER_SECOND:
+                setText(Strings.getString(Strings.FRAMES_PER_SECOND, (int) (progress * 200f) + "fps"));
+                break;
+            case UPDATE_DISTANCE:
+                setText(Strings.getString(Strings.UPDATE_DISTANCE, (int) (progress * 2500f) + "px"));
+                break;
+            case RENDER_DISTANCE:
+                setText(Strings.getString(Strings.RENDER_DISTANCE, (int) (progress * 2500f) + "px"));
+                break;
+            case EFFECT_SOUND_LEVEL:
+                setText(Strings.getString(Strings.EFFECT_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                break;
+            case MUSIC_SOUND_LEVEL:
+                setText(Strings.getString(Strings.MUSIC_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                break;
+            case AMBIENCE_SOUND_LEVEL:
+                setText(Strings.getString(Strings.AMBIENCE_SOUND_LEVEL, (int) (progress * 100) + "%"));
+                break;
+            case NONE:
+            default:
+                setText("");
+                break;
+        }
     }
 
     @Override
@@ -91,33 +122,10 @@ public class MenuSlider extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        String textInfo = getText();
-        switch (sliderAction) {
-            case SPAWN_RATE:
-                textInfo += " (" + (int) (progress * 10) + "x)";
-                break;
-            case GAME_TIME_SPEED:
-                textInfo += " (" + (int) (progress * 6000f) + "x)";
-                break;
-            case FRAMES_PER_SECOND:
-                textInfo += " (" + (int) (progress * 200f) + " fps)";
-                break;
-            case UPDATE_DISTANCE:
-            case RENDER_DISTANCE:
-                textInfo += " (" + (int) (progress * 2500f) + " px)";
-                break;
-            case EFFECT_SOUND_LEVEL:
-            case MUSIC_SOUND_LEVEL:
-            case AMBIENCE_SOUND_LEVEL:
-            case NONE:
-            default:
-                textInfo += " (" + (int) (progress * 100) + "%)";
-                break;
-        }
         float scale = 2 * Parameters.getResolutionFactor();
-        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * textInfo.length() / 2f));
+        int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
-        TextRendering.renderText(textX, textY, textInfo, scale, true);
+        TextRendering.renderText(textX, textY, getText(), scale, true);
     }
 
     private void performAction(SliderAction buttonAction) {

@@ -1,0 +1,24 @@
+<resources>
+    <string name="project_version">Version del Proyecto: %1$</string>
+    <string name="opengl_version">Version de OpenGL: %1$</string>
+    <string name="resume_game">Reanudar el Juego</string>
+    <string name="enable_full_screen">Activar Pantalla Completa</string>
+    <string name="disable_full_screen">Desactivar Pantalla Completa</string>
+    <string name="enable_creative_mode">Activar Modo Creativo</string>
+    <string name="disable_creative_mode">Desactivar Modo Creativo</string>
+    <string name="enable_enemies_spawn">Activar Aparicion de Enemigos</string>
+    <string name="disable_enemies_spawn">Desactivar Aparicion de Enemigos</string>
+    <string name="enable_shaders">Activar Shaders</string>
+    <string name="disable_shaders">Desactivar Shaders</string>
+    <string name="exit_game">Salir del Juego</string>
+    <string name="resolution">Resolucion (%1$)</string>
+    <string name="language">Idioma (%1$)</string>
+    <string name="effect_sound_level">Efectos (%1$)</string>
+    <string name="music_sound_level">Musica (%1$)</string>
+    <string name="ambience_sound_level">Ambiente (%1$)</string>
+    <string name="update_distance">Distancia de Actualizado (%1$)</string>
+    <string name="render_distance">Distancia de Renderizado (%1$)</string>
+    <string name="frames_per_second">Imagenes Por Segundo (%1$)</string>
+    <string name="spawn_rate">Frecuencia Aparicion Enemigos (%1$)</string>
+    <string name="game_time_speed">Velocidad del Tiempo (%1$)</string>
+</resources>

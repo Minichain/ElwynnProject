@@ -2,6 +2,7 @@ package main;
 
 import audio.OpenALManager;
 import database.DataBase;
+import enums.Language;
 import enums.Resolution;
 
 public class Parameters {
@@ -11,6 +12,7 @@ public class Parameters {
     private static boolean shadersEnabled = true;
     private static float renderDistance = 336f;
     private static float updateDistance = 2000f;
+    private static Language language = Language.ENGLISH;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond;
@@ -24,7 +26,7 @@ public class Parameters {
         /** FramesPerSecond **/
         dataBaseValue = DataBase.selectParameter("framesPerSecond");
         if (dataBaseValue != -1) {
-            framesPerSecond = dataBaseValue;
+            setFramesPerSecond(dataBaseValue);
         } else {
             setFramesPerSecond(60);
         }
@@ -32,7 +34,7 @@ public class Parameters {
         /** FullScreen **/
         dataBaseValue = DataBase.selectParameter("fullScreen");
         if (dataBaseValue != -1) {
-            fullScreen = dataBaseValue != 0;
+            setFullScreen(dataBaseValue != 0);
         } else {
             setFullScreen(true);
         }
@@ -40,16 +42,23 @@ public class Parameters {
         /** Resolution **/
         dataBaseValue = DataBase.selectParameter("resolution");
         if (dataBaseValue != -1) {
-            resolution = Resolution.values()[dataBaseValue];
+            setResolution(Resolution.values()[dataBaseValue]);
         } else {
             setResolution(Resolution.RESOLUTION_1920_1080);
         }
-        resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+
+        /** Language **/
+        dataBaseValue = DataBase.selectParameter("language");
+        if (dataBaseValue != -1) {
+            setLanguage(Language.values()[dataBaseValue]);
+        } else {
+            setLanguage(Language.ENGLISH);
+        }
 
         /** MusicSoundLevel **/
         dataBaseValue = DataBase.selectParameter("musicSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
-            musicSoundLevel = dataBaseValue / 100f;
+            setMusicSoundLevel(dataBaseValue / 100f);
         } else {
             setMusicSoundLevel(0.5f);
         }
@@ -57,7 +66,7 @@ public class Parameters {
         /** EffectSoundLevel **/
         dataBaseValue = DataBase.selectParameter("effectSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
-            effectSoundLevel = dataBaseValue / 100f;
+            setEffectSoundLevel(dataBaseValue / 100f);
         } else {
             setEffectSoundLevel(0.5f);
         }
@@ -65,7 +74,7 @@ public class Parameters {
         /** AmbienceSoundLevel **/
         dataBaseValue = DataBase.selectParameter("ambienceSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
-            ambienceSoundLevel = dataBaseValue / 100f;
+            setAmbienceSoundLevel(dataBaseValue / 100f);
         } else {
             setAmbienceSoundLevel(0.5f);
         }
@@ -167,6 +176,17 @@ public class Parameters {
     public static void setUpdateDistance(float updateDistance) {
         Log.l("setUpdateDistance to " + updateDistance);
         Parameters.updateDistance = updateDistance;
+    }
+
+    public static Language getLanguage() {
+        return Parameters.language;
+    }
+
+    public static void setLanguage(Language language) {
+        Log.l("setLanguage to " + language);
+        Parameters.language = language;
+        DataBase.insertOrUpdateParameter("language", language.getValue());
+        Strings.updateStrings();
     }
 
     /** AUDIO PARAMETERS **/
