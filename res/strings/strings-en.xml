@@ -1,6 +1,8 @@
 <resources>
     <string name="project_version">Project Version: %1$</string>
     <string name="opengl_version">OpenGL version: %1$</string>
+
+    <!--MENU-->
     <string name="resume_game">Resume Game</string>
     <string name="enable_full_screen">Enable Full Screen</string>
     <string name="disable_full_screen">Disable Full Screen</string>
@@ -21,4 +23,13 @@
     <string name="frames_per_second">Frames Per Second (%1$)</string>
     <string name="spawn_rate">Enemies Spawn Rate (%1$)</string>
     <string name="game_time_speed">Game Time Speed (%1$)</string>
+
+    <!--TUTORIAL-->
+    <string name="tutorial_roll">Press SPACE when moving to roll.</string>
+    <string name="tutorial_attack">Press LEFT or RIGHT mouse buttons to attack.</string>
+    <string name="tutorial_change_musical_mode">Use Q and E to change the musical mode./nlYou can also use the numbers from 1 to 7.</string>
+    <string name="tutorial_follow_path">There is a village south from here./nlJust follow the path.../nl...you won't get lost./nlI sell potions if you need any./nlGood luck!</string>
+    <string name="tutorial_welcome">Welcome...</string>
+    <string name="tutorial_putoncio">Holi, Putoncio!</string>
+    <string name="tutorial_outsider">Uh...?/nlAn outsider!/nlUh.../nlDo you come from afar?</string>
 </resources>

@@ -330,38 +330,24 @@ public class Scene {
         ArrayList<String> textList;
 
         npc = new NonPlayerCharacter(2455, 1725, 0);
-        npc.setTalkText("Press SPACE when moving to roll.");
+        npc.setTalkTextStringName("tutorial_roll");
 
         npc = new NonPlayerCharacter(2485, 1720, 1);
-        npc.setTalkText("Press LEFT or RIGHT mouse buttons to attack.");
+        npc.setTalkTextStringName("tutorial_attack");
 
         npc = new NonPlayerCharacter(2500, 1725, 2);
-        textList = new ArrayList<>();
-        textList.add("Use Q and E to change the musical mode.");
-        textList.add("You can also use the numbers from 1 to 7.");
-        npc.setTalkText(textList);
+        npc.setTalkTextStringName("tutorial_change_musical_mode");
 
         npc = new NonPlayerCharacter(2460, 1810, true, true, 0);
-        textList = new ArrayList<>();
-        textList.add("There is a village south from here.");
-        textList.add("Just follow the path...");
-        textList.add("...you won't get lost.");
-        textList.add("I sell potions if you need any.");
-        textList.add("Good luck!");
-        npc.setTalkText(textList);
+        npc.setTalkTextStringName("tutorial_follow_path");
 
         npc = new NonPlayerCharacter(2456, 2442, true, false, 1);
-        npc.setTalkText("Welcome...");
+        npc.setTalkTextStringName("tutorial_welcome");
 
         npc = new NonPlayerCharacter(2622, 2471, true, false, 3);
-        npc.setTalkText("Holi Putoncio! <3");
+        npc.setTalkTextStringName("tutorial_putoncio");
 
         npc = new NonPlayerCharacter(2427, 2583, true, true, 1);
-        textList = new ArrayList<>();
-        textList.add("Uh...?");
-        textList.add("An outsider!");
-        textList.add("Uh...");
-        textList.add("Do you come from afar?");
-        npc.setTalkText(textList);
+        npc.setTalkTextStringName("tutorial_outsider");
     }
 }

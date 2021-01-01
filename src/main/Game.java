@@ -7,6 +7,7 @@ import listeners.InputListenerManager;
 
 public class Game {
     public static void startGame() {
+        Strings.updateStrings(Strings.englishStringPath);
         Parameters.init();
         Window.init();
         Log.l("Project Version: " + Parameters.getProjectVersion());

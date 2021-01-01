@@ -9,16 +9,19 @@ import items.Item;
 import items.ManaPotion;
 import main.Coordinates;
 import main.Log;
+import main.Strings;
 import main.Texture;
 import scene.Scene;
 import text.FloatingTextEntity;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 9;
     private final double interactionDistance = 25;
+    private String talkTextStringName;
     private ArrayList<String> talkText;
     private int talkTextPage;
     private NonPlayerCharacterInteractionState interactionState = NonPlayerCharacterInteractionState.NONE;
@@ -94,7 +97,12 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
     }
 
     public void update(long timeElapsed) {
-
+        if (isTalking()) {
+            String[] s = Strings.getString(talkTextStringName).split("/nl");
+            ArrayList<String> arrayList = new ArrayList<>();
+            Collections.addAll(arrayList, s);
+            setTalkText(arrayList);
+        }
     }
 
     public Texture getSpriteSheet() {
@@ -235,12 +243,11 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
         return interactionState == NonPlayerCharacterInteractionState.BUYING;
     }
 
-    public void setTalkText(String talkText) {
-        this.talkText = new ArrayList<>();
-        this.talkText.add(talkText);
+    public void setTalkTextStringName(String talkTextStringName) {
+        this.talkTextStringName = talkTextStringName;
     }
 
-    public void setTalkText(ArrayList<String> talkText) {
+    private void setTalkText(ArrayList<String> talkText) {
         this.talkText = new ArrayList<>();
         this.talkText.addAll(talkText);
     }
@@ -253,7 +260,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
         return talkTextPage;
     }
 
-    public void setTalkTextPage(int ttp) {
+    private void setTalkTextPage(int ttp) {
         if (ttp >= talkText.size()) ttp = talkText.size() - 1;
         talkTextPage = ttp;
     }
