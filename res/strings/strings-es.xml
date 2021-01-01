@@ -2,6 +2,16 @@
     <string name="project_version">Versión del Proyecto: %1$</string>
     <string name="opengl_version">Versión de OpenGL: %1$</string>
 
+    <!--UI-->
+    <string name="ui_interact_npc">Interactuar</string>
+    <string name="ui_talk_npc">Hablar</string>
+    <string name="ui_buy_npc">Comprar</string>
+    <string name="ui_buying_npc">Comprando %1$</string>
+    <string name="ui_sell_npc">Vender</string>
+    <string name="ui_selling_npc">Vendiendo %1$</string>
+    <string name="ui_quit_npc">Salir</string>
+    <string name="ui_not_enough_money">Dinero insuficiente</string>
+
     <!--MENU-->
     <string name="resume_game">Reanudar el Juego</string>
     <string name="enable_full_screen">Activar Pantalla Completa</string>

@@ -163,12 +163,12 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
                     Player.getInstance().getListOfItems().add(itemToBuy);
                     Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() - itemToBuy.getCost());
                     OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
-                    String text = "Buying " + itemToBuy.getName();
+                    String text = Strings.getString("ui_buying_npc", itemToBuy.getName());
                     new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                             new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
                 } else {
                     Log.l("Not enough money to buy " + itemToBuy.getName());
-                    String text = "Not enough money";
+                    String text = Strings.getString("ui_not_enough_money");
                     new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                             new Color(1f, 0f, 0f), 0.75, new double[]{0, -1});
                 }
@@ -182,7 +182,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
                 Player.getInstance().getListOfItems().remove(itemToSell);
                 Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() + itemToSell.getCost());
                 OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
-                String text = "Selling " + itemToSell.getName();
+                String text = Strings.getString("ui_selling_npc", itemToSell.getName());
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
                         new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
             } else {

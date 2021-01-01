@@ -147,7 +147,7 @@ public class UserInterface {
                             if (nonPlayerCharacter.isWaitingForInteractionSelection()) {
                                 text = listOfActions.get(i).toString();
                             } else {
-                                if (i == size - 1) text = "Quit";
+                                if (i == size - 1) text = Strings.getString("ui_quit_npc");
                                 else text = listOfItems.get(i).getName().concat(" ").concat(String.valueOf(listOfItems.get(i).getCost())).concat("gc");
                             }
                             if (i == nonPlayerCharacter.getSelectedItem()) {
