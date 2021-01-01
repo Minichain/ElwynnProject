@@ -53,7 +53,7 @@ public class Strings {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = factory.newDocumentBuilder();
             Document doc = dBuilder.parse(xmlFile);
-            stringHashMap = new HashMap<>();
+            stringHashMap.clear();
 
             NodeList nodeList = doc.getElementsByTagName("string");
             for (int i = 0; i < nodeList.getLength(); i++) {

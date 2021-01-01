@@ -19,9 +19,9 @@ public enum Language {
             default:
                 return "English";
             case SPANISH:
-                return "Spanish";
+                return "Español";
             case CATALAN:
-                return "Catalan";
+                return "Català";
         }
     }
 }

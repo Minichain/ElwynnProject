@@ -1,24 +1,24 @@
 <resources>
-    <string name="project_version">Versio del Projecte: %1$</string>
-    <string name="opengl_version">Versio d'OpenGL: %1$</string>
+    <string name="project_version">Versió del Projecte: %1$</string>
+    <string name="opengl_version">Versió d'OpenGL: %1$</string>
     <string name="resume_game">Reprendre el Joc</string>
     <string name="enable_full_screen">Activar Pantalla Completa</string>
     <string name="disable_full_screen">Desactivar Pantalla Completa</string>
     <string name="enable_creative_mode">Activar Mode Creatiu</string>
     <string name="disable_creative_mode">Desactivar Mode Creatiu</string>
-    <string name="enable_enemies_spawn">Activar Aparicio d'Enemics</string>
-    <string name="disable_enemies_spawn">Desactivar Aparicio d'Enemics</string>
+    <string name="enable_enemies_spawn">Activar Aparició d'Enemics</string>
+    <string name="disable_enemies_spawn">Desactivar Aparició d'Enemics</string>
     <string name="enable_shaders">Activar Shaders</string>
     <string name="disable_shaders">Desactivar Shaders</string>
     <string name="exit_game">Sortir del Juego</string>
-    <string name="resolution">Resolucio (%1$)</string>
+    <string name="resolution">Resolució (%1$)</string>
     <string name="language">Idioma (%1$)</string>
     <string name="effect_sound_level">Efectes (%1$)</string>
-    <string name="music_sound_level">Musica (%1$)</string>
+    <string name="music_sound_level">Música (%1$)</string>
     <string name="ambience_sound_level">Ambient (%1$)</string>
-    <string name="update_distance">Distancia d'Actualitzacio (%1$)</string>
-    <string name="render_distance">Distancia de Renderitzat (%1$)</string>
+    <string name="update_distance">Distància d'Actualització (%1$)</string>
+    <string name="render_distance">Distància de Renderitzat (%1$)</string>
     <string name="frames_per_second">Imatges Per Segon (%1$)</string>
-    <string name="spawn_rate">Frequencia Aparicio Enemics (%1$)</string>
+    <string name="spawn_rate">Freqüència Aparició Enemics (%1$)</string>
     <string name="game_time_speed">Velocitat del Temps (%1$)</string>
 </resources>

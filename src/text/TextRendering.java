@@ -9,15 +9,17 @@ import static org.lwjgl.opengl.GL11.*;
 
 public class TextRendering {
     public static Texture fontSpriteWhite;
-    public static int CHARACTER_WIDTH = 7;
-    public static int CHARACTER_HEIGHT = 9;
+    public static final int CHARACTER_WIDTH = 7;
+    public static final int CHARACTER_HEIGHT = 13;
+    private static final int numOfTilesInTileSetX = 18;
+    private static final int numOfTilesInTileSetY = 8;
 
     public static void init() {
         loadFontSprite();
     }
 
     private static void loadFontSprite() {
-        String path = "res/sprites/bitmap_font_white.png";
+        String path = "res/sprites/fonts/bitmap_font_white.png";
         fontSpriteWhite = Texture.loadTexture(path);
     }
 
@@ -58,18 +60,12 @@ public class TextRendering {
             OpenGLManager.glBegin(GL_QUADS);
         }
 
-        int numOfTilesInTileSetX = 18;
-        int numOfTilesInTileSetY = 6;
         String[] characters = textToRender.split("(?!^)");
-        for (int i = 0; i < characters.length; i++) {
-            int[] characterPosition = getCharacterPosition(characters[i]);
-            int tileFromTileSetX = characterPosition[0];
-            int tileFromTileSetY = characterPosition[1];
-            float u = ((1f / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
-            float v = ((1f / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
-            float u2 = u + (1f / (float) numOfTilesInTileSetX);
-            float v2 = v + (1f / (float) numOfTilesInTileSetY);
-            OpenGLManager.drawTexture((int) (x + (i * CHARACTER_WIDTH * scale)), (int)y, u, v2, u2, v, CHARACTER_WIDTH * scale, CHARACTER_HEIGHT * scale, alpha, r, g, b);
+        int i = 0;
+        for (String s : characters) {
+            int[] characterPosition = getCharacterPosition(s);
+            renderCharacter(characterPosition[0], characterPosition[1], (x + (i * CHARACTER_WIDTH * scale)), y, scale, alpha, r, g, b);
+            i++;
         }
 
         if (!isTextureBoundAndOpenGlBegun) {
@@ -78,297 +74,408 @@ public class TextRendering {
         }
     }
 
+    private static void renderCharacter(int tileFromTileSetX, int tileFromTileSetY, float x, float y, float scale, float alpha, float r, float g, float b) {
+        float u = ((1f / (float) numOfTilesInTileSetX)) * tileFromTileSetX;
+        float v = ((1f / (float) numOfTilesInTileSetY)) * tileFromTileSetY;
+        float u2 = u + (1f / (float) numOfTilesInTileSetX);
+        float v2 = v + (1f / (float) numOfTilesInTileSetY);
+        OpenGLManager.drawTexture((int) x, (int) y, u, v2, u2, v, CHARACTER_WIDTH * scale, CHARACTER_HEIGHT * scale, alpha, r, g, b);
+    }
+
     private static int[] getCharacterPosition(String character) {
         int[] tileFromTileSet;
         switch (character) {
-            case "z":
-            default:
+            case "Ü":
                 tileFromTileSet = new int[]{0, 0};
                 return tileFromTileSet;
-            case "{":
+            case "ù":
                 tileFromTileSet = new int[]{1, 0};
                 return tileFromTileSet;
-            case "|":
+            case "ú":
                 tileFromTileSet = new int[]{2, 0};
                 return tileFromTileSet;
-            case "}":
+            case "ü":
                 tileFromTileSet = new int[]{3, 0};
                 return tileFromTileSet;
-            case "~":
-                tileFromTileSet = new int[]{4, 0};
-                return tileFromTileSet;
-            case "h":
+            case "Ë":
                 tileFromTileSet = new int[]{0, 1};
                 return tileFromTileSet;
-            case "i":
+            case "è":
                 tileFromTileSet = new int[]{1, 1};
                 return tileFromTileSet;
-            case "j":
+            case "é":
                 tileFromTileSet = new int[]{2, 1};
                 return tileFromTileSet;
-            case "k":
+            case "ë":
                 tileFromTileSet = new int[]{3, 1};
                 return tileFromTileSet;
-            case "l":
+            case "Í":
                 tileFromTileSet = new int[]{4, 1};
                 return tileFromTileSet;
-            case "m":
+            case "Ì":
                 tileFromTileSet = new int[]{5, 1};
                 return tileFromTileSet;
-            case "n":
+            case "Ï":
                 tileFromTileSet = new int[]{6, 1};
                 return tileFromTileSet;
-            case "o":
+            case "ì":
                 tileFromTileSet = new int[]{7, 1};
                 return tileFromTileSet;
-            case "p":
+            case "í":
                 tileFromTileSet = new int[]{8, 1};
                 return tileFromTileSet;
-            case "q":
+            case "ï":
                 tileFromTileSet = new int[]{9, 1};
                 return tileFromTileSet;
-            case "r":
+            case "Ò":
                 tileFromTileSet = new int[]{10, 1};
                 return tileFromTileSet;
-            case "s":
+            case "Ó":
                 tileFromTileSet = new int[]{11, 1};
                 return tileFromTileSet;
-            case "t":
+            case "Ö":
                 tileFromTileSet = new int[]{12, 1};
                 return tileFromTileSet;
-            case "u":
+            case "ò":
                 tileFromTileSet = new int[]{13, 1};
                 return tileFromTileSet;
-            case "v":
+            case "ó":
                 tileFromTileSet = new int[]{14, 1};
                 return tileFromTileSet;
-            case "w":
+            case "ö":
                 tileFromTileSet = new int[]{15, 1};
                 return tileFromTileSet;
-            case "x":
+            case "Ù":
                 tileFromTileSet = new int[]{16, 1};
                 return tileFromTileSet;
-            case "y":
+            case "Ú":
                 tileFromTileSet = new int[]{17, 1};
                 return tileFromTileSet;
-            case "V":
+            case "z":
                 tileFromTileSet = new int[]{0, 2};
                 return tileFromTileSet;
-            case "W":
+            case "{":
                 tileFromTileSet = new int[]{1, 2};
                 return tileFromTileSet;
-            case "X":
+            case "|":
                 tileFromTileSet = new int[]{2, 2};
                 return tileFromTileSet;
-            case "Y":
+            case "}":
                 tileFromTileSet = new int[]{3, 2};
                 return tileFromTileSet;
-            case "Z":
+            case "~":
                 tileFromTileSet = new int[]{4, 2};
                 return tileFromTileSet;
-            case "[":
+            case "·":
                 tileFromTileSet = new int[]{5, 2};
                 return tileFromTileSet;
-            case "\\":
+            case "Ñ":
                 tileFromTileSet = new int[]{6, 2};
                 return tileFromTileSet;
-            case "]":
+            case "ñ":
                 tileFromTileSet = new int[]{7, 2};
                 return tileFromTileSet;
-            case "^":
+            case "Ç":
                 tileFromTileSet = new int[]{8, 2};
                 return tileFromTileSet;
-            case "_":
+            case "ç":
                 tileFromTileSet = new int[]{9, 2};
                 return tileFromTileSet;
-            case "´":
+            case "À":
                 tileFromTileSet = new int[]{10, 2};
                 return tileFromTileSet;
-            case "a":
+            case "Á":
                 tileFromTileSet = new int[]{11, 2};
                 return tileFromTileSet;
-            case "b":
+            case "Ä":
                 tileFromTileSet = new int[]{12, 2};
                 return tileFromTileSet;
-            case "c":
+            case "à":
                 tileFromTileSet = new int[]{13, 2};
                 return tileFromTileSet;
-            case "d":
+            case "á":
                 tileFromTileSet = new int[]{14, 2};
                 return tileFromTileSet;
-            case "e":
+            case "ä":
                 tileFromTileSet = new int[]{15, 2};
                 return tileFromTileSet;
-            case "f":
+            case "È":
                 tileFromTileSet = new int[]{16, 2};
                 return tileFromTileSet;
-            case "g":
+            case "É":
                 tileFromTileSet = new int[]{17, 2};
                 return tileFromTileSet;
-            case "D":
+            case "h":
                 tileFromTileSet = new int[]{0, 3};
                 return tileFromTileSet;
-            case "E":
+            case "i":
                 tileFromTileSet = new int[]{1, 3};
                 return tileFromTileSet;
-            case "F":
+            case "j":
                 tileFromTileSet = new int[]{2, 3};
                 return tileFromTileSet;
-            case "G":
+            case "k":
                 tileFromTileSet = new int[]{3, 3};
                 return tileFromTileSet;
-            case "H":
+            case "l":
                 tileFromTileSet = new int[]{4, 3};
                 return tileFromTileSet;
-            case "I":
+            case "m":
                 tileFromTileSet = new int[]{5, 3};
                 return tileFromTileSet;
-            case "J":
+            case "n":
                 tileFromTileSet = new int[]{6, 3};
                 return tileFromTileSet;
-            case "K":
+            case "o":
                 tileFromTileSet = new int[]{7, 3};
                 return tileFromTileSet;
-            case "L":
+            case "p":
                 tileFromTileSet = new int[]{8, 3};
                 return tileFromTileSet;
-            case "M":
+            case "q":
                 tileFromTileSet = new int[]{9, 3};
                 return tileFromTileSet;
-            case "N":
+            case "r":
                 tileFromTileSet = new int[]{10, 3};
                 return tileFromTileSet;
-            case "O":
+            case "s":
                 tileFromTileSet = new int[]{11, 3};
                 return tileFromTileSet;
-            case "P":
+            case "t":
                 tileFromTileSet = new int[]{12, 3};
                 return tileFromTileSet;
-            case "Q":
+            case "u":
                 tileFromTileSet = new int[]{13, 3};
                 return tileFromTileSet;
-            case "R":
+            case "v":
                 tileFromTileSet = new int[]{14, 3};
                 return tileFromTileSet;
-            case "S":
+            case "w":
                 tileFromTileSet = new int[]{15, 3};
                 return tileFromTileSet;
-            case "T":
+            case "x":
                 tileFromTileSet = new int[]{16, 3};
                 return tileFromTileSet;
-            case "U":
+            case "y":
                 tileFromTileSet = new int[]{17, 3};
                 return tileFromTileSet;
-            case "2":
+            case "V":
                 tileFromTileSet = new int[]{0, 4};
                 return tileFromTileSet;
-            case "3":
+            case "W":
                 tileFromTileSet = new int[]{1, 4};
                 return tileFromTileSet;
-            case "4":
+            case "X":
                 tileFromTileSet = new int[]{2, 4};
                 return tileFromTileSet;
-            case "5":
+            case "Y":
                 tileFromTileSet = new int[]{3, 4};
                 return tileFromTileSet;
-            case "6":
+            case "Z":
                 tileFromTileSet = new int[]{4, 4};
                 return tileFromTileSet;
-            case "7":
+            case "[":
                 tileFromTileSet = new int[]{5, 4};
                 return tileFromTileSet;
-            case "8":
+            case "\\":
                 tileFromTileSet = new int[]{6, 4};
                 return tileFromTileSet;
-            case "9":
+            case "]":
                 tileFromTileSet = new int[]{7, 4};
                 return tileFromTileSet;
-            case ":":
+            case "^":
                 tileFromTileSet = new int[]{8, 4};
                 return tileFromTileSet;
-            case ";":
+            case "_":
                 tileFromTileSet = new int[]{9, 4};
                 return tileFromTileSet;
-            case "<":
+            case "´":
                 tileFromTileSet = new int[]{10, 4};
                 return tileFromTileSet;
-            case "=":
+            case "a":
                 tileFromTileSet = new int[]{11, 4};
                 return tileFromTileSet;
-            case ">":
+            case "b":
                 tileFromTileSet = new int[]{12, 4};
                 return tileFromTileSet;
-            case "?":
+            case "c":
                 tileFromTileSet = new int[]{13, 4};
                 return tileFromTileSet;
-            case "@":
+            case "d":
                 tileFromTileSet = new int[]{14, 4};
                 return tileFromTileSet;
-            case "A":
+            case "e":
                 tileFromTileSet = new int[]{15, 4};
                 return tileFromTileSet;
-            case "B":
+            case "f":
                 tileFromTileSet = new int[]{16, 4};
                 return tileFromTileSet;
-            case "C":
+            case "g":
                 tileFromTileSet = new int[]{17, 4};
                 return tileFromTileSet;
-            case " ":
+            case "D":
                 tileFromTileSet = new int[]{0, 5};
                 return tileFromTileSet;
-            case "!":
+            case "E":
                 tileFromTileSet = new int[]{1, 5};
                 return tileFromTileSet;
-            case "\"":
+            case "F":
                 tileFromTileSet = new int[]{2, 5};
                 return tileFromTileSet;
-            case "#":
+            case "G":
                 tileFromTileSet = new int[]{3, 5};
                 return tileFromTileSet;
-            case "$":
+            case "H":
                 tileFromTileSet = new int[]{4, 5};
                 return tileFromTileSet;
-            case "%":
+            case "I":
                 tileFromTileSet = new int[]{5, 5};
                 return tileFromTileSet;
-            case "&":
+            case "J":
                 tileFromTileSet = new int[]{6, 5};
                 return tileFromTileSet;
-            case "'":
+            case "K":
                 tileFromTileSet = new int[]{7, 5};
                 return tileFromTileSet;
-            case "(":
+            case "L":
                 tileFromTileSet = new int[]{8, 5};
                 return tileFromTileSet;
-            case ")":
+            case "M":
                 tileFromTileSet = new int[]{9, 5};
                 return tileFromTileSet;
-            case "*":
-            case "·":
+            case "N":
                 tileFromTileSet = new int[]{10, 5};
                 return tileFromTileSet;
-            case "+":
+            case "O":
                 tileFromTileSet = new int[]{11, 5};
                 return tileFromTileSet;
-            case ",":
+            case "P":
                 tileFromTileSet = new int[]{12, 5};
                 return tileFromTileSet;
-            case "-":
+            case "Q":
                 tileFromTileSet = new int[]{13, 5};
                 return tileFromTileSet;
-            case ".":
+            case "R":
                 tileFromTileSet = new int[]{14, 5};
                 return tileFromTileSet;
-            case "/":
+            case "S":
                 tileFromTileSet = new int[]{15, 5};
                 return tileFromTileSet;
-            case "0":
+            case "T":
                 tileFromTileSet = new int[]{16, 5};
                 return tileFromTileSet;
-            case "1":
+            case "U":
                 tileFromTileSet = new int[]{17, 5};
                 return tileFromTileSet;
-
+            case "2":
+                tileFromTileSet = new int[]{0, 6};
+                return tileFromTileSet;
+            case "3":
+                tileFromTileSet = new int[]{1, 6};
+                return tileFromTileSet;
+            case "4":
+                tileFromTileSet = new int[]{2, 6};
+                return tileFromTileSet;
+            case "5":
+                tileFromTileSet = new int[]{3, 6};
+                return tileFromTileSet;
+            case "6":
+                tileFromTileSet = new int[]{4, 6};
+                return tileFromTileSet;
+            case "7":
+                tileFromTileSet = new int[]{5, 6};
+                return tileFromTileSet;
+            case "8":
+                tileFromTileSet = new int[]{6, 6};
+                return tileFromTileSet;
+            case "9":
+                tileFromTileSet = new int[]{7, 6};
+                return tileFromTileSet;
+            case ":":
+                tileFromTileSet = new int[]{8, 6};
+                return tileFromTileSet;
+            case ";":
+                tileFromTileSet = new int[]{9, 6};
+                return tileFromTileSet;
+            case "<":
+                tileFromTileSet = new int[]{10, 6};
+                return tileFromTileSet;
+            case "=":
+                tileFromTileSet = new int[]{11, 6};
+                return tileFromTileSet;
+            case ">":
+                tileFromTileSet = new int[]{12, 6};
+                return tileFromTileSet;
+            case "?":
+                tileFromTileSet = new int[]{13, 6};
+                return tileFromTileSet;
+            case "@":
+                tileFromTileSet = new int[]{14, 6};
+                return tileFromTileSet;
+            case "A":
+                tileFromTileSet = new int[]{15, 6};
+                return tileFromTileSet;
+            case "B":
+                tileFromTileSet = new int[]{16, 6};
+                return tileFromTileSet;
+            case "C":
+                tileFromTileSet = new int[]{17, 6};
+                return tileFromTileSet;
+            case " ":
+                tileFromTileSet = new int[]{0, 7};
+                return tileFromTileSet;
+            case "!":
+                tileFromTileSet = new int[]{1, 7};
+                return tileFromTileSet;
+            case "\"":
+                tileFromTileSet = new int[]{2, 7};
+                return tileFromTileSet;
+            case "#":
+                tileFromTileSet = new int[]{3, 7};
+                return tileFromTileSet;
+            case "$":
+                tileFromTileSet = new int[]{4, 7};
+                return tileFromTileSet;
+            case "%":
+                tileFromTileSet = new int[]{5, 7};
+                return tileFromTileSet;
+            case "&":
+                tileFromTileSet = new int[]{6, 7};
+                return tileFromTileSet;
+            case "'":
+                tileFromTileSet = new int[]{7, 7};
+                return tileFromTileSet;
+            case "(":
+                tileFromTileSet = new int[]{8, 7};
+                return tileFromTileSet;
+            case ")":
+                tileFromTileSet = new int[]{9, 7};
+                return tileFromTileSet;
+            case "*":
+                tileFromTileSet = new int[]{10, 7};
+                return tileFromTileSet;
+            case "+":
+                tileFromTileSet = new int[]{11, 7};
+                return tileFromTileSet;
+            case ",":
+                tileFromTileSet = new int[]{12, 7};
+                return tileFromTileSet;
+            case "-":
+                tileFromTileSet = new int[]{13, 7};
+                return tileFromTileSet;
+            case ".":
+                tileFromTileSet = new int[]{14, 7};
+                return tileFromTileSet;
+            case "/":
+                tileFromTileSet = new int[]{15, 7};
+                return tileFromTileSet;
+            case "0":
+                tileFromTileSet = new int[]{16, 7};
+                return tileFromTileSet;
+            case "1":
+            default:
+                tileFromTileSet = new int[]{17, 7};
+                return tileFromTileSet;
         }
     }
 }
