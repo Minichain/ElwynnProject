@@ -128,7 +128,7 @@ public class HeadUpDisplay {
 
         /** YOU DIED **/
         if (Player.getInstance().getStatus() == Player.Status.DEAD) {
-            String text = "YOU DIED";
+            String text = Strings.getString("ui_you_died");
             float scale = 4f * Parameters.getResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
         }

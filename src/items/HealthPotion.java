@@ -2,9 +2,9 @@ package items;
 
 import audio.OpenALManager;
 import entities.Player;
+import main.Strings;
 
 public class HealthPotion implements Item {
-    private String name = "Health Potion";
     private int cost;
     private float restoreValue;
 
@@ -22,7 +22,7 @@ public class HealthPotion implements Item {
 
     @Override
     public String getName() {
-        return name;
+        return Strings.getString("item_health_potion");
     }
 
     @Override

@@ -4,6 +4,19 @@
 
     <!--UI-->
     <string name="ui_interact_npc">Interactuar</string>
+    <string name="ui_talk_npc">Parlar</string>
+    <string name="ui_buy_npc">Comprar</string>
+    <string name="ui_buying_npc">Comprant %1$</string>
+    <string name="ui_sell_npc">Vendre</string>
+    <string name="ui_selling_npc">Venent %1$</string>
+    <string name="ui_quit_npc">Sortir</string>
+    <string name="ui_not_enough_money">Diners insuficients</string>
+    <string name="ui_you_died">HAS MORT</string>
+
+    <!--ITEMS-->
+    <string name="item_health_potion">Poció de Salut</string>
+    <string name="item_mana_potion">Poció de Màgia</string>
+    <string name="item_haste_potion">Poció de Celeritat</string>
 
     <!--MENU-->
     <string name="resume_game">Reprendre el Joc</string>
@@ -32,4 +45,5 @@
     <string name="tutorial_attack">Pressiona els botons ESQUERRE o DRET del ratolí per atacar.</string>
     <string name="tutorial_change_musical_mode">Utilitza Q o E per canviar de mode musical./nlTambé pots utilitzar els números de l'1 al 7.</string>
     <string name="tutorial_welcome">Benvingut...</string>
+    <string name="tutorial_outsider">Uh...?/nlUn foraster!/nlUh.../nlVens de molt lluny?</string>
 </resources>
