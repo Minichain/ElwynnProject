@@ -28,7 +28,7 @@
     <string name="disable_enemies_spawn">Desactivar Aparició d'Enemics</string>
     <string name="enable_shaders">Activar Shaders</string>
     <string name="disable_shaders">Desactivar Shaders</string>
-    <string name="exit_game">Sortir del Juego</string>
+    <string name="exit_game">Sortir del Joc</string>
     <string name="resolution">Resolució (%1$)</string>
     <string name="language">Idioma (%1$)</string>
     <string name="effect_sound_level">Efectes (%1$)</string>
@@ -37,13 +37,14 @@
     <string name="update_distance">Distància d'Actualització (%1$)</string>
     <string name="render_distance">Distància de Renderitzat (%1$)</string>
     <string name="frames_per_second">Imatges Per Segon (%1$)</string>
-    <string name="spawn_rate">Freqüència Aparició Enemics (%1$)</string>
+    <string name="spawn_rate">Freqüència Aparició d'Enemics (%1$)</string>
     <string name="game_time_speed">Velocitat del Temps (%1$)</string>
 
     <!--TUTORIAL-->
-    <string name="tutorial_roll">Pressiona ESPAI quan estàs en moviment per fer una tombarella.</string>
+    <string name="tutorial_roll">Pressiona ESPAI quan estiguis en moviment per fer una tombarella.</string>
     <string name="tutorial_attack">Pressiona els botons ESQUERRE o DRET del ratolí per atacar.</string>
     <string name="tutorial_change_musical_mode">Utilitza Q o E per canviar de mode musical./nlTambé pots utilitzar els números de l'1 al 7.</string>
+    <string name="tutorial_follow_path">N'hi ha un poblat al sur d'aquí./nlSegueix el camí.../nl...no té pèrdua./nlPer cert, venc pocions./nlBona sort!</string>
     <string name="tutorial_welcome">Benvingut...</string>
     <string name="tutorial_outsider">Uh...?/nlUn foraster!/nlUh.../nlVens de molt lluny?</string>
 </resources>

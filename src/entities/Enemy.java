@@ -166,7 +166,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
             }
 
-            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.001) {
+            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.01) {
                 roll();
             }
 

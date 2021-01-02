@@ -36,12 +36,12 @@
     <string name="ambience_sound_level">Ambiente (%1$)</string>
     <string name="update_distance">Distancia de Actualizado (%1$)</string>
     <string name="render_distance">Distancia de Renderizado (%1$)</string>
-    <string name="frames_per_second">Imagenes Por Segundo (%1$)</string>
-    <string name="spawn_rate">Frecuencia Aparición Enemigos (%1$)</string>
+    <string name="frames_per_second">Imágenes Por Segundo (%1$)</string>
+    <string name="spawn_rate">Frecuencia Aparición de Enemigos (%1$)</string>
     <string name="game_time_speed">Velocidad del Tiempo (%1$)</string>
 
     <!--TUTORIAL-->
-    <string name="tutorial_roll">Presiona ESPACIO cuando estás en movimiento para realizar una voltereta.</string>
+    <string name="tutorial_roll">Presiona ESPACIO cuando estés en movimiento para realizar una voltereta.</string>
     <string name="tutorial_attack">Presiona los botones IZQUIERDO o DERECHO del ratón para atacar.</string>
     <string name="tutorial_change_musical_mode">Utiliza Q o E para cambiar de modo musical./nlTambién puedes usar los números del 1 al 7.</string>
     <string name="tutorial_follow_path">Hay un poblado al sur de aquí./nlSigue el camino.../nl...no tiene pérdida./nlPor cierto, vendo pociones./nlBuena suerte!</string>
