@@ -12,7 +12,7 @@ public class HeadUpDisplay {
     private static int selectedTile = 0;
     private static int selectedEntity = 0;
 
-    public static void render(long timeElapsed) {
+    public static void render() {
         //Width and Height factors relative to 1920x1080 resolution.
 
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {

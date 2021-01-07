@@ -100,7 +100,7 @@ public class Menu {
         return menuHeight;
     }
 
-    public void render(long timeElapsed) {
+    public void render() {
         gapBetweenComponents = 30f * Parameters.getResolutionFactor();
         maxMenuHeight = 600f * Parameters.getResolutionFactor();
 

@@ -173,6 +173,8 @@ public class Enemy extends LivingDynamicGraphicEntity {
             if (status != Status.ROLLING) {
                 computeMovementVector(timeElapsed);
             }
+            movementVector[0] = movementVectorNormalized[0] * timeElapsed;
+            movementVector[1] = movementVectorNormalized[1] * timeElapsed;
 
             updateAttack(timeElapsed);
 
@@ -317,8 +319,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
         }
 
         movementVectorNormalized = MathUtils.normalizeVector(movementVector);
-        movementVector[0] = movementVectorNormalized[0] * timeElapsed;
-        movementVector[1] = movementVectorNormalized[1] * timeElapsed;
     }
 
     private void computePath() {

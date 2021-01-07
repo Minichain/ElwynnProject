@@ -1,10 +1,10 @@
 package main;
 
 import entities.InteractionEntity;
-import items.Item;
 import entities.NonPlayerCharacter;
 import entities.Player;
 import enums.NonPlayerCharacterAction;
+import items.Item;
 import listeners.ActionManager;
 import listeners.InputListenerManager;
 import menu.Menu;
@@ -75,29 +75,41 @@ public class UserInterface {
                 debugTextList.add("GAME PAUSED");
             }
         }
+
+        if (!Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
+            MusicalModeSelector.getInstance().update(timeElapsed);
+        }
     }
 
     public void render(long timeElapsed) {
         OpenGLManager.releaseCurrentShader();
 
-        renderDebugUI(timeElapsed);
+        /** DEBUG INFO **/
+        if (Parameters.isDebugMode()) {
+            renderDebugUI();
+        }
 
         /** FLOATING TEXT **/
         FloatingText.updateAndRender(timeElapsed);
 
         /** HUD **/
         if (HUDVisibility) {
-            HeadUpDisplay.render(timeElapsed);
+            HeadUpDisplay.render();
         }
 
         /** MENU **/
         if (Menu.getInstance().isShowing()) {
-            Menu.getInstance().render(timeElapsed);
+            Menu.getInstance().render();
         }
 
         /** NPC interactions **/
         if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             renderNPCInteractions();
+        }
+
+        /** MUSICAL MODE SELECTOR **/
+        if (!Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
+            MusicalModeSelector.getInstance().render();
         }
     }
 
@@ -162,12 +174,8 @@ public class UserInterface {
         }
     }
 
-    private void renderDebugUI(long timeElapsed) {
+    private void renderDebugUI() {
 //        Log.l("Render Debug UI");
-
-        if (!Parameters.isDebugMode()) {
-            return;
-        }
 
         /** RENDER DEBUG TEXT **/
         float textScale = 2f * Parameters.getResolutionFactor();

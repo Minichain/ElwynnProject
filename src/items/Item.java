@@ -1,9 +1,19 @@
 package items;
 
-public interface Item {
-    void use();
+public abstract class Item {
+    private boolean stored;
 
-    String getName();
+    public boolean isStored() {
+        return stored;
+    }
 
-    int getCost();
+    public void setStored(boolean stored) {
+        this.stored = stored;
+    }
+
+    public abstract void use();
+
+    public abstract String getName();
+
+    public abstract int getCost();
 }

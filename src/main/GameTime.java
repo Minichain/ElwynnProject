@@ -5,10 +5,12 @@ public class GameTime {
     private static float gameTime;  //InGame time in hours (0f - 24.0f)
     private static float gameTimeRealTimeFactor;
     private static float sunLightIntensity = 0.8f;
+    private static boolean slowMotion;
 
     private GameTime() {
         gameTime = 0f;
         gameTimeRealTimeFactor = 60f;   //60 times faster than in real life.
+        slowMotion = false;
     }
 
     public static GameTime getInstance() {
@@ -52,5 +54,14 @@ public class GameTime {
 
     public static void setGameTimeRealTimeFactor(float gameTimeRealTimeFactor) {
         GameTime.gameTimeRealTimeFactor = gameTimeRealTimeFactor;
+    }
+
+    public static int getTimeSpeedFactor() {
+        if (slowMotion) return 5;
+        else return 1;
+    }
+
+    public static void setSlowMotion(boolean sm) {
+        slowMotion = sm;
     }
 }

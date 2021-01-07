@@ -18,6 +18,7 @@ public class Game {
 
     public static void update(long timeElapsed) {
         long startTime = System.nanoTime();
+        timeElapsed = timeElapsed / GameTime.getTimeSpeedFactor();
         GameStatus.setRuntime(GameStatus.getRuntime() + timeElapsed);
         InputListenerManager.updateMouseWorldCoordinates();
         InputListenerManager.updateControllerInputs();

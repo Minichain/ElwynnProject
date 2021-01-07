@@ -20,8 +20,8 @@ public class ActionManager {
         INTERACT (5),
         ATTACK_01 (6),
         ATTACK_02 (7),
-        PREVIOUS_MUSICAL_MODE (8),
-        NEXT_MUSICAL_MODE (9),
+        PREVIOUS(8),
+        NEXT(9),
         DEBUG_MENU (10),
         HUD_VISIBILITY (11),
         MENU (12),
@@ -41,7 +41,8 @@ public class ActionManager {
         CHOOSE_NPC_ACTION (26),
         USE_HEALTH_POTION (27),
         USE_MANA_POTION (28),
-        USE_HASTE_POTION (29)
+        USE_HASTE_POTION (29),
+        SHOW_MUSICAL_MODE_SELECTOR (30)
         ;
 
         int actionValue;
@@ -72,10 +73,10 @@ public class ActionManager {
                 case ROLL:
                     key[0] = GLFW_KEY_SPACE;
                     break;
-                case PREVIOUS_MUSICAL_MODE:
+                case PREVIOUS:
                     key[0] = GLFW_KEY_Q;
                     break;
-                case NEXT_MUSICAL_MODE:
+                case NEXT:
                     key[0] = GLFW_KEY_E;
                     break;
                 case ATTACK_01:
@@ -145,6 +146,9 @@ public class ActionManager {
                 case USE_HASTE_POTION:
                     key[0] = GLFW_KEY_B;
                     break;
+                case SHOW_MUSICAL_MODE_SELECTOR:
+                    key[0] = GLFW_KEY_TAB;
+                    break;
                 default:
                     break;
             }
@@ -191,9 +195,9 @@ public class ActionManager {
             if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().roll();
             }
-        } else if (isSameKeyCombination(key, Action.PREVIOUS_MUSICAL_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.PREVIOUS.getActionKey())) {
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value - 1);
+                //Nothing
             } else {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                     if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() - 1);
@@ -201,9 +205,9 @@ public class ActionManager {
                     if (pressed) HeadUpDisplay.setSelectedEntity(HeadUpDisplay.getSelectedEntity() - 1);
                 }
             }
-        } else if (isSameKeyCombination(key, Action.NEXT_MUSICAL_MODE.getActionKey())) {
+        } else if (isSameKeyCombination(key, Action.NEXT.getActionKey())) {
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                if (pressed) Player.getInstance().setMusicalMode(Player.getInstance().getMusicalMode().value + 1);
+                //Nothing
             } else {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                     if (pressed) HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() + 1);
@@ -299,6 +303,12 @@ public class ActionManager {
             if (!pressed) Player.getInstance().useManaPotion();
         } else if (isSameKeyCombination(key, Action.USE_HASTE_POTION.getActionKey())) {
             if (!pressed) Player.getInstance().useHastePotion();
+        } else if (isSameKeyCombination(key, Action.SHOW_MUSICAL_MODE_SELECTOR.getActionKey())) {
+            if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                MusicalModeSelector.getInstance().setShowing(pressed);
+                GameTime.setSlowMotion(pressed);
+                Player.getInstance().setChoosingMusicalMode(pressed);
+            }
         }
     }
 

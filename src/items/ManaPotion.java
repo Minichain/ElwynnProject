@@ -4,7 +4,7 @@ import audio.OpenALManager;
 import entities.Player;
 import main.Strings;
 
-public class ManaPotion implements Item {
+public class ManaPotion extends Item {
     private int cost;
     private float restoreValue;
 

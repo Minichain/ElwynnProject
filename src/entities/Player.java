@@ -47,6 +47,8 @@ public class Player extends LivingDynamicGraphicEntity {
     private float circleAttackManaCost = 10f;
 
     private MusicalMode musicalMode;
+    private boolean choosingMusicalMode;
+    private float choosingMusicalModeManaCost = 0.01f;
     private int changeMusicalModePeriod = 500;
     private int changeMusicalModeCoolDown;
     private float changeMusicalModeManaCost = 2.5f;
@@ -163,6 +165,10 @@ public class Player extends LivingDynamicGraphicEntity {
                 stamina = MAX_STAMINA;
             }
 
+            if (choosingMusicalMode) {
+                mana -= choosingMusicalModeManaCost * timeElapsed;
+            }
+
             /** UPDATE ATTACKS **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL
                     && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
@@ -175,6 +181,8 @@ public class Player extends LivingDynamicGraphicEntity {
                 if (status != Status.ROLLING) {
                     computeMovementVector(timeElapsed);
                 }
+                movementVector[0] = movementVectorNormalized[0] * timeElapsed;
+                movementVector[1] = movementVectorNormalized[1] * timeElapsed;
             }
 
             /** CHECK COLLISIONS **/
@@ -334,8 +342,6 @@ public class Player extends LivingDynamicGraphicEntity {
         }
 
         movementVectorNormalized = MathUtils.normalizeVector(movementVector);
-        movementVector[0] = movementVectorNormalized[0] * timeElapsed;
-        movementVector[1] = movementVectorNormalized[1] * timeElapsed;
     }
 
     public void updateSpriteCoordinatesToDraw() {
@@ -669,5 +675,13 @@ public class Player extends LivingDynamicGraphicEntity {
             default:
                 break;
         }
+    }
+
+    public boolean isChoosingMusicalMode() {
+        return choosingMusicalMode;
+    }
+
+    public void setChoosingMusicalMode(boolean choosingMusicalMode) {
+        this.choosingMusicalMode = choosingMusicalMode;
     }
 }

@@ -4,7 +4,7 @@ import audio.OpenALManager;
 import entities.Player;
 import main.Strings;
 
-public class HastePotion implements Item {
+public class HastePotion extends Item {
     private int cost;
 
     public HastePotion() {

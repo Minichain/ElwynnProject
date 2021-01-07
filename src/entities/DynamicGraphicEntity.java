@@ -7,6 +7,7 @@ public abstract class DynamicGraphicEntity extends GraphicEntity {
 
     public DynamicGraphicEntity(double x, double y) {
         super(x, y);
-        movementVector = new double[2];
+        movementVector = new double[]{0, 0};
+        movementVectorNormalized = new double[]{0, 0};
     }
 }

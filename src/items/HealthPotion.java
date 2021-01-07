@@ -4,7 +4,7 @@ import audio.OpenALManager;
 import entities.Player;
 import main.Strings;
 
-public class HealthPotion implements Item {
+public class HealthPotion extends Item {
     private int cost;
     private float restoreValue;
 

@@ -6,7 +6,6 @@ import scene.TileMap;
 import java.util.ArrayList;
 
 public class PathFindingAlgorithm {
-    private Coordinates initialCoordinates;
     private Coordinates initialTileCoordinates;
     private Coordinates goalTileCoordinates;
     private final int maxNumberOfIterations = 1000;
@@ -30,7 +29,6 @@ public class PathFindingAlgorithm {
     private ArrayList<int[]> path = new ArrayList<>();
 
     public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
-        this.initialCoordinates = new Coordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
         this.initialTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
         this.goalTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
         this.iteration = 0;
