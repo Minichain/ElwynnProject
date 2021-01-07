@@ -166,7 +166,11 @@ public class Player extends LivingDynamicGraphicEntity {
             }
 
             if (choosingMusicalMode) {
-                mana -= choosingMusicalModeManaCost * timeElapsed;
+                if (mana > 0) {
+                    mana -= choosingMusicalModeManaCost * timeElapsed;
+                } else {
+                    setChoosingMusicalMode(false);
+                }
             }
 
             /** UPDATE ATTACKS **/
@@ -486,6 +490,8 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void setMusicalMode(MusicalMode musicalMode) {
+        if (musicalMode == this.musicalMode || mana < changeMusicalModeManaCost) return;
+
         Log.l("Set musical mode to " + musicalMode);
 //        OpenALManager.stopMusicDependingOnMusicalMode(this.musicalMode);
 
@@ -682,6 +688,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void setChoosingMusicalMode(boolean choosingMusicalMode) {
+        MusicalModeSelector.getInstance().setShowing(choosingMusicalMode);
         this.choosingMusicalMode = choosingMusicalMode;
     }
 }

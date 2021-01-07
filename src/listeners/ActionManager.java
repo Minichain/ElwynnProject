@@ -305,8 +305,6 @@ public class ActionManager {
             if (!pressed) Player.getInstance().useHastePotion();
         } else if (isSameKeyCombination(key, Action.SHOW_MUSICAL_MODE_SELECTOR.getActionKey())) {
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                MusicalModeSelector.getInstance().setShowing(pressed);
-                GameTime.setSlowMotion(pressed);
                 Player.getInstance().setChoosingMusicalMode(pressed);
             }
         }

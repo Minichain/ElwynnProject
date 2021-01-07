@@ -31,6 +31,7 @@ public class MusicalModeSelector {
 
     public void setShowing(boolean showing) {
         if (!showing) Player.getInstance().setMusicalMode(selectedMusicalMode);
+        GameTime.setSlowMotion(showing);
         this.showing = showing;
     }
 
