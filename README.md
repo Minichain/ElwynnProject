@@ -18,6 +18,15 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 ## [Download](https://drive.google.com/drive/folders/1ouFLMoRi2XZKDLciLRhzkJsJ3ALuE3bf?usp=sharing)
 
 ## Path Notes
+
+* **v0.02.04.0**
+    * Text translations added (English, Spanish and Catalan).
+    * Musical mode can be changed by holding TAB.
+* **v0.02.03.0**
+    * Face Culling.
+    * Game Loop stabilized.
+    * Effect added when changing musical mode.
+    * New enemies.
 * **v0.02.02.0**
     * Interface / HUD improvements.
 * **v0.02.01.0**
