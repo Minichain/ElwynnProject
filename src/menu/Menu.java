@@ -160,7 +160,7 @@ public class Menu {
         glDisable(GL_TEXTURE_2D);
 
         if (menuScrollBar != null) {
-            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 300f * Parameters.getResolutionFactor()),
+            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 325f * Parameters.getResolutionFactor()),
                     (int) (Menu.getInstance().getCoordinates().y),
                     (int) (20f * Parameters.getResolutionFactor()),
                     (int) maxMenuHeight);

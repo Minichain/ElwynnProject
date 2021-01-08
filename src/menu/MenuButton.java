@@ -18,7 +18,7 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void update(int x, int y) {
-        int width = (int) (500f * Parameters.getResolutionFactor());
+        int width = (int) (550f * Parameters.getResolutionFactor());
         int height = (int) (50f * Parameters.getResolutionFactor());
         update(x, y, width, height);
     }
