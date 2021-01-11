@@ -2,6 +2,7 @@ package items;
 
 import audio.OpenALManager;
 import entities.Player;
+import entities.Sprite;
 import main.Strings;
 
 public class HastePotion extends Item {
@@ -26,5 +27,10 @@ public class HastePotion extends Item {
     @Override
     public int getCost() {
         return cost;
+    }
+
+    @Override
+    public Sprite getSprite() {
+        return ItemType.HASTE_POTION.getSprite();
     }
 }

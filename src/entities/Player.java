@@ -1,6 +1,7 @@
 package entities;
 
 import audio.OpenALManager;
+import inventory.Inventory;
 import items.HastePotion;
 import items.HealthPotion;
 import items.Item;
@@ -68,6 +69,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private boolean footstep = true;
 
+    private Inventory inventory;
     private int amountOfGoldCoins;
 
     private NonPlayerCharacter interactiveNPC = null;
@@ -75,8 +77,6 @@ public class Player extends LivingDynamicGraphicEntity {
     /** RUNNING PARTICLES **/
     private int runningParticlePeriod = 200;
     private int runningParticleCoolDown;
-
-    private ArrayList<Item> listOfItems;
 
     private Player() {
         super(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
@@ -98,8 +98,8 @@ public class Player extends LivingDynamicGraphicEntity {
         runningParticleCoolDown = 0;
         changeMusicalModeCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
-        setAmountOfGoldCoins(50);
-        listOfItems = new ArrayList<>();
+        setAmountOfGoldCoins(500);
+        inventory = new Inventory();
     }
 
     public static Player getInstance() {
@@ -601,29 +601,16 @@ public class Player extends LivingDynamicGraphicEntity {
         return interactiveNPC;
     }
 
-    public ArrayList<Item> getListOfItems() {
-        return listOfItems;
-    }
-
     public Item hasHealthPotion() {
-        return hasPotion(HealthPotion.class);
+        return inventory.isItemStored(HealthPotion.class);
     }
 
     public Item hasManaPotion() {
-        return hasPotion(ManaPotion.class);
+        return inventory.isItemStored(ManaPotion.class);
     }
 
     public Item hasHastePotion() {
-        return hasPotion(HastePotion.class);
-    }
-
-    public Item hasPotion(Class<?> type) {
-        for (Item item : getListOfItems()) {
-            if (type == item.getClass()) {
-                return item;
-            }
-        }
-        return null;
+        return inventory.isItemStored(HastePotion.class);
     }
 
     public void useHealthPotion() {
@@ -647,27 +634,23 @@ public class Player extends LivingDynamicGraphicEntity {
     public void useItem(Item item) {
         Log.l("Using " + item.getName());
         item.use();
-        getListOfItems().remove(item);
+        getInventory().removeItem(item.getClass());
     }
 
     public int getAmountOfHealthPotions() {
-        return getAmountOfPotions(HealthPotion.class);
+        return getAmountOfItemType(HealthPotion.class);
     }
 
     public int getAmountOfManaPotions() {
-        return getAmountOfPotions(ManaPotion.class);
+        return getAmountOfItemType(ManaPotion.class);
     }
 
     public int getAmountOfHastePotions() {
-        return getAmountOfPotions(HastePotion.class);
+        return getAmountOfItemType(HastePotion.class);
     }
 
-    private int getAmountOfPotions(Class<?> type) {
-        int amount = 0;
-        for (Item item : getListOfItems()) {
-            if (type == item.getClass()) amount++;
-        }
-        return amount;
+    private int getAmountOfItemType(Class<?> type) {
+        return getInventory().getAmountOfItemType(type);
     }
 
     public void setStatusEffect(StatusEffect statusEffect, int statusDuration) {
@@ -690,5 +673,13 @@ public class Player extends LivingDynamicGraphicEntity {
     public void setChoosingMusicalMode(boolean choosingMusicalMode) {
         MusicalModeSelector.getInstance().setShowing(choosingMusicalMode);
         this.choosingMusicalMode = choosingMusicalMode;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
+    }
+
+    public ArrayList<Item> getListOfItems() {
+        return getInventory().getListOfItems();
     }
 }

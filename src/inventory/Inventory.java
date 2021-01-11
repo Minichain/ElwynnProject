@@ -1,5 +1,6 @@
 package inventory;
 
+import items.Item;
 import main.*;
 
 import java.util.ArrayList;
@@ -8,10 +9,8 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class Inventory {
-    private static Inventory instance = null;
-    private static int width = 0;
-    private static int height = 0;
-
+    private int width = 0;
+    private int height = 0;
     private boolean opened;
     private Coordinates coordinates;
     private ArrayList<InventorySlot> listOfSlots;
@@ -24,13 +23,6 @@ public class Inventory {
         for (int i = 0; i < numberOfSlots; i++) {
             listOfSlots.add(new InventorySlot());
         }
-    }
-
-    public static Inventory getInstance() {
-        if (instance == null) {
-            instance = new Inventory();
-        }
-        return instance;
     }
 
     public boolean isOpened() {
@@ -68,9 +60,72 @@ public class Inventory {
             slot.render();
         }
         glEnd();
+
+        for (InventorySlot slot : listOfSlots) {
+            slot.renderStoredItem();
+        }
     }
 
     public ArrayList<InventorySlot> getListOfSlots() {
         return listOfSlots;
+    }
+
+    public Item isItemStored(Class<?> type) {
+        for (int i = 0; i < listOfSlots.size(); i++) {
+            if (type == listOfSlots.get(i).getStoredItem().getClass()) {
+                return listOfSlots.get(i).getStoredItem();
+            }
+        }
+        return null;
+    }
+
+    public void storeItem(Item item) {
+        for (int i = 0; i < listOfSlots.size(); i++) {
+            if (listOfSlots.get(i).getStoredItem() == null) {
+                listOfSlots.get(i).storeItem(item);
+                break;
+            }
+        }
+    }
+
+    public boolean removeItem(Class<?> type) {
+        Item item;
+        for (int i = listOfSlots.size() - 1; i > -1; i--) {
+            item = listOfSlots.get(i).getStoredItem();
+            if (item != null && type == item.getClass()) {
+                listOfSlots.get(i).storeItem(null);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public int getAmountOfItemType(Class<?> type) {
+        int amount = 0;
+        Item item;
+        for (int i = 0; i < listOfSlots.size(); i++) {
+            item = listOfSlots.get(i).getStoredItem();
+            if (item != null && type == item.getClass()) amount++;
+        }
+        return amount;
+    }
+
+    public ArrayList<Item> getListOfItems() {
+        ArrayList<Item> listOfItems = new ArrayList<>();
+        for (InventorySlot slot : listOfSlots) {
+            if (slot.getStoredItem() != null) {
+                listOfItems.add(slot.getStoredItem());
+            }
+        }
+        return listOfItems;
+    }
+
+    public boolean isFreeSlot() {
+        for (InventorySlot slot : listOfSlots) {
+            if (slot.getStoredItem() == null) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -83,8 +83,8 @@ public class UserInterface {
         }
 
         /** INVENTORY **/
-        if (!Menu.getInstance().isShowing() && Inventory.getInstance().isOpened()) {
-            Inventory.getInstance().update(timeElapsed);
+        if (!Menu.getInstance().isShowing() && Player.getInstance().getInventory().isOpened()) {
+            Player.getInstance().getInventory().update(timeElapsed);
         }
     }
 
@@ -120,8 +120,8 @@ public class UserInterface {
         }
 
         /** INVENTORY **/
-        if (HUDVisibility && !Menu.getInstance().isShowing() && Inventory.getInstance().isOpened()) {
-            Inventory.getInstance().render();
+        if (HUDVisibility && !Menu.getInstance().isShowing() && Player.getInstance().getInventory().isOpened()) {
+            Player.getInstance().getInventory().render();
         }
     }
 

@@ -240,7 +240,6 @@ public class ActionManager {
                     nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() - 1);
                 } else {
                     Camera.increaseZoom();
-//                    Inventory.getInstance().getListOfSlots().add(new InventorySlot());
                 }
             }
         } else if (isSameKeyCombination(key, Action.DECREASE_CAMERA_ZOOM.getActionKey())) {
@@ -250,7 +249,6 @@ public class ActionManager {
                     nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() + 1);
                 } else {
                     Camera.decreaseZoom();
-//                    Inventory.getInstance().getListOfSlots().remove(Inventory.getInstance().getListOfSlots().size() - 1);
                 }
             }
         } else if (isSameKeyCombination(key, Action.RESET.getActionKey())) {
@@ -317,7 +315,7 @@ public class ActionManager {
             }
         } else if (isSameKeyCombination(key, Action.OPEN_INVENTORY.getActionKey())) {
             if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-                Inventory.getInstance().setOpened(!Inventory.getInstance().isOpened());
+                Player.getInstance().getInventory().setOpened(!Player.getInstance().getInventory().isOpened());
             }
         }
     }

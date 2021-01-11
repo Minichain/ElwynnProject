@@ -11,6 +11,7 @@
     <string name="ui_selling_npc">Selling %1$</string>
     <string name="ui_quit_npc">Quit</string>
     <string name="ui_not_enough_money">Not enough money</string>
+    <string name="ui_not_enough_space">Inventory is full</string>
     <string name="ui_you_died">YOU DIED</string>
 
     <!--ITEMS-->

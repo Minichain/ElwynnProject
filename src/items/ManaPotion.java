@@ -2,6 +2,7 @@ package items;
 
 import audio.OpenALManager;
 import entities.Player;
+import entities.Sprite;
 import main.Strings;
 
 public class ManaPotion extends Item {
@@ -28,5 +29,10 @@ public class ManaPotion extends Item {
     @Override
     public int getCost() {
         return cost;
+    }
+
+    @Override
+    public Sprite getSprite() {
+        return ItemType.MANA_POTION.getSprite();
     }
 }

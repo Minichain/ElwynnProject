@@ -1,6 +1,7 @@
 package entities;
 
 import audio.OpenALManager;
+import items.ItemType;
 import main.*;
 import scene.Camera;
 import scene.Scene;
@@ -118,8 +119,27 @@ public class Enemy extends LivingDynamicGraphicEntity {
         int numOfCoinsToDrop = (int) (MathUtils.random(5, 10));
         float areaOfDrop = 25f;
         for (int i = 0; i < numOfCoinsToDrop; i++) {
-            new GoldCoin((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
-                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)));
+            new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    ItemType.GOLD_COIN);
+        }
+
+        if (MathUtils.random(0, 10) < 2) {
+            new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    ItemType.HEALTH_POTION);
+        }
+
+        if (MathUtils.random(0, 10) < 2) {
+            new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    ItemType.MANA_POTION);
+        }
+
+        if (MathUtils.random(0, 10) < 2) {
+            new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    ItemType.HASTE_POTION);
         }
     }
 
