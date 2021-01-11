@@ -1,6 +1,8 @@
 package listeners;
 
 import entities.*;
+import inventory.Inventory;
+import inventory.InventorySlot;
 import main.*;
 import menu.Menu;
 import scene.Camera;
@@ -42,7 +44,8 @@ public class ActionManager {
         USE_HEALTH_POTION (27),
         USE_MANA_POTION (28),
         USE_HASTE_POTION (29),
-        SHOW_MUSICAL_MODE_SELECTOR (30)
+        SHOW_MUSICAL_MODE_SELECTOR (30),
+        OPEN_INVENTORY (31)
         ;
 
         int actionValue;
@@ -149,6 +152,9 @@ public class ActionManager {
                 case SHOW_MUSICAL_MODE_SELECTOR:
                     key[0] = GLFW_KEY_TAB;
                     break;
+                case OPEN_INVENTORY:
+                    key[0] = GLFW_KEY_I;
+                    break;
                 default:
                     break;
             }
@@ -234,6 +240,7 @@ public class ActionManager {
                     nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() - 1);
                 } else {
                     Camera.increaseZoom();
+//                    Inventory.getInstance().getListOfSlots().add(new InventorySlot());
                 }
             }
         } else if (isSameKeyCombination(key, Action.DECREASE_CAMERA_ZOOM.getActionKey())) {
@@ -243,6 +250,7 @@ public class ActionManager {
                     nonPlayerCharacter.setSelectedItem(nonPlayerCharacter.getSelectedItem() + 1);
                 } else {
                     Camera.decreaseZoom();
+//                    Inventory.getInstance().getListOfSlots().remove(Inventory.getInstance().getListOfSlots().size() - 1);
                 }
             }
         } else if (isSameKeyCombination(key, Action.RESET.getActionKey())) {
@@ -306,6 +314,10 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.SHOW_MUSICAL_MODE_SELECTOR.getActionKey())) {
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().setChoosingMusicalMode(pressed);
+            }
+        } else if (isSameKeyCombination(key, Action.OPEN_INVENTORY.getActionKey())) {
+            if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                Inventory.getInstance().setOpened(!Inventory.getInstance().isOpened());
             }
         }
     }

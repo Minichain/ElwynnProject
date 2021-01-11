@@ -35,13 +35,25 @@ public class HeadUpDisplay {
             renderItemInfo(SpriteManager.getInstance().HEALTH_POTION, Player.getInstance().getAmountOfHealthPotions(), rightPaddingSprite,
                     75f * Parameters.getResolutionFactor(), rightPaddingText, 100f * Parameters.getResolutionFactor());
 
+            SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
+                    (int) (Window.getHeight() - 75f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+
             /** MANA POTIONS **/
             renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
                     125f * Parameters.getResolutionFactor(), rightPaddingText, 150f * Parameters.getResolutionFactor());
 
+            SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
+                    (int) (Window.getHeight() - 125f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+
             /** HASTE POTIONS **/
             renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
                     175f * Parameters.getResolutionFactor(), rightPaddingText, 200f * Parameters.getResolutionFactor());
+
+            SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
+                    (int) (Window.getHeight() - 175f * Parameters.getResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/

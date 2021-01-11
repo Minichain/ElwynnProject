@@ -13,7 +13,8 @@ public class SpriteManager {
             FENCE01, FENCE02, FENCE03, FENCE04,
             LIGHT01, TORCH01, UTILITY_POLE_01,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
-            A_CONTROLLER_BUTTON, F_KEYBOARD_KEY;
+            A_CONTROLLER_BUTTON,
+            B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
 
     /** TILESET **/
     public Sprite TILESET;
@@ -95,10 +96,14 @@ public class SpriteManager {
 
         GOLD_COIN_INTERFACE = new Sprite("res/sprites/interface/gold_coin_interface_8x8.png", 8, 8, -1);
 
+        A_CONTROLLER_BUTTON = new Sprite("res/sprites/interface/a_controller_button_8x8.png", 8, 8, -1);
+        B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_8x8.png", 8, 8, -1);
+        F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_8x8.png", 8, 8, -1);
+        H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_8x8.png", 8, 8, -1);
+        M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_8x8.png", 8, 8, -1);
+
         /** OTHERS **/
         GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1);
-        A_CONTROLLER_BUTTON = new Sprite("res/sprites/dynamic/a_controller_button_8x8.png", 8, 8, -1);
-        F_KEYBOARD_KEY = new Sprite("res/sprites/dynamic/f_keyboard_key_8x8.png", 8, 8, -1);
     }
 
     public static SpriteManager getInstance() {

@@ -4,6 +4,7 @@ import entities.InteractionEntity;
 import entities.NonPlayerCharacter;
 import entities.Player;
 import enums.NonPlayerCharacterAction;
+import inventory.Inventory;
 import items.Item;
 import listeners.ActionManager;
 import listeners.InputListenerManager;
@@ -76,8 +77,14 @@ public class UserInterface {
             }
         }
 
+        /** MUSICAL MODE SELECTOR **/
         if (!Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
             MusicalModeSelector.getInstance().update(timeElapsed);
+        }
+
+        /** INVENTORY **/
+        if (!Menu.getInstance().isShowing() && Inventory.getInstance().isOpened()) {
+            Inventory.getInstance().update(timeElapsed);
         }
     }
 
@@ -103,13 +110,18 @@ public class UserInterface {
         }
 
         /** NPC interactions **/
-        if (!Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+        if (HUDVisibility && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             renderNPCInteractions();
         }
 
         /** MUSICAL MODE SELECTOR **/
-        if (!Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
+        if (HUDVisibility && !Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
             MusicalModeSelector.getInstance().render();
+        }
+
+        /** INVENTORY **/
+        if (HUDVisibility && !Menu.getInstance().isShowing() && Inventory.getInstance().isOpened()) {
+            Inventory.getInstance().render();
         }
     }
 
