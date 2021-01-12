@@ -1,8 +1,6 @@
 package listeners;
 
 import entities.*;
-import inventory.Inventory;
-import inventory.InventorySlot;
 import main.*;
 import menu.Menu;
 import scene.Camera;

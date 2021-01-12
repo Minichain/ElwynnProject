@@ -42,10 +42,14 @@
     <string name="game_time_speed">Velocidad del Tiempo (%1$)</string>
 
     <!--TUTORIAL-->
-    <string name="tutorial_roll">Presiona ESPACIO cuando estés en movimiento para realizar una voltereta.</string>
+    <string name="tutorial_roll">Presiona %1$ cuando estés en movimiento/nlpara realizar una voltereta.</string>
     <string name="tutorial_attack">Presiona los botones IZQUIERDO o DERECHO del ratón para atacar.</string>
-    <string name="tutorial_change_musical_mode">Mantén pulsado TABULADOR para cambiar de modo musical./nlTambién puedes usar los números del 1 al 7.</string>
+    <string name="tutorial_change_musical_mode">Mantén pulsado %1$ para cambiar de modo musical./nlTambién puedes usar los números del 1 al 7.</string>
     <string name="tutorial_follow_path">Hay un poblado al sur de aquí./nlSigue el camino.../nl...no tiene pérdida./nlPor cierto, vendo pociones./nlBuena suerte!</string>
     <string name="tutorial_welcome">Bienvenido...</string>
     <string name="tutorial_outsider">Uh...?/nlUn forastero!/nlUh.../nlVienes de muy lejos?</string>
+
+    <!--KEYS-->
+    <string name="key_space_bar">BARRA ESPACIADORA</string>
+    <string name="key_tab">TABULADOR</string>
 </resources>

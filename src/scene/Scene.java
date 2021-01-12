@@ -330,13 +330,13 @@ public class Scene {
         ArrayList<String> textList;
 
         npc = new NonPlayerCharacter(2455, 1725, 0);
-        npc.setTalkTextStringName("tutorial_roll");
+        npc.setTalkTextStringName("tutorial_roll", "key_space_bar");
 
         npc = new NonPlayerCharacter(2485, 1720, 1);
         npc.setTalkTextStringName("tutorial_attack");
 
         npc = new NonPlayerCharacter(2500, 1725, 2);
-        npc.setTalkTextStringName("tutorial_change_musical_mode");
+        npc.setTalkTextStringName("tutorial_change_musical_mode", "key_tab");
 
         npc = new NonPlayerCharacter(2460, 1810, true, true, 0);
         npc.setTalkTextStringName("tutorial_follow_path");

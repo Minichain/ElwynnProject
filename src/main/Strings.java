@@ -24,7 +24,7 @@ public class Strings {
         String characterToReplace;
         for (int i = 0; i < args.length; i++) {
             characterToReplace = "%" + (i + 1) + "$";
-            if (s.contains(characterToReplace)) {
+            if (s.contains(characterToReplace) && args[i] != null) {
                 s = s.replace(characterToReplace, args[i]);
             }
         }

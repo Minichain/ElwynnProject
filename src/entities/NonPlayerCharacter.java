@@ -22,6 +22,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
     public static byte ENTITY_CODE = 9;
     private final double interactionDistance = 25;
     private String talkTextStringName;
+    private String talkTextStringArgs;
     private ArrayList<String> talkText;
     private int talkTextPage;
     private NonPlayerCharacterInteractionState interactionState = NonPlayerCharacterInteractionState.NONE;
@@ -98,7 +99,12 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
 
     public void update(long timeElapsed) {
         if (isTalking()) {
-            String[] s = Strings.getString(talkTextStringName).split("/nl");
+            String[] s;
+            if (talkTextStringArgs != null) {
+                s = Strings.getString(talkTextStringName, Strings.getString(talkTextStringArgs)).split("/nl");
+            } else {
+                s = Strings.getString(talkTextStringName).split("/nl");
+            }
             ArrayList<String> arrayList = new ArrayList<>();
             Collections.addAll(arrayList, s);
             setTalkText(arrayList);
@@ -250,7 +256,12 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
     }
 
     public void setTalkTextStringName(String talkTextStringName) {
+        setTalkTextStringName(talkTextStringName, null);
+    }
+
+    public void setTalkTextStringName(String talkTextStringName, String talkTextStringArgs) {
         this.talkTextStringName = talkTextStringName;
+        this.talkTextStringArgs = talkTextStringArgs;
     }
 
     private void setTalkText(ArrayList<String> talkText) {
@@ -266,7 +277,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
         return talkTextPage;
     }
 
-    private void setTalkTextPage(int ttp) {
+    public void setTalkTextPage(int ttp) {
         if (ttp >= talkText.size()) ttp = talkText.size() - 1;
         talkTextPage = ttp;
     }

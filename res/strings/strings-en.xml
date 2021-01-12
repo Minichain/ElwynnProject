@@ -42,11 +42,15 @@
     <string name="game_time_speed">Game Time Speed (%1$)</string>
 
     <!--TUTORIAL-->
-    <string name="tutorial_roll">Press SPACE when moving to roll.</string>
+    <string name="tutorial_roll">Press %1$ when moving to roll.</string>
     <string name="tutorial_attack">Press LEFT or RIGHT mouse buttons to attack.</string>
-    <string name="tutorial_change_musical_mode">Hold TAB to change the musical mode./nlYou can also use the numbers from 1 to 7.</string>
+    <string name="tutorial_change_musical_mode">Hold %1$ to change the musical mode./nlYou can also use the numbers from 1 to 7.</string>
     <string name="tutorial_follow_path">There is a village south from here./nlJust follow the path.../nl...you won't get lost./nlI sell potions if you need any./nlGood luck!</string>
     <string name="tutorial_welcome">Welcome...</string>
     <string name="tutorial_putoncio">Holi, Putoncio!</string>
     <string name="tutorial_outsider">Uh...?/nlAn outsider!/nlUh.../nlDo you come from afar?</string>
+
+    <!--KEYS-->
+    <string name="key_space_bar">SPACE BAR</string>
+    <string name="key_tab">TAB</string>
 </resources>

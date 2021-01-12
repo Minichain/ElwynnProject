@@ -98,7 +98,7 @@ public class Player extends LivingDynamicGraphicEntity {
         runningParticleCoolDown = 0;
         changeMusicalModeCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
-        setAmountOfGoldCoins(500);
+        setAmountOfGoldCoins(10);
         inventory = new Inventory();
     }
 
@@ -174,11 +174,13 @@ public class Player extends LivingDynamicGraphicEntity {
             }
 
             /** UPDATE ATTACKS **/
-            if (GameMode.getGameMode() == GameMode.Mode.NORMAL
-                    && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
-                status = Status.ATTACKING;
+            if (!choosingMusicalMode) {
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL
+                        && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
+                    status = Status.ATTACKING;
+                }
+                updateAttack(timeElapsed);
             }
-            updateAttack(timeElapsed);
 
             /** UPDATE MOVEMENT VECTOR **/
             if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -411,7 +413,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private double[] pointingVector = new double[]{1.0, 1.0};
 
     private void updateAttack(long timeElapsed) {
-        /** CONE ATTACK **/
+        /** NOTE ATTACK **/
         if (InputListenerManager.isUsingKeyboardAndMouse()) {
             pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
                     InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
@@ -656,12 +658,11 @@ public class Player extends LivingDynamicGraphicEntity {
     public void setStatusEffect(StatusEffect statusEffect, int statusDuration) {
         switch (statusEffect) {
             case NONE:
+            default:
                 break;
             case HASTE:
                 hasteEffect = true;
                 hasteEffectDuration = statusDuration;
-                break;
-            default:
                 break;
         }
     }

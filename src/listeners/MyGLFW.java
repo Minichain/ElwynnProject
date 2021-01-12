@@ -1,5 +1,7 @@
 package listeners;
 
+import main.Strings;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 public class MyGLFW {
@@ -34,7 +36,7 @@ public class MyGLFW {
             case GLFW_MOUSE_BUTTON_2:
                 return "RIGHT MOUSE BUTTON";
             case GLFW_KEY_SPACE:
-                return "SPACE";
+                return Strings.getString("key_space_bar");
             case GLFW_KEY_ESCAPE:
                 return "ESC";
             case GLFW_KEY_LEFT_ALT:
@@ -43,6 +45,8 @@ public class MyGLFW {
                 return "CTRL";
             case GLFW_KEY_LEFT_SHIFT:
                 return "SHIFT";
+            case GLFW_KEY_TAB:
+                return Strings.getString("key_tab");
             default:
                 return glfwGetKeyName(key, 0);
         }

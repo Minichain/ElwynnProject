@@ -4,7 +4,6 @@ import entities.InteractionEntity;
 import entities.NonPlayerCharacter;
 import entities.Player;
 import enums.NonPlayerCharacterAction;
-import inventory.Inventory;
 import items.Item;
 import listeners.ActionManager;
 import listeners.InputListenerManager;
@@ -136,6 +135,9 @@ public class UserInterface {
                         int x = (int) interactionEntity.getCameraCoordinates().x;
                         int y = (int) (interactionEntity.getCameraCoordinates().y + 25 * Parameters.getResolutionFactor());
                         float scale = 2f * Parameters.getResolutionFactor();
+                        while (nonPlayerCharacter.getTalkTextPage() >= nonPlayerCharacter.getTalkText().size()) {
+                            nonPlayerCharacter.setTalkTextPage(nonPlayerCharacter.getTalkTextPage() - 1);
+                        }
                         TextRendering.renderText(x, y, nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), scale);
 
                         if (nonPlayerCharacter.getTalkText().size() > 1) {
@@ -162,7 +164,8 @@ public class UserInterface {
                         OpenGLManager.glBegin(GL_TRIANGLES);
                         int x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (325f * Parameters.getResolutionFactor());
                         int y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (25f * size * Parameters.getResolutionFactor());
-                        OpenGLManager.drawRectangle(x, y, 300, size * 25 + 50, 0.8, 0.2f);
+                        OpenGLManager.drawRectangle(x, y, 500f * Parameters.getResolutionFactor(), (size * 25f + 50f) * Parameters.getResolutionFactor(),
+                                0.8, 0.2f);
                         glEnd();
 
                         x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (300f * Parameters.getResolutionFactor());
