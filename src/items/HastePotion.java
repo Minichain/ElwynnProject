@@ -11,6 +11,7 @@ public class HastePotion extends Item {
     public HastePotion() {
         super();
         cost = 25;
+        MAX_AMOUNT_PER_STACK = 5;
     }
 
     @Override

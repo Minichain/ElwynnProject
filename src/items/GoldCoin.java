@@ -8,6 +8,7 @@ public class GoldCoin extends Item {
 
     public GoldCoin() {
         super();
+        MAX_AMOUNT_PER_STACK = 50;
     }
 
     @Override

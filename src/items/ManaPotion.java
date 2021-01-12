@@ -13,6 +13,7 @@ public class ManaPotion extends Item {
         super();
         cost = 15;
         restoreValue = 10f;
+        MAX_AMOUNT_PER_STACK = 5;
     }
 
     @Override

@@ -13,6 +13,7 @@ public class HealthPotion extends Item {
         super();
         cost = 10;
         restoreValue = 500f;
+        MAX_AMOUNT_PER_STACK = 5;
     }
 
     @Override

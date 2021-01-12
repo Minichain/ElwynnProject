@@ -3,6 +3,7 @@ package items;
 import entities.Sprite;
 
 public abstract class Item {
+    public int MAX_AMOUNT_PER_STACK;
 
     public abstract void use();
 

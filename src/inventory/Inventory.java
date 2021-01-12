@@ -80,10 +80,12 @@ public class Inventory {
     }
 
     public void storeItem(Item item) {
+        InventorySlot slot;
         for (int i = 0; i < listOfSlots.size(); i++) {
-            if (listOfSlots.get(i).getStoredItem() == null
-                    || listOfSlots.get(i).getStoredItem().getClass() == item.getClass()) {
-                listOfSlots.get(i).storeItem(item);
+            slot = listOfSlots.get(i);
+            if (slot.getStoredItem() == null
+                    || (slot.getStoredItem().getClass() == item.getClass() && slot.getAmount() < slot.getStoredItem().MAX_AMOUNT_PER_STACK)) {
+                slot.storeItem(item);
                 break;
             }
         }
