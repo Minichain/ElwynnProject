@@ -4,15 +4,18 @@ import items.Item;
 import main.Coordinates;
 import main.OpenGLManager;
 import main.Parameters;
+import text.TextRendering;
 
 public class InventorySlot {
     private Coordinates coordinates;
     private static int width = 0;
     private static int height = 0;
     private Item item = null;
+    private int amount;
 
     public InventorySlot() {
         coordinates = new Coordinates(0, 0);
+        amount = 0;
     }
 
     public void update(long timeElapsed) {
@@ -26,8 +29,12 @@ public class InventorySlot {
 
     public void renderStoredItem() {
         if (item != null) {
-            item.getSprite().draw((int) coordinates.x + (getWidth() / 2), (int) coordinates.y + (getHeight() / 2),
-                    0, 0, 1f, 4.0 * Parameters.getResolutionFactor(), true);
+            int x = (int) coordinates.x + (getWidth() / 2);
+            int y = (int) coordinates.y + (getHeight() / 2);
+            item.getSprite().draw(x, y, 0, 0, 1f, 4.0 * Parameters.getResolutionFactor(), true);
+            if (amount > 1) {
+                TextRendering.renderText(x, y, "x" + amount, 2f * Parameters.getResolutionFactor());
+            }
         }
     }
 
@@ -54,9 +61,25 @@ public class InventorySlot {
 
     public void storeItem(Item item) {
         this.item = item;
+        this.amount++;
+    }
+
+    public void removeStoredItem() {
+        removeStoredItem(1);
+    }
+
+    public void removeStoredItem(int amount) {
+        this.amount -= amount;
+        if (this.amount <= 0) {
+            this.item = null;
+        }
     }
 
     public Item getStoredItem() {
         return item;
+    }
+
+    public int getAmount() {
+        return amount;
     }
 }

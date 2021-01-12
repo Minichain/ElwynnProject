@@ -81,7 +81,8 @@ public class Inventory {
 
     public void storeItem(Item item) {
         for (int i = 0; i < listOfSlots.size(); i++) {
-            if (listOfSlots.get(i).getStoredItem() == null) {
+            if (listOfSlots.get(i).getStoredItem() == null
+                    || listOfSlots.get(i).getStoredItem().getClass() == item.getClass()) {
                 listOfSlots.get(i).storeItem(item);
                 break;
             }
@@ -93,7 +94,7 @@ public class Inventory {
         for (int i = listOfSlots.size() - 1; i > -1; i--) {
             item = listOfSlots.get(i).getStoredItem();
             if (item != null && type == item.getClass()) {
-                listOfSlots.get(i).storeItem(null);
+                listOfSlots.get(i).removeStoredItem();
                 return true;
             }
         }
@@ -105,7 +106,9 @@ public class Inventory {
         Item item;
         for (int i = 0; i < listOfSlots.size(); i++) {
             item = listOfSlots.get(i).getStoredItem();
-            if (item != null && type == item.getClass()) amount++;
+            if (item != null && type == item.getClass()) {
+                amount += listOfSlots.get(i).getAmount();
+            }
         }
         return amount;
     }
@@ -114,7 +117,9 @@ public class Inventory {
         ArrayList<Item> listOfItems = new ArrayList<>();
         for (InventorySlot slot : listOfSlots) {
             if (slot.getStoredItem() != null) {
-                listOfItems.add(slot.getStoredItem());
+                for (int i = 0; i < slot.getAmount(); i++) {
+                    listOfItems.add(slot.getStoredItem());
+                }
             }
         }
         return listOfItems;

@@ -98,7 +98,7 @@ public class Player extends LivingDynamicGraphicEntity {
         runningParticleCoolDown = 0;
         changeMusicalModeCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
-        setAmountOfGoldCoins(10);
+        setAmountOfGoldCoins(100);
         inventory = new Inventory();
     }
 
