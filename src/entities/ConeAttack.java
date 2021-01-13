@@ -90,6 +90,7 @@ public class ConeAttack {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
                         && ((Player) entity).getStatus() != Player.Status.ROLLING
                         && MathUtils.isPointInsideTriangle(entity.getCenterOfMassCameraCoordinates(), vertex1, vertex2, vertex3)) {
+                    damage *= ((Player) entity).getWeakness(musicalMode);
                     ((Player) entity).hurt(damage);
                 }
             }

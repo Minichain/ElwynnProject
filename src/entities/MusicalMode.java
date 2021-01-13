@@ -1,5 +1,7 @@
 package entities;
 
+import utils.MathUtils;
+
 import java.awt.*;
 
 public enum MusicalMode {
@@ -68,6 +70,10 @@ public enum MusicalMode {
         }
     }
 
+    public MusicalNote[] getNotes() {
+        return getNotes(MusicalNote.A);
+    }
+
     public MusicalNote[] getNotes(MusicalNote rootNote) {
         MusicalNote[] notes = new MusicalNote[8];
         notes[0] = rootNote;
@@ -83,7 +89,7 @@ public enum MusicalMode {
 
     public MusicalNote getRandomNote(MusicalNote rootNote) {
         MusicalNote[] notes = this.getNotes(rootNote);
-        return notes[(int) (Math.random() * notes.length)];
+        return notes[(int) (MathUtils.random(0, notes.length - 1))];
     }
 
     public Sprite getSprite() {

@@ -20,6 +20,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     private float lightIntensity = 30f;
     private float intensityFactor;
     private boolean enemyAttack;
+    private MusicalNote musicalNote;
 
     public MusicalNoteGraphicEntity(Coordinates worldCoordinates, double[] movementVector, double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
         super(worldCoordinates.x, worldCoordinates.y);
@@ -36,13 +37,11 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
         this.timeLiving = 0;
         this.timeToLive = timeToLive;
         this.musicalMode = musicalMode;
-        if (enemyAttack) {
-            this.color = new Color(255, 0, 0);
-        } else {
-            this.color = this.musicalMode.getColor();
-        }
+        if (enemyAttack) this.color = new Color(255, 0, 0);
+        else this.color = this.musicalMode.getColor();
         this.damage = damage;
-        this.musicalMode.getRandomNote(MusicalNote.A).play();
+        this.musicalNote = (this.musicalMode.getRandomNote(MusicalNote.A));
+        this.musicalNote.play();
         this.enemyAttack = enemyAttack;
         LightSource lightSource = new LightSource(getCenterOfMassWorldCoordinates(), lightIntensity, color);
         getLightSources().add(lightSource);
@@ -91,6 +90,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
+                    damage *= Player.getInstance().getWeakness(musicalNote);
                     Player.getInstance().hurt(damage);
                     explode();
                 }
@@ -100,7 +100,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
-                    damage *= entity.getWeakness(musicalMode);
+                    damage *= entity.getWeakness(musicalNote);
                     entity.hurt(damage);
                     explode();
                 }

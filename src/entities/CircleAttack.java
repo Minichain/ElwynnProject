@@ -99,6 +99,7 @@ public class CircleAttack {
                 if (((Player) entity).getStatus() != Player.Status.DEAD
                         && ((Player) entity).getStatus() != Player.Status.ROLLING
                         && MathUtils.isPointInsideCircle(entity.getCenterOfMassCameraCoordinates(), this.center.toCameraCoordinates(), radius)) {
+                    damage *= ((Player) entity).getWeakness(musicalMode);
                     ((Player) entity).hurt(damage);
                 }
             }

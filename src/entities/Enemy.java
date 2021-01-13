@@ -7,6 +7,7 @@ import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
+import utils.ArrayUtils;
 import utils.MathUtils;
 import utils.Utils;
 
@@ -458,7 +459,11 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public float getWeakness(MusicalMode musicalMode) {
-        if (this.musicalMode == musicalMode) {
+        return 1f / (ArrayUtils.compare(this.musicalMode.getNotes(), musicalMode.getNotes()) + 1);
+    }
+
+    public float getWeakness(MusicalNote musicalNote) {
+        if (!ArrayUtils.contains(this.musicalMode.getNotes(), musicalNote)) {
             return 1f;
         } else {
             return 0.15f;

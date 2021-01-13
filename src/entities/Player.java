@@ -12,6 +12,7 @@ import particles.ParticleManager;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
+import utils.ArrayUtils;
 import utils.MathUtils;
 import utils.Utils;
 import listeners.InputListenerManager;
@@ -682,5 +683,17 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public ArrayList<Item> getListOfItems() {
         return getInventory().getListOfItems();
+    }
+
+    public float getWeakness(MusicalMode musicalMode) {
+        return 1f / (ArrayUtils.compare(this.musicalMode.getNotes(), musicalMode.getNotes()) + 1);
+    }
+
+    public float getWeakness(MusicalNote musicalNote) {
+        if (!ArrayUtils.contains(this.musicalMode.getNotes(), musicalNote)) {
+            return 1f;
+        } else {
+            return 0.15f;
+        }
     }
 }
