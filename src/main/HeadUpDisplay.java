@@ -29,7 +29,7 @@ public class HeadUpDisplay {
             float rightPaddingSprite = 150f * Parameters.getResolutionFactor();
 
             /** GOLD COINS **/
-            renderItemInfo(SpriteManager.getInstance().GOLD_COIN_INTERFACE, Player.getInstance().getAmountOfGoldCoins(), rightPaddingSprite,
+            renderItemInfo(SpriteManager.getInstance().GOLD_COIN, Player.getInstance().getAmountOfGoldCoins(), rightPaddingSprite,
                     25f * Parameters.getResolutionFactor(), rightPaddingText, 50f * Parameters.getResolutionFactor());
 
             /** HEALTH POTIONS **/

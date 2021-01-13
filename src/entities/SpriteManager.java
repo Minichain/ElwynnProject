@@ -12,7 +12,7 @@ public class SpriteManager {
             BUILDING01, BUILDING02,
             FENCE01, FENCE02, FENCE03, FENCE04,
             LIGHT01, TORCH01, UTILITY_POLE_01,
-            G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE, GOLD_COIN,
+            G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE,
             A_CONTROLLER_BUTTON,
             B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
 
@@ -21,7 +21,10 @@ public class SpriteManager {
 
     /** INTERFACE **/
     public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
-            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, HEALTH_POTION, MANA_POTION, HASTE_POTION, GOLD_COIN_INTERFACE;
+            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR;
+
+    /** ITEMS **/
+    public Sprite GOLD_COIN, HEALTH_POTION, MANA_POTION, HASTE_POTION, WOOD;
 
     public SpriteManager() {
         /** PLAYER **/
@@ -90,20 +93,18 @@ public class SpriteManager {
         STAMINA_BAR = new Sprite("res/sprites/interface/stamina_bar_64x8.png", 64, 8, -1);
         EMPTY_BAR = new Sprite("res/sprites/interface/empty_bar_64x8.png", 64, 8, -1);
 
-        HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
-        MANA_POTION = new Sprite("res/sprites/interface/mana_potion_8x8.png", 8, 8, -1);
-        HASTE_POTION = new Sprite("res/sprites/interface/haste_potion_8x8.png", 8, 8, -1);
-
-        GOLD_COIN_INTERFACE = new Sprite("res/sprites/interface/gold_coin_interface_8x8.png", 8, 8, -1);
-
         A_CONTROLLER_BUTTON = new Sprite("res/sprites/interface/a_controller_button_8x8.png", 8, 8, -1);
         B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_8x8.png", 8, 8, -1);
         F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_8x8.png", 8, 8, -1);
         H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_8x8.png", 8, 8, -1);
         M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_8x8.png", 8, 8, -1);
 
-        /** OTHERS **/
-        GOLD_COIN = new Sprite("res/sprites/dynamic/gold_coin.png", 4, 3, -1);
+        /** ITEMS **/
+        HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
+        MANA_POTION = new Sprite("res/sprites/interface/mana_potion_8x8.png", 8, 8, -1);
+        HASTE_POTION = new Sprite("res/sprites/interface/haste_potion_8x8.png", 8, 8, -1);
+        GOLD_COIN = new Sprite("res/sprites/interface/gold_coin_8x8.png", 8, 8, -1);
+        WOOD = new Sprite("res/sprites/interface/wood_8x8.png", 8, 8, -1);
     }
 
     public static SpriteManager getInstance() {

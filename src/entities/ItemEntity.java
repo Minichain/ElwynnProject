@@ -1,10 +1,7 @@
 package entities;
 
 import audio.OpenALManager;
-import items.HastePotion;
-import items.HealthPotion;
-import items.ItemType;
-import items.ManaPotion;
+import items.*;
 import main.Coordinates;
 import main.Log;
 import main.Texture;
@@ -80,6 +77,12 @@ public class ItemEntity extends DynamicGraphicEntity {
             case HASTE_POTION:
                 if (Player.getInstance().getInventory().isFreeSlot()) {
                     Player.getInstance().getInventory().storeItem(new HastePotion());
+                    setDead(true);
+                }
+                break;
+            case WOOD:
+                if (Player.getInstance().getInventory().isFreeSlot()) {
+                    Player.getInstance().getInventory().storeItem(new Wood());
                     setDead(true);
                 }
                 break;

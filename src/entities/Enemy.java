@@ -142,6 +142,12 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
                     ItemType.HASTE_POTION);
         }
+
+        if (MathUtils.random(0, 10) < 2) {
+            new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    (int) ((getWorldCoordinates().y - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
+                    ItemType.WOOD);
+        }
     }
 
     @Override
