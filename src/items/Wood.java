@@ -1,12 +1,14 @@
 package items;
 
 import entities.Sprite;
+import main.Strings;
 
 public class Wood extends Item {
     private int cost;
 
     public Wood() {
         super();
+        cost = -1;
         MAX_AMOUNT_PER_STACK = 5;
     }
 
@@ -17,7 +19,7 @@ public class Wood extends Item {
 
     @Override
     public String getName() {
-        return "";
+        return Strings.getString("item_wood");
     }
 
     @Override

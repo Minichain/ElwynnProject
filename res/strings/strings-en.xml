@@ -18,6 +18,7 @@
     <string name="item_health_potion">Health Potion</string>
     <string name="item_mana_potion">Mana Potion</string>
     <string name="item_haste_potion">Haste Potion</string>
+    <string name="item_wood">Wood</string>
 
     <!--MENU-->
     <string name="resume_game">Resume Game</string>

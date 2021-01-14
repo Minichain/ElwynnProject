@@ -18,6 +18,7 @@
     <string name="item_health_potion">Poción de Salud</string>
     <string name="item_mana_potion">Poción de Magia</string>
     <string name="item_haste_potion">Poción de Celeridad</string>
+    <string name="item_wood">Madera</string>
 
     <!--MENU-->
     <string name="resume_game">Reanudar el Juego</string>

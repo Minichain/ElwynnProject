@@ -156,7 +156,7 @@ public class UserInterface {
                             listOfItems = nonPlayerCharacter.getListOfItems();
                             size = listOfItems.size() + 1;
                         } else if (nonPlayerCharacter.isBuying()) {
-                            listOfItems = Player.getInstance().getListOfItems();
+                            listOfItems = Player.getInstance().getListOfItemsExceptGoldCoins();
                             size = listOfItems.size() + 1;
                         }
 
@@ -169,12 +169,14 @@ public class UserInterface {
                         glEnd();
 
                         x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (300f * Parameters.getResolutionFactor());
+
+
                         for (int i = 0; i < size; i++) {
-                            String text;
-                            if (nonPlayerCharacter.isWaitingForInteractionSelection()) {
+                            String text = "";
+                            if (nonPlayerCharacter.isWaitingForInteractionSelection() && listOfActions != null && listOfActions.get(i) != null) {
                                 text = listOfActions.get(i).toString();
-                            } else {
-                                if (i == size - 1) text = Strings.getString("ui_quit_npc");
+                            } else if (listOfItems != null) {
+                                if (i >= size - 1) text = Strings.getString("ui_quit_npc");
                                 else text = listOfItems.get(i).getName().concat(" ").concat(String.valueOf(listOfItems.get(i).getCost())).concat("gc");
                             }
                             if (i == nonPlayerCharacter.getSelectedItem()) {

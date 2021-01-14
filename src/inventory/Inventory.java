@@ -1,5 +1,6 @@
 package inventory;
 
+import items.GoldCoin;
 import items.Item;
 import main.*;
 
@@ -72,11 +73,18 @@ public class Inventory {
 
     public Item isItemStored(Class<?> type) {
         for (int i = 0; i < listOfSlots.size(); i++) {
-            if (type == listOfSlots.get(i).getStoredItem().getClass()) {
-                return listOfSlots.get(i).getStoredItem();
+            Item item = listOfSlots.get(i).getStoredItem();
+            if (item != null && type == item.getClass()) {
+                return item;
             }
         }
         return null;
+    }
+
+    public void storeItem(Item item, int amount) {
+        for (int i = 0; i < amount; i++) {
+            storeItem(item);
+        }
     }
 
     public void storeItem(Item item) {
@@ -88,6 +96,12 @@ public class Inventory {
                 slot.storeItem(item);
                 break;
             }
+        }
+    }
+
+    public void removeItem(Class<?> type, int amount) {
+        for (int i = 0; i < amount; i++) {
+            removeItem(type);
         }
     }
 
@@ -125,6 +139,28 @@ public class Inventory {
             }
         }
         return listOfItems;
+    }
+
+    public ArrayList<Item> getListOfItemsExceptGoldCoins() {
+        ArrayList<Item> listOfItems = new ArrayList<>();
+        for (InventorySlot slot : listOfSlots) {
+            if (slot.getStoredItem() != null && !slot.getStoredItem().getClass().equals(GoldCoin.class)) {
+                for (int i = 0; i < slot.getAmount(); i++) {
+                    listOfItems.add(slot.getStoredItem());
+                }
+            }
+        }
+        return listOfItems;
+    }
+
+    public boolean isFreeSpace(Item item) {
+        for (InventorySlot slot : listOfSlots) {
+            if (slot.getStoredItem() == null
+                    || (slot.getStoredItem().getClass() == item.getClass() && slot.getAmount() < slot.getStoredItem().MAX_AMOUNT_PER_STACK)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isFreeSlot() {

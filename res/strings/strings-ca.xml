@@ -18,6 +18,7 @@
     <string name="item_health_potion">Poció de Salut</string>
     <string name="item_mana_potion">Poció de Màgia</string>
     <string name="item_haste_potion">Poció de Celeritat</string>
+    <string name="item_wood">Fusta</string>
 
     <!--MENU-->
     <string name="resume_game">Reprendre el Joc</string>

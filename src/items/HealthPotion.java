@@ -11,7 +11,7 @@ public class HealthPotion extends Item {
 
     public HealthPotion() {
         super();
-        cost = 10;
+        cost = 2;
         restoreValue = 500f;
         MAX_AMOUNT_PER_STACK = 5;
     }

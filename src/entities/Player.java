@@ -2,10 +2,7 @@ package entities;
 
 import audio.OpenALManager;
 import inventory.Inventory;
-import items.HastePotion;
-import items.HealthPotion;
-import items.Item;
-import items.ManaPotion;
+import items.*;
 import listeners.ActionManager;
 import particles.Particle;
 import particles.ParticleManager;
@@ -71,7 +68,6 @@ public class Player extends LivingDynamicGraphicEntity {
     private boolean footstep = true;
 
     private Inventory inventory;
-    private int amountOfGoldCoins;
 
     private NonPlayerCharacter interactiveNPC = null;
 
@@ -87,6 +83,7 @@ public class Player extends LivingDynamicGraphicEntity {
     public void init() {
         Log.l("init player!");
         setWorldCoordinates(Scene.getInitialCoordinates());
+        inventory = new Inventory();
         health = 5000f;
         mana = 100f;
         speed = 0.08;
@@ -95,12 +92,10 @@ public class Player extends LivingDynamicGraphicEntity {
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
-        amountOfGoldCoins = 0;
         runningParticleCoolDown = 0;
         changeMusicalModeCoolDown = 0;
         setSprite(SpriteManager.getInstance().PLAYER);
-        setAmountOfGoldCoins(100);
-        inventory = new Inventory();
+        getInventory().storeItem(new GoldCoin(), 10);
     }
 
     public static Player getInstance() {
@@ -548,14 +543,6 @@ public class Player extends LivingDynamicGraphicEntity {
         }
     }
 
-    public int getAmountOfGoldCoins() {
-        return amountOfGoldCoins;
-    }
-
-    public void setAmountOfGoldCoins(int amountOfGoldCoins) {
-        this.amountOfGoldCoins = amountOfGoldCoins;
-    }
-
     private void checkAnyInteractiveNPC() {
         double smallestDistance = 25;
         interactiveNPC = null;
@@ -640,6 +627,10 @@ public class Player extends LivingDynamicGraphicEntity {
         getInventory().removeItem(item.getClass());
     }
 
+    public int getAmountOfGoldCoins() {
+        return getAmountOfItemType(GoldCoin.class);
+    }
+
     public int getAmountOfHealthPotions() {
         return getAmountOfItemType(HealthPotion.class);
     }
@@ -683,6 +674,10 @@ public class Player extends LivingDynamicGraphicEntity {
 
     public ArrayList<Item> getListOfItems() {
         return getInventory().getListOfItems();
+    }
+
+    public ArrayList<Item> getListOfItemsExceptGoldCoins() {
+        return getInventory().getListOfItemsExceptGoldCoins();
     }
 
     public float getWeakness(MusicalMode musicalMode) {

@@ -52,40 +52,29 @@ public class ItemEntity extends DynamicGraphicEntity {
     }
 
     private void onPickedUp() {
+        Item item;
         switch (itemType) {
             case GOLD_COIN:
             default:
-                Player.getInstance().setAmountOfGoldCoins(Player.getInstance().getAmountOfGoldCoins() + 1);
-                Log.l("Gold coin picked up. Current amount of gold coins: " + Player.getInstance().getAmountOfGoldCoins());
-                OpenALManager.playSound(OpenALManager.SOUND_GOLD_COIN_PICKED_UP_01);
-                new FloatingTextEntity(this.getCenterOfMassWorldCoordinates().x, this.getCenterOfMassWorldCoordinates().y, "+1",
-                        new Color(1f, 0.9f, 0f), 1.25, new double[]{0, -1});
-                setDead(true);
+                item = new GoldCoin();
                 break;
             case HEALTH_POTION:
-                if (Player.getInstance().getInventory().isFreeSlot()) {
-                    Player.getInstance().getInventory().storeItem(new HealthPotion());
-                    setDead(true);
-                }
+                item = new HealthPotion();
                 break;
             case MANA_POTION:
-                if (Player.getInstance().getInventory().isFreeSlot()) {
-                    Player.getInstance().getInventory().storeItem(new ManaPotion());
-                    setDead(true);
-                }
+                item = new ManaPotion();
                 break;
             case HASTE_POTION:
-                if (Player.getInstance().getInventory().isFreeSlot()) {
-                    Player.getInstance().getInventory().storeItem(new HastePotion());
-                    setDead(true);
-                }
+                item = new HastePotion();
                 break;
             case WOOD:
-                if (Player.getInstance().getInventory().isFreeSlot()) {
-                    Player.getInstance().getInventory().storeItem(new Wood());
-                    setDead(true);
-                }
+                item = new Wood();
                 break;
+        }
+        if (Player.getInstance().getInventory().isFreeSpace(item)) {
+            OpenALManager.playSound(OpenALManager.SOUND_GOLD_COIN_PICKED_UP_01);
+            Player.getInstance().getInventory().storeItem(item);
+            setDead(true);
         }
     }
 }

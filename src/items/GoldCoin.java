@@ -8,6 +8,7 @@ public class GoldCoin extends Item {
 
     public GoldCoin() {
         super();
+        cost = -1;
         MAX_AMOUNT_PER_STACK = 50;
     }
 

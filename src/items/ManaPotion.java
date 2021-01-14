@@ -11,7 +11,7 @@ public class ManaPotion extends Item {
 
     public ManaPotion() {
         super();
-        cost = 15;
+        cost = 3;
         restoreValue = 10f;
         MAX_AMOUNT_PER_STACK = 5;
     }

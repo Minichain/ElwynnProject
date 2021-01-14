@@ -117,7 +117,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     @Override
     public void onDying() {
         OpenALManager.playSound(OpenALManager.SOUND_PLAYER_DYING_01);
-        int numOfCoinsToDrop = (int) (MathUtils.random(5, 10));
+        int numOfCoinsToDrop = (int) (MathUtils.random(1, 4));
         float areaOfDrop = 25f;
         for (int i = 0; i < numOfCoinsToDrop; i++) {
             new ItemEntity((int) ((getWorldCoordinates().x - areaOfDrop / 2) + (Math.random() * areaOfDrop)),
