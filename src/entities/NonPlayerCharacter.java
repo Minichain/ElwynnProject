@@ -162,7 +162,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
             if (selectedItem < getListOfItems().size()) {
                 Item itemToBuy = getListOfItems().get(selectedItem);
                 if (itemToBuy.getCost() <= Player.getInstance().getAmountOfGoldCoins()) {
-                    if (Player.getInstance().getInventory().isFreeSlot()) {
+                    if (Player.getInstance().getInventory().isFreeSpace(itemToBuy)) {
                         Log.l("Buying " + itemToBuy.getName());
                         Player.getInstance().getInventory().storeItem(itemToBuy);
                         Player.getInstance().getInventory().removeItem(GoldCoin.class, itemToBuy.getCost());

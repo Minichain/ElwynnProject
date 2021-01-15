@@ -1,16 +1,11 @@
 package entities;
 
-import audio.OpenALManager;
 import items.*;
 import main.Coordinates;
-import main.Log;
 import main.Texture;
 import scene.Camera;
 import scene.Scene;
-import text.FloatingTextEntity;
 import utils.MathUtils;
-
-import java.awt.*;
 
 public class ItemEntity extends DynamicGraphicEntity {
     private float interactionDistance = 25f;
@@ -52,27 +47,9 @@ public class ItemEntity extends DynamicGraphicEntity {
     }
 
     private void onPickedUp() {
-        Item item;
-        switch (itemType) {
-            case GOLD_COIN:
-            default:
-                item = new GoldCoin();
-                break;
-            case HEALTH_POTION:
-                item = new HealthPotion();
-                break;
-            case MANA_POTION:
-                item = new ManaPotion();
-                break;
-            case HASTE_POTION:
-                item = new HastePotion();
-                break;
-            case WOOD:
-                item = new Wood();
-                break;
-        }
+        Item item = itemType.getItem();
         if (Player.getInstance().getInventory().isFreeSpace(item)) {
-            OpenALManager.playSound(OpenALManager.SOUND_GOLD_COIN_PICKED_UP_01);
+            itemType.playPickUpSound();
             Player.getInstance().getInventory().storeItem(item);
             setDead(true);
         }
