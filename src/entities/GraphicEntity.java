@@ -66,7 +66,7 @@ public abstract class GraphicEntity extends Entity {
         centerOfMassCameraCoordinates = centerOfMassWorldCoordinates.toCameraCoordinates();
     }
 
-    public abstract byte getEntityCode();
+    public abstract String getEntityCode();
 
     public boolean isOverEntity(Coordinates coordinates) {
         return (Math.abs(coordinates.x - centerOfMassWorldCoordinates.x) <= (getSprite().SPRITE_WIDTH / 2))

@@ -1,148 +1,204 @@
 package main;
 
 import entities.*;
+import enums.NonPlayerCharacterAction;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import scene.Camera;
 import scene.Scene;
 import scene.Tile;
 import scene.TileMap;
-import utils.Utils;
+import utils.IOUtils;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
 
 public class WorldLoader {
+    private static WorldLoader instance = null;
+    private static final String worldFilePath = "res/world/world.xml";
 
-    public static void saveWorld() {
-        if (saveWorld(TileMap.getArrayOfTiles())) {
-            Log.l("World saved successfully");
-        } else {
+    private WorldLoader() {
+
+    }
+
+    public static WorldLoader getInstance() {
+        if (instance == null) {
+            return new WorldLoader();
+        }
+        return instance;
+    }
+
+    /** SAVE WORLD **/
+
+    public void saveWorld() {
+        try {
+            SaveWorldThread thread = new SaveWorldThread();
+            thread.start();
+        } catch (Exception e) {
             Log.e("World could not be saved");
         }
     }
 
-    public static boolean saveWorld(Tile[][] arrayOfTiles) {
-        // The array of Tiles is stored into a 1-Dimensional byte array
-        int dataArraySize = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
-        dataArraySize += Scene.getInstance().getListOfStaticEntities().size() * (Double.BYTES * 3 + 1);
-        byte[] data = new byte[dataArraySize];
-        int dataIterator = 0;
+    private static class SaveWorldThread extends Thread {
 
-        /** TILES DATA **/
-        for (int i = 0; i < TileMap.getNumOfHorizontalTiles(); i++) {
+        public SaveWorldThread() {
+
+        }
+
+        public void run() {
+            StringBuilder worldString = new StringBuilder("<scene name=\"scene01\">\n" +
+                    "<spawn_coordinates x=\"800.0\" y=\"800.0\"></spawn_coordinates>\n" +
+                    "<tiles width=\"" + TileMap.getNumOfHorizontalTiles() + "\" height=\"" + TileMap.getNumOfVerticalTiles() + "\">");
+
+            /** TILES **/
+            Tile tile;
             for (int j = 0; j < TileMap.getNumOfVerticalTiles(); j++) {
-                for (int k = 0; k < Tile.getNumOfLayers(); k++) {
-                    data[dataIterator] = arrayOfTiles[i][j].getLayerValue(k);
-                    dataIterator++;
+                for (int i = 0; i < TileMap.getNumOfHorizontalTiles(); i++) {
+                    tile = TileMap.getArrayOfTiles()[i][j];
+                    worldString.append(tile.getLayerValue(0)).append(",").append(tile.isCollidable() ? "1" : "0").append(";");
                 }
-                data[dataIterator] = arrayOfTiles[i][j].isCollidable() ? (byte) 1 : (byte) 0;
-                dataIterator++;
             }
-        }
+            worldString.append("</tiles>\n");
 
-        /** ENTITIES DATA **/
-        for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
-            GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
-            data[dataIterator] = graphicEntity.getEntityCode();
-//            Log.l("Saving Entity "+ dataIterator + " at x: " + (int) graphicEntity.getWorldCoordinates().x + ", y: " + (int) graphicEntity.getWorldCoordinates().y + ", EntityCode: " + data[dataIterator]);
-            dataIterator++;
-            data[dataIterator] = (new Integer(graphicEntity.getType())).byteValue();
-            dataIterator++;
-            byte[] xCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().x);
-            for (int j = 0; j < xCoordinate.length; j++) {
-                data[dataIterator] = xCoordinate[j];
-                dataIterator++;
+            /** ENTITIES **/
+            for (StaticGraphicEntity entity : Scene.getInstance().getListOfStaticEntities()) {
+                worldString.append("<entity code=\"");
+                worldString.append(entity.getEntityCode());
+                worldString.append("\" type=\"");
+                worldString.append(entity.getType());
+                worldString.append("\" x=\"");
+                worldString.append(entity.getWorldCoordinates().x);
+                worldString.append("\" y=\"");
+                worldString.append(entity.getWorldCoordinates().y);
+                worldString.append("\"></entity>\n");
             }
-            byte[] yCoordinate = Utils.doubleToBytes(graphicEntity.getWorldCoordinates().y);
-            for (int j = 0; j < xCoordinate.length; j++) {
-                data[dataIterator] = yCoordinate[j];
-                dataIterator++;
-            }
-        }
 
-        FileOutputStream dataOutput;
-        try {
-            dataOutput = new FileOutputStream("res/world");
-            dataOutput.write(data);
-            dataOutput.close();
-            return true;   // Success
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;   // Something went wrong
+            /** NPCs **/
+            for (NonPlayerCharacter npc : Scene.getInstance().getListOfNonPlayerCharacters()) {
+                worldString.append("<entity_npc code=\"");
+                worldString.append(npc.getEntityCode());
+                worldString.append("\" type=\"");
+                worldString.append(npc.getType());
+                worldString.append("\" x=\"");
+                worldString.append(npc.getWorldCoordinates().x);
+                worldString.append("\" y=\"");
+                worldString.append(npc.getWorldCoordinates().y);
+                worldString.append("\" buys=\"");
+                worldString.append(npc.getAvailableActions().contains(NonPlayerCharacterAction.BUY));
+                worldString.append("\" sells=\"");
+                worldString.append(npc.getAvailableActions().contains(NonPlayerCharacterAction.SELL));
+                worldString.append("\" talk_text_string_name=\"");
+                worldString.append(npc.getTalkTextStringName());
+                worldString.append("\" talk_text_string_args=\"");
+                worldString.append(npc.getTalkTextStringArgs());
+                worldString.append("\"></entity_npc>\n");
+            }
+
+            worldString.append("</scene>\n");
+
+            try {
+                IOUtils.stringToXmlFile(worldString.toString(), worldFilePath);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            Log.l("World saved successfully");
         }
     }
 
-    public static Tile[][] loadWorld() {
-        Tile[][] arrayOfTiles = null;
+    /** LOAD WORLD **/
+
+    public void loadWorld() {
         try {
-            arrayOfTiles = WorldLoader.loadWorld("res/world");
+            File xmlFile = new File(worldFilePath);
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = factory.newDocumentBuilder();
+            Document document = documentBuilder.parse(xmlFile);
+            NodeList nodeList;
+            Element element;
+
+            /** SPAWN COORDS **/
+            nodeList = document.getElementsByTagName("spawn_coordinates");
+            element = (Element) nodeList.item(0);
+            double x = Double.parseDouble(element.getAttribute("x"));
+            double y = Double.parseDouble(element.getAttribute("y"));
+            Camera.getInstance().init(new Coordinates(x, y));
+            Player.getInstance().init(new Coordinates(x, y));
+
+            /** TILES **/
+            nodeList = document.getElementsByTagName("tiles");
+            element = (Element) nodeList.item(0);
+            TileMap.setNumOfHorizontalTiles(Integer.parseInt(element.getAttribute("width")));
+            TileMap.setNumOfVerticalTiles(Integer.parseInt(element.getAttribute("height")));
+            String[] tilesString = element.getTextContent().split(";");
+            Tile[][] tiles = new Tile[TileMap.getNumOfHorizontalTiles()][TileMap.getNumOfVerticalTiles()];
+            Tile tile;
+            int index = 0;
+            byte tileType;
+            boolean collidable;
+            for (int j = 0; j < TileMap.getNumOfVerticalTiles(); j++) {
+                for (int i = 0; i < TileMap.getNumOfHorizontalTiles(); i++) {
+                    String[] tileString = tilesString[index].split(",");
+                    tileType = Byte.parseByte(tileString[0]);
+                    collidable = tileString[1].equals("1");
+                    tile = new Tile();
+                    tile.setLayerValue(0, tileType);
+                    tile.setCollidable(collidable);
+                    tiles[i][j] = tile;
+                    index++;
+                }
+            }
+
+            TileMap.setArrayOfTiles(tiles);
+
+            /** ENTITIES **/
+            nodeList = document.getElementsByTagName("entity");
+            String entityCode;
+            int entityType;
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                element = (Element) nodeList.item(i);
+                entityCode = element.getAttribute("code");
+                entityType = Integer.parseInt(element.getAttribute("type"));
+                x = Double.parseDouble(element.getAttribute("x"));
+                y = Double.parseDouble(element.getAttribute("y"));
+
+                if (entityCode.equals(Tree.ENTITY_CODE)) {
+                    new Tree((int) x, (int) y, entityType);
+                } else if (entityCode.equals(Light.ENTITY_CODE)) {
+                    new Light((int) x, (int) y);
+                } else if (entityCode.equals(Torch.ENTITY_CODE)) {
+                    new Torch((int) x, (int) y);
+                } else if (entityCode.equals(Fence.ENTITY_CODE)) {
+                    new Fence((int) x, (int) y, entityType);
+                } else if (entityCode.equals(Building.ENTITY_CODE)) {
+                    new Building((int) x, (int) y, entityType);
+                }
+            }
+
+            /** NPCs **/
+            nodeList = document.getElementsByTagName("entity_npc");
+            String talkTextStringName, talkTextStringArgs;
+            boolean buys, sells;
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                element = (Element) nodeList.item(i);
+                entityCode = element.getAttribute("code");
+                entityType = Integer.parseInt(element.getAttribute("type"));
+                x = Double.parseDouble(element.getAttribute("x"));
+                y = Double.parseDouble(element.getAttribute("y"));
+                talkTextStringName = element.getAttribute("talk_text_string_name");
+                talkTextStringArgs = element.getAttribute("talk_text_string_args");
+                buys = Boolean.parseBoolean(element.getAttribute("buys"));
+                sells = Boolean.parseBoolean(element.getAttribute("sells"));
+
+                if (entityCode.equals(NonPlayerCharacter.ENTITY_CODE)) {
+                    NonPlayerCharacter npc = new NonPlayerCharacter((int) x, (int) y, sells, buys, entityType);
+                    npc.setTalkTextStringName(talkTextStringName, talkTextStringArgs);
+                }
+            }
             Log.l("World loaded successfully");
         } catch (Exception e) {
             Log.e("Error loading World. Reason: " + e);
         }
-        return arrayOfTiles;
-    }
-
-    public static Tile[][] loadWorld(String worldFile) {
-        File file = new File(worldFile);
-        FileInputStream fileInputStream;
-        byte[] fileData = new byte[(int) file.length()];
-        try {
-            //convert file into array of bytes
-            fileInputStream = new FileInputStream(file);
-            fileInputStream.read(fileData);
-            fileInputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        /** TILES DATA **/
-        // The 1-Dimensional byte array is loaded into a 3-Dimensional array of Tiles
-        Tile[][] arrayOfTiles = new Tile[TileMap.getNumOfHorizontalTiles()][TileMap.getNumOfVerticalTiles()];
-        for (int i = 0; i < TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1); i += 4) {
-            int x = (i / (Tile.getNumOfLayers() + 1)) / TileMap.getNumOfVerticalTiles();
-            int y = (i / (Tile.getNumOfLayers() + 1)) % TileMap.getNumOfVerticalTiles();
-            arrayOfTiles[x][y] = new Tile();
-            for (int j = 0; j < Tile.getNumOfLayers(); j++) {
-                arrayOfTiles[x][y].setLayerValue(j, fileData[i + j]);
-            }
-            arrayOfTiles[x][y].setCollidable(fileData[i + Tile.getNumOfLayers()] == (byte) 1);
-        }
-
-        /** ENTITIES DATA **/
-        int i = TileMap.getNumOfHorizontalTiles() * TileMap.getNumOfVerticalTiles() * (Tile.getNumOfLayers() + 1);
-        while (i <= fileData.length - (Double.BYTES * 2 + 1)) {
-            byte entityCode = fileData[i];
-            i++;
-            byte entityType = fileData[i];
-
-            byte[] xCoordinate = new byte[Double.BYTES];
-            for (int j = 0; j < Double.BYTES; j++) {
-                i++;
-                xCoordinate[j] = fileData[i];
-            }
-            byte[] yCoordinate = new byte[Double.BYTES];
-            for (int j = 0; j < Double.BYTES; j++) {
-                i++;
-                yCoordinate[j] = fileData[i];
-            }
-
-//            Log.l("Loading Entity "+ (i - Double.BYTES - Double.BYTES) + " at x: " + (int) Utils.byteArrayToDouble(xCoordinate) + ", y: " + (int) Utils.byteArrayToDouble(yCoordinate) + ", EntityCode: " + entityCode);
-            if (entityCode == Tree.ENTITY_CODE) {
-                new Tree((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
-            } else if (entityCode == Fence.ENTITY_CODE) {
-                new Fence((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
-            } else if (entityCode == Light.ENTITY_CODE) {
-                new Light((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Torch.ENTITY_CODE) {
-                new Torch((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate));
-            } else if (entityCode == Building.ENTITY_CODE) {
-                new Building((int) Utils.byteArrayToDouble(xCoordinate), (int) Utils.byteArrayToDouble(yCoordinate), entityType);
-            }
-            i++;
-        }
-
-        return arrayOfTiles;
     }
 }

@@ -5,7 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Fence extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 2;
+    public static String ENTITY_CODE = "fence";
 
     public enum FenceType {
         FENCE01(0), FENCE02(1), FENCE03(2), FENCE04(3);
@@ -61,7 +61,7 @@ public class Fence extends StaticGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 }

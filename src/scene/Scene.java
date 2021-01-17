@@ -56,13 +56,9 @@ public class Scene {
         listOfVisibleLightSources = new ArrayList<>();
         listOfNonPlayerCharacters = new ArrayList<>();
 
-        TileMap.loadMap();
-        Player.getInstance().init();
-        Camera.getInstance().init();
+        WorldLoader.getInstance().loadWorld();
         Scene.getInstance().getListOfGraphicEntities().add(Player.getInstance());
         GameTime.setGameTime(0);
-
-        createNonPlayerCharacters();
     }
 
     public void reset() {
@@ -198,10 +194,6 @@ public class Scene {
         return listOfCircleAttacks;
     }
 
-    public static Coordinates getInitialCoordinates() {
-        return initialCoordinates;
-    }
-
     private void resetEntities() {
         for (int i = 0; i < listOfGraphicEntities.size(); i++) {
             Entity entity = listOfGraphicEntities.get(i);
@@ -274,8 +266,8 @@ public class Scene {
 
         for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
             for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
-                if (0 < i && i < TileMap.getArrayOfTiles().length
-                        && 0 < j && j < TileMap.getArrayOfTiles()[0].length
+                if (0 <= i && i < TileMap.getArrayOfTiles().length
+                        && 0 <= j && j < TileMap.getArrayOfTiles()[0].length
                         && TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {
                     double scale = Camera.getZoom();
                     int x = i * TileMap.TILE_WIDTH;
@@ -322,32 +314,5 @@ public class Scene {
             }
         }
         return false;
-    }
-
-    private void createNonPlayerCharacters() {
-        //TODO: NPC testing
-        NonPlayerCharacter npc;
-        ArrayList<String> textList;
-
-        npc = new NonPlayerCharacter(2455, 1725, 0);
-        npc.setTalkTextStringName("tutorial_roll", "key_space_bar");
-
-        npc = new NonPlayerCharacter(2485, 1720, 1);
-        npc.setTalkTextStringName("tutorial_attack");
-
-        npc = new NonPlayerCharacter(2500, 1725, 2);
-        npc.setTalkTextStringName("tutorial_change_musical_mode", "key_tab");
-
-        npc = new NonPlayerCharacter(2460, 1810, true, true, 0);
-        npc.setTalkTextStringName("tutorial_follow_path");
-
-        npc = new NonPlayerCharacter(2456, 2442, true, false, 1);
-        npc.setTalkTextStringName("tutorial_welcome");
-
-        npc = new NonPlayerCharacter(2622, 2471, true, false, 3);
-        npc.setTalkTextStringName("tutorial_putoncio");
-
-        npc = new NonPlayerCharacter(2427, 2583, true, true, 1);
-        npc.setTalkTextStringName("tutorial_outsider");
     }
 }

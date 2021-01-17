@@ -17,11 +17,11 @@ public class Camera {
     private static double followingSpeed;
 
     public Camera() {
-        init();
+        init(new Coordinates(0, 0));
     }
 
-    public void init() {
-        coordinates = new Coordinates(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
+    public void init(Coordinates c) {
+        coordinates = c;
         minZoom = 1.0;
         maxZoom = 8.0;
         zoom = 4.0;

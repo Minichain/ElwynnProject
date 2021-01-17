@@ -5,7 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Building extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 3;
+    public static String ENTITY_CODE = "building";
 
     public enum BuildingType {
         BUILDING01(0), BUILDING02(1);
@@ -70,7 +70,7 @@ public class Building extends StaticGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 }

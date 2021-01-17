@@ -11,7 +11,6 @@ import utils.MathUtils;
 import java.awt.*;
 
 public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
-    public static byte ENTITY_CODE = 8;
     private double timeLiving = 0;
     private double timeToLive;
     private MusicalMode musicalMode;
@@ -129,8 +128,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor), true);
     }
 
-    public byte getEntityCode() {
-        return ENTITY_CODE;
+    public String getEntityCode() {
+        return null;
     }
 
     public void explode() {

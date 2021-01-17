@@ -5,7 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Tree extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 1;
+    public static String ENTITY_CODE = "tree";
 
     public enum TreeType {
         TREE01(0), TREE02(1), TREE03(2), TREE04(3);
@@ -76,7 +76,7 @@ public class Tree extends StaticGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 }

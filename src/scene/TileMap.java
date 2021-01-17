@@ -7,24 +7,11 @@ import main.*;
 public class TileMap {
     /** TILES **/
     private static Tile[][] arrayOfTiles;
-    private static int numOfHorizontalTiles = 1000;
-    private static int numOfVerticalTiles = 1000;
+    private static int numOfHorizontalTiles = 0;
+    private static int numOfVerticalTiles = 0;
 
     public static int TILE_WIDTH = 8;
     public static int TILE_HEIGHT = 8;
-
-    public static void loadMap() {
-        arrayOfTiles = WorldLoader.loadWorld();
-        if (arrayOfTiles == null || arrayOfTiles.length == 0) {
-            arrayOfTiles = new Tile[numOfHorizontalTiles][numOfVerticalTiles];
-            for (int i = 0; i < numOfHorizontalTiles; i++) {
-                for (int j = 0; j < numOfVerticalTiles; j++) {
-                    arrayOfTiles[i][j] = new Tile();
-                    arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 3) + 1));
-                }
-            }
-        }
-    }
 
     public static Sprite getTileSet() {
         return SpriteManager.getInstance().TILESET;
@@ -38,16 +25,38 @@ public class TileMap {
         return arrayOfTiles;
     }
 
+    public static void setArrayOfTiles(Tile[][] aot) {
+        if (aot == null || aot.length == 0) {
+            arrayOfTiles = new Tile[numOfHorizontalTiles][numOfVerticalTiles];
+            for (int i = 0; i < numOfHorizontalTiles; i++) {
+                for (int j = 0; j < numOfVerticalTiles; j++) {
+                    arrayOfTiles[i][j] = new Tile();
+                    arrayOfTiles[i][j].setLayerValue(0, (byte) (((Math.random() * 100) % 3) + 1));
+                }
+            }
+        } else {
+            arrayOfTiles = aot;
+        }
+    }
+
     public static int getNumOfHorizontalTiles() {
         return numOfHorizontalTiles;
+    }
+
+    public static void setNumOfHorizontalTiles(int numOfHorizontalTiles) {
+        TileMap.numOfHorizontalTiles = numOfHorizontalTiles;
     }
 
     public static int getNumOfVerticalTiles() {
         return numOfVerticalTiles;
     }
 
+    public static void setNumOfVerticalTiles(int numOfVerticalTiles) {
+        TileMap.numOfVerticalTiles = numOfVerticalTiles;
+    }
+
     public static void drawTile(int i, int j, int k, int x, int y, double scale) {
-        if (0 < i && i < TileMap.getArrayOfTiles().length && 0 < j && j < TileMap.getArrayOfTiles()[0].length) {
+        if (0 <= i && i < TileMap.getArrayOfTiles().length && 0 <= j && j < TileMap.getArrayOfTiles()[0].length) {
             drawTile(TileMap.getArrayOfTiles()[i][j].getLayerValue(k), x, y, scale, false);
         }
     }

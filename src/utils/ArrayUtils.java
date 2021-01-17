@@ -2,25 +2,47 @@ package utils;
 
 public class ArrayUtils {
 
-    public static void print(int[][] array) {
+    public static String toString(int[][] array) {
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
-                System.out.print(String.format("%7d", array[i][j]));
-                System.out.print(", ");
+                s.append(String.format("%7d", array[i][j]));
+                s.append(", ");
             }
-            System.out.print("\n");
+            s.append("\n");
         }
+        return s.toString();
     }
 
-    public static void print(boolean[][] array) {
+    public static String toString(boolean[][] array) {
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < array.length; i++) {
             for (int j = 0; j < array[0].length; j++) {
-                if (array[i][i]) System.out.print("1");
-                else System.out.print("0");
-                System.out.print(", ");
+                if (array[i][j]) s.append("1");
+                else s.append("0");
+                s.append(", ");
             }
-            System.out.print("\n");
+            s.append("\n");
         }
+        return s.toString();
+    }
+
+    public static String toString(Object[] array) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            s.append(array[i]);
+            s.append(", ");
+        }
+        return s.toString();
+    }
+
+    public static String toString(byte[] array) {
+        StringBuilder s = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            s.append(array[i]);
+            s.append(", ");
+        }
+        return s.toString();
     }
 
     public static boolean contains(int[] array, int target) {

@@ -7,7 +7,7 @@ import scene.Scene;
 import java.awt.*;
 
 public class Torch extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 5;
+    public static String ENTITY_CODE = "torch";
 
     public Torch(int x, int y) {
         super(x, y);
@@ -43,7 +43,7 @@ public class Torch extends StaticGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 }

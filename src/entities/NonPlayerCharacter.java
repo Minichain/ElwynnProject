@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
-    public static byte ENTITY_CODE = 9;
+    public static String ENTITY_CODE = "npc";
     private final double interactionDistance = 25;
     private String talkTextStringName;
     private String talkTextStringArgs;
@@ -116,7 +116,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
     }
 
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 
@@ -250,6 +250,14 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
 
     public boolean isBuying() {
         return interactionState == NonPlayerCharacterInteractionState.BUYING;
+    }
+
+    public String getTalkTextStringName() {
+        return talkTextStringName;
+    }
+
+    public String getTalkTextStringArgs() {
+        return talkTextStringArgs;
     }
 
     public void setTalkTextStringName(String talkTextStringName) {

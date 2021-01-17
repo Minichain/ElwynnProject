@@ -19,7 +19,7 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class Player extends LivingDynamicGraphicEntity {
-    public static byte ENTITY_CODE = 6;
+    public static String ENTITY_CODE = "player";
     private static Player instance = null;
     private static Utils.DirectionFacing directionFacing;
 
@@ -76,13 +76,13 @@ public class Player extends LivingDynamicGraphicEntity {
     private int runningParticleCoolDown;
 
     private Player() {
-        super(Scene.getInitialCoordinates().x, Scene.getInitialCoordinates().y);
-        init();
+        super(0, 0);
+        init(new Coordinates(0, 0));
     }
 
-    public void init() {
+    public void init(Coordinates coordinates) {
         Log.l("init player!");
-        setWorldCoordinates(Scene.getInitialCoordinates());
+        setWorldCoordinates(coordinates);
         inventory = new Inventory();
         health = 5000f;
         mana = 100f;
@@ -116,7 +116,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 

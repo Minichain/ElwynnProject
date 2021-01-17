@@ -4,11 +4,22 @@
  */
 package utils;
 
+import jdk.internal.org.xml.sax.SAXException;
 import org.lwjgl.*;
+import org.w3c.dom.Document;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
 import static org.lwjgl.BufferUtils.*;
@@ -64,5 +75,33 @@ public class IOUtils {
 
         buffer.flip();
         return buffer;
+    }
+
+    public static Document stringToXmlDocument(String xmlString) {
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+            InputStream inputStream = new ByteArrayInputStream(xmlString.getBytes(StandardCharsets.UTF_8));
+            return builder.parse(inputStream);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static void stringToXmlFile(String xmlSource, String pathFile)
+            throws SAXException, ParserConfigurationException, IOException, TransformerException, org.xml.sax.SAXException {
+        // Parse the given input
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        InputStream inputStream = new ByteArrayInputStream(xmlSource.getBytes(StandardCharsets.UTF_8));
+        Document doc = builder.parse(inputStream);
+
+        // Write the parsed document to an xml file
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StreamResult result =  new StreamResult(new File(pathFile));
+        transformer.transform(source, result);
     }
 }

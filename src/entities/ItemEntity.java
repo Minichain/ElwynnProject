@@ -35,8 +35,8 @@ public class ItemEntity extends DynamicGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
-        return -1;
+    public String getEntityCode() {
+        return null;
     }
 
     @Override

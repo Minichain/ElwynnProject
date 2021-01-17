@@ -5,7 +5,7 @@ import main.Texture;
 import scene.Scene;
 
 public class Light extends StaticGraphicEntity {
-    public static byte ENTITY_CODE = 4;
+    public static String ENTITY_CODE = "light";
 
     public Light(int x, int y) {
         super(x, y);
@@ -39,7 +39,7 @@ public class Light extends StaticGraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
+    public String getEntityCode() {
         return ENTITY_CODE;
     }
 }

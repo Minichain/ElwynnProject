@@ -35,8 +35,8 @@ public class InteractionEntity extends GraphicEntity {
     }
 
     @Override
-    public byte getEntityCode() {
-        return 0;
+    public String getEntityCode() {
+        return null;
     }
 
     @Override

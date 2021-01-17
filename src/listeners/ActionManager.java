@@ -6,6 +6,7 @@ import menu.Menu;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
+import utils.ArrayUtils;
 
 import static listeners.MyGLFW.myGlfwGetKeyName;
 import static org.lwjgl.glfw.GLFW.*;
@@ -43,7 +44,8 @@ public class ActionManager {
         USE_MANA_POTION (28),
         USE_HASTE_POTION (29),
         SHOW_MUSICAL_MODE_SELECTOR (30),
-        OPEN_INVENTORY (31)
+        OPEN_INVENTORY (31),
+        DEBUG_KEY (32)
         ;
 
         int actionValue;
@@ -153,6 +155,9 @@ public class ActionManager {
                 case OPEN_INVENTORY:
                     key[0] = GLFW_KEY_I;
                     break;
+                case DEBUG_KEY:
+                    key[0] = GLFW_KEY_F12;
+                    break;
                 default:
                     break;
             }
@@ -193,7 +198,7 @@ public class ActionManager {
             MOVING_RIGHT = pressed;
         } else if (isSameKeyCombination(key, Action.SAVE_WORLD.getActionKey())) {
             if (!pressed) {
-                WorldLoader.saveWorld();
+                WorldLoader.getInstance().saveWorld();
             }
         } else if (isSameKeyCombination(key, Action.ROLL.getActionKey())) {
             if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -314,6 +319,11 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.OPEN_INVENTORY.getActionKey())) {
             if (!pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().getInventory().setOpened(!Player.getInstance().getInventory().isOpened());
+            }
+        } else if (isSameKeyCombination(key, Action.DEBUG_KEY.getActionKey())) {
+            /** DEBUG KEY **/
+            if (!pressed) {
+
             }
         }
     }
