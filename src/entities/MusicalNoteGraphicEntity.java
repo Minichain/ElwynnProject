@@ -104,7 +104,8 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                     explode();
                 }
             } else if (graphicEntity instanceof StaticGraphicEntity) {
-                if (((StaticGraphicEntity) graphicEntity).getCollision().isColliding(getCenterOfMassWorldCoordinates())) {
+                if (((StaticGraphicEntity) graphicEntity).getCollision() != null
+                        && ((StaticGraphicEntity) graphicEntity).getCollision().isColliding(getCenterOfMassWorldCoordinates())) {
                     explode();
                 }
             }

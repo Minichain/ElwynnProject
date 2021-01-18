@@ -61,9 +61,9 @@ public class Weather {
             int newParticlesToGenerate = (int) (timeElapsed * rainingIntensity);
             for (int i = 0; i < newParticlesToGenerate; i++) {
                 double width = 750.0;
-                double height = 600.0;
+                double height = 800.0;
                 double x = Camera.getInstance().getCoordinates().x - width / 2 + Math.random() * width;
-                double y = Camera.getInstance().getCoordinates().y - height / 2 + Math.random() * (height * 0.1);
+                double y = Camera.getInstance().getCoordinates().y - height / 2 + Math.random() * (height * 0.25);
                 double[] velocityVector = new double[] {- 0.25 - Math.random() * 0.2, 2.5 + Math.random() * 0.4};
                 float particleSize = (float) (Math.random() * 2.0);
                 Particle[] newParticles = new Particle[5];

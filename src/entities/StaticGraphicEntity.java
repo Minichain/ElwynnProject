@@ -59,7 +59,7 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
 
         glEnd();
 
-        getCollision().draw();
+        if (getCollision() != null) getCollision().draw();
 
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);

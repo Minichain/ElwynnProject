@@ -309,7 +309,7 @@ public class Scene {
 
     public boolean checkCollisionWithEntities(Coordinates coordinatesToCheck) {
         for (StaticGraphicEntity staticGraphicEntity : getListOfStaticEntities()) {
-            if (staticGraphicEntity.getCollision().isColliding(coordinatesToCheck)) {
+            if (staticGraphicEntity.getCollision() != null && staticGraphicEntity.getCollision().isColliding(coordinatesToCheck)) {
                 return true;
             }
         }

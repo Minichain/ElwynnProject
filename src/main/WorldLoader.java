@@ -173,6 +173,8 @@ public class WorldLoader {
                     new Fence((int) x, (int) y, entityType);
                 } else if (entityCode.equals(Building.ENTITY_CODE)) {
                     new Building((int) x, (int) y, entityType);
+                } else if (entityCode.equals(Warp.ENTITY_CODE)) {
+                    new Warp((int) x, (int) y, entityType);
                 }
             }
 

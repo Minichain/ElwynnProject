@@ -12,6 +12,7 @@ public class SpriteManager {
             BUILDING01, BUILDING02,
             FENCE01, FENCE02, FENCE03, FENCE04,
             LIGHT01, TORCH01, UTILITY_POLE_01,
+            WARP_UP_LARGE, WARP_DOWN_LARGE,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE,
             A_CONTROLLER_BUTTON,
             B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
@@ -105,6 +106,10 @@ public class SpriteManager {
         HASTE_POTION = new Sprite("res/sprites/interface/haste_potion_8x8.png", 8, 8, -1);
         GOLD_COIN = new Sprite("res/sprites/interface/gold_coin_8x8.png", 8, 8, -1);
         WOOD = new Sprite("res/sprites/interface/wood_8x8.png", 8, 8, -1);
+
+        /** WARPS **/
+        WARP_DOWN_LARGE = new Sprite("res/sprites/static/warp_down_32x32.png", 32, 32, -1);
+        WARP_UP_LARGE = new Sprite("res/sprites/static/warp_up_32x32.png", 32, 32, -1);
     }
 
     public static SpriteManager getInstance() {
