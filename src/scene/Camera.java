@@ -41,6 +41,11 @@ public class Camera {
         return coordinates;
     }
 
+    public void setCoordinates(Coordinates coordinates) {
+        this.coordinates.x = coordinates.x;
+        this.coordinates.y = coordinates.y;
+    }
+
     public void setCoordinates(double x, double y) {
         coordinates.x = x;
         coordinates.y = y;

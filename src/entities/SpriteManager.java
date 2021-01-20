@@ -12,7 +12,7 @@ public class SpriteManager {
             BUILDING01, BUILDING02,
             FENCE01, FENCE02, FENCE03, FENCE04,
             LIGHT01, TORCH01, UTILITY_POLE_01,
-            WARP_UP_LARGE, WARP_DOWN_LARGE,
+            WARP_UP_LARGE, WARP_RIGHT_LARGE, WARP_DOWN_LARGE, WARP_LEFT_LARGE,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE,
             A_CONTROLLER_BUTTON,
             B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
@@ -108,8 +108,10 @@ public class SpriteManager {
         WOOD = new Sprite("res/sprites/interface/wood_8x8.png", 8, 8, -1);
 
         /** WARPS **/
-        WARP_DOWN_LARGE = new Sprite("res/sprites/static/warp_down_32x32.png", 32, 32, -1);
         WARP_UP_LARGE = new Sprite("res/sprites/static/warp_up_32x32.png", 32, 32, -1);
+        WARP_RIGHT_LARGE = new Sprite("res/sprites/static/warp_right_32x32.png", 32, 32, -1);
+        WARP_DOWN_LARGE = new Sprite("res/sprites/static/warp_down_32x32.png", 32, 32, -1);
+        WARP_LEFT_LARGE = new Sprite("res/sprites/static/warp_left_32x32.png", 32, 32, -1);
     }
 
     public static SpriteManager getInstance() {

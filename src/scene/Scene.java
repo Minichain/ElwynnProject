@@ -15,6 +15,8 @@ import static org.lwjgl.opengl.GL13.*;
 public class Scene {
     private static Scene instance = null;
 
+    private String sceneName = null;
+
     /** ENTITIES **/
     private static ArrayList<GraphicEntity> listOfGraphicEntities;
     private static ArrayList<StaticGraphicEntity> listOfStaticGraphicEntities;
@@ -25,8 +27,6 @@ public class Scene {
 
     private static int renderDistance;
     private static int updateDistance;
-
-    private static Coordinates initialCoordinates;
 
     public static ArrayList<CircleAttack> listOfCircleAttacks;
 
@@ -47,7 +47,6 @@ public class Scene {
 
     public void init() {
         Log.l("Initiating Scene");
-        initialCoordinates = new Coordinates(2481, 1747);
         listOfGraphicEntities = new ArrayList<>();
         listOfStaticGraphicEntities = new ArrayList<>();
         listOfEnemies = new ArrayList<>();
@@ -314,5 +313,13 @@ public class Scene {
             }
         }
         return false;
+    }
+
+    public String getSceneName() {
+        return sceneName;
+    }
+
+    public void setSceneName(String sceneName) {
+        this.sceneName = sceneName;
     }
 }
