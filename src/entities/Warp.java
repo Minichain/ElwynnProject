@@ -12,6 +12,7 @@ public class Warp extends StaticGraphicEntity {
 
     private String warpToScene;
     private Coordinates warpToCoordinates;
+    private double oscillation;
 
     public enum WarpType {
         WARP01(0), WARP02(1), WARP03(2), WARP04(3);
@@ -50,6 +51,7 @@ public class Warp extends StaticGraphicEntity {
         this.type = t;
         this.warpToScene = warpToScene;
         this.warpToCoordinates = warpToCoordinates;
+        this.oscillation = 0;
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
         WarpType warpType = WarpType.values()[type];
         setSprite(warpType.getSprite());
@@ -67,6 +69,7 @@ public class Warp extends StaticGraphicEntity {
             Camera.getInstance().setCoordinates(warpToCoordinates);
             Player.getInstance().setWorldCoordinates(warpToCoordinates);
         }
+        oscillation += (timeElapsed / 100.0) % 1.0;
     }
 
     @Override
@@ -77,6 +80,12 @@ public class Warp extends StaticGraphicEntity {
     @Override
     public String getEntityCode() {
         return ENTITY_CODE;
+    }
+
+    @Override
+    public void updateCoordinates() {
+        super.updateCoordinates();
+        setCameraCoordinates(new Coordinates(getCameraCoordinates().x, getCameraCoordinates().y + Math.sin(oscillation)));
     }
 
     public String getWarpToScene() {

@@ -27,6 +27,10 @@ public abstract class Entity {
         return cameraCoordinates;
     }
 
+    public void setCameraCoordinates(Coordinates cameraCoordinates) {
+        this.cameraCoordinates = cameraCoordinates;
+    }
+
     public abstract void update(long timeElapsed);
 
     public void updateCoordinates() {
