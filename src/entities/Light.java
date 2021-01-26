@@ -15,7 +15,7 @@ public class Light extends StaticGraphicEntity {
     private void init() {
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
         setSprite(SpriteManager.getInstance().LIGHT01);
-        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 12, getWorldCoordinates().y - 4), 8));   //Square collision
+        setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 12, getWorldCoordinates().y - 4), 8));
         Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
 

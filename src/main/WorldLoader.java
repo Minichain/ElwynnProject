@@ -196,6 +196,8 @@ public class WorldLoader {
 
         if (entityCode.equals(Warp.ENTITY_CODE)) {
             new Warp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
+        } else if (entityCode.equals(SmallWarp.ENTITY_CODE)) {
+            new SmallWarp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
         }
     }
 
@@ -218,6 +220,8 @@ public class WorldLoader {
             new Fence((int) x, (int) y, entityType);
         } else if (entityCode.equals(Building.ENTITY_CODE)) {
             new Building((int) x, (int) y, entityType);
+        } else if (entityCode.equals(UtilityPole.ENTITY_CODE)) {
+            new UtilityPole((int) x, (int) y);
         }
     }
 

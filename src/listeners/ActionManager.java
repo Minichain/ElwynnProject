@@ -395,6 +395,9 @@ public class ActionManager {
             case 11:
                 new Torch((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
                 break;
+            case 12:
+                new UtilityPole((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
             default:
                 break;
         }

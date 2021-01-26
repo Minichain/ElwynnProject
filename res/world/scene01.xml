@@ -203,6 +203,8 @@
 <entity code="tree" type="0" x="1016.0" y="1256.0"/>
 <entity code="tree" type="3" x="864.0" y="1136.0"/>
 <entity_warp code="warp" type="2" warp_to="scene02" warp_to_x="800.0" warp_to_y="300.0" x="800.0" y="1344.0"/>
+<entity code="utility_pole" type="0" x="776.0" y="1320.0"/>
+<entity code="utility_pole" type="0" x="776.0" y="1456.0"/>
 <entity_npc buys="false" code="npc" sells="false" talk_text_string_args="key_space_bar" talk_text_string_name="tutorial_roll" type="0" x="750.0" y="725.0"/>
 <entity_npc buys="false" code="npc" sells="false" talk_text_string_args="null" talk_text_string_name="tutorial_attack" type="1" x="800.0" y="725.0"/>
 <entity_npc buys="false" code="npc" sells="false" talk_text_string_args="key_tab" talk_text_string_name="tutorial_change_musical_mode" type="2" x="850.0" y="725.0"/>

@@ -13,6 +13,7 @@ public class SpriteManager {
             FENCE01, FENCE02, FENCE03, FENCE04,
             LIGHT01, TORCH01, UTILITY_POLE_01,
             WARP_UP_LARGE, WARP_RIGHT_LARGE, WARP_DOWN_LARGE, WARP_LEFT_LARGE,
+            WARP_UP_SMALL, WARP_RIGHT_SMALL, WARP_DOWN_SMALL, WARP_LEFT_SMALL,
             G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE,
             A_CONTROLLER_BUTTON,
             B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
@@ -112,6 +113,10 @@ public class SpriteManager {
         WARP_RIGHT_LARGE = new Sprite("res/sprites/static/warp_right_32x32.png", 32, 32, -1);
         WARP_DOWN_LARGE = new Sprite("res/sprites/static/warp_down_32x32.png", 32, 32, -1);
         WARP_LEFT_LARGE = new Sprite("res/sprites/static/warp_left_32x32.png", 32, 32, -1);
+        WARP_UP_SMALL = new Sprite("res/sprites/static/warp_up_16x16.png", 16, 16, -1);
+        WARP_RIGHT_SMALL = new Sprite("res/sprites/static/warp_right_16x16.png", 16, 16, -1);
+        WARP_DOWN_SMALL = new Sprite("res/sprites/static/warp_down_16x16.png", 16, 16, -1);
+        WARP_LEFT_SMALL = new Sprite("res/sprites/static/warp_left_16x16.png", 16, 16, -1);
     }
 
     public static SpriteManager getInstance() {
@@ -121,7 +126,7 @@ public class SpriteManager {
         return instance;
     }
 
-    public static int numOfStaticEntitySprites = 12;
+    public static int numOfStaticEntitySprites = 13;
 
     public static Sprite getStaticEntitySprite(int i) {
         Sprite sprite = null;
@@ -161,6 +166,9 @@ public class SpriteManager {
                 break;
             case 11:
                 sprite = SpriteManager.getInstance().TORCH01;
+                break;
+            case 12:
+                sprite = SpriteManager.getInstance().UTILITY_POLE_01;
                 break;
             default:
                 break;
