@@ -190,8 +190,7 @@ public class OpenGLManager {
         int lightSourceCoordinatesUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceCoordinates");
         int lightSourceIntensityUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceIntensity");
         int lightSourceColorUniform = glGetUniformLocation(OpenGLManager.programShader01, "lightSourceColor");
-        int gameTimeLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "gameTimeLight");
-        int rainingIntensityUniform = glGetUniformLocation(OpenGLManager.programShader01, "rainingIntensity");
+        int environmentLightUniform = glGetUniformLocation(OpenGLManager.programShader01, "environmentLight");
         glUseProgram(OpenGLManager.programShader01);
         glUniform1f(timeUniformLocation01, (float) GameStatus.getRuntime());
         glUniform1i(textureUniform01, 0);
@@ -230,8 +229,11 @@ public class OpenGLManager {
         glUniform1fv(lightSourceIntensityUniform, lightSourceIntensity);
         glUniform3fv(lightSourceColorUniform, lightSourceColor);
 
-        glUniform1f(gameTimeLightUniform, GameTime.getLight());
-        glUniform1f(rainingIntensityUniform, Weather.getRainingIntensity());
+        float[] environmentLight = new float[3];
+        environmentLight[0] = GameTime.getGameTimeLight()[0] - Weather.getRainingIntensity() * 0.3f;
+        environmentLight[1] = GameTime.getGameTimeLight()[1] - Weather.getRainingIntensity() * 0.2f;
+        environmentLight[2] = GameTime.getGameTimeLight()[2];
+        glUniform3fv(environmentLightUniform, environmentLight);
 
         /** Update programShader02 **/
         int timeUniformLocation02 = GL20.glGetUniformLocation(OpenGLManager.programShader02, "time");

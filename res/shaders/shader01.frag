@@ -6,11 +6,11 @@ uniform vec2 lightSourceCoordinates[maxLightSources];
 uniform float lightSourceIntensity[maxLightSources];
 uniform vec3 lightSourceColor[maxLightSources];
 uniform float zoom;
-uniform float gameTimeLight;
 uniform float time; //Time elapsed since the Game has been executed (in milliseconds)
 uniform float windowWidth;
 uniform float windowHeight;
 uniform sampler2D texture01;
+uniform vec3 environmentLight;
 
 varying vec4 vertColor;
 varying vec2 TexCoord;
@@ -32,14 +32,14 @@ void main() {
                 //Inverse square (real light attenuation behaviour)
                 lightReceivedFromLightSource = 1.0 / (pow(lightReceivedFromLightSource + 1.0, 2.0));
 
-                light.x += (lightSourceColor[i].x * lightReceivedFromLightSource);
-                light.y += (lightSourceColor[i].y * lightReceivedFromLightSource);
-                light.z += (lightSourceColor[i].z * lightReceivedFromLightSource);
+                light.x += lightSourceColor[i].x * lightReceivedFromLightSource;
+                light.y += lightSourceColor[i].y * lightReceivedFromLightSource;
+                light.z += lightSourceColor[i].z * lightReceivedFromLightSource;
             }
         }
     }
 
-    light += vec3(gameTimeLight);
+    light += environmentLight;
 
     gl_FragColor = vertColor * texColor * vec4(light.xyz, 1.0);
 }
