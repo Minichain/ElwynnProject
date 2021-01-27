@@ -40,6 +40,7 @@ void main() {
     }
 
     light += environmentLight;
+    light = log(light + 1);
 
     gl_FragColor = vertColor * texColor * vec4(light.xyz, 1.0);
 }
