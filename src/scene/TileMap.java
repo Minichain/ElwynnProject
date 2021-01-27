@@ -109,7 +109,7 @@ public class TileMap {
         int x = getTileSet().TILES_IN_TILESET_X_AXIS;
         int y = getTileSet().TILES_IN_TILESET_Y_AXIS;
         value %= (x * y);
-        if (0 < i && i < arrayOfTiles.length && 0 < j && j < arrayOfTiles[0].length) {
+        if (0 <= i && i < arrayOfTiles.length && 0 <= j && j < arrayOfTiles[0].length) {
             arrayOfTiles[i][j].setLayerValue(k, value);
         }
     }

@@ -21,7 +21,7 @@ public class WorldLoader {
     private static final String worldFilePath = "res/world/";
 
     private WorldLoader() {
-        Scene.getInstance().setSceneName("scene01");
+        Scene.getInstance().setSceneName("scene02");
     }
 
     public static WorldLoader getInstance() {
@@ -65,7 +65,7 @@ public class WorldLoader {
 
             /** ENTITIES **/
             for (StaticGraphicEntity entity : Scene.getInstance().getListOfStaticEntities()) {
-                boolean isWarpEntity = entity.getEntityCode().equals(Warp.ENTITY_CODE) || entity.getEntityCode().equals(SmallWarp.ENTITY_CODE);
+                boolean isWarpEntity = entity.getEntityCode().equals(LargeWarp.ENTITY_CODE) || entity.getEntityCode().equals(SmallWarp.ENTITY_CODE);
                 if (isWarpEntity) worldString.append("<entity_warp code=\"");
                 else worldString.append("<entity code=\"");
                 worldString.append(entity.getEntityCode());
@@ -194,8 +194,8 @@ public class WorldLoader {
         Coordinates warpToCoordinates = new Coordinates(Double.parseDouble(element.getAttribute("warp_to_x")),
                 Double.parseDouble(element.getAttribute("warp_to_y")));
 
-        if (entityCode.equals(Warp.ENTITY_CODE)) {
-            new Warp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
+        if (entityCode.equals(LargeWarp.ENTITY_CODE)) {
+            new LargeWarp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
         } else if (entityCode.equals(SmallWarp.ENTITY_CODE)) {
             new SmallWarp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
         }

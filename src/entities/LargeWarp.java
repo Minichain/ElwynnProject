@@ -7,19 +7,19 @@ import scene.Camera;
 import scene.Scene;
 import utils.MathUtils;
 
-public class SmallWarp extends Warp {
-    public static String ENTITY_CODE = "small_warp";
+public class LargeWarp extends Warp {
+    public static String ENTITY_CODE = "warp";
 
     private String warpToScene;
     private Coordinates warpToCoordinates;
     private double oscillation;
 
-    public enum SmallWarpType {
-        SMALLWARP01(0), SMALLWARP02(1), SMALLWARP03(2), SMALLWARP04(3);
+    public enum WarpType {
+        WARP01(0), WARP02(1), WARP03(2), WARP04(3);
 
         public int value;
 
-        SmallWarpType(final int value) {
+        WarpType(final int value) {
             this.value = value;
         }
 
@@ -29,20 +29,20 @@ public class SmallWarp extends Warp {
 
         public Sprite getSprite() {
             switch (this) {
-                case SMALLWARP01:
+                case WARP01:
                 default:
-                    return SpriteManager.getInstance().WARP_UP_SMALL;
-                case SMALLWARP02:
-                    return SpriteManager.getInstance().WARP_RIGHT_SMALL;
-                case SMALLWARP03:
-                    return SpriteManager.getInstance().WARP_DOWN_SMALL;
-                case SMALLWARP04:
-                    return SpriteManager.getInstance().WARP_LEFT_SMALL;
+                    return SpriteManager.getInstance().WARP_UP_LARGE;
+                case WARP02:
+                    return SpriteManager.getInstance().WARP_RIGHT_LARGE;
+                case WARP03:
+                    return SpriteManager.getInstance().WARP_DOWN_LARGE;
+                case WARP04:
+                    return SpriteManager.getInstance().WARP_LEFT_LARGE;
             }
         }
     }
 
-    public SmallWarp(int x, int y, int t, String warpToScene, Coordinates warpToCoordinates) {
+    public LargeWarp(int x, int y, int t, String warpToScene, Coordinates warpToCoordinates) {
         super(x, y);
         init(t, warpToScene, warpToCoordinates);
     }
@@ -53,8 +53,8 @@ public class SmallWarp extends Warp {
         this.warpToCoordinates = warpToCoordinates;
         this.oscillation = 0;
         setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
-        SmallWarpType smallwarpType = SmallWarpType.values()[type];
-        setSprite(smallwarpType.getSprite());
+        WarpType warpType = WarpType.values()[type];
+        setSprite(warpType.getSprite());
         setCollision(null);
         Scene.getInstance().getListOfGraphicEntities().add(this);
         Scene.getInstance().getListOfStaticEntities().add(this);
@@ -62,7 +62,7 @@ public class SmallWarp extends Warp {
 
     @Override
     public void update(long timeElapsed) {
-        if (MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 15.0) {
+        if (MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 20.0) {
             Log.l("Portal taken!");
             Scene.getInstance().setSceneName(warpToScene);
             Scene.getInstance().reset();
@@ -85,7 +85,7 @@ public class SmallWarp extends Warp {
     @Override
     public void updateCoordinates() {
         super.updateCoordinates();
-        setCameraCoordinates(new Coordinates(getCameraCoordinates().x, getCameraCoordinates().y + 0.25 * Math.sin(oscillation) * Camera.getZoom()));
+        setCameraCoordinates(new Coordinates(getCameraCoordinates().x, getCameraCoordinates().y + 0.5 * Math.sin(oscillation) * Camera.getZoom()));
     }
 
     @Override
