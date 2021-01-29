@@ -42,7 +42,7 @@ public class Tree extends StaticGraphicEntity {
 
     private void init(int t) {
         this.type = t;
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         TreeType treeType = TreeType.values()[type];
         setSprite(treeType.getSprite());
         Collision collision;

@@ -13,7 +13,7 @@ public class UtilityPole extends StaticGraphicEntity{
     }
 
     private void init() {
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         setSprite(SpriteManager.getInstance().UTILITY_POLE_01);
         setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 4), 8));
         Scene.getInstance().getListOfGraphicEntities().add(this);

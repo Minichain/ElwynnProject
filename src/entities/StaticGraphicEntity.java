@@ -7,7 +7,7 @@ import scene.Camera;
 import static org.lwjgl.opengl.GL11.*;
 
 public abstract class StaticGraphicEntity extends GraphicEntity {
-    private Coordinates tileCoordinates;
+    private int[] tileCoordinates;
     private Collision collision;
 
     public StaticGraphicEntity(int x, int y) {
@@ -15,7 +15,7 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
         tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
     }
 
-    public Coordinates getTileCoordinates() {
+    public int[] getTileCoordinates() {
         return tileCoordinates;
     }
 

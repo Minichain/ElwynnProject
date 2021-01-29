@@ -52,7 +52,7 @@ public class LargeWarp extends Warp {
         this.warpToScene = warpToScene;
         this.warpToCoordinates = warpToCoordinates;
         this.oscillation = 0;
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         WarpType warpType = WarpType.values()[type];
         setSprite(warpType.getSprite());
         setCollision(null);

@@ -92,9 +92,8 @@ public class Scene {
             double angle = MathUtils.random(0, 2 * Math.PI);
             int x = (int) ((Math.cos(angle) * distance) + Player.getInstance().getWorldCoordinates().x);
             int y = (int) ((Math.sin(angle) * distance) + Player.getInstance().getWorldCoordinates().y);
-            Coordinates tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
-            int i = (int) tileCoordinates.x;
-            int j = (int) tileCoordinates.y;
+            int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
+            int i = tileCoordinates[0], j = tileCoordinates[1];
             if (0 < i && i < TileMap.getArrayOfTiles().length
                     && 0 < j && j < TileMap.getArrayOfTiles()[0].length
                     && !TileMap.getArrayOfTiles()[i][j].isCollidable()) {
@@ -212,13 +211,13 @@ public class Scene {
         int oneAxisDistance = (int) (renderDistance * Math.sin(Math.PI / 2));
 
         Coordinates topLeftWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x - oneAxisDistance, Camera.getInstance().getCoordinates().y - oneAxisDistance);
-        Coordinates topLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topLeftWorldCoordinates.x, topLeftWorldCoordinates.y);
+        int[] topLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topLeftWorldCoordinates.x, topLeftWorldCoordinates.y);
 
         Coordinates topRightWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x + oneAxisDistance, Camera.getInstance().getCoordinates().y - oneAxisDistance);
-        Coordinates topRightTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topRightWorldCoordinates.x, topRightWorldCoordinates.y);
+        int[] topRightTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(topRightWorldCoordinates.x, topRightWorldCoordinates.y);
 
         Coordinates bottomLeftWorldCoordinates = new Coordinates(Camera.getInstance().getCoordinates().x - oneAxisDistance, Camera.getInstance().getCoordinates().y + oneAxisDistance);
-        Coordinates bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates.x, bottomLeftWorldCoordinates.y);
+        int[] bottomLeftTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(bottomLeftWorldCoordinates.x, bottomLeftWorldCoordinates.y);
 
         OpenGLManager.useShader(1);
 
@@ -251,7 +250,7 @@ public class Scene {
         }
     }
 
-    private void renderLayerOfTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates, int layerToRender) {
+    private void renderLayerOfTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates, int layerToRender) {
 //        Log.l("Render layer " + layerToRender + " of Tiles.");
 
         glActiveTexture(GL_TEXTURE0);
@@ -263,8 +262,8 @@ public class Scene {
 
         OpenGLManager.glBegin(GL_QUADS);
 
-        for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
-            for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
+        for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
+            for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
                 if (0 <= i && i < TileMap.getArrayOfTiles().length
                         && 0 <= j && j < TileMap.getArrayOfTiles()[0].length
                         && TileMap.getArrayOfTiles()[i][j].getLayerValue(layerToRender) != 0) {
@@ -282,13 +281,13 @@ public class Scene {
         glEnd();
     }
 
-    private void renderCollidableTiles(Coordinates topLeftTileCoordinates, Coordinates topRightTileCoordinates, Coordinates bottomLeftTileCoordinates) {
+    private void renderCollidableTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
         glDisable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_TRIANGLES);
-        for (int i = (int) topLeftTileCoordinates.x; i < topRightTileCoordinates.x; i++) {
-            for (int j = (int) topLeftTileCoordinates.y; j < bottomLeftTileCoordinates.y; j++) {
-                if (0 < i && i < TileMap.getArrayOfTiles().length
-                        && 0 < j && j < TileMap.getArrayOfTiles()[0].length) {
+        for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
+            for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
+                if (0 <= i && i < TileMap.getArrayOfTiles().length
+                        && 0 <= j && j < TileMap.getArrayOfTiles()[0].length) {
                     if (TileMap.getArrayOfTiles()[i][j].isCollidable()) {
                         double scale = Camera.getZoom();
                         int x = i * TileMap.TILE_WIDTH;

@@ -52,7 +52,7 @@ public class SmallWarp extends Warp {
         this.warpToScene = warpToScene;
         this.warpToCoordinates = warpToCoordinates;
         this.oscillation = 0;
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         SmallWarpType smallwarpType = SmallWarpType.values()[type];
         setSprite(smallwarpType.getSprite());
         setCollision(null);

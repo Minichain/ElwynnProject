@@ -288,8 +288,11 @@ public class ActionManager {
                     if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                         // Change Tile's collision behaviour
                         Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();
-                        Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
-                        TileMap.getArrayOfTiles()[(int) tileCoordinates.x][(int) tileCoordinates.y].changeCollisionBehaviour();
+                        int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
+                        if (0 <= tileCoordinates[0] && tileCoordinates[0] < TileMap.getNumOfHorizontalTiles()
+                                && 0 <= tileCoordinates[1] && tileCoordinates[1] < TileMap.getNumOfVerticalTiles()) {
+                            TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
+                        }
                     } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                         for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
                             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
@@ -337,7 +340,7 @@ public class ActionManager {
 
     private static void putTile() {
         Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();
-        Coordinates tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
+        int[] tileCoordinates = Coordinates.cameraCoordinatesToTileCoordinates(mouseCameraCoordinates.x, mouseCameraCoordinates.y);
         int layer;
         switch (GameMode.getLayerEditing()) {
             case FIRST_LAYER:
@@ -351,7 +354,7 @@ public class ActionManager {
                 layer = 2;
                 break;
         }
-        TileMap.setTile((int) tileCoordinates.x, (int) tileCoordinates.y, layer, (byte) (HeadUpDisplay.getSelectedTile()));
+        TileMap.setTile(tileCoordinates[0], tileCoordinates[1], layer, (byte) (HeadUpDisplay.getSelectedTile()));
     }
 
     private static void putStaticEntity() {

@@ -29,8 +29,10 @@ public class PathFindingAlgorithm {
     private ArrayList<int[]> path = new ArrayList<>();
 
     public PathFindingAlgorithm(Coordinates initialWorldCoordinates, Coordinates goalWorldCoordinates) {
-        this.initialTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
-        this.goalTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
+        int[] initialTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(initialWorldCoordinates.x, initialWorldCoordinates.y);
+        int[] goalTileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(goalWorldCoordinates.x, goalWorldCoordinates.y);
+        this.initialTileCoordinates = new Coordinates(initialTileCoordinates[0], initialTileCoordinates[1]);
+        this.goalTileCoordinates = new Coordinates(goalTileCoordinates[0], goalTileCoordinates[1]);
         this.iteration = 0;
 
         int[] toTileMapCoordinates = new int[2];

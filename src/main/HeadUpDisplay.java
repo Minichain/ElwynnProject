@@ -132,8 +132,8 @@ public class HeadUpDisplay {
                     glEnd();
                     glDisable(GL_TEXTURE_2D);
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                    Coordinates c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
-                    Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates((int) c1.x, (int) c1.y).toCameraCoordinates();
+                    int[] c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
+                    Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates(c1[0], c1[1]).toCameraCoordinates();
                     SpriteManager.getStaticEntitySprite(selectedEntity).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
                 }
             }

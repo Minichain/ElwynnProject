@@ -42,7 +42,7 @@ public class Fence extends StaticGraphicEntity {
 
     private void init(int t) {
         this.type = t;
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         FenceType treeType = FenceType.values()[type];
         setSprite(treeType.getSprite());
         setCollision(new Collision(new Coordinates(getWorldCoordinates().x + 8, getWorldCoordinates().y - 8), 16, 16));   //Square collision

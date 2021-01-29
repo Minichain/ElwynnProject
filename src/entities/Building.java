@@ -39,7 +39,7 @@ public class Building extends StaticGraphicEntity {
     private void init(int t) {
         this.type = t;
         BuildingType buildingType = BuildingType.values()[t];
-        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates((int) getTileCoordinates().x, (int) getTileCoordinates().y));
+        setWorldCoordinates(Coordinates.tileCoordinatesToWorldCoordinates(getTileCoordinates()[0], getTileCoordinates()[1]));
         setSprite(buildingType.getSprite());
         Collision collision;
         switch (buildingType) {

@@ -30,13 +30,13 @@ public class Coordinates {
 
     /** STATIC METHODS **/
 
-    public static Coordinates cameraCoordinatesToTileCoordinates(double x, double y) {
+    public static int[] cameraCoordinatesToTileCoordinates(double x, double y) {
         Coordinates worldCoordinates = new Coordinates(x, y).toWorldCoordinates();
         return worldCoordinatesToTileCoordinates(worldCoordinates.x, worldCoordinates.y);
     }
 
-    public static Coordinates worldCoordinatesToTileCoordinates(double x, double y) {
-        return new Coordinates(x / TileMap.TILE_WIDTH, y / TileMap.TILE_HEIGHT);
+    public static int[] worldCoordinatesToTileCoordinates(double x, double y) {
+        return new int[]{(int) x / TileMap.TILE_WIDTH, (int) y / TileMap.TILE_HEIGHT};
     }
 
     public static Coordinates tileCoordinatesToWorldCoordinates(int i, int j) {

@@ -115,9 +115,9 @@ public class TileMap {
     }
 
     public static boolean checkCollisionWithTile(int x, int y) {
-        Coordinates tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
-        int i = (int) tileCoordinates.x, j = (int) tileCoordinates.y;
-        if (0 < i && i < getArrayOfTiles().length && 0 < j && j < getArrayOfTiles()[0].length && getArrayOfTiles()[i][j] != null) {
+        int[] tileCoordinates = Coordinates.worldCoordinatesToTileCoordinates(x, y);
+        int i = tileCoordinates[0], j = tileCoordinates[1];
+        if (0 <= i && i < getArrayOfTiles().length && 0 <= j && j < getArrayOfTiles()[0].length && getArrayOfTiles()[i][j] != null) {
             return getArrayOfTiles()[i][j].isCollidable();
         } else {
             return false;
