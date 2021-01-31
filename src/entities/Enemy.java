@@ -158,8 +158,16 @@ public class Enemy extends LivingDynamicGraphicEntity {
         setHealth(previousHealth - damage);
         if (getHealth() <= 0 && previousHealth > 0) onDying();
         String text = String.valueOf((int) damage);
-        new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text,
-                new Color(1f, 1f, 1f), 1.25, new double[]{0, -1});
+        float scale;
+        Color color;
+        if (damage < 200f) {
+            scale = 2f;
+            color = new Color(1f, 1f, 1f);
+        } else {
+            scale = 4f;
+            color = new Color(1f, 0.75f, 0.5f);
+        }
+        new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text, color, 1.25, new double[]{0, -1}, scale);
     }
 
     @Override
@@ -478,7 +486,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public void roll() {
-        if (status != Status.ATTACKING) {
+        if (status != Status.ATTACKING && MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates()) < 150f) {
             status = Status.ROLLING;
             setSpriteCoordinateFromSpriteSheetX(0);
             OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);

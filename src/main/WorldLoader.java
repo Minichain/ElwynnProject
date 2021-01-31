@@ -21,7 +21,7 @@ public class WorldLoader {
     private static final String worldFilePath = "res/world/";
 
     private WorldLoader() {
-        Scene.getInstance().setSceneName("scene02");
+        Scene.getInstance().setSceneName("scene01");
     }
 
     public static WorldLoader getInstance() {

@@ -53,6 +53,10 @@ public class TextRendering {
         renderText(x, y, textToRender, scale, isTextureBoundAndOpenGlBegun, alpha, 1f, 1f, 1f);
     }
 
+    public static void renderText(float x, float y, String textToRender, float scale, boolean isTextureBoundAndOpenGlBegun, float alpha, int r, int g, int b) {
+        renderText(x, y, textToRender, scale, isTextureBoundAndOpenGlBegun, alpha, (float) r / 255f, (float) g / 255f, (float) b / 255f);
+    }
+
     public static void renderText(float x, float y, String textToRender, float scale, boolean isTextureBoundAndOpenGlBegun, float alpha, float r, float g, float b) {
         if (!isTextureBoundAndOpenGlBegun) {
             fontSpriteWhite.bind();

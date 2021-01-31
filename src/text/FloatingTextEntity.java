@@ -7,15 +7,16 @@ import utils.MathUtils;
 import java.awt.*;
 
 public class FloatingTextEntity {
-    public String text;
-    public Coordinates coordinates;
-    public double movingSpeed;
-    public double[] movingVector;
-    public double timeLiving = 0;
-    public double timeToLive = 800; // milliseconds
-    public Color color;
+    private String text;
+    private Coordinates coordinates;
+    private double movingSpeed;
+    private double[] movingVector;
+    private double timeLiving = 0;
+    private double timeToLive = 800; // milliseconds
+    private Color color;
+    private float scale;
 
-    public FloatingTextEntity(double x, double y, String text, Color color, double movingSpeed, double[] movingVector) {
+    public FloatingTextEntity(double x, double y, String text, Color color, double movingSpeed, double[] movingVector, float scale) {
         float randomness = 5f;
         x = x - MathUtils.random(-randomness, randomness);
         y = y - MathUtils.random(-randomness, randomness);
@@ -24,6 +25,7 @@ public class FloatingTextEntity {
         this.color = color;
         this.movingSpeed = movingSpeed;
         this.movingVector = movingVector;
+        this.scale = scale;
         FloatingText.addTextToList(this);
     }
 
@@ -41,7 +43,7 @@ public class FloatingTextEntity {
         float alpha = 1f - (float) (this.timeLiving / this.timeToLive);
         Coordinates entityCameraCoordinates = this.coordinates.toCameraCoordinates();
         TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, this.text,
-                Parameters.getResolutionFactor() * 2f, true, alpha, color.getRed(), color.getGreen(), color.getBlue());
+                Parameters.getResolutionFactor() * this.scale, true, alpha, color.getRed(), color.getGreen(), color.getBlue());
     }
 
     private void onDestroy() {

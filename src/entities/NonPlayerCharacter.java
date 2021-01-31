@@ -169,17 +169,17 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
                         OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
                         String text = Strings.getString("ui_buying_npc", itemToBuy.getName());
                         new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                                new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
+                                new Color(1f, 1f, 1f), 0.75, new double[]{0, -1}, 2f);
                     } else {
                         String text = Strings.getString("ui_not_enough_space");
                         new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                                new Color(1f, 0f, 0f), 0.75, new double[]{0, -1});
+                                new Color(1f, 0f, 0f), 0.75, new double[]{0, -1}, 2f);
                     }
                 } else {
                     Log.l("Not enough money to buy " + itemToBuy.getName());
                     String text = Strings.getString("ui_not_enough_money");
                     new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                            new Color(1f, 0f, 0f), 0.75, new double[]{0, -1});
+                            new Color(1f, 0f, 0f), 0.75, new double[]{0, -1}, 2f);
                 }
             } else {
                 onInteraction(NonPlayerCharacterInteractionState.INTERACTION_SEL);
@@ -193,7 +193,7 @@ public class NonPlayerCharacter extends LivingDynamicGraphicEntity {
                 OpenALManager.playSound(OpenALManager.SOUND_CASH_01);
                 String text = Strings.getString("ui_selling_npc", itemToSell.getName());
                 new FloatingTextEntity(Player.getInstance().getWorldCoordinates().x, Player.getInstance().getWorldCoordinates().y, text,
-                        new Color(1f, 1f, 1f), 0.75, new double[]{0, -1});
+                        new Color(1f, 1f, 1f), 0.75, new double[]{0, -1}, 2f);
             } else {
                 onInteraction(NonPlayerCharacterInteractionState.INTERACTION_SEL);
             }
