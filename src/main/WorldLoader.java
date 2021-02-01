@@ -51,6 +51,7 @@ public class WorldLoader {
         }
 
         public void run() {
+            long start = System.currentTimeMillis();
             try {
                 String worldFileContentOld = IOUtils.readFile("res/world/world.txt", StandardCharsets.UTF_8);
 //                Log.l(worldFileContentOld);
@@ -133,13 +134,14 @@ public class WorldLoader {
                 e.printStackTrace();
             }
 
-            Log.l("World saved successfully");
+            Log.l("World saved successfully in " + (System.currentTimeMillis() - start) + " ms.");
         }
     }
 
     /** LOAD WORLD **/
 
     public void loadWorld() {
+        long start = System.currentTimeMillis();
         try {
             String sceneToLoad = Scene.getInstance().getSceneName();
             String worldFileContent = IOUtils.readFile("res/world/world.txt", StandardCharsets.UTF_8);
@@ -149,7 +151,6 @@ public class WorldLoader {
             String endSceneString = "end_scene:name=\"" + sceneToLoad + "\"";
             int endSceneIndex = worldFileContent.indexOf(endSceneString) + endSceneString.length();
 
-
             String sceneContent = worldFileContent.substring(startSceneIndex, endSceneIndex);
 //            Log.l(sceneContent);
             loadScene(sceneContent);
@@ -158,12 +159,13 @@ public class WorldLoader {
         } catch (Exception e) {
             Log.e("Error loading World. Reason: " + e);
         }
+        Log.l("Scene loaded in " + (System.currentTimeMillis() - start) + " ms.");
     }
 
     private void loadScene(String sceneContent) {
         String contentLines[] = sceneContent.split("\\r?\\n");
         for (int i = 0; i < contentLines.length; i++) {
-            Log.l(contentLines[i]);
+//            Log.l(contentLines[i]);
             if (contentLines[i].contains("default_spawn_coordinates:")) {
                 loadSpawnCoords(contentLines[i]);
             } else if (contentLines[i].contains("tiles:")) {
@@ -246,8 +248,8 @@ public class WorldLoader {
     }
 
     private void loadTiles(String tilesInfo, String tilesContent) {
-        Log.l(tilesInfo);
-        Log.l(tilesContent);
+//        Log.l(tilesInfo);
+//        Log.l(tilesContent);
         String[] tilesInfoSplitted = tilesInfo.split(":")[1].split(",");
         TileMap.setNumOfHorizontalTiles(Integer.parseInt(tilesInfoSplitted[0].split("\"")[1]));
         TileMap.setNumOfVerticalTiles(Integer.parseInt(tilesInfoSplitted[1].split("\"")[1]));
