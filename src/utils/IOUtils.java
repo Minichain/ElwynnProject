@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.nio.*;
 import java.nio.channels.*;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 
@@ -103,5 +104,10 @@ public class IOUtils {
 
         StreamResult result =  new StreamResult(new File(pathFile));
         transformer.transform(source, result);
+    }
+
+    public static String readFile(String path, Charset encoding) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, encoding);
     }
 }
