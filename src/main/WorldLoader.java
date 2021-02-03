@@ -2,18 +2,12 @@ package main;
 
 import entities.*;
 import enums.NonPlayerCharacterAction;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import scene.Camera;
 import scene.Scene;
 import scene.Tile;
 import scene.TileMap;
 import utils.IOUtils;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
@@ -62,10 +56,10 @@ public class WorldLoader {
                 int endSceneIndex = worldFileContentOld.indexOf(endSceneString) + endSceneString.length();
 
                 StringBuilder worldFileContentNew = new StringBuilder();
-                worldFileContentNew.append(worldFileContentOld, 0, startSceneIndex);
-                worldFileContentNew.append(worldFileContentOld, endSceneIndex, worldFileContentOld.length());
+                if (startSceneIndex > 1) worldFileContentNew.append(worldFileContentOld, 0, startSceneIndex - 1);
+                worldFileContentNew.append(worldFileContentOld, endSceneIndex, worldFileContentOld.length() - 1);
 
-                worldFileContentNew.append("start_scene:name=\"").append(sceneToSave).append("\"").append("\n");
+                worldFileContentNew.append("\nstart_scene:name=\"").append(sceneToSave).append("\"").append("\n");
                 worldFileContentNew.append("default_spawn_coordinates: ").append("x=\"800.0\",y=\"800.0\"").append("\n");
                 worldFileContentNew.append("tiles:").append("width=\"").append(Integer.toString(TileMap.getNumOfHorizontalTiles())).append("\"")
                         .append(",height=\"").append(Integer.toString(TileMap.getNumOfVerticalTiles())).append("\"").append("\n");
@@ -125,7 +119,7 @@ public class WorldLoader {
                     worldFileContentNew.append("\"\n");
                 }
 
-                worldFileContentNew.append("end_scene:name=\"").append(sceneToSave).append("\"");
+                worldFileContentNew.append("end_scene:name=\"").append(sceneToSave).append("\"\n");
 
                 FileWriter fileWriter = new FileWriter("res/world/world.txt");
                 fileWriter.write(worldFileContentNew.toString());
@@ -182,20 +176,19 @@ public class WorldLoader {
     }
 
     private void loadNPC(String content) {
-        String[] contentSplitted = content.split(":")[1].split(",");
         String talkTextStringName, talkTextStringArgs;
         boolean buys, sells;
         double x, y;
         String entityCode;
         int entityType;
-        entityCode = contentSplitted[0].split("\"")[1];
-        entityType = Integer.parseInt(contentSplitted[1].split("\"")[1]);
-        x = parseCoordinate(contentSplitted[2]);
-        y = parseCoordinate(contentSplitted[3]);
-        buys = Boolean.parseBoolean(contentSplitted[4].split("\"")[1]);
-        sells = Boolean.parseBoolean(contentSplitted[5].split("\"")[1]);
-        talkTextStringName = contentSplitted[6].split("\"")[1];
-        talkTextStringArgs = contentSplitted[7].split("\"")[1];
+        entityCode = parseAttribute(content, "code");
+        entityType = Integer.parseInt(parseAttribute(content, "type"));
+        x = Double.parseDouble(parseAttribute(content, "x"));
+        y = Double.parseDouble(parseAttribute(content, "y"));
+        buys = Boolean.parseBoolean(parseAttribute(content, "buys"));
+        sells = Boolean.parseBoolean(parseAttribute(content, "sells"));
+        talkTextStringName = parseAttribute(content, "talk_text_string_name");
+        talkTextStringArgs = parseAttribute(content, "talk_text_string_args");
 
         if (entityCode.equals(NonPlayerCharacter.ENTITY_CODE)) {
             NonPlayerCharacter npc = new NonPlayerCharacter((int) x, (int) y, sells, buys, entityType);
@@ -204,16 +197,16 @@ public class WorldLoader {
     }
 
     private void loadEntityWarp(String content) {
-        String[] contentSplitted = content.split(":")[1].split(",");
         double x, y;
         String entityCode;
         int entityType;
-        entityCode = contentSplitted[0].split("\"")[1];
-        entityType = Integer.parseInt(contentSplitted[1].split("\"")[1]);
-        x = parseCoordinate(contentSplitted[2]);
-        y = parseCoordinate(contentSplitted[3]);
-        String warpTo = contentSplitted[4].split("\"")[1];
-        Coordinates warpToCoordinates = new Coordinates(parseCoordinate(contentSplitted[5]), parseCoordinate(contentSplitted[6]));
+        entityCode = parseAttribute(content, "code");
+        entityType = Integer.parseInt(parseAttribute(content, "type"));
+        x = Double.parseDouble(parseAttribute(content, "x"));
+        y = Double.parseDouble(parseAttribute(content, "y"));
+        String warpTo = parseAttribute(content, "warp_to");
+        Coordinates warpToCoordinates = new Coordinates(Double.parseDouble(parseAttribute(content, "warp_to_x")),
+                Double.parseDouble(parseAttribute(content, "warp_to_y")));
 
         if (entityCode.equals(LargeWarp.ENTITY_CODE)) {
             new LargeWarp((int) x, (int) y, entityType, warpTo, warpToCoordinates);
@@ -223,14 +216,13 @@ public class WorldLoader {
     }
 
     private void loadEntity(String content) {
-        String[] contentSplitted = content.split(":")[1].split(",");
         double x, y;
         String entityCode;
         int entityType;
-        entityCode = contentSplitted[0].split("\"")[1];
-        entityType = Integer.parseInt(contentSplitted[1].split("\"")[1]);
-        x = parseCoordinate(contentSplitted[2]);
-        y = parseCoordinate(contentSplitted[3]);
+        entityCode = parseAttribute(content, "code");
+        entityType = Integer.parseInt(parseAttribute(content, "type"));
+        x = Double.parseDouble(parseAttribute(content, "x"));
+        y = Double.parseDouble(parseAttribute(content, "y"));
 
         if (entityCode.equals(Tree.ENTITY_CODE)) {
             new Tree((int) x, (int) y, entityType);
@@ -248,8 +240,6 @@ public class WorldLoader {
     }
 
     private void loadTiles(String tilesInfo, String tilesContent) {
-//        Log.l(tilesInfo);
-//        Log.l(tilesContent);
         String[] tilesInfoSplitted = tilesInfo.split(":")[1].split(",");
         TileMap.setNumOfHorizontalTiles(Integer.parseInt(tilesInfoSplitted[0].split("\"")[1]));
         TileMap.setNumOfVerticalTiles(Integer.parseInt(tilesInfoSplitted[1].split("\"")[1]));
@@ -276,9 +266,8 @@ public class WorldLoader {
     }
 
     private void loadSpawnCoords(String content) {
-        String[] contentSplitted = (content.split(":"))[1].split(",");
-        double x = parseCoordinate(contentSplitted[0]);
-        double y = parseCoordinate(contentSplitted[1]);
+        double x = Double.parseDouble(parseAttribute(content, "x"));
+        double y = Double.parseDouble(parseAttribute(content, "y"));
 //        Log.l(x + ", " + y);
         Camera.getInstance().init(new Coordinates(x, y));
         Player.getInstance().init(new Coordinates(x, y));
@@ -286,9 +275,13 @@ public class WorldLoader {
 
     /**
      * Example
-     * @returns double if the input is "x="double""
+     * @param content code="torch",type="0",x="24.0",y="40.0" or entity:code="torch",type="0",x="24.0",y="40.0"
+     * @param attributeToParse code
+     * @return torch
      **/
-    private double parseCoordinate(String coordinate) {
-        return Double.parseDouble(coordinate.split("\"")[1]);
+    private String parseAttribute(String content, String attributeToParse) {
+        if (content.contains(":")) content = content.split(":")[1];
+        content = content.split(attributeToParse + "=\"")[1];
+        return content.substring(0, content.indexOf("\""));
     }
 }
