@@ -60,7 +60,9 @@ public class WorldLoader {
                 worldFileContentNew.append(worldFileContentOld, endSceneIndex, worldFileContentOld.length() - 1);
 
                 worldFileContentNew.append("\nstart_scene:name=\"").append(sceneToSave).append("\"").append("\n");
-                worldFileContentNew.append("default_spawn_coordinates: ").append("x=\"800.0\",y=\"800.0\"").append("\n");
+                worldFileContentNew.append("default_spawn_coordinates:").append("x=\"800.0\",y=\"800.0\"").append("\n");
+                worldFileContentNew.append("scene_attributes:").append("is_indoors=\"").append(Scene.getInstance().isIndoors())
+                        .append("\",is_safe_area=\"").append(Scene.getInstance().isSafeArea()).append("\"").append("\n");
                 worldFileContentNew.append("tiles:").append("width=\"").append(Integer.toString(TileMap.getNumOfHorizontalTiles())).append("\"")
                         .append(",height=\"").append(Integer.toString(TileMap.getNumOfVerticalTiles())).append("\"").append("\n");
 
@@ -162,6 +164,9 @@ public class WorldLoader {
 //            Log.l(contentLines[i]);
             if (contentLines[i].contains("default_spawn_coordinates:")) {
                 loadSpawnCoords(contentLines[i]);
+            } else if (contentLines[i].contains("scene_attributes:")) {
+                Scene.getInstance().setIndoors(Boolean.parseBoolean(parseAttribute(contentLines[i], "is_indoors")));
+                Scene.getInstance().setSafeArea(Boolean.parseBoolean(parseAttribute(contentLines[i], "is_safe_area")));
             } else if (contentLines[i].contains("tiles:")) {
                 loadTiles(contentLines[i], contentLines[i + 1]);
                 i++;

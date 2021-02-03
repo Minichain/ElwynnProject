@@ -16,6 +16,8 @@ public class Scene {
     private static Scene instance = null;
 
     private String sceneName = null;
+    private boolean indoors;
+    private boolean safeArea;
 
     /** ENTITIES **/
     private static ArrayList<GraphicEntity> listOfGraphicEntities;
@@ -75,7 +77,7 @@ public class Scene {
 
         updateAndSortEntities(timeElapsed);
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) return;
-        if (Parameters.isSpawnEnemies()) updateEnemiesSpawn();
+        if (Parameters.isSpawnEnemies() && !isSafeArea()) updateEnemiesSpawn();
 
         for (int i = 0; i < listOfCircleAttacks.size(); i++) {
             listOfCircleAttacks.get(i).update(timeElapsed, true);
@@ -320,5 +322,21 @@ public class Scene {
 
     public void setSceneName(String sceneName) {
         this.sceneName = sceneName;
+    }
+
+    public boolean isIndoors() {
+        return indoors;
+    }
+
+    public void setIndoors(boolean indoors) {
+        this.indoors = indoors;
+    }
+
+    public boolean isSafeArea() {
+        return safeArea;
+    }
+
+    public void setSafeArea(boolean safeArea) {
+        this.safeArea = safeArea;
     }
 }

@@ -4,6 +4,7 @@ import audio.OpenALManager;
 import particles.Particle;
 import particles.ParticleManager;
 import scene.Camera;
+import scene.Scene;
 
 import java.awt.*;
 
@@ -55,7 +56,7 @@ public class Weather {
             if (rainingIntensity < 0f) rainingIntensity = 0f;
         }
 
-        if (rainingIntensity > 0f) {
+        if (rainingIntensity > 0f && !Scene.getInstance().isIndoors()) {
             OpenALManager.playSound(OpenALManager.SOUND_RAIN_01);
             OpenALManager.setSoundGain(OpenALManager.SOUND_RAIN_01, rainingIntensity * Parameters.getAmbienceSoundLevel());
             int newParticlesToGenerate = (int) (timeElapsed * rainingIntensity);
