@@ -4,8 +4,6 @@ import main.Coordinates;
 import main.OpenGLManager;
 import scene.Camera;
 
-import static org.lwjgl.opengl.GL11.*;
-
 public abstract class StaticGraphicEntity extends GraphicEntity {
     private int[] tileCoordinates;
     private Collision collision;
@@ -31,37 +29,11 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
     }
 
-    public void drawHitBox(int x, int y) {
-        glDisable(GL_TEXTURE_2D);
-        glDisable(GL_BLEND);
-
-        OpenGLManager.glBegin(GL_LINES);
-        glColor4f(1f, 1f, 1f, 1f);
-
-        int width = getSprite().SPRITE_WIDTH;
-        int height = getSprite().SPRITE_HEIGHT;
-
-        //1st Line
-        glVertex2i(x, y);
-        glVertex2i((int) (x + width * Camera.getZoom()), y);
-
-        //2nd Line
-        glVertex2i((int) (x + width * Camera.getZoom()), y);
-        glVertex2i((int) (x + width * Camera.getZoom()), (int) (y - height * Camera.getZoom()));
-
-        //3rd Line
-        glVertex2i((int) (x + width * Camera.getZoom()), (int) (y - height * Camera.getZoom()));
-        glVertex2i(x, (int) (y - height * Camera.getZoom()));
-
-        //4th Line
-        glVertex2i(x, (int) (y - height * Camera.getZoom()));
-        glVertex2i(x, y);
-
-        glEnd();
-
+    @Override
+    public void drawHitBox() {
+        int width = (int) (getSprite().SPRITE_WIDTH * Camera.getZoom());
+        int height = (int) ((-1) * getSprite().SPRITE_HEIGHT * Camera.getZoom());
+        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
         if (getCollision() != null) getCollision().draw();
-
-        glEnable(GL_TEXTURE_2D);
-        glEnable(GL_BLEND);
     }
 }

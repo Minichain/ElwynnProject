@@ -236,11 +236,15 @@ public class Scene {
 
         /** ENTITIES HITBOX **/
         if (Parameters.isDebugMode()) {
+            glDisable(GL_TEXTURE_2D);
+            glDisable(GL_BLEND);
+            OpenGLManager.glBegin(GL_LINES);
             for (GraphicEntity graphicEntity : listOfGraphicEntities) {
-                if (graphicEntity instanceof StaticGraphicEntity && graphicEntity.isRender()) {
-                    ((StaticGraphicEntity) graphicEntity).drawHitBox((int) graphicEntity.getCameraCoordinates().x, (int) graphicEntity.getCameraCoordinates().y);
-                }
+                graphicEntity.drawHitBox();
             }
+            glEnd();
+            glEnable(GL_TEXTURE_2D);
+            glEnable(GL_BLEND);
         }
     }
 

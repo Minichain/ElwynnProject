@@ -1,9 +1,11 @@
 package entities;
 
 import listeners.InputListenerManager;
+import main.OpenGLManager;
 import main.Parameters;
 import main.Strings;
 import main.Texture;
+import scene.Camera;
 import text.TextRendering;
 
 public class InteractionEntity extends GraphicEntity {
@@ -42,5 +44,12 @@ public class InteractionEntity extends GraphicEntity {
     @Override
     public void update(long timeElapsed) {
 
+    }
+
+    @Override
+    public void drawHitBox() {
+        int width = (int) (getSprite().SPRITE_WIDTH * Camera.getZoom());
+        int height = (int) ((-1) * getSprite().SPRITE_HEIGHT * Camera.getZoom());
+        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
     }
 }

@@ -1,5 +1,6 @@
 package entities;
 
+import main.OpenGLManager;
 import main.Texture;
 import scene.Camera;
 import scene.Scene;
@@ -46,5 +47,12 @@ public class Smoke extends GraphicEntity {
         getSprite().draw(x - getSprite().SPRITE_WIDTH / 2, y - getSprite().SPRITE_HEIGHT / 2,
                 (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
                 0.75f, Camera.getZoom() * 0.5f);
+    }
+
+    @Override
+    public void drawHitBox() {
+        int width = (int) (getSprite().SPRITE_WIDTH * Camera.getZoom());
+        int height = (int) ((-1) * getSprite().SPRITE_HEIGHT * Camera.getZoom());
+        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
     }
 }

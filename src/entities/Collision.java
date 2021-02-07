@@ -1,7 +1,6 @@
 package entities;
 
 import main.Coordinates;
-import main.OpenGLManager;
 import scene.Camera;
 import utils.MathUtils;
 
@@ -55,26 +54,25 @@ public class Collision {
         double widthRelativeToCamera = width * Camera.getZoom();
         double heightRelativeToCamera = height * Camera.getZoom();
 
-        OpenGLManager.glBegin(GL_LINES);
         glColor4f(1f, 0f, 0f, 1f);
 
         switch (collisionType) {
             case SQUARE:
                 //1st Line
-                glVertex2i((int) (centerCameraCoordinates.x - widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y - heightRelativeToCamera / 2));
-                glVertex2i((int) (centerCameraCoordinates.x + widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y - heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x - widthRelativeToCamera / 2), (centerCameraCoordinates.y - heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x + widthRelativeToCamera / 2), (centerCameraCoordinates.y - heightRelativeToCamera / 2));
 
                 //2nd Line
-                glVertex2i((int) (centerCameraCoordinates.x + widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y - heightRelativeToCamera / 2));
-                glVertex2i((int) (centerCameraCoordinates.x + widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y + heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x + widthRelativeToCamera / 2), (centerCameraCoordinates.y - heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x + widthRelativeToCamera / 2), (centerCameraCoordinates.y + heightRelativeToCamera / 2));
 
                 //3rd Line
-                glVertex2i((int) (centerCameraCoordinates.x + widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y + heightRelativeToCamera / 2));
-                glVertex2i((int) (centerCameraCoordinates.x - widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y + heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x + widthRelativeToCamera / 2), (centerCameraCoordinates.y + heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x - widthRelativeToCamera / 2), (centerCameraCoordinates.y + heightRelativeToCamera / 2));
 
                 //4th Line
-                glVertex2i((int) (centerCameraCoordinates.x - widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y + heightRelativeToCamera / 2));
-                glVertex2i((int) (centerCameraCoordinates.x - widthRelativeToCamera / 2), (int) (centerCameraCoordinates.y - heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x - widthRelativeToCamera / 2), (centerCameraCoordinates.y + heightRelativeToCamera / 2));
+                glVertex2d((centerCameraCoordinates.x - widthRelativeToCamera / 2), (centerCameraCoordinates.y - heightRelativeToCamera / 2));
 
                 break;
             case CIRCLE:
@@ -95,7 +93,5 @@ public class Collision {
             default:
                 break;
         }
-
-        glEnd();
     }
 }

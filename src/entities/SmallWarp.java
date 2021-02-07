@@ -62,7 +62,7 @@ public class SmallWarp extends Warp {
 
     @Override
     public void update(long timeElapsed) {
-        if (MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 15.0) {
+        if (MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 12.5) {
             Log.l("Portal taken!");
             Scene.getInstance().setSceneName(warpToScene);
             Scene.getInstance().reset();

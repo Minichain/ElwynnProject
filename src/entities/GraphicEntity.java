@@ -62,7 +62,7 @@ public abstract class GraphicEntity extends Entity {
     public void updateCoordinates() {
         super.updateCoordinates();
         centerOfMassWorldCoordinates = new Coordinates(getWorldCoordinates().x + (double) getSprite().SPRITE_WIDTH / 2.0,
-                getWorldCoordinates().y - (double) getSprite().SPRITE_HEIGHT / 2.0);
+                getWorldCoordinates().y - (double) getSprite().SPRITE_HEIGHT / 4.0);
         centerOfMassCameraCoordinates = centerOfMassWorldCoordinates.toCameraCoordinates();
     }
 
@@ -80,4 +80,6 @@ public abstract class GraphicEntity extends Entity {
     public int getType() {
         return type;
     }
+
+    public abstract void drawHitBox();
 }

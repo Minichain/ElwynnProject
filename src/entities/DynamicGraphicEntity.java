@@ -1,5 +1,8 @@
 package entities;
 
+import main.OpenGLManager;
+import scene.Camera;
+
 public abstract class DynamicGraphicEntity extends GraphicEntity {
     public double speed;
     public double[] movementVector;
@@ -9,5 +12,14 @@ public abstract class DynamicGraphicEntity extends GraphicEntity {
         super(x, y);
         movementVector = new double[]{0, 0};
         movementVectorNormalized = new double[]{0, 0};
+    }
+
+    @Override
+    public void drawHitBox() {
+        int width = (int) (getSprite().SPRITE_WIDTH * Camera.getZoom());
+        int height = (int) ((-1) * getSprite().SPRITE_HEIGHT * Camera.getZoom());
+        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
+        OpenGLManager.drawRectangleOutline((float) getCenterOfMassCameraCoordinates().x, (float) getCenterOfMassCameraCoordinates().y,
+                1, 1, 1, 1f, 0f, 0f);
     }
 }

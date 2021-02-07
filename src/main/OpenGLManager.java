@@ -135,6 +135,38 @@ public class OpenGLManager {
         glVertex2f(x + width, y + height);
     }
 
+    public static void drawRectangleOutline(float x, float y, float width, float height) {
+        drawRectangleOutline(x, y, width, height, 1.0, 1f, 1f, 1f);
+    }
+
+    public static void drawRectangleOutline(float x, float y, float width, float height, float greyValue) {
+        drawRectangleOutline(x, y, width, height, 1.0, greyValue, greyValue, greyValue);
+    }
+
+    public static void drawRectangleOutline(float x, float y, float width, float height, double transparency, float greyValue) {
+        drawRectangleOutline(x, y, width, height, transparency, greyValue, greyValue, greyValue);
+    }
+
+    public static void drawRectangleOutline(float x, float y, float width, float height, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
+
+        //1st Line
+        glVertex2f(x, y);
+        glVertex2f(x + width, y);
+
+        //2nd Line
+        glVertex2f(x + width, y);
+        glVertex2f(x + width, y + height);
+
+        //3rd Line
+        glVertex2f(x + width, y + height);
+        glVertex2f(x, y + height);
+
+        //4th Line
+        glVertex2f(x, y + height);
+        glVertex2f(x, y);
+    }
+
     public static void drawTriangle(Coordinates vertex1, Coordinates vertex2, Coordinates vertex3, double transparency, float greyValue) {
         drawTriangle(
                 new int[]{(int) vertex1.x, (int) vertex1.y},
