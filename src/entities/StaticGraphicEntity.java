@@ -33,7 +33,9 @@ public abstract class StaticGraphicEntity extends GraphicEntity {
     public void drawHitBox() {
         int width = (int) (getSprite().SPRITE_WIDTH * Camera.getZoom());
         int height = (int) ((-1) * getSprite().SPRITE_HEIGHT * Camera.getZoom());
-        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
+//        OpenGLManager.drawRectangleOutline((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, height);
+        OpenGLManager.drawLine((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, width, 0, 1,0f, 0f, 1f);
+        OpenGLManager.drawLine((float) getCameraCoordinates().x, (float) getCameraCoordinates().y, 0, height, 1,0f, 1f, 0f);
         if (getCollision() != null) getCollision().draw();
     }
 }

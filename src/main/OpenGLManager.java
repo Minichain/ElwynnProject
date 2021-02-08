@@ -167,6 +167,12 @@ public class OpenGLManager {
         glVertex2f(x, y);
     }
 
+    public static void drawLine(float x, float y, float width, float height, double transparency, float r, float g, float b) {
+        glColor4f(r, g, b, (float) transparency);
+        glVertex2f(x, y);
+        glVertex2f(x + width, y + height);
+    }
+
     public static void drawTriangle(Coordinates vertex1, Coordinates vertex2, Coordinates vertex3, double transparency, float greyValue) {
         drawTriangle(
                 new int[]{(int) vertex1.x, (int) vertex1.y},

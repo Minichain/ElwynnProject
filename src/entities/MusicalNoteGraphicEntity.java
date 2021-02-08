@@ -31,6 +31,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
     public void init(double speed, MusicalMode musicalMode, float damage, double timeToLive, boolean enemyAttack) {
         Sprite randomSprite = getMusicalRandomSprite();
         setSprite(randomSprite);
+        setWorldCoordinates(new Coordinates(getWorldCoordinates().x - getSprite().SPRITE_WIDTH / 2.0, getWorldCoordinates().y + getSprite().SPRITE_HEIGHT / 2.0));
         getWorldCoordinates().translate(movementVectorNormalized[0] * 10, movementVectorNormalized[1] * 10);
         this.speed = speed;
         this.timeLiving = 0;
@@ -126,7 +127,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
     public void drawSprite(int x, int y) {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
-                1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor), true);
+                1f - this.intensityFactor, Camera.getZoom() * (1f - this.intensityFactor));
     }
 
     public String getEntityCode() {
