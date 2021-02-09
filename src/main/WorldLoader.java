@@ -274,8 +274,8 @@ public class WorldLoader {
         double x = Double.parseDouble(parseAttribute(content, "x"));
         double y = Double.parseDouble(parseAttribute(content, "y"));
 //        Log.l(x + ", " + y);
-        Camera.getInstance().init(new Coordinates(x, y));
-        Player.getInstance().init(new Coordinates(x, y));
+        Camera.getInstance().setCoordinates(new Coordinates(x, y));
+        Player.getInstance().setWorldCoordinates(new Coordinates(x, y));
     }
 
     /**

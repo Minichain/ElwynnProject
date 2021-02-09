@@ -59,14 +59,13 @@ public class Scene {
 
         WorldLoader.getInstance().loadWorld();
         Scene.getInstance().getListOfGraphicEntities().add(Player.getInstance());
-        GameTime.setGameTime(0);
     }
 
     public void reset() {
         Log.l("Resetting Scene");
-        resetEntities();
-        listOfCircleAttacks.clear();
+        Player.getInstance().init(new Coordinates(0, 0));
         init();
+        GameTime.setGameTime(0);
     }
 
     public void update(long timeElapsed) {
@@ -192,20 +191,6 @@ public class Scene {
 
     public ArrayList<CircleAttack> getListOfCircleAttacks() {
         return listOfCircleAttacks;
-    }
-
-    private void resetEntities() {
-        for (int i = 0; i < listOfGraphicEntities.size(); i++) {
-            Entity entity = listOfGraphicEntities.get(i);
-            if (entity instanceof DynamicGraphicEntity) {
-                DynamicGraphicEntity dynamicGraphicEntity = (DynamicGraphicEntity) listOfGraphicEntities.get(i);
-                for (LightSource lightSource : dynamicGraphicEntity.getLightSources()) {
-                    getListOfLightSources().remove(lightSource);
-                }
-                listOfGraphicEntities.remove(i);
-                i--;
-            }
-        }
     }
 
     public void render() {
