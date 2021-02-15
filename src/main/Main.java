@@ -1,5 +1,7 @@
 package main;
 
+import console.Console;
+
 import java.io.File;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -19,6 +21,7 @@ public class Main {
             System.exit(0);
         }
 
+        Console.init();
         Log.l("OS Name " + System.getProperty("os.name"));
         Log.l("OS Version " + System.getProperty("os.version"));
 

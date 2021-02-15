@@ -1,5 +1,6 @@
 package main;
 
+import console.Console;
 import entities.InteractionEntity;
 import entities.NonPlayerCharacter;
 import entities.Player;
@@ -85,6 +86,9 @@ public class UserInterface {
         if (!Menu.getInstance().isShowing() && Player.getInstance().getInventory().isOpened()) {
             Player.getInstance().getInventory().update(timeElapsed);
         }
+
+        /** CONSOLE **/
+        Console.update(timeElapsed);
     }
 
     public void render(long timeElapsed) {
@@ -122,6 +126,8 @@ public class UserInterface {
         if (HUDVisibility && !Menu.getInstance().isShowing() && Player.getInstance().getInventory().isOpened()) {
             Player.getInstance().getInventory().render();
         }
+
+        Console.render();
     }
 
     private void renderNPCInteractions() {

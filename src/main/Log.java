@@ -66,6 +66,7 @@ public class Log {
     }
 
     private static void l(String log, String ansiColor) {
+        console.Console.addNewLine(log);
         if (!fileCreated) {
             createLogFile();
             openLogFile();

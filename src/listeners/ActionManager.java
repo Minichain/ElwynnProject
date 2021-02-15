@@ -1,12 +1,12 @@
 package listeners;
 
+import console.Console;
 import entities.*;
 import main.*;
 import menu.Menu;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
-import utils.ArrayUtils;
 
 import static listeners.MyGLFW.myGlfwGetKeyName;
 import static org.lwjgl.glfw.GLFW.*;
@@ -39,14 +39,14 @@ public class ActionManager {
         MIXOLYDIAN_MODE (23),
         AEOLIAN_MODE (24),
         LOCRIAN_MODE (25),
-        CHOOSE_NPC_ACTION (26),
         USE_HEALTH_POTION (27),
         USE_MANA_POTION (28),
         USE_HASTE_POTION (29),
         SHOW_MUSICAL_MODE_SELECTOR (30),
         OPEN_INVENTORY (31),
         DEBUG_KEY (32),
-        CREATIVE_WARPS_MODE (33)
+        CREATIVE_WARPS_MODE (33),
+        OPEN_CLOSE_CONSOLE (34)
         ;
 
         int actionValue;
@@ -139,9 +139,6 @@ public class ActionManager {
                 case LOCRIAN_MODE:
                     key[0] = GLFW_KEY_7;
                     break;
-                case CHOOSE_NPC_ACTION:
-                    key[0] = GLFW_KEY_ENTER;
-                    break;
                 case USE_HEALTH_POTION:
                     key[0] = GLFW_KEY_H;
                     break;
@@ -159,6 +156,9 @@ public class ActionManager {
                     break;
                 case DEBUG_KEY:
                     key[0] = GLFW_KEY_F12;
+                    break;
+                case OPEN_CLOSE_CONSOLE:
+                    key[0] = GLFW_KEY_ENTER;
                     break;
                 default:
                     break;
@@ -190,6 +190,13 @@ public class ActionManager {
 
     public static void processKeyPressed(int[] key, boolean pressed) {
 //        Log.l("Process key pressed " + key[0] + ", " + key[1] + ". Pressed: " + pressed);
+        if (isSameKeyCombination(key, Action.OPEN_CLOSE_CONSOLE.getActionKey())) {
+            if (!pressed) Console.setTypingMode(!Console.isTypingMode());
+        } else if (Console.isTypingMode()) {
+            if (pressed) Console.processInputKey(key);
+            return;
+        }
+
         if (isSameKeyCombination(key, Action.MOVE_UP.getActionKey())) {
             MOVING_UP = pressed;
         } else if (isSameKeyCombination(key, Action.MOVE_LEFT.getActionKey())) {
@@ -314,8 +321,6 @@ public class ActionManager {
                     }
                 }
             }
-        } else if (isSameKeyCombination(key, Action.CHOOSE_NPC_ACTION.getActionKey())) {
-
         } else if (isSameKeyCombination(key, Action.USE_HEALTH_POTION.getActionKey())) {
             if (!pressed) Player.getInstance().useHealthPotion();
         } else if (isSameKeyCombination(key, Action.USE_MANA_POTION.getActionKey())) {
