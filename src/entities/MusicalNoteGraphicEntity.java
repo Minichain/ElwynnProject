@@ -115,7 +115,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
 
     private void updateLightSources(Long timeElapsed) {
         for (LightSource lightSource : getLightSources()) {
-            lightSource.setWorldCoordinates(getWorldCoordinates());
+            lightSource.setWorldCoordinates(getCenterOfMassWorldCoordinates());
             lightSource.setIntensity(lightIntensity - this.intensityFactor * lightIntensity);
             lightSource.update(timeElapsed);
         }

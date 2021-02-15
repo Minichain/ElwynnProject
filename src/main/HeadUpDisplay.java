@@ -78,7 +78,8 @@ public class HeadUpDisplay {
                     }
                 }
                 glEnd();
-            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+            } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES
+                    || GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
                 int previousEntitiesToShow = 5, currentEntity;
                 float x = 0, y = 0;
 
@@ -90,7 +91,12 @@ public class HeadUpDisplay {
 
                 for (int i = 0; i < 25; i++) {
                     currentEntity = selectedEntity + i - previousEntitiesToShow;
-                    Sprite sprite = SpriteManager.getStaticEntitySprite(currentEntity);
+                    Sprite sprite;
+                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                        sprite = SpriteManager.getStaticEntitySprite(currentEntity);
+                    } else {
+                        sprite = SpriteManager.getWarpSprite(currentEntity);
+                    }
 
                     float width;
                     if (sprite != null && (20f + sprite.SPRITE_WIDTH * 2f) > 125f) {
@@ -135,6 +141,10 @@ public class HeadUpDisplay {
                     int[] c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
                     Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates(c1[0], c1[1]).toCameraCoordinates();
                     SpriteManager.getStaticEntitySprite(selectedEntity).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
+                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
+                    int[] c1 = Coordinates.cameraCoordinatesToTileCoordinates(mouseX, mouseY);
+                    Coordinates c2 = Coordinates.tileCoordinatesToWorldCoordinates(c1[0], c1[1]).toCameraCoordinates();
+                    SpriteManager.getWarpSprite(selectedEntity).draw((int) c2.x, (int) c2.y, 0, 0, 0.5f);
                 }
             }
         }

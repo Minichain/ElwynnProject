@@ -62,8 +62,9 @@ public class LargeWarp extends Warp {
 
     @Override
     public void update(long timeElapsed) {
-        if (MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 25.0) {
-            Log.l("Portal taken!");
+        if (Player.getInstance().canTakeWarp() && MathUtils.module(Player.getInstance().getCenterOfMassWorldCoordinates(), getCenterOfMassWorldCoordinates()) < 25.0) {
+            Log.l("Portal to " + warpToScene + " taken!");
+            Player.getInstance().takeWarp();
             Scene.getInstance().setSceneName(warpToScene);
             Scene.getInstance().init();
             Camera.getInstance().setCoordinates(warpToCoordinates);

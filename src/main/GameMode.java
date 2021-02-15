@@ -10,7 +10,7 @@ public class GameMode {
     }
 
     public enum CreativeMode {
-        TILES, STATIC_ENTITIES
+        TILES, STATIC_ENTITIES, WARPS
     }
 
     public enum LayerEditing {

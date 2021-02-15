@@ -71,6 +71,9 @@ public class Player extends LivingDynamicGraphicEntity {
 
     private NonPlayerCharacter interactiveNPC = null;
 
+    private double warpTakenPeriod = 1000;  //1 second until you can take a warp again
+    private double warpTakenCoolDown;
+
     /** RUNNING PARTICLES **/
     private int runningParticlePeriod = 200;
     private int runningParticleCoolDown;
@@ -211,7 +214,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
             if (speed > 0.0 && runningParticleCoolDown <= 0) {
                 Coordinates coordinates = new Coordinates(getCenterOfMassWorldCoordinates().x + MathUtils.random(-2.5, 2.5),
-                        getCenterOfMassWorldCoordinates().y + MathUtils.random(-2.5, 2.5) + 10);
+                        getCenterOfMassWorldCoordinates().y + MathUtils.random(-2.5, 2.5) + 5);
                 new Smoke((int) coordinates.x, (int) coordinates.y, 300);
                 runningParticleCoolDown = runningParticlePeriod;
             }
@@ -242,7 +245,7 @@ public class Player extends LivingDynamicGraphicEntity {
             }
 
             if (changeMusicalModeCoolDown >= 0) changeMusicalModeCoolDown -= timeElapsed;
-
+            if (warpTakenCoolDown >= 0) warpTakenCoolDown -= timeElapsed;
         } else if (status != Status.DEAD) {   //Player is dying
             status = Status.DYING;
         } else {    //Player is dead
@@ -698,5 +701,13 @@ public class Player extends LivingDynamicGraphicEntity {
         } else {
             return 0.15f;
         }
+    }
+
+    public boolean canTakeWarp() {
+        return warpTakenCoolDown < 0;
+    }
+
+    public void takeWarp() {
+        warpTakenCoolDown = warpTakenPeriod;
     }
 }

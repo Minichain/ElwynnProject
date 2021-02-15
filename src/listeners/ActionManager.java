@@ -45,7 +45,8 @@ public class ActionManager {
         USE_HASTE_POTION (29),
         SHOW_MUSICAL_MODE_SELECTOR (30),
         OPEN_INVENTORY (31),
-        DEBUG_KEY (32)
+        DEBUG_KEY (32),
+        CREATIVE_WARPS_MODE (33)
         ;
 
         int actionValue;
@@ -123,6 +124,7 @@ public class ActionManager {
                     key[0] = GLFW_KEY_2;
                     break;
                 case PHRYGIAN_MODE:
+                case CREATIVE_WARPS_MODE:
                     key[0] = GLFW_KEY_3;
                     break;
                 case LYDIAN_MODE:
@@ -260,6 +262,8 @@ public class ActionManager {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
         } else if (isSameKeyCombination(key, Action.CREATIVE_STATIC_ENTITIES_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
+        } else if (isSameKeyCombination(key, Action.CREATIVE_WARPS_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+            if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.WARPS);
         } else if (isSameKeyCombination(key, Action.IONIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.IONIAN);
         } else if (isSameKeyCombination(key, Action.DORIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
@@ -280,6 +284,8 @@ public class ActionManager {
                     putTile();
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
                     putStaticEntity();
+                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
+                    putWarp();
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
@@ -293,7 +299,8 @@ public class ActionManager {
                                 && 0 <= tileCoordinates[1] && tileCoordinates[1] < TileMap.getNumOfVerticalTiles()) {
                             TileMap.getArrayOfTiles()[tileCoordinates[0]][tileCoordinates[1]].changeCollisionBehaviour();
                         }
-                    } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                    } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES
+                            || GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
                         for (int i = 0; i < Scene.getInstance().getListOfStaticEntities().size(); i++) {
                             GraphicEntity graphicEntity = Scene.getInstance().getListOfStaticEntities().get(i);
                             if (graphicEntity.isOverEntity(InputListenerManager.getMouseWorldCoordinates())) {
@@ -400,6 +407,28 @@ public class ActionManager {
                 break;
             case 12:
                 new UtilityPole((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y);
+                break;
+            default:
+                break;
+        }
+    }
+
+    private static void putWarp() {
+        Coordinates mouseWorldCoordinates = InputListenerManager.getMouseWorldCoordinates();
+        int entity = HeadUpDisplay.getSelectedEntity() % SpriteManager.numOfWarpSprites;
+        Log.l("Adding a new Warp ");
+        switch (entity) {
+            case 0:
+            case 1:
+            case 2:
+            case 3:
+                new LargeWarp((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, entity, "SceneName", new Coordinates(0, 0));
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+                new SmallWarp((int) mouseWorldCoordinates.x, (int) mouseWorldCoordinates.y, entity - 4, "SceneName", new Coordinates(0, 0));
                 break;
             default:
                 break;

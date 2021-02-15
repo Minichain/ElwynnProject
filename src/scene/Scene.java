@@ -48,7 +48,7 @@ public class Scene {
     }
 
     public void init() {
-        Log.l("Initiating Scene");
+        Log.l("Initiating Scene " + sceneName);
         listOfGraphicEntities = new ArrayList<>();
         listOfStaticGraphicEntities = new ArrayList<>();
         listOfEnemies = new ArrayList<>();

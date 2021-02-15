@@ -175,4 +175,39 @@ public class SpriteManager {
         }
         return sprite;
     }
+
+    public static int numOfWarpSprites = 8;
+
+    public static Sprite getWarpSprite(int i) {
+        Sprite sprite = null;
+        switch (i % numOfWarpSprites) {
+            case 0:
+                sprite = SpriteManager.getInstance().WARP_UP_LARGE;
+                break;
+            case 1:
+                sprite = SpriteManager.getInstance().WARP_RIGHT_LARGE;
+                break;
+            case 2:
+                sprite = SpriteManager.getInstance().WARP_DOWN_LARGE;
+                break;
+            case 3:
+                sprite = SpriteManager.getInstance().WARP_LEFT_LARGE;
+                break;
+            case 4:
+                sprite = SpriteManager.getInstance().WARP_UP_SMALL;
+                break;
+            case 5:
+                sprite = SpriteManager.getInstance().WARP_RIGHT_SMALL;
+                break;
+            case 6:
+                sprite = SpriteManager.getInstance().WARP_DOWN_SMALL;
+                break;
+            case 7:
+                sprite = SpriteManager.getInstance().WARP_LEFT_SMALL;
+                break;
+            default:
+                break;
+        }
+        return sprite;
+    }
 }

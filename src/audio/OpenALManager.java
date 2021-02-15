@@ -38,18 +38,18 @@ public class OpenALManager {
     public static Sound SOUND_CASH_01;
     public static Sound SOUND_DRINK_01;
 
-    public static Sound SOUND_NOTE_A_01;
-    public static Sound SOUND_NOTE_A_SHARP_01;
-    public static Sound SOUND_NOTE_B_01;
-    public static Sound SOUND_NOTE_C_01;
-    public static Sound SOUND_NOTE_C_SHARP_01;
-    public static Sound SOUND_NOTE_D_01;
-    public static Sound SOUND_NOTE_D_SHARP_01;
-    public static Sound SOUND_NOTE_E_01;
-    public static Sound SOUND_NOTE_F_01;
-    public static Sound SOUND_NOTE_F_SHARP_01;
-    public static Sound SOUND_NOTE_G_01;
-    public static Sound SOUND_NOTE_G_SHARP_01;
+    public static Sound SOUND_NOTE_A;
+    public static Sound SOUND_NOTE_A_SHARP;
+    public static Sound SOUND_NOTE_B;
+    public static Sound SOUND_NOTE_C;
+    public static Sound SOUND_NOTE_C_SHARP;
+    public static Sound SOUND_NOTE_D;
+    public static Sound SOUND_NOTE_D_SHARP;
+    public static Sound SOUND_NOTE_E;
+    public static Sound SOUND_NOTE_F;
+    public static Sound SOUND_NOTE_F_SHARP;
+    public static Sound SOUND_NOTE_G;
+    public static Sound SOUND_NOTE_G_SHARP;
 
     public static Sound SOUND_CHANGE_MUSICAL_MODE_IONIAN;
     public static Sound SOUND_CHANGE_MUSICAL_MODE_DORIAN;
@@ -99,18 +99,20 @@ public class OpenALManager {
         listOfSounds = new ArrayList<>();
 
         /** EFFECTS **/
-        SOUND_NOTE_A_01 = loadSound("note_a_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_A_SHARP_01 = loadSound("note_a_sharp_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_B_01 = loadSound("note_b_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_C_01 = loadSound("note_c_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_C_SHARP_01 = loadSound("note_c_sharp_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_D_01 = loadSound("note_d_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_D_SHARP_01 = loadSound("note_d_sharp_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_E_01 = loadSound("note_e_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_F_01 = loadSound("note_f_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_F_SHARP_01 = loadSound("note_f_sharp_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_G_01 = loadSound("note_g_01", Sound.SoundType.EFFECT);
-        SOUND_NOTE_G_SHARP_01 = loadSound("note_g_sharp_01", Sound.SoundType.EFFECT);
+
+        String instrumentSoundFolder = "instruments/guitar01/";
+        SOUND_NOTE_A = loadSound(instrumentSoundFolder + "note_a", Sound.SoundType.EFFECT);
+        SOUND_NOTE_A_SHARP = loadSound(instrumentSoundFolder + "note_a_sharp", Sound.SoundType.EFFECT);
+        SOUND_NOTE_B = loadSound(instrumentSoundFolder + "note_b", Sound.SoundType.EFFECT);
+        SOUND_NOTE_C = loadSound(instrumentSoundFolder + "note_c", Sound.SoundType.EFFECT);
+        SOUND_NOTE_C_SHARP = loadSound(instrumentSoundFolder + "note_c_sharp", Sound.SoundType.EFFECT);
+        SOUND_NOTE_D = loadSound(instrumentSoundFolder + "note_d", Sound.SoundType.EFFECT);
+        SOUND_NOTE_D_SHARP = loadSound(instrumentSoundFolder + "note_d_sharp", Sound.SoundType.EFFECT);
+        SOUND_NOTE_E = loadSound(instrumentSoundFolder + "note_e", Sound.SoundType.EFFECT);
+        SOUND_NOTE_F = loadSound(instrumentSoundFolder + "note_f", Sound.SoundType.EFFECT);
+        SOUND_NOTE_F_SHARP = loadSound(instrumentSoundFolder + "note_f_sharp", Sound.SoundType.EFFECT);
+        SOUND_NOTE_G = loadSound(instrumentSoundFolder + "note_g", Sound.SoundType.EFFECT);
+        SOUND_NOTE_G_SHARP = loadSound(instrumentSoundFolder + "note_g_sharp", Sound.SoundType.EFFECT);
 
         SOUND_CHANGE_MUSICAL_MODE_IONIAN = loadSound("change_musical_mode_ionian", Sound.SoundType.EFFECT);
         SOUND_CHANGE_MUSICAL_MODE_DORIAN = loadSound("change_musical_mode_dorian", Sound.SoundType.EFFECT);
@@ -238,7 +240,7 @@ public class OpenALManager {
     }
 
     public static void playSound(Sound soundBuffer) {
-        if (soundBuffer == null || isPlaying(soundBuffer)) {
+        if (soundBuffer == null || (isPlaying(soundBuffer) && soundBuffer.getType() != Sound.SoundType.EFFECT)) {
             return;
         }
         alSourcePlay(source.get(soundBuffer.getIndex()));
