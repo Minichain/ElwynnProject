@@ -37,6 +37,8 @@ public class GameTime {
     }
 
     public static void setGameTime(float gameTime) {
+        gameTime = gameTime % 24f;
+        Log.l("Game Time set to " + gameTime);
         GameTime.gameTime = gameTime;
     }
 

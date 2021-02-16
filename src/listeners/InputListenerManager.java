@@ -33,6 +33,7 @@ public class InputListenerManager {
     private static boolean LEFT_CTRL_KEY_PRESSED;
     private static boolean LEFT_SHIFT_KEY_PRESSED;
     private static boolean LEFT_ALT_KEY_PRESSED;
+    private static boolean LEFT_ALT_GR_KEY_PRESSED;
 
     private static boolean usingKeyboardAndMouse = false;
 
@@ -126,13 +127,18 @@ public class InputListenerManager {
         usingKeyboardAndMouse = true;
         switch (key) {
             case GLFW_KEY_LEFT_CONTROL:
+            case GLFW_KEY_RIGHT_CONTROL:
                 LEFT_CTRL_KEY_PRESSED = pressed;
                 break;
             case GLFW_KEY_LEFT_SHIFT:
+            case GLFW_KEY_RIGHT_SHIFT:
                 LEFT_SHIFT_KEY_PRESSED = pressed;
                 break;
             case GLFW_KEY_LEFT_ALT:
                 LEFT_ALT_KEY_PRESSED = pressed;
+                break;
+            case GLFW_KEY_RIGHT_ALT:
+                LEFT_ALT_GR_KEY_PRESSED = pressed;
                 break;
         }
 
@@ -142,13 +148,16 @@ public class InputListenerManager {
     private static void sendInputToActionManager(int key, boolean pressed) {
         int[] keyCombination = new int[]{-1, -1};
         if (LEFT_CTRL_KEY_PRESSED) {
-            keyCombination[0] = GLFW_KEY_LEFT_CONTROL;
+            keyCombination[0] = GLFW_MOD_CONTROL;
             keyCombination[1] = key;
         } else if (LEFT_SHIFT_KEY_PRESSED) {
-            keyCombination[0] = GLFW_KEY_LEFT_SHIFT;
+            keyCombination[0] = GLFW_MOD_SHIFT;
             keyCombination[1] = key;
         } else if (LEFT_ALT_KEY_PRESSED) {
             keyCombination[0] = GLFW_KEY_LEFT_ALT;
+            keyCombination[1] = key;
+        } else if (LEFT_ALT_GR_KEY_PRESSED) {
+            keyCombination[0] = GLFW_KEY_RIGHT_ALT;
             keyCombination[1] = key;
         } else {
             keyCombination[0] = key;

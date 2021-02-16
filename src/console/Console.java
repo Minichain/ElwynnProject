@@ -1,5 +1,6 @@
 package console;
 
+import entities.Player;
 import main.*;
 import text.TextRendering;
 
@@ -70,7 +71,7 @@ public class Console {
         Console.typingMode = typingMode;
         if (!typingMode) {
             if (!currentInput.isEmpty()) {
-                Log.l(currentInput);
+                processConsoleInput(currentInput);
             }
             currentInput = "";
         }
@@ -80,43 +81,84 @@ public class Console {
         if (key[0] == GLFW_KEY_BACKSPACE && currentInput.length() > 0) {
             currentInput = currentInput.substring(0, currentInput.length() - 1);
         } else {
-            String translatedInput = translateKeyInput(key[0]);
+            String translatedInput = translateKeyInput(key);
             if (translatedInput != null) {
                 currentInput = currentInput.concat(translatedInput);
             }
         }
     }
 
-    public static String translateKeyInput(int key) {
-        switch (key) {
-            case GLFW_KEY_F1:
-                return "F1";
-            case GLFW_KEY_F2:
-                return "F2";
-            case GLFW_KEY_F3:
-                return "F3";
-            case GLFW_KEY_F4:
-                return "F4";
-            case GLFW_KEY_F5:
-                return "F5";
-            case GLFW_KEY_F6:
-                return "F6";
-            case GLFW_KEY_F7:
-                return "F7";
-            case GLFW_KEY_F8:
-                return "F8";
-            case GLFW_KEY_F9:
-                return "F9";
-            case GLFW_KEY_F10:
-                return "F10";
-            case GLFW_KEY_F11:
-                return "F11";
-            case GLFW_KEY_F12:
-                return "F12";
+    private static void processConsoleInput(String input) {
+        if (input.startsWith("/")) {
+            String[] intputSplitted;
+            if (input.startsWith("/weather")) {
+                intputSplitted = input.split(" ");
+                if (intputSplitted[1].equals("clear")) {
+                    Weather.setWeatherStatus(Weather.WeatherStatus.CLEAR);
+                } else if (intputSplitted[1].equals("rain") || intputSplitted[1].equals("raining")) {
+                    Weather.setWeatherStatus(Weather.WeatherStatus.RAINING);
+                } else {
+                    Log.e("Unrecognized command");
+                }
+            } else if (input.startsWith("/time")) {
+                intputSplitted = input.split(" ");
+                try {
+                    float time = Float.parseFloat(intputSplitted[1]);
+                    if (time >= 0) {
+                        GameTime.setGameTime(time);
+                    } else {
+                        Log.e("Invalid time");
+                    }
+                } catch (Exception e) {
+                    Log.e("Invalid time");
+                }
+            } else if (input.startsWith("/tp")) {
+                intputSplitted = input.split(" ");
+                try {
+                    int x = Integer.parseInt(intputSplitted[1]);
+                    int y = Integer.parseInt(intputSplitted[2]);
+                    Player.getInstance().setWorldCoordinates(new Coordinates(x, y));
+                } catch (Exception e) {
+                    Log.e("Invalid coordinates");
+                }
+            } else {
+                Log.e("Invalid command");
+            }
+        } else {
+            Log.l(currentInput);
+        }
+    }
+
+    public static String translateKeyInput(int[] key) {
+        switch (key[0]) {
             case GLFW_KEY_SPACE:
                 return " ";
+            case GLFW_MOD_SHIFT:
+                switch (key[1]) {
+                    case GLFW_KEY_1:
+                        return "!";
+                    case GLFW_KEY_2:
+                        return "\"";
+                    case GLFW_KEY_3:
+                        return "·";
+                    case GLFW_KEY_7:
+                        return "/";
+                    default:
+                        return "";
+                }
+            case GLFW_KEY_RIGHT_ALT:
+                switch (key[1]) {
+                    case GLFW_KEY_1:
+                        return "|";
+                    case GLFW_KEY_2:
+                        return "@";
+                    case GLFW_KEY_3:
+                        return "#";
+                    default:
+                        return "";
+                }
             default:
-                return glfwGetKeyName(key, 0);
+                return glfwGetKeyName(key[0], 0);
         }
     }
 }
