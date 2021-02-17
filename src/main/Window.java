@@ -2,6 +2,7 @@ package main;
 
 import audio.OpenALManager;
 import listeners.InputListenerManager;
+import menu.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;

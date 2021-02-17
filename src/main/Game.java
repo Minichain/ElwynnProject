@@ -30,14 +30,14 @@ public class Game {
         FramesPerSecond.updateUpdatingTimeNanoseconds(System.nanoTime() - startTime);
     }
 
-    public static void render(long timeElapsed) {
+    public static void render() {
         long startTime = System.nanoTime();
         OpenGLManager.prepareFrame();
         OpenGLManager.updateShadersUniforms();
 
         Scene.getInstance().render();
         SpecialEffects.render();
-        UserInterface.getInstance().render(timeElapsed);
+        UserInterface.getInstance().render();
         FramesPerSecond.updateRenderingTimeNanoseconds(System.nanoTime() - startTime);
     }
 

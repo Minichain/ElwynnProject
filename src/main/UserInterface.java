@@ -77,6 +77,9 @@ public class UserInterface {
             }
         }
 
+        /** FLOATING TEXT **/
+        FloatingText.update(timeElapsed);
+
         /** MUSICAL MODE SELECTOR **/
         if (!Menu.getInstance().isShowing() && MusicalModeSelector.getInstance().isShowing()) {
             MusicalModeSelector.getInstance().update(timeElapsed);
@@ -87,11 +90,16 @@ public class UserInterface {
             Player.getInstance().getInventory().update(timeElapsed);
         }
 
+        /** MENU **/
+        if (Menu.getInstance().isShowing()) {
+            Menu.getInstance().update(timeElapsed);
+        }
+
         /** CONSOLE **/
-        Console.update(timeElapsed);
+        Console.getInstance().update(timeElapsed);
     }
 
-    public void render(long timeElapsed) {
+    public void render() {
         OpenGLManager.releaseCurrentShader();
 
         /** DEBUG INFO **/
@@ -100,7 +108,7 @@ public class UserInterface {
         }
 
         /** FLOATING TEXT **/
-        FloatingText.updateAndRender(timeElapsed);
+        FloatingText.render();
 
         /** HUD **/
         if (HUDVisibility) {
@@ -127,7 +135,7 @@ public class UserInterface {
             Player.getInstance().getInventory().render();
         }
 
-        Console.render();
+        Console.getInstance().render();
     }
 
     private void renderNPCInteractions() {

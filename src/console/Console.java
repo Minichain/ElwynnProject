@@ -10,24 +10,32 @@ import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
 public class Console {
-    private static ArrayList<String> listOfTextLines;
-    private static Coordinates coordinates;
-    private static int maxNumberOfLines;
-    private static boolean typingMode;
-    private static String currentInput;
+    private static Console instance = null;
+    private ArrayList<String> listOfTextLines;
+    private Coordinates coordinates;
+    private int maxNumberOfLines;
+    private boolean typingMode;
+    private String currentInput;
 
-    public static void init() {
+    public Console() {
         listOfTextLines = new ArrayList<>();
         maxNumberOfLines = 10;
         typingMode = false;
         currentInput = "";
     }
 
-    public static void update(long timeElapsed) {
+    public static Console getInstance() {
+        if (instance == null) {
+            instance = new Console();
+        }
+        return instance;
+    }
+
+    public void update(long timeElapsed) {
         coordinates = new Coordinates(10, Window.getHeight() - 180);
     }
 
-    public static void render() {
+    public void render() {
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         if (isTypingMode()) {
@@ -56,19 +64,19 @@ public class Console {
         glDisable(GL_BLEND);
     }
 
-    public static void addNewLine(String newLine) {
+    public void addNewLine(String newLine) {
         listOfTextLines.add(newLine);
         if (listOfTextLines.size() > maxNumberOfLines) {
             listOfTextLines.remove(0);
         }
     }
 
-    public static boolean isTypingMode() {
+    public boolean isTypingMode() {
         return typingMode;
     }
 
-    public static void setTypingMode(boolean typingMode) {
-        Console.typingMode = typingMode;
+    public void setTypingMode(boolean typingMode) {
+        this.typingMode = typingMode;
         if (!typingMode) {
             if (!currentInput.isEmpty()) {
                 processConsoleInput(currentInput);
@@ -77,18 +85,18 @@ public class Console {
         }
     }
 
-    public static void processInputKey(int[] key) {
+    public void processInputKey(int[] key) {
         if (key[0] == GLFW_KEY_BACKSPACE && currentInput.length() > 0) {
             currentInput = currentInput.substring(0, currentInput.length() - 1);
         } else {
-            String translatedInput = translateKeyInput(key);
+            String translatedInput = KeyboardInputTranslator.translateKeyInputIntoChar(key);
             if (translatedInput != null) {
                 currentInput = currentInput.concat(translatedInput);
             }
         }
     }
 
-    private static void processConsoleInput(String input) {
+    private void processConsoleInput(String input) {
         if (input.startsWith("/")) {
             String[] intputSplitted;
             if (input.startsWith("/weather")) {
@@ -126,39 +134,6 @@ public class Console {
             }
         } else {
             Log.l(currentInput);
-        }
-    }
-
-    public static String translateKeyInput(int[] key) {
-        switch (key[0]) {
-            case GLFW_KEY_SPACE:
-                return " ";
-            case GLFW_MOD_SHIFT:
-                switch (key[1]) {
-                    case GLFW_KEY_1:
-                        return "!";
-                    case GLFW_KEY_2:
-                        return "\"";
-                    case GLFW_KEY_3:
-                        return "·";
-                    case GLFW_KEY_7:
-                        return "/";
-                    default:
-                        return "";
-                }
-            case GLFW_KEY_RIGHT_ALT:
-                switch (key[1]) {
-                    case GLFW_KEY_1:
-                        return "|";
-                    case GLFW_KEY_2:
-                        return "@";
-                    case GLFW_KEY_3:
-                        return "#";
-                    default:
-                        return "";
-                }
-            default:
-                return glfwGetKeyName(key[0], 0);
         }
     }
 }

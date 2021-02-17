@@ -20,6 +20,8 @@ public class Menu {
     private float menuHeight;
 
     public Menu() {
+        updateCoordinates();
+
         listOfMenuComponents = new ArrayList<>();
 
         MenuButton resumeGame = new MenuButton(MenuButton.ButtonAction.LEAVE_MENU);
@@ -100,7 +102,7 @@ public class Menu {
         return menuHeight;
     }
 
-    public void render() {
+    public void update(long timeElapsed) {
         gapBetweenComponents = 30f * Parameters.getResolutionFactor();
         maxMenuHeight = 600f * Parameters.getResolutionFactor();
 
@@ -116,13 +118,7 @@ public class Menu {
             menuScrollBar = new MenuScrollBar();
         }
 
-        double menuCoordinateY;
-        if (menuHeight > maxMenuHeight) {
-            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - maxMenuHeight / 2.0;
-        } else {
-            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - menuHeight / 2.0;
-        }
-        coordinates = new Coordinates(Parameters.getResolutionWidth() / 2.0,   menuCoordinateY);
+        updateCoordinates();
 
         /** UPDATE COMPONENTS **/
         MenuComponent component;
@@ -140,6 +136,17 @@ public class Menu {
             }
             component.update(newXCoordinate, newYCoordinate);
         }
+
+        if (menuScrollBar != null) {
+            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 325f * Parameters.getResolutionFactor()),
+                    (int) (Menu.getInstance().getCoordinates().y),
+                    (int) (20f * Parameters.getResolutionFactor()),
+                    (int) maxMenuHeight);
+        }
+    }
+
+    public void render() {
+        MenuComponent component;
 
         glDisable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_TRIANGLES);
@@ -160,10 +167,6 @@ public class Menu {
         glDisable(GL_TEXTURE_2D);
 
         if (menuScrollBar != null) {
-            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 325f * Parameters.getResolutionFactor()),
-                    (int) (Menu.getInstance().getCoordinates().y),
-                    (int) (20f * Parameters.getResolutionFactor()),
-                    (int) maxMenuHeight);
             menuScrollBar.renderBackground();
             menuScrollBar.renderInfo();
         }
@@ -171,6 +174,16 @@ public class Menu {
 
     public Coordinates getCoordinates() {
         return coordinates;
+    }
+
+    public void updateCoordinates() {
+        double menuCoordinateY;
+        if (menuHeight > maxMenuHeight) {
+            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - maxMenuHeight / 2.0;
+        } else {
+            menuCoordinateY = Parameters.getResolutionHeight() / 2.0 - menuHeight / 2.0;
+        }
+        coordinates = new Coordinates(Parameters.getResolutionWidth() / 2.0,   menuCoordinateY);
     }
 
     public MenuScrollBar getMenuScrollBar() {

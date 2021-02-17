@@ -1,5 +1,7 @@
 package main;
 
+import console.Console;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -66,7 +68,7 @@ public class Log {
     }
 
     private static void l(String log, String ansiColor) {
-        console.Console.addNewLine(log);
+        Console.getInstance().addNewLine(log);
         if (!fileCreated) {
             createLogFile();
             openLogFile();

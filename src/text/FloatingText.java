@@ -1,6 +1,7 @@
 package text;
 
 import main.GameStatus;
+import main.Log;
 import main.OpenGLManager;
 
 import java.util.ArrayList;
@@ -17,16 +18,20 @@ public class FloatingText {
         listOfFloatingTextEntities.add(floatingTextEntity);
     }
 
-    public static void updateAndRender(long timeElapsed) {
-        FloatingTextEntity entity;
-        TextRendering.fontSpriteWhite.bind();
-        glEnable(GL_TEXTURE_2D);
-        OpenGLManager.glBegin(GL_QUADS);
-        for (int i = 0; i < listOfFloatingTextEntities.size(); i++) {
-            entity = listOfFloatingTextEntities.get(i);
+    public static void update(long timeElapsed) {
+        ArrayList<FloatingTextEntity> tempList = new ArrayList<>(listOfFloatingTextEntities);
+        for (FloatingTextEntity entity : tempList) {
             if (GameStatus.getStatus() == GameStatus.Status.RUNNING) {
                 entity.update(timeElapsed);
             }
+        }
+    }
+
+    public static void render() {
+        TextRendering.fontSpriteWhite.bind();
+        glEnable(GL_TEXTURE_2D);
+        OpenGLManager.glBegin(GL_QUADS);
+        for (FloatingTextEntity entity : listOfFloatingTextEntities) {
             entity.render();
         }
         glEnd();

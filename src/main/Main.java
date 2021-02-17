@@ -21,7 +21,6 @@ public class Main {
             System.exit(0);
         }
 
-        Console.init();
         Log.l("OS Name " + System.getProperty("os.name"));
         Log.l("OS Version " + System.getProperty("os.version"));
 
@@ -34,7 +33,7 @@ public class Main {
             FramesPerSecond.update(1000000000f / timeElapsedNanos);
 
             Game.update(timeElapsedMillis);
-            Game.render(timeElapsedMillis);
+            Game.render();
 
             glfwSwapBuffers(Window.getWindow());
             glfwPollEvents();

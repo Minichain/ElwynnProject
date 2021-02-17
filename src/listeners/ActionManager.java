@@ -191,9 +191,9 @@ public class ActionManager {
     public static void processKeyPressed(int[] key, boolean pressed) {
 //        Log.l("Process key pressed " + key[0] + ", " + key[1] + ". Pressed: " + pressed);
         if (isSameKeyCombination(key, Action.OPEN_CLOSE_CONSOLE.getActionKey())) {
-            if (!pressed) Console.setTypingMode(!Console.isTypingMode());
-        } else if (Console.isTypingMode()) {
-            if (pressed) Console.processInputKey(key);
+            if (!pressed) Console.getInstance().setTypingMode(!Console.getInstance().isTypingMode());
+        } else if (Console.getInstance().isTypingMode()) {
+            if (pressed) Console.getInstance().processInputKey(key);
             return;
         }
 
