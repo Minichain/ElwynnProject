@@ -5,7 +5,17 @@ import entities.Sprite;
 import entities.SpriteManager;
 
 public enum ItemType {
-    GOLD_COIN, HEALTH_POTION, MANA_POTION, HASTE_POTION, WOOD;
+    GOLD_COIN (0), HEALTH_POTION (1), MANA_POTION (2), HASTE_POTION (3), WOOD (4);
+
+    public final int value;
+
+    ItemType(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 
     public Sprite getSprite() {
         switch (this) {
