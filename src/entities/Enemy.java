@@ -358,6 +358,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     private void computePath() {
+        //Computing Path Finding could take from 0.5 milliseconds to several milliseconds (> 5 ms) depending on the complexity of the path
         pathFindingAlgorithm = new PathFindingAlgorithm(getCenterOfMassWorldCoordinates(), Player.getInstance().getCenterOfMassWorldCoordinates());
         pathFindingAlgorithm.computeBestPath();
     }

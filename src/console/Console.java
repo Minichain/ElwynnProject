@@ -15,6 +15,7 @@ public class Console {
     private int maxNumberOfLines;
     private boolean typingMode;
     private String currentInput;
+    private double oscillation;
 
     private class ConsoleLine {
         private float timeToLive = 10000f;
@@ -46,6 +47,7 @@ public class Console {
         maxNumberOfLines = 10;
         typingMode = false;
         currentInput = "";
+        oscillation = 0;
     }
 
     public static Console getInstance() {
@@ -60,14 +62,19 @@ public class Console {
         for (ConsoleLine listOfTextLine : listOfTextLines) {
             listOfTextLine.update(timeElapsed);
         }
+        oscillation += (timeElapsed / 200.0);
+        oscillation %= (Math.PI * 2);
     }
 
     public void render() {
+        int inputLength = currentInput.length();
+
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         if (isTypingMode()) {
             OpenGLManager.glBegin(GL_TRIANGLES);
             OpenGLManager.drawRectangle((int) coordinates.x, (int) coordinates.y, 1000, 24 * Parameters.getResolutionFactor(), 0.5, 0f, 0f, 0f);
+            OpenGLManager.drawRectangle((int) (coordinates.x + (inputLength * TextRendering.CHARACTER_WIDTH * 2f)), (int) coordinates.y, 1, 24 * Parameters.getResolutionFactor(), (Math.sin(oscillation) + 1) / 2, 1f, 1f, 1f);
             glEnd();
         }
 
@@ -75,7 +82,7 @@ public class Console {
         glEnable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_QUADS);
 
-        if (!currentInput.isEmpty()) {
+        if (isTypingMode() && inputLength > 0) {
             TextRendering.renderText((int) coordinates.x, (int) coordinates.y, currentInput, 2f * Parameters.getResolutionFactor(),
                     true, 1, 1f, 1f, 1f);
         }

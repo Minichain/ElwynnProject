@@ -131,6 +131,7 @@ public class Scene {
 
         /** SORT ENTITIES BY DEPTH (BUBBLE ALGORITHM) **/
         //TODO Replace Bubble Algorithm by Insertion Sort Algorithm or Quick Sort Algorithm to improve performance.
+        //Bubble Algorithm takes around 44000 nanoseconds (0.044 milliseconds) to sort ~150 entities.
         int n = listOfGraphicEntities.size() - 1;
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < (n - i); j++) {
