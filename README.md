@@ -17,7 +17,7 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 
 ## [Download](https://drive.google.com/drive/folders/1ouFLMoRi2XZKDLciLRhzkJsJ3ALuE3bf?usp=sharing)
 
-## Path Notes
+## Patch Notes
 
 * **v0.03.00.0**
     * Inventory added.
