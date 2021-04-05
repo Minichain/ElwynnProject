@@ -37,8 +37,8 @@ public class MenuSelector extends MenuComponent {
 
     @Override
     public void update(int x, int y) {
-        int width = (int) (550f * Parameters.getResolutionFactor());
-        int height = (int) (50f * Parameters.getResolutionFactor());
+        int width = (int) (550f * Parameters.getHeightResolutionFactor());
+        int height = (int) (50f * Parameters.getHeightResolutionFactor());
         update(x, y, width, height);
     }
 
@@ -92,7 +92,7 @@ public class MenuSelector extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        float scale = 2 * Parameters.getResolutionFactor();
+        float scale = 2 * Parameters.getHeightResolutionFactor();
         int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
         TextRendering.renderText(textX, textY, getText(), scale, true);
@@ -168,7 +168,7 @@ public class MenuSelector extends MenuComponent {
         }
 
         public void recenter(int[] center) {
-            int halfSize = (int) ((size / 2f) * Parameters.getResolutionFactor());
+            int halfSize = (int) ((size / 2f) * Parameters.getHeightResolutionFactor());
             if (leftOriented) {
                 this.vertex1 = new Coordinates(center[0] - halfSize, center[1]);
                 this.vertex2 = new Coordinates(center[0] + halfSize, center[1] + halfSize);

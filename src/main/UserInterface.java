@@ -147,15 +147,15 @@ public class UserInterface {
                 if (nonPlayerCharacter.isInteracting()) {
                     if (nonPlayerCharacter.isTalking()) {
                         int x = (int) interactionEntity.getCameraCoordinates().x;
-                        int y = (int) (interactionEntity.getCameraCoordinates().y + 25 * Parameters.getResolutionFactor());
-                        float scale = 2f * Parameters.getResolutionFactor();
+                        int y = (int) (interactionEntity.getCameraCoordinates().y + 25 * Parameters.getHeightResolutionFactor());
+                        float scale = 2f * Parameters.getHeightResolutionFactor();
                         while (nonPlayerCharacter.getTalkTextPage() >= nonPlayerCharacter.getTalkText().size()) {
                             nonPlayerCharacter.setTalkTextPage(nonPlayerCharacter.getTalkTextPage() - 1);
                         }
                         TextRendering.renderText(x, y, nonPlayerCharacter.getTalkText().get(nonPlayerCharacter.getTalkTextPage()), scale);
 
                         if (nonPlayerCharacter.getTalkText().size() > 1) {
-                            y = (int) (interactionEntity.getCameraCoordinates().y + 50 * Parameters.getResolutionFactor());
+                            y = (int) (interactionEntity.getCameraCoordinates().y + 50 * Parameters.getHeightResolutionFactor());
                             TextRendering.renderText(x, y, (nonPlayerCharacter.getTalkTextPage() + 1) + "/" + nonPlayerCharacter.getTalkText().size(), scale);
                         }
                     } else {
@@ -176,13 +176,13 @@ public class UserInterface {
 
                         glDisable(GL_TEXTURE_2D);
                         OpenGLManager.glBegin(GL_TRIANGLES);
-                        int x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (325f * Parameters.getResolutionFactor());
-                        int y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (25f * size * Parameters.getResolutionFactor());
-                        OpenGLManager.drawRectangle(x, y, 500f * Parameters.getResolutionFactor(), (size * 25f + 50f) * Parameters.getResolutionFactor(),
+                        int x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (325f * Parameters.getHeightResolutionFactor());
+                        int y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (25f * size * Parameters.getHeightResolutionFactor());
+                        OpenGLManager.drawRectangle(x, y, 500f * Parameters.getHeightResolutionFactor(), (size * 25f + 50f) * Parameters.getHeightResolutionFactor(),
                                 0.8, 0.2f);
                         glEnd();
 
-                        x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (300f * Parameters.getResolutionFactor());
+                        x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (300f * Parameters.getHeightResolutionFactor());
 
 
                         for (int i = 0; i < size; i++) {
@@ -196,8 +196,8 @@ public class UserInterface {
                             if (i == nonPlayerCharacter.getSelectedItem()) {
                                 text += " <-";
                             }
-                            y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (((25f * size - 25f) - i * 25f) * Parameters.getResolutionFactor());
-                            TextRendering.renderText(x, y, text, 2f * Parameters.getResolutionFactor());
+                            y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (((25f * size - 25f) - i * 25f) * Parameters.getHeightResolutionFactor());
+                            TextRendering.renderText(x, y, text, 2f * Parameters.getHeightResolutionFactor());
                         }
                     }
                 }
@@ -209,7 +209,7 @@ public class UserInterface {
 //        Log.l("Render Debug UI");
 
         /** RENDER DEBUG TEXT **/
-        float textScale = 2f * Parameters.getResolutionFactor();
+        float textScale = 2f * Parameters.getHeightResolutionFactor();
         float topMargin = 10;
         float leftMargin = 10;
         float gapBetweenTexts = 10 * textScale;

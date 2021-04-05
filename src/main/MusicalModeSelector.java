@@ -40,7 +40,7 @@ public class MusicalModeSelector {
         int sections = MusicalMode.values().length;
         vertices = new Coordinates[3][sections];
         double angle = - Math.PI / 2;
-        int sectionLength = (int) (500 * Parameters.getResolutionFactor());
+        int sectionLength = (int) (500 * Parameters.getHeightResolutionFactor());
 
         for (int i = 0; i < sections; i++) {
             vertices[0][i] = new Coordinates(Window.getWidth() / 2, Window.getHeight() / 2);
@@ -82,7 +82,7 @@ public class MusicalModeSelector {
         glEnd();
 
         /** RENDER ICONS **/
-        int sectionLength = (int) (500 * Parameters.getResolutionFactor());
+        int sectionLength = (int) (500 * Parameters.getHeightResolutionFactor());
         double angle = - Math.PI / 2 + (Math.PI / (sections));
         int x, y;
         for (int i = 0; i < sections; i++) {
@@ -91,7 +91,7 @@ public class MusicalModeSelector {
             if (selectedMusicalMode == i) transparency = 1.0;
             else transparency = 0.5;
             MusicalMode.values()[i].getSprite().draw(x, y, (float) transparency,
-                    4f * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor(), true);
+                    4f * Parameters.getHeightResolutionFactor(), MusicalMode.values()[i].getColor(), true);
             angle += 2 * Math.PI / sections;
         }
     }

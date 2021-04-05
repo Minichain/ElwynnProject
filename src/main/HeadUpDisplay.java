@@ -25,36 +25,36 @@ public class HeadUpDisplay {
             /** MUSICAL MODE **/
             renderMusicalModes();
 
-            float rightPaddingText = 100f * Parameters.getResolutionFactor();
-            float rightPaddingSprite = 150f * Parameters.getResolutionFactor();
+            float rightPaddingText = 100f * Parameters.getHeightResolutionFactor();
+            float rightPaddingSprite = 150f * Parameters.getHeightResolutionFactor();
 
             /** GOLD COINS **/
             renderItemInfo(SpriteManager.getInstance().GOLD_COIN, Player.getInstance().getAmountOfGoldCoins(), rightPaddingSprite,
-                    25f * Parameters.getResolutionFactor(), rightPaddingText, 50f * Parameters.getResolutionFactor());
+                    25f * Parameters.getHeightResolutionFactor(), rightPaddingText, 50f * Parameters.getHeightResolutionFactor());
 
             /** HEALTH POTIONS **/
             renderItemInfo(SpriteManager.getInstance().HEALTH_POTION, Player.getInstance().getAmountOfHealthPotions(), rightPaddingSprite,
-                    75f * Parameters.getResolutionFactor(), rightPaddingText, 100f * Parameters.getResolutionFactor());
+                    75f * Parameters.getHeightResolutionFactor(), rightPaddingText, 100f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
-                    (int) (Window.getHeight() - 75f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+                    (int) (Window.getHeight() - 75f * Parameters.getHeightResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
 
             /** MANA POTIONS **/
             renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
-                    125f * Parameters.getResolutionFactor(), rightPaddingText, 150f * Parameters.getResolutionFactor());
+                    125f * Parameters.getHeightResolutionFactor(), rightPaddingText, 150f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
-                    (int) (Window.getHeight() - 125f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+                    (int) (Window.getHeight() - 125f * Parameters.getHeightResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
 
             /** HASTE POTIONS **/
             renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
-                    175f * Parameters.getResolutionFactor(), rightPaddingText, 200f * Parameters.getResolutionFactor());
+                    175f * Parameters.getHeightResolutionFactor(), rightPaddingText, 200f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getResolutionFactor()),
-                    (int) (Window.getHeight() - 175f * Parameters.getResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getResolutionFactor());
+            SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+                    (int) (Window.getHeight() - 175f * Parameters.getHeightResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
@@ -67,14 +67,14 @@ public class HeadUpDisplay {
                 OpenGLManager.glBegin(GL_QUADS);
                 for (int i = 0; i < 25; i++) {
                     currentTile = selectedTile + i - previousTilesToShow;
-                    x = 20f * Parameters.getResolutionFactor() + i * 128f * Parameters.getResolutionFactor();
-                    y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+                    x = 20f * Parameters.getHeightResolutionFactor() + i * 128f * Parameters.getHeightResolutionFactor();
+                    y = Parameters.getResolutionHeight() - 100f * Parameters.getHeightResolutionFactor();
                     if (currentTile == selectedTile) {   // Highlight the tile we have selected
-                        TileMap.drawTile(currentTile, x + 5, y + 10, 10 * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
-                        TileMap.drawTile(currentTile, x, y, 10 * Parameters.getResolutionFactor(), 1f, 1f, 1f, true);
+                        TileMap.drawTile(currentTile, x + 5, y + 10, 10 * Parameters.getHeightResolutionFactor(), 0f, 0f, 0f, true);
+                        TileMap.drawTile(currentTile, x, y, 10 * Parameters.getHeightResolutionFactor(), 1f, 1f, 1f, true);
                     } else {
-                        TileMap.drawTile(currentTile, x + 5, y + 5, 8 * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
-                        TileMap.drawTile(currentTile, x, y, 8 * Parameters.getResolutionFactor(), 0.5f, 0.5f, 0.5f, true);
+                        TileMap.drawTile(currentTile, x + 5, y + 5, 8 * Parameters.getHeightResolutionFactor(), 0f, 0f, 0f, true);
+                        TileMap.drawTile(currentTile, x, y, 8 * Parameters.getHeightResolutionFactor(), 0.5f, 0.5f, 0.5f, true);
                     }
                 }
                 glEnd();
@@ -85,8 +85,8 @@ public class HeadUpDisplay {
 
                 glDisable(GL_TEXTURE_2D);
                 OpenGLManager.glBegin(GL_TRIANGLES);
-                OpenGLManager.drawRectangle(0, (int) (Window.getHeight() - (250f * Parameters.getResolutionFactor())),
-                        Window.getWidth(), 200f * Parameters.getResolutionFactor(), 0.7, 0);
+                OpenGLManager.drawRectangle(0, (int) (Window.getHeight() - (250f * Parameters.getHeightResolutionFactor())),
+                        Window.getWidth(), 200f * Parameters.getHeightResolutionFactor(), 0.7, 0);
                 glEnd();
 
                 for (int i = 0; i < 25; i++) {
@@ -100,12 +100,12 @@ public class HeadUpDisplay {
 
                     float width;
                     if (sprite != null && (20f + sprite.SPRITE_WIDTH * 2f) > 125f) {
-                        width = (20f + sprite.SPRITE_WIDTH * 2f) * Parameters.getResolutionFactor();
+                        width = (20f + sprite.SPRITE_WIDTH * 2f) * Parameters.getHeightResolutionFactor();
                     } else {
-                        width = 125f * Parameters.getResolutionFactor();
+                        width = 125f * Parameters.getHeightResolutionFactor();
                     }
 
-                    y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+                    y = Parameters.getResolutionHeight() - 100f * Parameters.getHeightResolutionFactor();
 
                     float transparency;
                     float scale;
@@ -117,7 +117,7 @@ public class HeadUpDisplay {
                         scale = 1.5f;
                     }
                     if (sprite != null) {
-                        sprite.draw((int) x, (int) y, 0, 0, transparency, scale * Parameters.getResolutionFactor());
+                        sprite.draw((int) x, (int) y, 0, 0, transparency, scale * Parameters.getHeightResolutionFactor());
                     }
 
                     x += width;
@@ -133,8 +133,8 @@ public class HeadUpDisplay {
                     TileMap.bindTileSetTexture();
                     glEnable(GL_TEXTURE_2D);
                     OpenGLManager.glBegin(GL_QUADS);
-                    TileMap.drawTile(selectedTile, mouseX + 5, mouseY + 5, 5f * Parameters.getResolutionFactor(), 0f, 0f, 0f, true);
-                    TileMap.drawTile(selectedTile, mouseX, mouseY, 5f * Parameters.getResolutionFactor(), 1f, 1f, 1f, true);
+                    TileMap.drawTile(selectedTile, mouseX + 5, mouseY + 5, 5f * Parameters.getHeightResolutionFactor(), 0f, 0f, 0f, true);
+                    TileMap.drawTile(selectedTile, mouseX, mouseY, 5f * Parameters.getHeightResolutionFactor(), 1f, 1f, 1f, true);
                     glEnd();
                     glDisable(GL_TEXTURE_2D);
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
@@ -152,50 +152,50 @@ public class HeadUpDisplay {
         /** YOU DIED **/
         if (!Menu.getInstance().isShowing() && Player.getInstance().getStatus() == Player.Status.DEAD) {
             String text = Strings.getString("ui_you_died");
-            float scale = 4f * Parameters.getResolutionFactor();
+            float scale = 4f * Parameters.getHeightResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
         }
     }
 
     private static void renderItemInfo(Sprite sprite, int amount, float rightPaddingSprite, float bottomPaddingSprite, float rightPaddingText, float bottomPaddingText) {
         sprite.draw((int) (Window.getWidth() - rightPaddingSprite), (int) (Window.getHeight() - bottomPaddingSprite),
-                0, 0, 1f, 4f * Parameters.getResolutionFactor());
+                0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
         TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - bottomPaddingText,
-                "x" + amount, 2f * Parameters.getResolutionFactor(), false, 1f);
+                "x" + amount, 2f * Parameters.getHeightResolutionFactor(), false, 1f);
     }
 
     private static void renderHealthManaAndStaminaBars() {
-        float x = 30f * Parameters.getResolutionFactor();
-        float y = Parameters.getResolutionHeight() - 100f * Parameters.getResolutionFactor();
+        float x = 30f * Parameters.getHeightResolutionFactor();
+        float y = Parameters.getResolutionHeight() - 100f * Parameters.getHeightResolutionFactor();
         float scale = 4f;
-        float width = (SpriteManager.getInstance().EMPTY_BAR.SPRITE_WIDTH * Parameters.getResolutionFactor() * scale);
-        float height = SpriteManager.getInstance().EMPTY_BAR.SPRITE_HEIGHT * Parameters.getResolutionFactor() * scale;
+        float width = (SpriteManager.getInstance().EMPTY_BAR.SPRITE_WIDTH * Parameters.getHeightResolutionFactor() * scale);
+        float height = SpriteManager.getInstance().EMPTY_BAR.SPRITE_HEIGHT * Parameters.getHeightResolutionFactor() * scale;
         float healthPercentage = Player.getInstance().getHealth() / Player.MAX_HEALTH;
         float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
         float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
 
         renderBar(SpriteManager.getInstance().HEALTH_BAR, x, y, width, height, healthPercentage, scale);
-        y += 40f * Parameters.getResolutionFactor();
+        y += 40f * Parameters.getHeightResolutionFactor();
         renderBar(SpriteManager.getInstance().MANA_BAR, x, y, width, height, manaPercentage, scale);
-        y += 40f * Parameters.getResolutionFactor();
+        y += 40f * Parameters.getHeightResolutionFactor();
         renderBar(SpriteManager.getInstance().STAMINA_BAR, x, y, width, height, staminaPercentage, scale);
     }
 
     private static void renderBar(Sprite sprite, float x, float y, float width, float height, float percentage, float scale) {
         SpriteManager.getInstance().EMPTY_BAR.draw((int) (x), (int) (y),
-                0, 0, 1f, scale * Parameters.getResolutionFactor());
+                0, 0, 1f, scale * Parameters.getHeightResolutionFactor());
         sprite.customDraw((int) (x), (int) (y), (int) (percentage * width), (int) (height),
-                0, 1, percentage, 0, 1f, scale * Parameters.getResolutionFactor());
+                0, 1, percentage, 0, 1f, scale * Parameters.getHeightResolutionFactor());
     }
 
     private static void renderMusicalModes() {
         int numberOfModes = MusicalMode.values().length;
-        int spaceBetweenModes = (int) (16f * Parameters.getResolutionFactor());
-        float modeRoom = 64f * Parameters.getResolutionFactor();
+        int spaceBetweenModes = (int) (16f * Parameters.getHeightResolutionFactor());
+        float modeRoom = 64f * Parameters.getHeightResolutionFactor();
         float scale;
         float width = (modeRoom + spaceBetweenModes) * (numberOfModes - 1);
         float x = Parameters.getResolutionWidth() / 2f - width / 2f;
-        float y = Parameters.getResolutionHeight() - 80f * Parameters.getResolutionFactor();
+        float y = Parameters.getResolutionHeight() - 80f * Parameters.getHeightResolutionFactor();
         MusicalMode currentMusicalMode;
         float transparency;
         for (int i = 0; i < numberOfModes; i++) {
@@ -208,7 +208,7 @@ public class HeadUpDisplay {
                 scale = 4f;
             }
             currentMusicalMode.getSprite().draw((int) x, (int) y, transparency,
-                    scale * Parameters.getResolutionFactor(), MusicalMode.values()[i].getColor(), true);
+                    scale * Parameters.getHeightResolutionFactor(), MusicalMode.values()[i].getColor(), true);
             x += modeRoom + spaceBetweenModes;
         }
     }

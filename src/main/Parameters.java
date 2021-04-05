@@ -18,7 +18,8 @@ public class Parameters {
     private static int framesPerSecond;
     private static boolean fullScreen;
     private static Resolution resolution;
-    private static float resolutionFactor;
+    private static float widthResolutionFactor;
+    private static float heightResolutionFactor;
 
     public static void init() {
         int dataBaseValue;
@@ -107,11 +108,16 @@ public class Parameters {
         Log.l("setResolution to " + resolution);
         Parameters.resolution = resolution;
         DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
-        Parameters.resolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+        Parameters.widthResolutionFactor = (float) Parameters.getResolutionWidth() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[0];
+        Parameters.heightResolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
     }
 
-    public static float getResolutionFactor() {
-        return resolutionFactor;
+    public static float getWidthResolutionFactor() {
+        return Parameters.widthResolutionFactor;
+    }
+
+    public static float getHeightResolutionFactor() {
+        return Parameters.heightResolutionFactor;
     }
 
     public static boolean isFullScreen() {

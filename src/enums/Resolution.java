@@ -13,8 +13,9 @@ public enum Resolution {
     RESOLUTION_1024_768 (5),    //4:3
     RESOLUTION_1600_900 (6),
     RESOLUTION_1920_1080 (7),   //16:9, 1080p, Full HD
-    RESOLUTION_2560_1440 (8),    //16:9
-    RESOLUTION_3840_2160 (9);    //16:9, 4K
+    RESOLUTION_2560_1080 (8),   //21:9
+    RESOLUTION_2560_1440 (9),    //16:9
+    RESOLUTION_3840_2160 (10);    //16:9, 4K
 
     int resolutionValue;
 
@@ -46,7 +47,11 @@ public enum Resolution {
                 return RESOLUTION_1600_900;
             case 1080:
             default:
-                return RESOLUTION_1920_1080;
+                if (width == 2560) {
+                    return RESOLUTION_2560_1080;
+                } else {
+                    return RESOLUTION_1920_1080;
+                }
             case 1440:
                 return RESOLUTION_2560_1440;
             case 2160:
@@ -73,6 +78,8 @@ public enum Resolution {
             case RESOLUTION_1920_1080:
             default:
                 return new int[]{1920, 1080};
+            case RESOLUTION_2560_1080:
+                return new int[]{2560, 1080};
             case RESOLUTION_2560_1440:
                 return new int[]{2560, 1440};
             case RESOLUTION_3840_2160:
@@ -99,6 +106,8 @@ public enum Resolution {
             case RESOLUTION_1920_1080:
             default:
                 return "1920x1080";
+            case RESOLUTION_2560_1080:
+                return "2560x1080";
             case RESOLUTION_2560_1440:
                 return "2560x1440";
             case RESOLUTION_3840_2160:

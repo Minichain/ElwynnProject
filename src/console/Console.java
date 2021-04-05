@@ -34,7 +34,7 @@ public class Console {
 
         public void render(int x, int y) {
             TextRendering.renderText(x, y, this.string,
-                    2f * Parameters.getResolutionFactor(), true, 1f - (timeLiving / timeToLive), 1f, 1f, 1f);
+                    2f * Parameters.getHeightResolutionFactor(), true, 1f - (timeLiving / timeToLive), 1f, 1f, 1f);
         }
 
         public String getString() {
@@ -73,8 +73,11 @@ public class Console {
         glEnable(GL_BLEND);
         if (isTypingMode()) {
             OpenGLManager.glBegin(GL_TRIANGLES);
-            OpenGLManager.drawRectangle((int) coordinates.x, (int) coordinates.y, 1000, 24 * Parameters.getResolutionFactor(), 0.5, 0f, 0f, 0f);
-            OpenGLManager.drawRectangle((int) (coordinates.x + (inputLength * TextRendering.CHARACTER_WIDTH * 2f)), (int) coordinates.y, 1, 24 * Parameters.getResolutionFactor(), (Math.sin(oscillation) + 1) / 2, 1f, 1f, 1f);
+            OpenGLManager.drawRectangle((int) coordinates.x, (int) coordinates.y,
+                    1000, 24 * Parameters.getHeightResolutionFactor(), 0.5, 0f, 0f, 0f);
+            OpenGLManager.drawRectangle((int) (coordinates.x + (inputLength * TextRendering.CHARACTER_WIDTH * 2f * Parameters.getWidthResolutionFactor())),
+                    (int) coordinates.y, 1, 24 * Parameters.getHeightResolutionFactor(),
+                    (Math.sin(oscillation) + 1) / 2, 1f, 1f, 1f);
             glEnd();
         }
 
@@ -83,12 +86,12 @@ public class Console {
         OpenGLManager.glBegin(GL_QUADS);
 
         if (isTypingMode() && inputLength > 0) {
-            TextRendering.renderText((int) coordinates.x, (int) coordinates.y, currentInput, 2f * Parameters.getResolutionFactor(),
+            TextRendering.renderText((int) coordinates.x, (int) coordinates.y, currentInput, 2f * Parameters.getHeightResolutionFactor(),
                     true, 1, 1f, 1f, 1f);
         }
         for (int i = 1; i <= listOfTextLines.size(); i++) {
-            int x = (int) coordinates.x;
-            int y = (int) (coordinates.y - i * (24 * Parameters.getResolutionFactor()));
+            int x = (int) (coordinates.x);
+            int y = (int) (coordinates.y - i * (24 * Parameters.getHeightResolutionFactor()));
             listOfTextLines.get(listOfTextLines.size() - i).render(x, y);
         }
 

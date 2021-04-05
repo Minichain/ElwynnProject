@@ -19,8 +19,8 @@ public class InventorySlot {
     }
 
     public void update(long timeElapsed) {
-        setWidth((int) (50f * Parameters.getResolutionFactor()));
-        setHeight((int) (50f * Parameters.getResolutionFactor()));
+        setWidth((int) (50f * Parameters.getHeightResolutionFactor()));
+        setHeight((int) (50f * Parameters.getHeightResolutionFactor()));
     }
 
     public void render() {
@@ -31,9 +31,9 @@ public class InventorySlot {
         if (item != null) {
             int x = (int) coordinates.x + (getWidth() / 2);
             int y = (int) coordinates.y + (getHeight() / 2);
-            item.getSprite().draw(x, y, 0, 0, 1f, 4.0 * Parameters.getResolutionFactor(), true);
+            item.getSprite().draw(x, y, 0, 0, 1f, 4.0 * Parameters.getHeightResolutionFactor(), true);
             if (amount > 1) {
-                TextRendering.renderText(x, y, "x" + amount, 2f * Parameters.getResolutionFactor());
+                TextRendering.renderText(x, y, "x" + amount, 2f * Parameters.getHeightResolutionFactor());
             }
         }
     }

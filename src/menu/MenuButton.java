@@ -18,8 +18,8 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void update(int x, int y) {
-        int width = (int) (550f * Parameters.getResolutionFactor());
-        int height = (int) (50f * Parameters.getResolutionFactor());
+        int width = (int) (550f * Parameters.getHeightResolutionFactor());
+        int height = (int) (50f * Parameters.getHeightResolutionFactor());
         update(x, y, width, height);
     }
 
@@ -95,7 +95,7 @@ public class MenuButton extends MenuComponent {
 
     @Override
     public void renderInfo() {
-        float scale = 2 * Parameters.getResolutionFactor();
+        float scale = 2 * Parameters.getHeightResolutionFactor();
         int textX = (int) (x + (width / 2f) - (TextRendering.CHARACTER_WIDTH * scale * getText().length() / 2f));
         int textY = (int) (y + (height / 2f) - (TextRendering.CHARACTER_HEIGHT * scale / 2f));
         TextRendering.renderText(textX, textY, getText(), scale, true);

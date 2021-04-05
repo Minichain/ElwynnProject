@@ -39,7 +39,7 @@ public class Inventory {
         int numberOfSlots, numberOfRows, row;
         numberOfSlots = listOfSlots.size();
         numberOfRows = (int) Math.ceil(numberOfSlots / 4f);
-        coordinates = new Coordinates(Window.getWidth() / 2f + (int) (350f * Parameters.getResolutionFactor()),
+        coordinates = new Coordinates(Window.getWidth() / 2f + (int) (350f * Parameters.getHeightResolutionFactor()),
                 Window.getHeight() - (int) ((numberOfRows * InventorySlot.getHeight() * 1.5f) + InventorySlot.getHeight() * 2));
         width = (int) (InventorySlot.getWidth() * 6.5f);
         height = (int) (numberOfRows * InventorySlot.getHeight() + (numberOfRows + 1) * (InventorySlot.getHeight() / 2f));

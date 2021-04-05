@@ -66,7 +66,7 @@ public class Camera {
     }
 
     public static double getZoom() {
-        return zoom * Parameters.getResolutionFactor();
+        return zoom * Parameters.getHeightResolutionFactor();
     }
 
     public static void setZoom(double zoom) {

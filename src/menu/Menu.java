@@ -103,8 +103,8 @@ public class Menu {
     }
 
     public void update(long timeElapsed) {
-        gapBetweenComponents = 30f * Parameters.getResolutionFactor();
-        maxMenuHeight = 600f * Parameters.getResolutionFactor();
+        gapBetweenComponents = 30f * Parameters.getHeightResolutionFactor();
+        maxMenuHeight = 600f * Parameters.getHeightResolutionFactor();
 
         /** COMPUTE MENU HEIGHT **/
         menuHeight = 0f;
@@ -138,9 +138,9 @@ public class Menu {
         }
 
         if (menuScrollBar != null) {
-            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 325f * Parameters.getResolutionFactor()),
+            menuScrollBar.update((int) (Menu.getInstance().getCoordinates().x - menuScrollBar.width / 2f + 325f * Parameters.getHeightResolutionFactor()),
                     (int) (Menu.getInstance().getCoordinates().y),
-                    (int) (20f * Parameters.getResolutionFactor()),
+                    (int) (20f * Parameters.getHeightResolutionFactor()),
                     (int) maxMenuHeight);
         }
     }

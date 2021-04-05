@@ -43,7 +43,7 @@ public class FloatingTextEntity {
         float alpha = 1f - (float) (this.timeLiving / this.timeToLive);
         Coordinates entityCameraCoordinates = this.coordinates.toCameraCoordinates();
         TextRendering.renderText((int) entityCameraCoordinates.x, (int) entityCameraCoordinates.y, this.text,
-                Parameters.getResolutionFactor() * this.scale, true, alpha, color.getRed(), color.getGreen(), color.getBlue());
+                Parameters.getHeightResolutionFactor() * this.scale, true, alpha, color.getRed(), color.getGreen(), color.getBlue());
     }
 
     private void onDestroy() {
