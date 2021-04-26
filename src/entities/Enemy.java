@@ -30,7 +30,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private float attack01Power = 300f;
     private float attack01ManaCost = 0.1f;
 
-    private CircleAttack circleAttack;
     private int circleAttackPeriod = 10000;
     private int circleAttackCoolDown = 0;
     private float circleAttackPower = 100f;
@@ -403,26 +402,11 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
         if (status == Status.ATTACKING) {
             if (attack01CoolDown <= 0) {
-                new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
-                        0.15, musicalMode, attack01Power, 1500.0, true);
                 attack01CoolDown = attack01Period;
             }
         }
         if (attack01CoolDown > 0) {
             attack01CoolDown -= timeElapsed;
-        }
-
-        /** CIRCLE ATTACK **/
-        if (status == Status.ATTACKING) {
-            if (circleAttackCoolDown <= 0) {
-                circleAttack = new CircleAttack(new Coordinates(getWorldCoordinates().x - MathUtils.random(-100, 100), getWorldCoordinates().y - 100 + Math.random() * 200),
-                        30, 500, circleAttackPower, true, true, musicalMode);
-                Scene.listOfCircleAttacks.add(circleAttack);
-                circleAttackCoolDown = circleAttackPeriod;
-            }
-        }
-        if (circleAttackCoolDown > 0) {
-            circleAttackCoolDown -= timeElapsed;
         }
     }
 

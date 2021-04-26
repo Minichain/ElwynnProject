@@ -45,7 +45,7 @@
     <!--TUTORIAL-->
     <string name="tutorial_roll">Pressiona %1$ quan estiguis en moviment.../nl...per fer una tombarella.</string>
     <string name="tutorial_attack">Pressiona els botons ESQUERRE o DRET del ratolí per atacar.</string>
-    <string name="tutorial_change_musical_mode">Manté premut %1$ per canviar de mode musical./nlTambé pots utilitzar els números de l'1 al 7.</string>
+    <string name="tutorial_change_musical_mode">Manté premut %1$ per canviar de mode musical.</string>
     <string name="tutorial_follow_path">N'hi ha un poblat al sur d'aquí./nlSegueix el camí.../nl...no té pèrdua./nlBona sort!</string>
     <string name="tutorial_welcome">Benvingut...</string>
     <string name="tutorial_outsider">Uh...?/nlUn foraster!/nlUh.../nlVens de molt lluny?</string>

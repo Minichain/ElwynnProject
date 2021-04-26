@@ -6,6 +6,7 @@ import scene.Camera;
 import main.*;
 import menu.Menu;
 import org.lwjgl.glfw.*;
+import ui.HeadUpDisplay;
 
 import java.nio.ByteBuffer;
 import java.nio.FloatBuffer;

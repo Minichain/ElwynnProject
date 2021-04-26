@@ -18,10 +18,6 @@ public class SpecialEffects {
             }
         }
 
-        for (CircleAttack circleAttack : Scene.listOfCircleAttacks) {
-            circleAttack.render();
-        }
-
         ParticleManager.getInstance().renderParticles();
     }
 }

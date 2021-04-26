@@ -1,6 +1,7 @@
-package main;
+package ui;
 
 import entities.*;
+import main.*;
 import menu.Menu;
 import scene.TileMap;
 import listeners.InputListenerManager;

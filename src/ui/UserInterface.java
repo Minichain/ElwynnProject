@@ -1,5 +1,6 @@
-package main;
+package ui;
 
+import board.FretBoard;
 import console.Console;
 import entities.InteractionEntity;
 import entities.NonPlayerCharacter;
@@ -8,6 +9,7 @@ import enums.NonPlayerCharacterAction;
 import items.Item;
 import listeners.ActionManager;
 import listeners.InputListenerManager;
+import main.*;
 import menu.Menu;
 import scene.Camera;
 import scene.Scene;
@@ -97,6 +99,9 @@ public class UserInterface {
 
         /** CONSOLE **/
         Console.getInstance().update(timeElapsed);
+
+        /** MUSIC CHART **/
+        FretBoard.getInstance().update(timeElapsed);
     }
 
     public void render() {
@@ -136,6 +141,10 @@ public class UserInterface {
         }
 
         Console.getInstance().render();
+
+        if (HUDVisibility) {
+            FretBoard.getInstance().render();
+        }
     }
 
     private void renderNPCInteractions() {
@@ -239,5 +248,11 @@ public class UserInterface {
     public static void setHUDVisibility(boolean showInterface) {
         Log.l("Set HUD visibility to " + showInterface);
         UserInterface.HUDVisibility = showInterface;
+    }
+
+    public static void onResolutionChanged() {
+        Log.l("Resolution Changed. New resolution: " + Parameters.getResolutionWidth() + ", " + Parameters.getResolutionHeight());
+        Log.l("Resolution Changed. New resolution factor: " + Parameters.getWidthResolutionFactor() + ", " + Parameters.getHeightResolutionFactor());
+        FretBoard.getInstance().onResolutionChanged();
     }
 }

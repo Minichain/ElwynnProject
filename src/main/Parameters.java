@@ -4,6 +4,7 @@ import audio.OpenALManager;
 import database.DataBase;
 import enums.Language;
 import enums.Resolution;
+import ui.UserInterface;
 
 public class Parameters {
     private static boolean debugMode = false;
@@ -97,11 +98,11 @@ public class Parameters {
     }
 
     public static int getResolutionWidth() {
-        return resolution.getResolution()[0];
+        return Parameters.resolution.getResolution()[0];
     }
 
     public static int getResolutionHeight() {
-        return resolution.getResolution()[1];
+        return Parameters.resolution.getResolution()[1];
     }
 
     public static void setResolution(Resolution resolution) {
@@ -110,6 +111,7 @@ public class Parameters {
         DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
         Parameters.widthResolutionFactor = (float) Parameters.getResolutionWidth() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[0];
         Parameters.heightResolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+        UserInterface.onResolutionChanged();
     }
 
     public static float getWidthResolutionFactor() {

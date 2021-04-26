@@ -7,6 +7,8 @@ import menu.Menu;
 import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
+import ui.HeadUpDisplay;
+import ui.UserInterface;
 
 import static listeners.MyGLFW.myGlfwGetKeyName;
 import static org.lwjgl.glfw.GLFW.*;
@@ -32,21 +34,14 @@ public class ActionManager {
         RESET (16),
         CREATIVE_TILES_MODE (17),
         CREATIVE_STATIC_ENTITIES_MODE (18),
-        IONIAN_MODE (19),
-        DORIAN_MODE (20),
-        PHRYGIAN_MODE (21),
-        LYDIAN_MODE (22),
-        MIXOLYDIAN_MODE (23),
-        AEOLIAN_MODE (24),
-        LOCRIAN_MODE (25),
-        USE_HEALTH_POTION (27),
-        USE_MANA_POTION (28),
-        USE_HASTE_POTION (29),
-        SHOW_MUSICAL_MODE_SELECTOR (30),
-        OPEN_INVENTORY (31),
-        DEBUG_KEY (32),
-        CREATIVE_WARPS_MODE (33),
-        OPEN_CLOSE_CONSOLE (34)
+        USE_HEALTH_POTION (19),
+        USE_MANA_POTION (20),
+        USE_HASTE_POTION (21),
+        SHOW_MUSICAL_MODE_SELECTOR (22),
+        OPEN_INVENTORY (23),
+        DEBUG_KEY (24),
+        CREATIVE_WARPS_MODE (25),
+        OPEN_CLOSE_CONSOLE (26)
         ;
 
         int actionValue;
@@ -115,29 +110,14 @@ public class ActionManager {
                 case RESET:
                     key[0] = GLFW_KEY_F5;
                     break;
-                case IONIAN_MODE:
                 case CREATIVE_TILES_MODE:
                     key[0] = GLFW_KEY_1;
                     break;
-                case DORIAN_MODE:
                 case CREATIVE_STATIC_ENTITIES_MODE:
                     key[0] = GLFW_KEY_2;
                     break;
-                case PHRYGIAN_MODE:
                 case CREATIVE_WARPS_MODE:
                     key[0] = GLFW_KEY_3;
-                    break;
-                case LYDIAN_MODE:
-                    key[0] = GLFW_KEY_4;
-                    break;
-                case MIXOLYDIAN_MODE:
-                    key[0] = GLFW_KEY_5;
-                    break;
-                case AEOLIAN_MODE:
-                    key[0] = GLFW_KEY_6;
-                    break;
-                case LOCRIAN_MODE:
-                    key[0] = GLFW_KEY_7;
                     break;
                 case USE_HEALTH_POTION:
                     key[0] = GLFW_KEY_H;
@@ -271,20 +251,6 @@ public class ActionManager {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
         } else if (isSameKeyCombination(key, Action.CREATIVE_WARPS_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.WARPS);
-        } else if (isSameKeyCombination(key, Action.IONIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.IONIAN);
-        } else if (isSameKeyCombination(key, Action.DORIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.DORIAN);
-        } else if (isSameKeyCombination(key, Action.PHRYGIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.PHRYGIAN);
-        } else if (isSameKeyCombination(key, Action.LYDIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.LYDIAN);
-        } else if (isSameKeyCombination(key, Action.MIXOLYDIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.MIXOLYDIAN);
-        } else if (isSameKeyCombination(key, Action.AEOLIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.AEOLIAN);
-        } else if (isSameKeyCombination(key, Action.LOCRIAN_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
-            if (!pressed) Player.getInstance().setMusicalMode(MusicalMode.LOCRIAN);
         } else if (isSameKeyCombination(key, Action.ATTACK_01.getActionKey())) {
             if (!pressed && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
@@ -338,7 +304,7 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.DEBUG_KEY.getActionKey())) {
             /** DEBUG KEY **/
             if (!pressed) {
-
+                Log.l("Debug key pressed");
             }
         }
     }

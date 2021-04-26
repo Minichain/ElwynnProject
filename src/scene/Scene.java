@@ -30,8 +30,6 @@ public class Scene {
     private static int renderDistance;
     private static int updateDistance;
 
-    public static ArrayList<CircleAttack> listOfCircleAttacks;
-
     public static ArrayList<LightSource> listOfLightSources;
     public static ArrayList<LightSource> listOfVisibleLightSources;
     private double visibleLightSourceDistanceFactor = 30.0;
@@ -52,7 +50,6 @@ public class Scene {
         listOfGraphicEntities = new ArrayList<>();
         listOfStaticGraphicEntities = new ArrayList<>();
         listOfEnemies = new ArrayList<>();
-        listOfCircleAttacks = new ArrayList<>();
         listOfLightSources = new ArrayList<>();
         listOfVisibleLightSources = new ArrayList<>();
         listOfNonPlayerCharacters = new ArrayList<>();
@@ -77,10 +74,6 @@ public class Scene {
         updateAndSortEntities(timeElapsed);
         if (GameStatus.getStatus() == GameStatus.Status.PAUSED) return;
         if (Parameters.isSpawnEnemies() && !isSafeArea()) updateEnemiesSpawn();
-
-        for (int i = 0; i < listOfCircleAttacks.size(); i++) {
-            listOfCircleAttacks.get(i).update(timeElapsed, true);
-        }
 
         ParticleManager.getInstance().updateParticles(timeElapsed);
     }
@@ -188,10 +181,6 @@ public class Scene {
 
     public ArrayList<NonPlayerCharacter> getListOfNonPlayerCharacters() {
         return listOfNonPlayerCharacters;
-    }
-
-    public ArrayList<CircleAttack> getListOfCircleAttacks() {
-        return listOfCircleAttacks;
     }
 
     public void render() {

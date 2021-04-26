@@ -39,12 +39,6 @@ public class Player extends LivingDynamicGraphicEntity {
     private float attack01Power = 400f;
     private float attack01ManaCost = 0.25f;
 
-    private CircleAttack circleAttack;
-    private int circleAttackPeriod = 2500;
-    private int circleAttackCoolDown;
-    private float circleAttackPower = 200f;
-    private float circleAttackManaCost = 10f;
-
     private MusicalMode musicalMode;
     private boolean choosingMusicalMode;
     private float choosingMusicalModeManaCost = 0.01f;
@@ -91,7 +85,6 @@ public class Player extends LivingDynamicGraphicEntity {
         mana = 100f;
         speed = 0.08;
         attack01CoolDown = 0;
-        circleAttackCoolDown = 0;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
@@ -433,8 +426,6 @@ public class Player extends LivingDynamicGraphicEntity {
 
         if (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f) {
             if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
-                new MusicalNoteGraphicEntity(getCenterOfMassWorldCoordinates(), pointingVector,
-                        0.2, musicalMode, attack01Power, 1000.0, false);
                 if (hasteEffect) attack01CoolDown = (attack01Period / 2);
                 else attack01CoolDown = attack01Period;
                 mana -= attack01ManaCost;
@@ -442,20 +433,6 @@ public class Player extends LivingDynamicGraphicEntity {
         }
         if (attack01CoolDown > 0) {
             attack01CoolDown -= timeElapsed;
-        }
-
-        /** CIRCLE ATTACK **/
-        if (InputListenerManager.rightMouseButtonPressed) {
-            if (mana >= circleAttackManaCost && circleAttackCoolDown <= 0) {
-                circleAttack = new CircleAttack(new Coordinates(InputListenerManager.getMouseWorldCoordinates().x, InputListenerManager.getMouseWorldCoordinates().y),
-                        50, 500, circleAttackPower, false, true, musicalMode);
-                Scene.listOfCircleAttacks.add(circleAttack);
-                circleAttackCoolDown = circleAttackPeriod;
-                mana -= circleAttackManaCost;
-            }
-        }
-        if (circleAttackCoolDown > 0) {
-            circleAttackCoolDown -= timeElapsed;
         }
     }
 

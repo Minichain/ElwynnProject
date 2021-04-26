@@ -4,6 +4,7 @@ import audio.OpenALManager;
 import scene.Camera;
 import scene.Scene;
 import listeners.InputListenerManager;
+import ui.UserInterface;
 
 public class Game {
     public static void startGame() {
