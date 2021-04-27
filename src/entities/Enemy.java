@@ -30,9 +30,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private float attack01Power = 300f;
     private float attack01ManaCost = 0.1f;
 
-    private int circleAttackPeriod = 10000;
-    private int circleAttackCoolDown = 0;
-    private float circleAttackPower = 100f;
+    private static float attackRange = 10f;
 
     /** PATH FINDING **/
     private enum ChasingMode {
@@ -195,7 +193,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     }
                 } else {
                     chasingMode = ChasingMode.STRAIGHT_LINE;
-                    if (status == Status.CHASING && distanceToGoal <= 125) {
+                    if (status == Status.CHASING && distanceToGoal <= attackRange) {
                         status = Status.ATTACKING;
                     }
                 }
@@ -267,8 +265,8 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
                 break;
             case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
-                setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015)) % getSprite().ATTACKING_FRAMES;
+                setSpriteCoordinateFromSpriteSheetX(frame);
                 break;
             case DYING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
@@ -325,7 +323,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         if (status != Status.DYING
                 && status != Status.DEAD
                 && status != Status.ATTACKING
-                && distanceToGoal > 125
+                && distanceToGoal > attackRange
                 && distanceToGoal < 2000) {
             status = Status.CHASING;
         }

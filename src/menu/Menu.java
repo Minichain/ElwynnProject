@@ -149,6 +149,7 @@ public class Menu {
         MenuComponent component;
 
         glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             component = listOfMenuComponents.get(i);
@@ -165,6 +166,7 @@ public class Menu {
         }
         glEnd();
         glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
 
         if (menuScrollBar != null) {
             menuScrollBar.renderBackground();

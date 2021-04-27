@@ -23,7 +23,7 @@ public class SpriteManager {
 
     /** INTERFACE **/
     public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
-            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR;
+            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, FRET_BOARD;
 
     /** ITEMS **/
     public Sprite GOLD_COIN, HEALTH_POTION, MANA_POTION, HASTE_POTION, WOOD;
@@ -100,6 +100,8 @@ public class SpriteManager {
         F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_8x8.png", 8, 8, -1);
         H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_8x8.png", 8, 8, -1);
         M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_8x8.png", 8, 8, -1);
+
+        FRET_BOARD = new Sprite("res/sprites/interface/fret_board.png", 8, 8);
 
         /** ITEMS **/
         HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);

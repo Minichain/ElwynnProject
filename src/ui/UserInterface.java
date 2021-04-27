@@ -101,7 +101,9 @@ public class UserInterface {
         Console.getInstance().update(timeElapsed);
 
         /** MUSIC CHART **/
-        FretBoard.getInstance().update(timeElapsed);
+        if (!Menu.getInstance().isShowing()) {
+            FretBoard.getInstance().update(timeElapsed);
+        }
     }
 
     public void render() {
@@ -120,11 +122,6 @@ public class UserInterface {
             HeadUpDisplay.render();
         }
 
-        /** MENU **/
-        if (Menu.getInstance().isShowing()) {
-            Menu.getInstance().render();
-        }
-
         /** NPC interactions **/
         if (HUDVisibility && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             renderNPCInteractions();
@@ -135,15 +132,20 @@ public class UserInterface {
             MusicalModeSelector.getInstance().render();
         }
 
+        Console.getInstance().render();
+
+        if (HUDVisibility) {
+            FretBoard.getInstance().render();
+        }
+
         /** INVENTORY **/
         if (HUDVisibility && !Menu.getInstance().isShowing() && Player.getInstance().getInventory().isOpened()) {
             Player.getInstance().getInventory().render();
         }
 
-        Console.getInstance().render();
-
-        if (HUDVisibility) {
-            FretBoard.getInstance().render();
+        /** MENU **/
+        if (Menu.getInstance().isShowing()) {
+            Menu.getInstance().render();
         }
     }
 
@@ -251,8 +253,6 @@ public class UserInterface {
     }
 
     public static void onResolutionChanged() {
-        Log.l("Resolution Changed. New resolution: " + Parameters.getResolutionWidth() + ", " + Parameters.getResolutionHeight());
-        Log.l("Resolution Changed. New resolution factor: " + Parameters.getWidthResolutionFactor() + ", " + Parameters.getHeightResolutionFactor());
         FretBoard.getInstance().onResolutionChanged();
     }
 }

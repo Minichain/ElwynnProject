@@ -2,7 +2,6 @@ package main;
 
 import audio.OpenALManager;
 import listeners.InputListenerManager;
-import menu.Menu;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.glfw.GLFWImage;
 import org.lwjgl.glfw.GLFWVidMode;
@@ -71,10 +70,10 @@ public class Window {
 
     public static void setWindowSize(int w, int h) {
         glfwSetWindowSize(window, w, h);
-        glViewport(0, 0, Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
+        glViewport(0, 0, w, h);
         width = w;
         height = h;
-        cameraWindowScaleFactor = new float[]{(float) width / (float) Parameters.getResolutionWidth(), (float) height / (float) Parameters.getResolutionHeight()};
+        cameraWindowScaleFactor = new float[]{(float) width / (float) w, (float) height / (float) h};
     }
 
     private static void initWindowSizeCallBack() {

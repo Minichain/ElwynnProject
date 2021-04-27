@@ -1,5 +1,6 @@
 package listeners;
 
+import board.FretBoard;
 import console.Console;
 import entities.*;
 import main.*;
@@ -41,7 +42,11 @@ public class ActionManager {
         OPEN_INVENTORY (23),
         DEBUG_KEY (24),
         CREATIVE_WARPS_MODE (25),
-        OPEN_CLOSE_CONSOLE (26)
+        OPEN_CLOSE_CONSOLE (26),
+        FRET_BOARD_BUTTON_01 (27),
+        FRET_BOARD_BUTTON_02 (28),
+        FRET_BOARD_BUTTON_03 (29),
+        FRET_BOARD_BUTTON_04 (30),
         ;
 
         int actionValue;
@@ -111,13 +116,19 @@ public class ActionManager {
                     key[0] = GLFW_KEY_F5;
                     break;
                 case CREATIVE_TILES_MODE:
+                case FRET_BOARD_BUTTON_01:
                     key[0] = GLFW_KEY_1;
                     break;
                 case CREATIVE_STATIC_ENTITIES_MODE:
+                case FRET_BOARD_BUTTON_02:
                     key[0] = GLFW_KEY_2;
                     break;
                 case CREATIVE_WARPS_MODE:
+                case FRET_BOARD_BUTTON_03:
                     key[0] = GLFW_KEY_3;
+                    break;
+                case FRET_BOARD_BUTTON_04:
+                    key[0] = GLFW_KEY_4;
                     break;
                 case USE_HEALTH_POTION:
                     key[0] = GLFW_KEY_H;
@@ -247,23 +258,45 @@ public class ActionManager {
             if (!pressed) Scene.getInstance().reset();
         } else if (isSameKeyCombination(key, Action.CREATIVE_TILES_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.TILES);
+        } else if (isSameKeyCombination(key, Action.FRET_BOARD_BUTTON_01.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            FretBoard.getInstance().setFretPressed(0, pressed);
+        } else if (isSameKeyCombination(key, Action.FRET_BOARD_BUTTON_02.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            FretBoard.getInstance().setFretPressed(1, pressed);
+        } else if (isSameKeyCombination(key, Action.FRET_BOARD_BUTTON_03.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            FretBoard.getInstance().setFretPressed(2, pressed);
+        } else if (isSameKeyCombination(key, Action.FRET_BOARD_BUTTON_04.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            FretBoard.getInstance().setFretPressed(3, pressed);
         } else if (isSameKeyCombination(key, Action.CREATIVE_STATIC_ENTITIES_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.STATIC_ENTITIES);
         } else if (isSameKeyCombination(key, Action.CREATIVE_WARPS_MODE.getActionKey()) && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             if (!pressed) GameMode.setCreativeMode(GameMode.CreativeMode.WARPS);
         } else if (isSameKeyCombination(key, Action.ATTACK_01.getActionKey())) {
-            if (!pressed && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
-                    putTile();
-                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
-                    putStaticEntity();
-                } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
-                    putWarp();
+            if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                Player.getInstance().setPlayingMusic(pressed);
+            }
+
+            if (!pressed && !Menu.getInstance().isShowing()) {
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+
+                } else {
+                    if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
+                        putTile();
+                    } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {
+                        putStaticEntity();
+                    } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
+                        putWarp();
+                    }
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
+            if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+                Player.getInstance().playNote();
+            }
+
             if (!pressed && !Menu.getInstance().isShowing() ) {
-                if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
+                if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+
+                } else {
                     if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                         // Change Tile's collision behaviour
                         Coordinates mouseCameraCoordinates = InputListenerManager.getMouseCameraCoordinates();

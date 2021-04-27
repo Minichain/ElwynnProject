@@ -141,7 +141,9 @@ public class MenuSelector extends MenuComponent {
                     switch (selectorAction) {
                         case RESOLUTION:
                             selectedValue = selectedValue % Resolution.values().length;
-                            Parameters.setResolution(Resolution.values()[selectedValue]);
+                            Resolution resolution = Resolution.values()[selectedValue];
+                            Window.setWindowSize(resolution.getResolution()[0], resolution.getResolution()[1]);
+                            Parameters.setResolution(resolution);
                             break;
                         case LANGUAGE:
                             selectedValue = selectedValue % Language.values().length;
@@ -151,7 +153,6 @@ public class MenuSelector extends MenuComponent {
                         default:
                             break;
                     }
-                    Window.setWindowSize(Parameters.getResolutionWidth(), Parameters.getResolutionHeight());
                 }
                 pressed = false;
             }

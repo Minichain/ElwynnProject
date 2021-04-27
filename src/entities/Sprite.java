@@ -89,13 +89,11 @@ public class Sprite {
 
     public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY,
                      float transparency, double scale, Color color, boolean centered) {
-        glActiveTexture(GL_TEXTURE0);
-        spriteSheet.bind();
+        draw(x, y, spriteCoordinateFromSpriteSheetX, spriteCoordinateFromSpriteSheetY, transparency, scale, color, centered, false);
+    }
 
-        glEnable(GL_BLEND);
-        glEnable(GL_TEXTURE_2D);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+    public void draw(int x, int y, int spriteCoordinateFromSpriteSheetX, int spriteCoordinateFromSpriteSheetY,
+                     float transparency, double scale, Color color, boolean centered, boolean isTextureBoundAndOpenGlBegun) {
         float width = (float) spriteSheet.getWidth() / (float) SPRITE_WIDTH;
         float height = (float) spriteSheet.getHeight() / (float) SPRITE_HEIGHT;
 
@@ -104,7 +102,15 @@ public class Sprite {
         float u2 = u + (1f / width);
         float v2 = v - (1f / height);
 
-        OpenGLManager.glBegin(GL_QUADS);
+        if (!isTextureBoundAndOpenGlBegun) {
+            glActiveTexture(GL_TEXTURE0);
+            spriteSheet.bind();
+
+            glEnable(GL_BLEND);
+            glEnable(GL_TEXTURE_2D);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            OpenGLManager.glBegin(GL_QUADS);
+        }
 
         if (centered) {
             y -= (int) (SPRITE_HEIGHT * scale / 2.0);
@@ -116,10 +122,12 @@ public class Sprite {
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, (int) (SPRITE_WIDTH * scale), (int) (SPRITE_HEIGHT * scale), transparency,
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
-        glDisable(GL_BLEND);
-        glDisable(GL_TEXTURE_2D);
+        if (!isTextureBoundAndOpenGlBegun) {
+            glDisable(GL_BLEND);
+            glDisable(GL_TEXTURE_2D);
 
-        glEnd();
+            glEnd();
+        }
     }
 
     public void customDraw(int x, int y, int width, int height, float u, float v, float u2, float v2, float transparency, double scale) {

@@ -109,8 +109,8 @@ public class Parameters {
         Log.l("setResolution to " + resolution);
         Parameters.resolution = resolution;
         DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
-        Parameters.widthResolutionFactor = (float) Parameters.getResolutionWidth() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[0];
-        Parameters.heightResolutionFactor = (float) Parameters.getResolutionHeight() / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
+        Parameters.widthResolutionFactor = (float) resolution.getResolution()[0] / (float) Resolution.RESOLUTION_1920_1080.getResolution()[0];
+        Parameters.heightResolutionFactor = (float) resolution.getResolution()[1] / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
         UserInterface.onResolutionChanged();
     }
 

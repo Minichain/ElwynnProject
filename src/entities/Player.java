@@ -1,6 +1,7 @@
 package entities;
 
 import audio.OpenALManager;
+import board.FretBoard;
 import inventory.Inventory;
 import items.*;
 import listeners.ActionManager;
@@ -47,7 +48,7 @@ public class Player extends LivingDynamicGraphicEntity {
     private float changeMusicalModeManaCost = 2.5f;
 
     public enum Status {
-        IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING
+        IDLE, RUNNING, ROLLING, DYING, DEAD, PLAYING_MUSIC
     }
 
     private static Status status;
@@ -156,7 +157,7 @@ public class Player extends LivingDynamicGraphicEntity {
                 health = MAX_HEALTH;
             }
             if (stamina < MAX_STAMINA) {
-                if (status == Status.ATTACKING) {
+                if (status == Status.PLAYING_MUSIC) {
                     stamina += (STAMINA_REGENERATION_WHEN_ATTACKING * timeElapsed);
                 } else {
                     stamina += (STAMINA_REGENERATION * timeElapsed);
@@ -177,7 +178,7 @@ public class Player extends LivingDynamicGraphicEntity {
             if (!choosingMusicalMode) {
                 if (GameMode.getGameMode() == GameMode.Mode.NORMAL
                         && (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f)) {
-                    status = Status.ATTACKING;
+                    status = Status.PLAYING_MUSIC;
                 }
                 updateAttack(timeElapsed);
             }
@@ -197,9 +198,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
             /** MOVE ENTITY **/
             double speed = 0.0;
-            if (status == Status.ATTACKING) {
-                speed = this.speed * 0.5;
-            } else if (status == Status.RUNNING) {
+            if (status == Status.RUNNING) {
                 speed = this.speed;
             } else if (status == Status.ROLLING) {
                 speed = this.speed * 1.75;
@@ -222,7 +221,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
             /** WHERE IS IT FACING? **/
             facingVector = null;
-            if (status == Status.ATTACKING) {
+            if (status == Status.PLAYING_MUSIC) {
                 facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCameraCoordinates().x,
                         InputListenerManager.getMouseCameraCoordinates().y - getCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
@@ -287,13 +286,13 @@ public class Player extends LivingDynamicGraphicEntity {
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DEAD_FRAMES);
                 break;
-            case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115));
-                if (frame >= getSprite().ATTACKING_FRAMES) {
+            case PLAYING_MUSIC:
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115)) % getSprite().ATTACKING_FRAMES;
+                if (frame > getSprite().ATTACKING_FRAMES) {
                     status = Status.IDLE;
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ATTACKING_FRAMES);
+                    setSpriteCoordinateFromSpriteSheetX(frame);
                 }
                 break;
         }
@@ -339,7 +338,7 @@ public class Player extends LivingDynamicGraphicEntity {
             playerMoving = true;
         }
 
-        if (status != Status.ATTACKING) {
+        if (status != Status.PLAYING_MUSIC) {
             if (playerMoving) {
                 status = Status.RUNNING;
             } else {
@@ -392,7 +391,7 @@ public class Player extends LivingDynamicGraphicEntity {
             case DEAD:
                 setSpriteCoordinateFromSpriteSheetY(9);
                 break;
-            case ATTACKING:
+            case PLAYING_MUSIC:
                 if (directionFacing == Utils.DirectionFacing.DOWN) {
                     setSpriteCoordinateFromSpriteSheetY(14);
                 } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
@@ -410,30 +409,19 @@ public class Player extends LivingDynamicGraphicEntity {
         return status;
     }
 
+    public void setPlayingMusic(boolean playingMusic) {
+        status = playingMusic ? Status.PLAYING_MUSIC : Status.IDLE;
+        FretBoard.getInstance().setPlayingMusic(playingMusic);
+    }
+
+    public void playNote() {
+        FretBoard.getInstance().playNote();
+    }
+
     private double[] pointingVector = new double[]{1.0, 1.0};
 
     private void updateAttack(long timeElapsed) {
-        /** NOTE ATTACK **/
-        if (InputListenerManager.isUsingKeyboardAndMouse()) {
-            pointingVector = new double[]{InputListenerManager.getMouseWorldCoordinates().x - Player.getInstance().getCenterOfMassWorldCoordinates().x,
-                    InputListenerManager.getMouseWorldCoordinates().y - Player.getInstance().getCenterOfMassWorldCoordinates().y};
-            pointingVector = MathUtils.normalizeVector(pointingVector);
-        } else {
-            if (InputListenerManager.getRightJoystickAxes()[0] != 0f || InputListenerManager.getRightJoystickAxes()[1] != 0) {
-                pointingVector = new double[]{(double) InputListenerManager.getRightJoystickAxes()[0], (double) InputListenerManager.getRightJoystickAxes()[1]};
-            }
-        }
 
-        if (InputListenerManager.leftMouseButtonPressed || InputListenerManager.getRightTriggerValue() > 0.1f) {
-            if (mana >= attack01ManaCost && attack01CoolDown <= 0) {
-                if (hasteEffect) attack01CoolDown = (attack01Period / 2);
-                else attack01CoolDown = attack01Period;
-                mana -= attack01ManaCost;
-            }
-        }
-        if (attack01CoolDown > 0) {
-            attack01CoolDown -= timeElapsed;
-        }
     }
 
     public void drawAttackFX() {

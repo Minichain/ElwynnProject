@@ -1,26 +1,41 @@
 package board;
 
-import main.Coordinates;
-import main.OpenGLManager;
-
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.glEnd;
+import entities.Player;
+import entities.SpriteManager;
+import main.Parameters;
 
 public class FretBoardNote {
-    private Coordinates coordinates;
+    private boolean dead = false;
+    private int targetNote;
+    private double pathTraveled;
 
-    public FretBoardNote(double x, double y) {
-        coordinates = new Coordinates(x, y);
+    public FretBoardNote(int targetNote) {
+        this.targetNote = targetNote;
+        this.pathTraveled = 0;
     }
 
     public void update(long timeElapsed) {
-        coordinates.y += timeElapsed * 0.1;
+        pathTraveled += timeElapsed * 0.001;
+        dead = pathTraveled >= 2.0;
     }
 
-    public void render() {
-        glDisable(GL_TEXTURE_2D);
-        OpenGLManager.glBegin(GL_TRIANGLES);
-        OpenGLManager.drawRectangle((int) (coordinates.x), (int) (coordinates.y), 25, 25);
-        glEnd();
+    public void render(float transparency) {
+        int x = (int) FretBoard.getInstance().getTargetNotes()[targetNote].x;
+        int y = (int) (FretBoard.getInstance().getTargetNotes()[targetNote].y - 150.0 + 150.0 * pathTraveled);
+        transparency = (1f - Math.abs((1f - (float) pathTraveled))) * transparency;
+        SpriteManager.getInstance().FRET_BOARD.draw(x, y, 0, 2,
+                transparency, 4f * Parameters.getHeightResolutionFactor(), Player.getInstance().getMusicalMode().getColor(), true, true);
+    }
+
+    public boolean isDead() {
+        return dead;
+    }
+
+    public double getPathTraveled() {
+        return pathTraveled;
+    }
+
+    public int getTargetNote() {
+        return targetNote;
     }
 }
