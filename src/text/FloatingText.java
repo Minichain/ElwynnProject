@@ -30,12 +30,14 @@ public class FloatingText {
     public static void render() {
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_QUADS);
         for (FloatingTextEntity entity : listOfFloatingTextEntities) {
             entity.render();
         }
         glEnd();
         glDisable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
     }
 
     public static ArrayList<FloatingTextEntity> getListOfFloatingTextEntities() {

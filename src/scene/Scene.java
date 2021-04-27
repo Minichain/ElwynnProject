@@ -3,10 +3,12 @@ package scene;
 import audio.OpenALManager;
 import entities.*;
 import main.*;
+import menu.Menu;
 import particles.ParticleManager;
 import utils.MathUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -34,6 +36,8 @@ public class Scene {
     public static ArrayList<LightSource> listOfVisibleLightSources;
     private double visibleLightSourceDistanceFactor = 30.0;
 
+    private static ArrayList<ShockWave> listOfShockWaves;
+
     private Scene() {
 
     }
@@ -53,6 +57,7 @@ public class Scene {
         listOfLightSources = new ArrayList<>();
         listOfVisibleLightSources = new ArrayList<>();
         listOfNonPlayerCharacters = new ArrayList<>();
+        listOfShockWaves = new ArrayList<>();
 
         WorldLoader.getInstance().loadWorld();
         Scene.getInstance().getListOfGraphicEntities().add(Player.getInstance());
@@ -91,7 +96,7 @@ public class Scene {
             if (0 < i && i < TileMap.getArrayOfTiles().length
                     && 0 < j && j < TileMap.getArrayOfTiles()[0].length
                     && !TileMap.getArrayOfTiles()[i][j].isCollidable()) {
-                Log.l("Spawn enemy at x: " + x + ", y: " + y);
+                Log.l("Enemy spawned at x: " + x + ", y: " + y);
                 new Enemy(x, y);
                 lastEnemySpawnTime = currentTime;
             }
@@ -147,6 +152,22 @@ public class Scene {
                 }
             }
         }
+
+        if (GameStatus.getStatus() != GameStatus.Status.PAUSED && !Menu.getInstance().isShowing()) {
+            updateShockWaves(timeElapsed);
+        }
+    }
+
+    private void updateShockWaves(long timeElapsed) {
+        Iterator<ShockWave> iterator = getListOfShockWaves().iterator();
+        while (iterator.hasNext()) {
+            ShockWave shockWave = iterator.next();
+            if (shockWave.isDead()) {
+                iterator.remove();
+            } else {
+                shockWave.update(timeElapsed);
+            }
+        }
     }
 
     private void removeDeadEntities() {
@@ -181,6 +202,10 @@ public class Scene {
 
     public ArrayList<NonPlayerCharacter> getListOfNonPlayerCharacters() {
         return listOfNonPlayerCharacters;
+    }
+
+    public ArrayList<ShockWave> getListOfShockWaves() {
+        return listOfShockWaves;
     }
 
     public void render() {

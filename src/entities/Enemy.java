@@ -58,7 +58,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = Math.random() * 0.05 + 0.035;
+        speed = Math.random() * 0.05 + 0.020;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
@@ -222,7 +222,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             } else if (status == Status.RUNNING || status == Status.CHASING) {
                 speed = this.speed;
             } else if (status == Status.ROLLING) {
-                speed = this.speed * 3.0;
+                speed = this.speed * 2.0;
             }
 
             if (!horizontalCollision) {

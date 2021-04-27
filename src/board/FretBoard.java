@@ -1,12 +1,11 @@
 package board;
 
-import entities.MusicalNote;
-import entities.Player;
-import entities.SpriteManager;
+import entities.*;
 import main.*;
 import main.Window;
 import particles.Particle;
 import particles.ParticleManager;
+import scene.Scene;
 import utils.MathUtils;
 
 import java.awt.*;
@@ -130,7 +129,9 @@ public class FretBoard {
             FretBoardNote note = iterator.next();
             if (Math.abs(note.getPathTraveled() - 1.0) < 0.1 && fretsPressed[note.getTargetNote()]) {
                 iterator.remove();
-                Player.getInstance().getMusicalMode().getRandomNote(MusicalNote.A).play();
+                MusicalMode musicalMode = Player.getInstance().getMusicalMode();
+                MusicalNote musicalNote = musicalMode.getRandomNote(MusicalNote.A);
+                musicalNote.play();
 
                 //Generate particles with the colour of the musical mode
                 Coordinates particleCoordinates;
@@ -146,9 +147,11 @@ public class FretBoard {
                     velocityVector = new double[]{0, -0.1};
                     particleCoordinates = new Coordinates(targetNotes[note.getTargetNote()].x + generationVector[0], targetNotes[note.getTargetNote()].y + generationVector[1]);
                     particleCoordinates = particleCoordinates.toWorldCoordinates();
-                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 1.5f, Player.getInstance().getMusicalMode().getColor(), true);
+                    particle = new Particle(particleCoordinates, velocityVector, 0.25, 1.5f, musicalMode.getColor(), true);
                     ParticleManager.getInstance().addParticle(particle);
                 }
+
+                Scene.getInstance().getListOfShockWaves().add(new ShockWave(Player.getInstance().getCenterOfMassWorldCoordinates(), musicalMode, musicalNote));
             }
         }
     }

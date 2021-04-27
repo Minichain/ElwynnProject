@@ -18,7 +18,8 @@ public class Particle {
     private Color color;
     private boolean producesLight;
     private LightSource lightSource;
-    private float intensity;
+    private float lightIntensity;
+    private float transparency = 1f;
 
     public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, boolean producesLight) {
         this(center, velocityVector, movingSpeed, size, color, 600.0, producesLight);
@@ -28,7 +29,11 @@ public class Particle {
         this(center, velocityVector, movingSpeed, size, color, timeToLive, producesLight, 8f);
     }
 
-    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight, float intensity) {
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight, float lightIntensity) {
+        this(center, velocityVector, movingSpeed, size, color, timeToLive, producesLight, lightIntensity, 1f);
+    }
+
+    public Particle(Coordinates center, double[] velocityVector, double movingSpeed, float size, Color color, double timeToLive, boolean producesLight, float lightIntensity, float transparency) {
         this.velocityVector = velocityVector;
         this.movingSpeed = movingSpeed;
         this.center = new Coordinates(center.x, center.y);
@@ -36,10 +41,11 @@ public class Particle {
         this.color = color;
         this.timeToLive = timeToLive;
         this.producesLight = producesLight;
-        this.intensity = intensity;
+        this.lightIntensity = lightIntensity;
+        this.transparency = transparency;
         if (producesLight) {
             Coordinates lightSourceCoordinates = new Coordinates(center.x, center.y);
-            lightSource = new LightSource(lightSourceCoordinates, intensity, color);
+            lightSource = new LightSource(lightSourceCoordinates, lightIntensity, color);
             Scene.getInstance().getListOfLightSources().add(lightSource);
         }
     }
@@ -50,7 +56,7 @@ public class Particle {
         this.center.y += velocityVector[1] * timeElapsed * movingSpeed;
         if (producesLight) {
             this.lightSource.setWorldCoordinates(center);
-            this.lightSource.setIntensity(intensity - intensity * (float) (timeLiving / timeToLive));
+            this.lightSource.setIntensity(lightIntensity - lightIntensity * (float) (timeLiving / timeToLive));
         }
     }
 
@@ -60,7 +66,7 @@ public class Particle {
         float size = (float) (this.size * Camera.getZoom());
 //        float size = (float) ((timeLiving / timeToLive) * this.size * Camera.getZoom());
         OpenGLManager.drawRectangle((int) (centerCameraCoordinates.x - halfSize), (int) (centerCameraCoordinates.y - halfSize),
-                size, size, 1.0 - timeLiving / timeToLive, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
+                size, size, (1.0 - timeLiving / timeToLive) * transparency, color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
     }
 
     public boolean isDead() {

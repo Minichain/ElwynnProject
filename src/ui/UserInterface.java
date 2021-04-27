@@ -228,9 +228,9 @@ public class UserInterface {
         TextRendering.renderText(leftMargin, topMargin, gapBetweenTexts, debugTextList, textScale);
 
         /** RENDER DEBUG LINES **/
-        glDisable(GL_BLEND);
 
         OpenGLManager.glBegin(GL_LINES);
+        glLineWidth(1f);
 
         glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         glVertex2i(Parameters.getResolutionWidth() / 2, 0);
@@ -239,8 +239,6 @@ public class UserInterface {
         glVertex2i(Parameters.getResolutionWidth(), Parameters.getResolutionHeight() / 2);
 
         glEnd();
-
-        glEnable(GL_BLEND);
     }
 
     public static boolean getHUDVisibility() {
