@@ -44,7 +44,7 @@
 
     <!--TUTORIAL-->
     <string name="tutorial_roll">Presiona %1$ cuando estés en movimiento.../nl...para realizar una voltereta.</string>
-    <string name="tutorial_attack">Presiona los botones IZQUIERDO o DERECHO del ratón para atacar.</string>
+    <string name="tutorial_attack">Presiona el botón IZQUIERDO del ratón para empezar a tocar música./nlMantén los botones 1-4 para indicar la nota que quieres tocar.../nlPresiona el botón DERECHO del ratón para tocarla.</string>
     <string name="tutorial_change_musical_mode">Mantén pulsado %1$ para cambiar de modo musical.</string>
     <string name="tutorial_follow_path">Hay un poblado al sur de aquí./nlSigue el camino.../nl...no tiene pérdida./nlBuena suerte!</string>
     <string name="tutorial_welcome">Bienvenido...</string>

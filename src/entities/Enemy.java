@@ -32,6 +32,9 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     private static float attackRange = 10f;
 
+    private float hurtPeriod = 100f;
+    private float hurtCoolDown = 0f;
+
     /** PATH FINDING **/
     private enum ChasingMode {
         STRAIGHT_LINE, DIJKSTRA
@@ -58,7 +61,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = Math.random() * 0.05 + 0.020;
+        speed = Math.random() * 0.05 + 0.010;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
@@ -150,6 +153,11 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     @Override
     public void hurt(float damage) {
+        if (hurtCoolDown >= 0f) {
+            return;
+        }
+        hurtCoolDown = hurtPeriod;
+
         OpenALManager.playSound(OpenALManager.SOUND_ENEMY_HURT_01);
         float previousHealth = getHealth();
         setHealth(previousHealth - damage);
@@ -222,7 +230,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             } else if (status == Status.RUNNING || status == Status.CHASING) {
                 speed = this.speed;
             } else if (status == Status.ROLLING) {
-                speed = this.speed * 2.0;
+                speed = this.speed * 1.5;
             }
 
             if (!horizontalCollision) {
@@ -237,6 +245,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             if (movementVector[0] != 0 || movementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(movementVector);
             }
+            if (hurtCoolDown >= 0) hurtCoolDown -= timeElapsed;
         } else if (status != Status.DEAD) {   //Enemy is dying
             status = Status.DYING;
         } else {
@@ -395,11 +404,11 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     private void updateAttack(long timeElapsed) {
         /** MUSICAL NOTE ATTACK **/
-        double[] pointingVector = new double[]{Player.getInstance().getCenterOfMassWorldCoordinates().x - getCenterOfMassWorldCoordinates().x,
-                Player.getInstance().getCenterOfMassWorldCoordinates().y - getCenterOfMassWorldCoordinates().y};
-
         if (status == Status.ATTACKING) {
             if (attack01CoolDown <= 0) {
+                if (MathUtils.module(getCenterOfMassWorldCoordinates(), Player.getInstance().getCenterOfMassWorldCoordinates()) < attackRange) {
+                    Player.getInstance().hurt(100f);
+                }
                 attack01CoolDown = attack01Period;
             }
         }

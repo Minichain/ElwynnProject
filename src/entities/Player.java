@@ -34,11 +34,8 @@ public class Player extends LivingDynamicGraphicEntity {
     public static float STAMINA_REGENERATION_WHEN_ATTACKING = 0.009f;
     private float stamina = 100f;
 
-    /** ATTACK **/
-    private int attack01Period = 250;
-    private int attack01CoolDown;
-    private float attack01Power = 400f;
-    private float attack01ManaCost = 0.25f;
+    private float hurtPeriod = 100f;
+    private float hurtCoolDown = 0f;
 
     private MusicalMode musicalMode;
     private boolean choosingMusicalMode;
@@ -85,7 +82,6 @@ public class Player extends LivingDynamicGraphicEntity {
         health = 5000f;
         mana = 100f;
         speed = 0.08;
-        attack01CoolDown = 0;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         musicalMode = MusicalMode.IONIAN;
@@ -124,6 +120,11 @@ public class Player extends LivingDynamicGraphicEntity {
 
     @Override
     public void hurt(float damage) {
+        if (hurtCoolDown >= 0f) {
+            return;
+        }
+        hurtCoolDown = hurtPeriod;
+
         OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
         float previousHealth = getHealth();
         setHealth(previousHealth - damage);
@@ -133,7 +134,7 @@ public class Player extends LivingDynamicGraphicEntity {
         Color color;
         if (damage < 200f) {
             scale = 2f;
-            color = new Color(1f, 1f, 1f);
+            color = new Color(1f, 0.1f, 0.1f);
         } else {
             scale = 4f;
             color = new Color(1f, 0.75f, 0.5f);
@@ -222,8 +223,8 @@ public class Player extends LivingDynamicGraphicEntity {
             /** WHERE IS IT FACING? **/
             facingVector = null;
             if (status == Status.PLAYING_MUSIC) {
-                facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCameraCoordinates().x,
-                        InputListenerManager.getMouseCameraCoordinates().y - getCameraCoordinates().y};
+                facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCenterOfMassCameraCoordinates().x,
+                        InputListenerManager.getMouseCameraCoordinates().y - getCenterOfMassCameraCoordinates().y};
                 directionFacing = Utils.checkDirectionFacing(facingVector);
             } else if (movementVector[0] != 0 || movementVector[1] != 0) {
                 directionFacing = Utils.checkDirectionFacing(movementVector);
@@ -238,6 +239,7 @@ public class Player extends LivingDynamicGraphicEntity {
 
             if (changeMusicalModeCoolDown >= 0) changeMusicalModeCoolDown -= timeElapsed;
             if (warpTakenCoolDown >= 0) warpTakenCoolDown -= timeElapsed;
+            if (hurtCoolDown >= 0) hurtCoolDown -= timeElapsed;
         } else if (status != Status.DEAD) {   //Player is dying
             status = Status.DYING;
         } else {    //Player is dead
@@ -415,7 +417,10 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void playNote() {
-        FretBoard.getInstance().playNote();
+        if (mana >= 1f && !isDead()) {
+            FretBoard.getInstance().playNote();
+            mana -= 1f;
+        }
     }
 
     private double[] pointingVector = new double[]{1.0, 1.0};
