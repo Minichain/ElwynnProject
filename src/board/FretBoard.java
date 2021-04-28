@@ -29,6 +29,7 @@ public class FretBoard {
     /** MUSIC GENERATOR **/
     private final float beatPeriod = 1000f;
     private float beatProgress;
+    private float timeElapsed;
 
     private FretBoard() {
         init();
@@ -51,7 +52,9 @@ public class FretBoard {
     }
 
     private void setupTempos() {
-        beatProgress = 0;
+        this.beatProgress = 0;
+        this.timeElapsed = 0;
+        this.combo = 0;
     }
 
     public void update(long timeElapsed) {
@@ -71,33 +74,41 @@ public class FretBoard {
         float halfFramePeriod = (1000f / (FramesPerSecond.getFramesPerSecond())) / 2f - 0.1f;
 //        Log.l("halfFramePeriod: " + halfFramePeriod);
 //        Log.l("beatProgress: " + beatProgress);
-        if (beatProgress < halfFramePeriod
-                || (beatPeriod - halfFramePeriod) < beatProgress
-                || (Math.random() < 0.5 && Math.abs(beatProgress - beatPeriod * 1f / 4f) < halfFramePeriod)) {
-            OpenALManager.playSound(OpenALManager.SOUND_KICK_01);
+        if (this.timeElapsed > 2000f) {
+            if (beatProgress < halfFramePeriod || (beatPeriod - halfFramePeriod) < beatProgress
+                    || (Math.random() < 0.25 && Math.abs(beatProgress - beatPeriod * 1f / 4f) < halfFramePeriod)) {
+                OpenALManager.playSound(OpenALManager.SOUND_KICK_01);
+            }
         }
 
-        if (beatProgress < halfFramePeriod
-                || Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod
-                || Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod
-                || Math.abs(beatProgress - beatPeriod) < halfFramePeriod) {
-            OpenALManager.playSound(OpenALManager.SOUND_HI_HAT_01);
+        if (this.timeElapsed > 1000f) {
+            if (beatProgress < halfFramePeriod || (beatPeriod - halfFramePeriod) < beatProgress
+                    || Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod
+                    || Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod
+                    || Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod) {
+                OpenALManager.playSound(OpenALManager.SOUND_HI_HAT_01);
+            }
         }
 
-        if (Math.abs(beatProgress - beatPeriod / 2f) < halfFramePeriod
-                || (Math.random() < 0.5 && Math.abs(beatProgress - beatPeriod * 3f / 4f) < halfFramePeriod)) {
-            OpenALManager.playSound(OpenALManager.SOUND_SNARE_01);
+        if (this.timeElapsed > 2500f) {
+            if (Math.abs(beatProgress - beatPeriod / 2f) < halfFramePeriod
+                    || (Math.random() < 0.25 && Math.abs(beatProgress - beatPeriod * 3f / 4f) < halfFramePeriod)) {
+                OpenALManager.playSound(OpenALManager.SOUND_SNARE_01);
+            }
         }
 
-        if ((Math.random() < 0.25 && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
-                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
-                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
-                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod)) {
-            int r = (int) (MathUtils.random(0, 4) % 4.0);
-            notes.add(new FretBoardNote(r));
+        if (this.timeElapsed > 1000f) {
+            if ((Math.random() < 0.25 && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
+                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
+                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
+                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod)) {
+                int r = (int) (MathUtils.random(0, 4) % 4.0);
+                notes.add(new FretBoardNote(r));
+            }
         }
 
         beatProgress = (beatProgress + (int) timeElapsed) % beatPeriod;
+        this.timeElapsed += timeElapsed;
     }
 
     public void render() {

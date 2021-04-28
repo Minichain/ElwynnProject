@@ -21,7 +21,7 @@ public class FretBoardNote {
 
     public void render(float transparency) {
         int x = (int) FretBoard.getInstance().getTargetNotes()[targetNote].x;
-        int y = (int) (FretBoard.getInstance().getTargetNotes()[targetNote].y - 150.0 + 150.0 * pathTraveled);
+        int y = (int) (FretBoard.getInstance().getTargetNotes()[targetNote].y - 200 + 200 * pathTraveled);
         transparency = (1f - Math.abs((1f - (float) pathTraveled))) * transparency;
         SpriteManager.getInstance().FRET_BOARD.draw(x, y, 0, 2,
                 transparency, 4f * Parameters.getHeightResolutionFactor(), Player.getInstance().getMusicalMode().getColor(), true, true);
