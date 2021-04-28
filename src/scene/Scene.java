@@ -173,7 +173,7 @@ public class Scene {
     private void removeDeadEntities() {
         ArrayList<GraphicEntity> tempList = new ArrayList<>();
         for (GraphicEntity graphicEntity : listOfGraphicEntities) {
-            if (!graphicEntity.isDead()) {
+            if (!graphicEntity.isDead() || graphicEntity instanceof Player) {
                 tempList.add(graphicEntity);
             } else {
                 for (LightSource lightSource : graphicEntity.getLightSources()) {

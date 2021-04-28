@@ -8,7 +8,7 @@ import ui.UserInterface;
 
 public class Parameters {
     private static boolean debugMode = false;
-    private static boolean spawnEnemies = false;
+    private static boolean spawnEnemies = true;
     private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
     private static float renderDistance = 336f;

@@ -51,6 +51,11 @@ public class OpenALManager {
     public static Sound SOUND_NOTE_G;
     public static Sound SOUND_NOTE_G_SHARP;
 
+    public static Sound SOUND_KICK_01;
+    public static Sound SOUND_HI_HAT_01;
+    public static Sound SOUND_SNARE_01;
+    public static Sound SOUND_SNARE_02;
+
     public static Sound SOUND_CHANGE_MUSICAL_MODE_IONIAN;
     public static Sound SOUND_CHANGE_MUSICAL_MODE_DORIAN;
     public static Sound SOUND_CHANGE_MUSICAL_MODE_PHRYGIAN;
@@ -113,6 +118,12 @@ public class OpenALManager {
         SOUND_NOTE_F_SHARP = loadSound(instrumentSoundFolder + "note_f_sharp", Sound.SoundType.EFFECT);
         SOUND_NOTE_G = loadSound(instrumentSoundFolder + "note_g", Sound.SoundType.EFFECT);
         SOUND_NOTE_G_SHARP = loadSound(instrumentSoundFolder + "note_g_sharp", Sound.SoundType.EFFECT);
+
+        String rhythmSoundFolder = "instruments/drums01/";
+        SOUND_KICK_01 = loadSound(rhythmSoundFolder + "kick_01", Sound.SoundType.EFFECT);
+        SOUND_HI_HAT_01 = loadSound(rhythmSoundFolder + "hi-hat_01", Sound.SoundType.EFFECT);
+        SOUND_SNARE_01 = loadSound(rhythmSoundFolder + "snare_01", Sound.SoundType.EFFECT);
+        SOUND_SNARE_02 = loadSound(rhythmSoundFolder + "snare_02", Sound.SoundType.EFFECT);
 
         SOUND_CHANGE_MUSICAL_MODE_IONIAN = loadSound("change_musical_mode_ionian", Sound.SoundType.EFFECT);
         SOUND_CHANGE_MUSICAL_MODE_DORIAN = loadSound("change_musical_mode_dorian", Sound.SoundType.EFFECT);

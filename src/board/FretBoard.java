@@ -1,11 +1,13 @@
 package board;
 
+import audio.OpenALManager;
 import entities.*;
 import main.*;
 import main.Window;
 import particles.Particle;
 import particles.ParticleManager;
 import scene.Scene;
+import text.FloatingTextEntity;
 import utils.MathUtils;
 
 import java.awt.*;
@@ -17,13 +19,16 @@ import static org.lwjgl.opengl.GL11.*;
 public class FretBoard {
     private static FretBoard instance = null;
     private Coordinates coordinates;
-    private int newNotePeriod = 500;
-    private int newNoteCoolDown;
     private ArrayList<FretBoardNote> notes;
     private Coordinates[] targetNotes;
     private boolean[] fretsPressed = {false, false, false, false};
     private boolean playingMusic;
     private float transparency;
+    private int combo;
+
+    /** MUSIC GENERATOR **/
+    private final float beatPeriod = 1000f;
+    private float beatProgress;
 
     private FretBoard() {
         init();
@@ -42,6 +47,11 @@ public class FretBoard {
         targetNotes = new Coordinates[4];
         setupCoordinates();
         transparency = 0f;
+        combo = 1;
+    }
+
+    private void setupTempos() {
+        beatProgress = 0;
     }
 
     public void update(long timeElapsed) {
@@ -56,13 +66,38 @@ public class FretBoard {
             return;
         }
 
-        if (newNoteCoolDown <= 0) {
+        if (!Player.getInstance().isPlayingMusic()) return;
+
+        float halfFramePeriod = (1000f / (FramesPerSecond.getFramesPerSecond())) / 2f - 0.1f;
+//        Log.l("halfFramePeriod: " + halfFramePeriod);
+//        Log.l("beatProgress: " + beatProgress);
+        if (beatProgress < halfFramePeriod
+                || (beatPeriod - halfFramePeriod) < beatProgress
+                || (Math.random() < 0.5 && Math.abs(beatProgress - beatPeriod * 1f / 4f) < halfFramePeriod)) {
+            OpenALManager.playSound(OpenALManager.SOUND_KICK_01);
+        }
+
+        if (beatProgress < halfFramePeriod
+                || Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod
+                || Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod
+                || Math.abs(beatProgress - beatPeriod) < halfFramePeriod) {
+            OpenALManager.playSound(OpenALManager.SOUND_HI_HAT_01);
+        }
+
+        if (Math.abs(beatProgress - beatPeriod / 2f) < halfFramePeriod
+                || (Math.random() < 0.5 && Math.abs(beatProgress - beatPeriod * 3f / 4f) < halfFramePeriod)) {
+            OpenALManager.playSound(OpenALManager.SOUND_SNARE_01);
+        }
+
+        if ((Math.random() < 0.25 && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
+                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
+                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
+                || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod)) {
             int r = (int) (MathUtils.random(0, 4) % 4.0);
             notes.add(new FretBoardNote(r));
-            newNoteCoolDown = newNotePeriod;
-        } else {
-            newNoteCoolDown -= timeElapsed;
         }
+
+        beatProgress = (beatProgress + (int) timeElapsed) % beatPeriod;
     }
 
     public void render() {
@@ -121,6 +156,7 @@ public class FretBoard {
 
     public void setPlayingMusic(boolean playingMusic) {
         this.playingMusic = playingMusic;
+        if (playingMusic) setupTempos();
     }
 
     public void playNote() {
@@ -128,6 +164,7 @@ public class FretBoard {
         while (iterator.hasNext()) {
             FretBoardNote note = iterator.next();
             if (Math.abs(note.getPathTraveled() - 1.0) < 0.1 && fretsPressed[note.getTargetNote()]) {
+                // You hit the note at the right time!
                 iterator.remove();
                 MusicalMode musicalMode = Player.getInstance().getMusicalMode();
                 MusicalNote musicalNote = musicalMode.getRandomNote(MusicalNote.A);
@@ -151,8 +188,26 @@ public class FretBoard {
                     ParticleManager.getInstance().addParticle(particle);
                 }
 
-                Scene.getInstance().getListOfShockWaves().add(new ShockWave(Player.getInstance().getCenterOfMassWorldCoordinates(), musicalMode, musicalNote));
+                combo++;
+                Scene.getInstance().getListOfShockWaves().add(new ShockWave(Player.getInstance().getCenterOfMassWorldCoordinates(),
+                        musicalMode, musicalNote, 1000f * combo));
+
+                if (combo > 3) {
+                    Coordinates coordinates = new Coordinates(targetNotes[note.getTargetNote()].x, targetNotes[note.getTargetNote()].y).toWorldCoordinates();
+                    Color color = new Color(1f, 1f, 1f);
+                    float scale = 2f;
+                    if (combo >= 10) {
+                        color = new Color(1f, 0.5f, 0.5f);
+                        scale = 4f;
+                    }
+                    new FloatingTextEntity(coordinates.x, coordinates.y, "x" + combo, color, 0.5, new double[]{0, -1}, scale);
+                }
+                return;
             }
         }
+
+        // You didn't hit the note at the right time :(
+        combo = 0;
+        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
     }
 }

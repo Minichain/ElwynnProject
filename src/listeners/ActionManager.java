@@ -289,7 +289,7 @@ public class ActionManager {
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
-            if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            if (pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().playNote();
             }
 
@@ -337,6 +337,7 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.DEBUG_KEY.getActionKey())) {
             /** DEBUG KEY **/
             if (!pressed) {
+                Player.getInstance().hurt(10000f);
                 Log.l("Debug key pressed");
             }
         }

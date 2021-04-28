@@ -146,6 +146,7 @@ public class Player extends LivingDynamicGraphicEntity {
     public void update(long timeElapsed) {
 //        Log.l("Updating player. TimeElapsed: " + timeElapsed);
         if (health > 0)  {  //Player is alive
+            setDead(false);
             /** UPDATE MANA, HEALTH AND STAMINA **/
             if (mana < MAX_MANA) {
                 mana += (MANA_REGENERATION * timeElapsed);
@@ -243,7 +244,8 @@ public class Player extends LivingDynamicGraphicEntity {
         } else if (status != Status.DEAD) {   //Player is dying
             status = Status.DYING;
         } else {    //Player is dead
-
+            setDead(true);
+            setPlayingMusic(false);
         }
 
         double frame;
@@ -279,6 +281,7 @@ public class Player extends LivingDynamicGraphicEntity {
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0075));
                 if (frame > getSprite().DYING_FRAMES) {
                     status = Status.DEAD;
+                    setDead(true);
                     setSpriteCoordinateFromSpriteSheetX(0);
                 } else {
                     setSpriteCoordinateFromSpriteSheetX(frame % getSprite().DYING_FRAMES);
@@ -412,8 +415,12 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void setPlayingMusic(boolean playingMusic) {
-        status = playingMusic ? Status.PLAYING_MUSIC : Status.IDLE;
-        FretBoard.getInstance().setPlayingMusic(playingMusic);
+        if (!isDead()) status = playingMusic ? Status.PLAYING_MUSIC : Status.IDLE;
+        FretBoard.getInstance().setPlayingMusic(playingMusic && !isDead());
+    }
+
+    public boolean isPlayingMusic() {
+        return status == Status.PLAYING_MUSIC;
     }
 
     public void playNote() {
@@ -645,8 +652,8 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void setChoosingMusicalMode(boolean choosingMusicalMode) {
-        MusicalModeSelector.getInstance().setShowing(choosingMusicalMode);
-        this.choosingMusicalMode = choosingMusicalMode;
+        this.choosingMusicalMode = choosingMusicalMode && status != Status.DEAD;
+        MusicalModeSelector.getInstance().setShowing(this.choosingMusicalMode);
     }
 
     public Inventory getInventory() {

@@ -61,7 +61,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private void init(int x, int y) {
         setWorldCoordinates(new Coordinates(x, y));
         health = 2500f;
-        speed = Math.random() * 0.05 + 0.010;
+        speed = Math.random() * 0.025 + 0.015;
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;

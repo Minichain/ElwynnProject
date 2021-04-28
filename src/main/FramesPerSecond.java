@@ -19,9 +19,12 @@ public class FramesPerSecond {
     private static float[] arrayOfRenderingTimeNanoseconds = new float[sizeOfArray];
     private static int renderingTimeIterator = 0;
 
+    private static float fps;
+
     public static void update(float fps) {
         arrayOfFramesPerSecond[framesPerSecondIterator] = fps;
         framesPerSecondIterator = (framesPerSecondIterator + 1) % arrayOfFramesPerSecond.length;
+        FramesPerSecond.fps = MathUtils.computeMean(arrayOfFramesPerSecond);
     }
 
     public static void updateUpdatingTimeNanoseconds(long nanoseconds) {
@@ -35,7 +38,7 @@ public class FramesPerSecond {
     }
 
     public static float getFramesPerSecond() {
-        return MathUtils.computeMean(arrayOfFramesPerSecond);
+        return fps;
     }
 
     public static float getUpdatingTime() {
