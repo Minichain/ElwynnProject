@@ -8,19 +8,24 @@ import java.util.ArrayList;
 import static org.lwjgl.glfw.GLFW.*;
 import static org.lwjgl.opengl.GL11.*;
 
+/**
+ * This class is used to display logs in the User Interface and to
+ * introduce commands such as "/weather clear" or "/time 12".
+ **/
+
 public class Console {
     private static Console instance = null;
-    private ArrayList<ConsoleLine> listOfTextLines;
+    private final ArrayList<ConsoleLine> listOfTextLines = new ArrayList<>();
     private Coordinates coordinates;
-    private int maxNumberOfLines;
-    private boolean typingMode;
-    private String currentInput;
-    private double oscillation;
+    private final int maxNumberOfLines = 10;
+    private boolean typing = false;
+    private String currentInput = "";
+    private double oscillation = 0;
 
-    private class ConsoleLine {
-        private float timeToLive = 10000f;
+    private static class ConsoleLine {
+        private final float timeToLive = 10000f;
         private float timeLiving;
-        private String string;
+        private final String string;
 
         public ConsoleLine(String string) {
             this.string = string;
@@ -43,11 +48,6 @@ public class Console {
     }
 
     public Console() {
-        listOfTextLines = new ArrayList<>();
-        maxNumberOfLines = 10;
-        typingMode = false;
-        currentInput = "";
-        oscillation = 0;
     }
 
     public static Console getInstance() {
@@ -71,10 +71,10 @@ public class Console {
 
         glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
-        if (isTypingMode()) {
+        if (isTyping()) {
             OpenGLManager.glBegin(GL_TRIANGLES);
             OpenGLManager.drawRectangle((int) coordinates.x, (int) coordinates.y,
-                    1000, 24 * Parameters.getHeightResolutionFactor(), 0.5, 0f, 0f, 0f);
+                    750 * Parameters.getWidthResolutionFactor(), 24 * Parameters.getHeightResolutionFactor(), 0.5, 0f, 0f, 0f);
             OpenGLManager.drawRectangle((int) (coordinates.x + (inputLength * TextRendering.CHARACTER_WIDTH * 2f * Parameters.getWidthResolutionFactor())),
                     (int) coordinates.y, 1, 24 * Parameters.getHeightResolutionFactor(),
                     (Math.sin(oscillation) + 1) / 2, 1f, 1f, 1f);
@@ -85,7 +85,7 @@ public class Console {
         glEnable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_QUADS);
 
-        if (isTypingMode() && inputLength > 0) {
+        if (isTyping() && inputLength > 0) {
             TextRendering.renderText((int) coordinates.x, (int) coordinates.y, currentInput, 2f * Parameters.getHeightResolutionFactor(),
                     true, 1, 1f, 1f, 1f);
         }
@@ -107,13 +107,13 @@ public class Console {
         }
     }
 
-    public boolean isTypingMode() {
-        return typingMode;
+    public boolean isTyping() {
+        return typing;
     }
 
-    public void setTypingMode(boolean typingMode) {
-        this.typingMode = typingMode;
-        if (!typingMode) {
+    public void setTyping(boolean typing) {
+        this.typing = typing;
+        if (!typing) {
             if (!currentInput.isEmpty()) {
                 ConsoleInputProcessor.processInput(currentInput);
             }

@@ -182,8 +182,8 @@ public class ActionManager {
     public static void processKeyPressed(int[] key, boolean pressed) {
 //        Log.l("Process key pressed " + key[0] + ", " + key[1] + ". Pressed: " + pressed);
         if (isSameKeyCombination(key, Action.OPEN_CLOSE_CONSOLE.getActionKey())) {
-            if (!pressed) Console.getInstance().setTypingMode(!Console.getInstance().isTypingMode());
-        } else if (Console.getInstance().isTypingMode()) {
+            if (!pressed) Console.getInstance().setTyping(!Console.getInstance().isTyping());
+        } else if (Console.getInstance().isTyping() && !isMouseInput(key)) {
             if (pressed) Console.getInstance().processInputKey(key);
             return;
         }
@@ -349,6 +349,13 @@ public class ActionManager {
             return input2[1] == -1 || input1[1] == input2[1];
         }
         return false;
+    }
+
+    /**
+     * Mouse inputs codes are [0-4], so if key code is >= 5 is not a mouse input for sure.
+     **/
+    private static boolean isMouseInput(int[] key) {
+        return key[0] < 5 && key[1] < 5;
     }
 
     private static void putTile() {
