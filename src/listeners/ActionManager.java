@@ -337,7 +337,8 @@ public class ActionManager {
         } else if (isSameKeyCombination(key, Action.DEBUG_KEY.getActionKey())) {
             /** DEBUG KEY **/
             if (!pressed) {
-                Player.getInstance().hurt(10000f);
+//                Player.getInstance().hurt(10000f);
+//                Camera.getInstance().shake(100, 1f);
                 Log.l("Debug key pressed");
             }
         }

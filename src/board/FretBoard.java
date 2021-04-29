@@ -6,6 +6,7 @@ import main.*;
 import main.Window;
 import particles.Particle;
 import particles.ParticleManager;
+import scene.Camera;
 import scene.Scene;
 import text.FloatingTextEntity;
 import utils.MathUtils;
@@ -74,14 +75,14 @@ public class FretBoard {
         float halfFramePeriod = (1000f / (FramesPerSecond.getFramesPerSecond())) / 2f - 0.1f;
 //        Log.l("halfFramePeriod: " + halfFramePeriod);
 //        Log.l("beatProgress: " + beatProgress);
-        if (this.timeElapsed > 2000f) {
+        if (this.timeElapsed > beatPeriod * 2) {
             if (beatProgress < halfFramePeriod || (beatPeriod - halfFramePeriod) < beatProgress
                     || (Math.random() < 0.25 && Math.abs(beatProgress - beatPeriod * 1f / 4f) < halfFramePeriod)) {
                 OpenALManager.playSound(OpenALManager.SOUND_KICK_01);
             }
         }
 
-        if (this.timeElapsed > 1000f) {
+        if (this.timeElapsed > beatPeriod) {
             if (beatProgress < halfFramePeriod || (beatPeriod - halfFramePeriod) < beatProgress
                     || Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod
                     || Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod
@@ -90,14 +91,14 @@ public class FretBoard {
             }
         }
 
-        if (this.timeElapsed > 2500f) {
+        if (this.timeElapsed > beatPeriod * 2.5f) {
             if (Math.abs(beatProgress - beatPeriod / 2f) < halfFramePeriod
                     || (Math.random() < 0.25 && Math.abs(beatProgress - beatPeriod * 3f / 4f) < halfFramePeriod)) {
                 OpenALManager.playSound(OpenALManager.SOUND_SNARE_01);
             }
         }
 
-        if (this.timeElapsed > 1000f) {
+        if (this.timeElapsed > beatPeriod) {
             if ((Math.random() < 0.25 && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
                     || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
                     || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
@@ -219,6 +220,11 @@ public class FretBoard {
 
         // You didn't hit the note at the right time :(
         combo = 0;
-        OpenALManager.playSound(OpenALManager.SOUND_PLAYER_HURT_01);
+        if (Math.random() < 0.5) {
+            OpenALManager.playSound(OpenALManager.SOUND_MISS_NOTE_01);
+        } else {
+            OpenALManager.playSound(OpenALManager.SOUND_MISS_NOTE_02);
+        }
+        Camera.getInstance().shake(100, 1f);
     }
 }

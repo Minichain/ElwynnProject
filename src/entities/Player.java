@@ -7,6 +7,7 @@ import items.*;
 import listeners.ActionManager;
 import particles.Particle;
 import particles.ParticleManager;
+import scene.Camera;
 import scene.Scene;
 import scene.TileMap;
 import text.FloatingTextEntity;
@@ -140,6 +141,7 @@ public class Player extends LivingDynamicGraphicEntity {
             color = new Color(1f, 0.75f, 0.5f);
         }
         new FloatingTextEntity(this.getWorldCoordinates().x, this.getWorldCoordinates().y, text, color, 1.25, new double[]{0, -1}, scale);
+        Camera.getInstance().shake(100, 1f);
     }
 
     @Override

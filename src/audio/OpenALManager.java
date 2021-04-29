@@ -51,6 +51,9 @@ public class OpenALManager {
     public static Sound SOUND_NOTE_G;
     public static Sound SOUND_NOTE_G_SHARP;
 
+    public static Sound SOUND_MISS_NOTE_01;
+    public static Sound SOUND_MISS_NOTE_02;
+
     public static Sound SOUND_KICK_01;
     public static Sound SOUND_HI_HAT_01;
     public static Sound SOUND_SNARE_01;
@@ -118,6 +121,8 @@ public class OpenALManager {
         SOUND_NOTE_F_SHARP = loadSound(instrumentSoundFolder + "note_f_sharp", Sound.SoundType.EFFECT);
         SOUND_NOTE_G = loadSound(instrumentSoundFolder + "note_g", Sound.SoundType.EFFECT);
         SOUND_NOTE_G_SHARP = loadSound(instrumentSoundFolder + "note_g_sharp", Sound.SoundType.EFFECT);
+        SOUND_MISS_NOTE_01 = loadSound(instrumentSoundFolder + "miss_note_01", Sound.SoundType.EFFECT);
+        SOUND_MISS_NOTE_02 = loadSound(instrumentSoundFolder + "miss_note_02", Sound.SoundType.EFFECT);
 
         String rhythmSoundFolder = "instruments/drums01/";
         SOUND_KICK_01 = loadSound(rhythmSoundFolder + "kick_01", Sound.SoundType.EFFECT);

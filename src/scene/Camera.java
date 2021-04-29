@@ -91,8 +91,8 @@ public class Camera {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             followingSpeed = 0.0015 * zoom;
             double[] cameraVelocityVector = new double[2];
-            cameraVelocityVector[0] = Player.getInstance().getCenterOfMassWorldCoordinates().x - Camera.getInstance().getCoordinates().x;
-            cameraVelocityVector[1] = Player.getInstance().getCenterOfMassWorldCoordinates().y - Camera.getInstance().getCoordinates().y;
+            cameraVelocityVector[0] = Player.getInstance().getCenterOfMassWorldCoordinates().x - getCoordinates().x;
+            cameraVelocityVector[1] = Player.getInstance().getCenterOfMassWorldCoordinates().y - getCoordinates().y;
             double cameraSpeed = MathUtils.module(cameraVelocityVector) * followingSpeed * timeElapsed;
             cameraVelocityVector = MathUtils.normalizeVector(cameraVelocityVector);
 
@@ -102,13 +102,21 @@ public class Camera {
                 return;
             }
 
-            Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (cameraVelocityVector[0] * cameraSpeed)),
-                    (Camera.getInstance().getCoordinates().y + (cameraVelocityVector[1] * cameraSpeed)));
+            setCoordinates((getCoordinates().x + (cameraVelocityVector[0] * cameraSpeed)),
+                    (getCoordinates().y + (cameraVelocityVector[1] * cameraSpeed)));
+
+            if (shaking) {
+                setCoordinates(getCoordinates().x + Math.random() * shakingIntensity - shakingIntensity / 2f,
+                        getCoordinates().y + Math.random() * shakingIntensity - shakingIntensity / 2f);
+
+                shakingTime -= timeElapsed;
+                shaking = shakingTime >= 0;
+            }
         } else {
             freeCameraSpeed = 2.0 / zoom;
             double[] movement = computeMovementVector(timeElapsed, freeCameraSpeed);
-            Camera.getInstance().setCoordinates((Camera.getInstance().getCoordinates().x + (movement[0])),
-                    (Camera.getInstance().getCoordinates().y + (movement[1])));
+            setCoordinates((getCoordinates().x + (movement[0])),
+                    (getCoordinates().y + (movement[1])));
         }
     }
 
@@ -133,5 +141,15 @@ public class Camera {
         movement[1] *= timeElapsed * speed;
 
         return movement;
+    }
+
+    private boolean shaking = false;
+    private int shakingTime = 100;    //milliseconds
+    private float shakingIntensity;    //milliseconds
+
+    public void shake(int shakingTime, float shakingIntensity) {
+        this.shaking = true;
+        this.shakingTime = shakingTime;
+        this.shakingIntensity = shakingIntensity;
     }
 }
