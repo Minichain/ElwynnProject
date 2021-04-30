@@ -202,7 +202,7 @@ public class FretBoard {
 
                 combo++;
                 Scene.getInstance().getListOfShockWaves().add(new ShockWave(Player.getInstance().getCenterOfMassWorldCoordinates(),
-                        musicalMode, musicalNote, 1000f * combo));
+                        Player.getInstance().facingVector, musicalMode, musicalNote, 250f * combo));
 
                 if (combo > 3) {
                     Coordinates coordinates = new Coordinates(targetNotes[note.getTargetNote()].x, targetNotes[note.getTargetNote()].y).toWorldCoordinates();

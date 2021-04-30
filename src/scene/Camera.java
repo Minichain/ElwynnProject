@@ -4,6 +4,7 @@ import entities.Player;
 import listeners.ActionManager;
 import main.Coordinates;
 import main.GameMode;
+import main.Log;
 import main.Parameters;
 import utils.MathUtils;
 
@@ -91,8 +92,15 @@ public class Camera {
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
             followingSpeed = 0.0015 * zoom;
             double[] cameraVelocityVector = new double[2];
-            cameraVelocityVector[0] = Player.getInstance().getCenterOfMassWorldCoordinates().x - getCoordinates().x;
-            cameraVelocityVector[1] = Player.getInstance().getCenterOfMassWorldCoordinates().y - getCoordinates().y;
+
+            Coordinates focusCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
+            if (Player.getInstance().isPlayingMusic()) {
+                focusCoordinates.x += Player.getInstance().facingVector[0] * 25;
+                focusCoordinates.y += Player.getInstance().facingVector[1] * 25;
+            }
+
+            cameraVelocityVector[0] = focusCoordinates.x - getCoordinates().x;
+            cameraVelocityVector[1] = focusCoordinates.y - getCoordinates().y;
             double cameraSpeed = MathUtils.module(cameraVelocityVector) * followingSpeed * timeElapsed;
             cameraVelocityVector = MathUtils.normalizeVector(cameraVelocityVector);
 

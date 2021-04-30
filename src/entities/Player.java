@@ -224,10 +224,10 @@ public class Player extends LivingDynamicGraphicEntity {
             }
 
             /** WHERE IS IT FACING? **/
-            facingVector = null;
             if (status == Status.PLAYING_MUSIC) {
                 facingVector = new double[]{InputListenerManager.getMouseCameraCoordinates().x - getCenterOfMassCameraCoordinates().x,
                         InputListenerManager.getMouseCameraCoordinates().y - getCenterOfMassCameraCoordinates().y};
+                facingVector = MathUtils.normalizeVector(facingVector);
                 directionFacing = Utils.checkDirectionFacing(facingVector);
                 if (mana >= 0.05f) {
                     mana -= 0.05f;
@@ -429,7 +429,7 @@ public class Player extends LivingDynamicGraphicEntity {
     }
 
     public void playNote() {
-        if (!isDead()) {
+        if (!isDead() && isPlayingMusic()) {
             FretBoard.getInstance().playNote();
         }
     }

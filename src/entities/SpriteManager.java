@@ -7,7 +7,7 @@ public class SpriteManager {
 
     /** ENTITIES **/
     public Sprite PLAYER, SMOKE01, NOTCH, SARA, NPC01, NPC02,
-            GHOST_IONIAN, GHOST_DORIAN, GHOST_PHRYGIAN, GHOST_LYDIAN, GHOST_MIXOLYDIAN, GHOST_AEOLIAN, GHOST_LOCRIAN,
+            ZOMBIE01,
             TREE01, TREE02, TREE03, TREE04,
             BUILDING01, BUILDING02,
             FENCE01, FENCE02, FENCE03, FENCE04,
@@ -38,14 +38,8 @@ public class SpriteManager {
         NPC01 = new Sprite("res/sprites/dynamic/npc01.png", 19, 20, 1, 8, 2, 1, 7, 3);
         NPC02 = new Sprite("res/sprites/dynamic/npc02.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
-        /** ENEMY **/
-        GHOST_IONIAN = new Sprite("res/sprites/dynamic/ghost_enemy_ionian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_DORIAN = new Sprite("res/sprites/dynamic/ghost_enemy_dorian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_PHRYGIAN = new Sprite("res/sprites/dynamic/ghost_enemy_phrygian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_LYDIAN = new Sprite("res/sprites/dynamic/ghost_enemy_lydian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_MIXOLYDIAN = new Sprite("res/sprites/dynamic/ghost_enemy_mixolydian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_AEOLIAN = new Sprite("res/sprites/dynamic/ghost_enemy_aeolian.png", 32, 32, 1, 4, 6, 1, 1, 1);
-        GHOST_LOCRIAN = new Sprite("res/sprites/dynamic/ghost_enemy_locrian.png", 32, 32, 1, 4, 6, 1, 1, 1);
+        /** ENEMIES **/
+        ZOMBIE01 = new Sprite("res/sprites/dynamic/zombie01.png", 19, 20, 1, 8, 2, 1, 7, 3);
 
         /** MUSICAL NOTES **/
         G_CLEF = new Sprite("res/sprites/dynamic/g_clef_white_8x8.png", 8, 8, -1);

@@ -2,7 +2,7 @@ package entities;
 
 public abstract class LivingDynamicGraphicEntity extends DynamicGraphicEntity {
     public float health;
-    public double[] facingVector;
+    public double[] facingVector = new double[]{0, 0};
 
     public LivingDynamicGraphicEntity(double x, double y) {
         super(x, y);

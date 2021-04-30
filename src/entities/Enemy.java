@@ -65,38 +65,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
         status = Status.IDLE;
         directionFacing = Utils.DirectionFacing.DOWN;
         chasingMode = ChasingMode.STRAIGHT_LINE;
-        int enemyType = (int) (MathUtils.random(0, Integer.MAX_VALUE)) % MusicalMode.values().length;
-        switch (enemyType) {
-            case 0:
-                musicalMode = MusicalMode.IONIAN;
-                setSprite(SpriteManager.getInstance().GHOST_IONIAN);
-                break;
-            case 1:
-                musicalMode = MusicalMode.DORIAN;
-                setSprite(SpriteManager.getInstance().GHOST_DORIAN);
-                break;
-            case 2:
-                musicalMode = MusicalMode.PHRYGIAN;
-                setSprite(SpriteManager.getInstance().GHOST_PHRYGIAN);
-                break;
-            case 3:
-                musicalMode = MusicalMode.LYDIAN;
-                setSprite(SpriteManager.getInstance().GHOST_LYDIAN);
-                break;
-            case 4:
-                musicalMode = MusicalMode.MIXOLYDIAN;
-                setSprite(SpriteManager.getInstance().GHOST_MIXOLYDIAN);
-                break;
-            case 5:
-                musicalMode = MusicalMode.AEOLIAN;
-                setSprite(SpriteManager.getInstance().GHOST_AEOLIAN);
-                break;
-            case 6:
-            default:
-                musicalMode = MusicalMode.LOCRIAN;
-                setSprite(SpriteManager.getInstance().GHOST_LOCRIAN);
-                break;
-        }
+        setSprite(SpriteManager.getInstance().ZOMBIE01);
         Scene.getInstance().getListOfGraphicEntities().add(this);
     }
 
@@ -107,7 +76,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     @Override
     public void drawSprite(int x, int y) {
-        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 0.5f);
+        getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(), 1f);
     }
 
     @Override
@@ -207,9 +176,9 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
             }
 
-            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.01) {
-                roll();
-            }
+//            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.01) {
+//                roll();
+//            }
 
             if (status != Status.ROLLING) {
                 computeMovementVector(timeElapsed);
@@ -274,7 +243,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
                 break;
             case ATTACKING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015)) % getSprite().ATTACKING_FRAMES;
+                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115)) % getSprite().ATTACKING_FRAMES;
                 setSpriteCoordinateFromSpriteSheetX(frame);
                 break;
             case DYING:
@@ -373,27 +342,55 @@ public class Enemy extends LivingDynamicGraphicEntity {
         switch (status) {
             default:
             case IDLE:
-                setSpriteCoordinateFromSpriteSheetY(0);
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(0);
+                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
+                    setSpriteCoordinateFromSpriteSheetY(3);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(1);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(2);
+                }
                 break;
             case ROLLING:
-                setSpriteCoordinateFromSpriteSheetY(5);
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(10);
+                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
+                    setSpriteCoordinateFromSpriteSheetY(13);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(11);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(12);
+                }
                 break;
             case ATTACKING:
-                setSpriteCoordinateFromSpriteSheetY(6);
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(14);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(15);
+                } else if (directionFacing == Utils.DirectionFacing.UP) {
+                    setSpriteCoordinateFromSpriteSheetY(16);
+                } else {
+                    setSpriteCoordinateFromSpriteSheetY(17);
+                }
                 break;
             case RUNNING:
             case CHASING:
-                if (movementVectorNormalized[0] < 0) {
-                    setSpriteCoordinateFromSpriteSheetY(2);
+                if (directionFacing == Utils.DirectionFacing.DOWN) {
+                    setSpriteCoordinateFromSpriteSheetY(4);
+                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
+                    setSpriteCoordinateFromSpriteSheetY(7);
+                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
+                    setSpriteCoordinateFromSpriteSheetY(5);
                 } else {
-                    setSpriteCoordinateFromSpriteSheetY(1);
+                    setSpriteCoordinateFromSpriteSheetY(6);
                 }
                 break;
             case DYING:
-                setSpriteCoordinateFromSpriteSheetY(3);
+                setSpriteCoordinateFromSpriteSheetY(8);
                 break;
             case DEAD:
-                setSpriteCoordinateFromSpriteSheetY(4);
+                setSpriteCoordinateFromSpriteSheetY(9);
                 break;
         }
     }

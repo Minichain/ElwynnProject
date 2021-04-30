@@ -19,6 +19,9 @@ All the assets (sprites and sounds) have been designed and recorded by me.
 
 ## Patch Notes
 
+* **v0.04.00.0**
+    * New combat system.
+    * New assets: Sounds, Enemies, etc.
 * **v0.03.00.0**
     * Inventory added.
     * Combat system modified.

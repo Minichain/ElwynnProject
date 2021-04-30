@@ -121,4 +121,18 @@ public class MathUtils {
     public static double customExponentialFunction(double x) {
         return (1f - Math.exp(-10f * x)) + (Math.sin(200f * x) * 0.05f);
     }
+
+    public static double dotProduct(Coordinates c1, Coordinates c2) {
+        return dotProduct(new double[]{c1.x, c1.y}, new double[]{c2.x, c2.y});
+    }
+
+    public static double dotProduct(double[] v1, double[] v2) {
+        double product = 0;
+        if (v1.length == v2.length) {
+            for (int i = 0; i < v1.length; i++) {
+                product += v1[i] * v2[i];
+            }
+        }
+        return product;
+    }
 }
