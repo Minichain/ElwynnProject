@@ -44,10 +44,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private double distanceToGoal;
     private int computePathPeriod = 500;
     private int computePathCoolDown = 0;
-
-    private int checkObstaclesPeriod = 500;
-    private int checkObstaclesCoolDown = 0;
-    private boolean obstacleDetected;
+    private double chasingRange = 150;
 
     MusicalMode musicalMode;
 
@@ -150,7 +147,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
             goalCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
             distanceToGoal = MathUtils.module(getCenterOfMassWorldCoordinates(), goalCoordinates);
 
-            if (status != Status.ROLLING && distanceToGoal < 2000.0) {
+            if (status != Status.ROLLING && distanceToGoal < chasingRange) {
                 status = Status.CHASING;
             }
 
@@ -162,8 +159,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 //            Log.l("distanceToGoal: " + distanceToGoal);
 
             if (status != Status.ROLLING) {
-                checkObstacles(timeElapsed);
-                if (obstacleDetected) {
+                if (checkObstacles(timeElapsed)) {
                     chasingMode = ChasingMode.DIJKSTRA;
                     if (status == Status.ATTACKING) {
                         status = Status.CHASING;
@@ -264,6 +260,14 @@ public class Enemy extends LivingDynamicGraphicEntity {
         updateSpriteCoordinatesToDraw();
     }
 
+    private int checkObstaclesPeriod = 500;
+    private int checkObstaclesCoolDown = 0;
+    private boolean obstacleDetected;
+
+    /**
+     * Throws an ray from the enemy entity to its goal and checks if there is any obstacle in its way.
+     * @return true if any obstacle has been detected.
+     **/
     private boolean checkObstacles(long timeElapsed) {
         checkObstaclesCoolDown -= timeElapsed;
         if (checkObstaclesCoolDown > 0) {
@@ -302,8 +306,10 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 && status != Status.DEAD
                 && status != Status.ATTACKING
                 && distanceToGoal > attackRange
-                && distanceToGoal < 2000) {
+                && distanceToGoal < chasingRange) {
             status = Status.CHASING;
+        } else {
+            status = Status.IDLE;
         }
 
         movementVector = new double[]{0, 0};
@@ -318,12 +324,18 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 computePath();
                 computePathCoolDown = computePathPeriod;
             }
+            computePathCoolDown -= timeElapsed;
+
+            if (pathFindingAlgorithm.getPath() == null || pathFindingAlgorithm.getPath().size() <= 0) {
+                status = Status.IDLE;
+                return;
+            }
+
             int[] step = pathFindingAlgorithm.getNextStep(getCenterOfMassWorldCoordinates());
             Coordinates stepWorldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(step[0], step[1]);
             movementVector = new double[]{
-                    stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2),
-                    stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2)};
-            computePathCoolDown -= timeElapsed;
+                    stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2.0),
+                    stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2.0)};
         } else if (chasingMode == ChasingMode.STRAIGHT_LINE) {
             movementVector[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
             movementVector[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);

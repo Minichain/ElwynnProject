@@ -73,6 +73,7 @@ public class FretBoard {
         if (!Player.getInstance().isPlayingMusic()) return;
 
         float halfFramePeriod = (1000f / (FramesPerSecond.getFramesPerSecond())) / 2f - 0.1f;
+        halfFramePeriod = halfFramePeriod / GameTime.getTimeSpeedFactor();
 //        Log.l("halfFramePeriod: " + halfFramePeriod);
 //        Log.l("beatProgress: " + beatProgress);
         if (this.timeElapsed > beatPeriod * 2) {

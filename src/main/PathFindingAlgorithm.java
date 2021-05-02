@@ -1,6 +1,7 @@
 package main;
 
 import scene.Scene;
+import scene.Tile;
 import scene.TileMap;
 
 import java.util.ArrayList;
@@ -67,9 +68,10 @@ public class PathFindingAlgorithm {
 
         for (int i = 0; i < collidableNodes.length; i++) {
             for (int j = 0; j < collidableNodes[i].length; j++) {
-                if (0 < (toTileMapCoordinates[0] + i) && (toTileMapCoordinates[0] + i) < collidableNodes.length
-                        && 0 < (toTileMapCoordinates[1] + j) && (toTileMapCoordinates[1] + j) < collidableNodes[0].length) {
-                    collidableNodes[i][j] = TileMap.getArrayOfTiles()[toTileMapCoordinates[0] + i][toTileMapCoordinates[1] + j].isCollidable();
+                Tile[][] arrayOfTiles = TileMap.getArrayOfTiles();
+                if (0 <= (toTileMapCoordinates[0] + i) && (toTileMapCoordinates[0] + i) < arrayOfTiles.length
+                        && 0 <= (toTileMapCoordinates[1] + j) && (toTileMapCoordinates[1] + j) < arrayOfTiles[0].length) {
+                    collidableNodes[i][j] = arrayOfTiles[toTileMapCoordinates[0] + i][toTileMapCoordinates[1] + j].isCollidable();
                 }
             }
         }
@@ -90,8 +92,8 @@ public class PathFindingAlgorithm {
         if (!path.isEmpty()) {
             int index = path.size() - 1;
             Coordinates worldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(path.get(index)[0], path.get(index)[1]);
-            worldCoordinates.x += TileMap.TILE_WIDTH / 2;
-            worldCoordinates.y += TileMap.TILE_HEIGHT / 2;
+            worldCoordinates.x += TileMap.TILE_WIDTH / 2.0;
+            worldCoordinates.y += TileMap.TILE_HEIGHT / 2.0;
             if (Math.abs(currentWorldCoordinates.x - worldCoordinates.x) <= 1
                     && Math.abs(currentWorldCoordinates.y - worldCoordinates.y) <= 1) {   //We are already on that tile.
                 path.remove(index);
