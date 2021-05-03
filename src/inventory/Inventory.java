@@ -54,7 +54,6 @@ public class Inventory {
     }
 
     public void render() {
-        glDisable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_TRIANGLES);
         OpenGLManager.drawRectangle((int) coordinates.x, (int) coordinates.y, width, height, 0.8, 0.2f);
         for (InventorySlot slot : listOfSlots) {

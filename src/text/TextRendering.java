@@ -29,15 +29,18 @@ public class TextRendering {
      * */
     public static void renderText(float leftMargin, float topMargin, float gapBetweenTexts, ArrayList<String> textList, float textScale) {
         fontSpriteWhite.bind();
+
         glEnable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_QUADS);
+
         for (int i = 0; i < textList.size(); i++) {
             TextRendering.renderText(leftMargin, i * gapBetweenTexts + topMargin, textList.get(i), textScale, true);
         }
+
+        glEnd();
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
-        glEnd();
     }
 
     /**
@@ -63,6 +66,7 @@ public class TextRendering {
         if (!isTextureBoundAndOpenGlBegun) {
             fontSpriteWhite.bind();
             glEnable(GL_TEXTURE_2D);
+            glEnable(GL_BLEND);
             OpenGLManager.glBegin(GL_QUADS);
         }
 
@@ -75,8 +79,9 @@ public class TextRendering {
         }
 
         if (!isTextureBoundAndOpenGlBegun) {
-            glDisable(GL_TEXTURE_2D);
             glEnd();
+            glDisable(GL_TEXTURE_2D);
+            glDisable(GL_BLEND);
         }
     }
 

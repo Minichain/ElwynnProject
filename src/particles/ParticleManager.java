@@ -48,14 +48,12 @@ public class ParticleManager {
     }
 
     public void renderParticles() {
-        glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (Particle particle : listOfParticles) {
             particle.render();
         }
         glEnd();
-        glEnable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
     }
 

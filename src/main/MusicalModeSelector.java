@@ -61,7 +61,7 @@ public class MusicalModeSelector {
         int sections = MusicalMode.values().length;
 
         /** RENDER TRIANGLES **/
-        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = 0; i < sections; i++) {
             vertex1 = new double[]{vertices[0][i].x, vertices[0][i].y};
@@ -80,6 +80,7 @@ public class MusicalModeSelector {
             glVertex2d(vertex3[0], vertex3[1]);
         }
         glEnd();
+        glDisable(GL_BLEND);
 
         /** RENDER ICONS **/
         int sectionLength = (int) (500 * Parameters.getHeightResolutionFactor());

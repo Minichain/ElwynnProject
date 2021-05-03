@@ -236,15 +236,11 @@ public class Scene {
 
         /** ENTITIES HITBOX **/
         if (Parameters.isDebugMode()) {
-            glDisable(GL_TEXTURE_2D);
-            glDisable(GL_BLEND);
             OpenGLManager.glBegin(GL_LINES);
             for (GraphicEntity graphicEntity : listOfGraphicEntities) {
                 graphicEntity.drawHitBox();
             }
             glEnd();
-            glEnable(GL_TEXTURE_2D);
-            glEnable(GL_BLEND);
         }
     }
 
@@ -281,14 +277,13 @@ public class Scene {
             }
         }
 
+        glEnd();
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
-
-        glEnd();
     }
 
     private void renderCollidableTiles(int[] topLeftTileCoordinates, int[] topRightTileCoordinates, int[] bottomLeftTileCoordinates) {
-        glDisable(GL_TEXTURE_2D);
+        glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = topLeftTileCoordinates[0]; i < topRightTileCoordinates[0]; i++) {
             for (int j = topLeftTileCoordinates[1]; j < bottomLeftTileCoordinates[1]; j++) {
@@ -308,7 +303,7 @@ public class Scene {
             }
         }
         glEnd();
-        glEnable(GL_TEXTURE_2D);
+        glDisable(GL_BLEND);
     }
 
     public boolean checkCollisionWithEntities(Coordinates coordinatesToCheck) {

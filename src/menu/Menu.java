@@ -148,7 +148,6 @@ public class Menu {
     public void render() {
         MenuComponent component;
 
-        glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         OpenGLManager.glBegin(GL_TRIANGLES);
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
@@ -160,10 +159,12 @@ public class Menu {
         TextRendering.fontSpriteWhite.bind();
         glEnable(GL_TEXTURE_2D);
         OpenGLManager.glBegin(GL_QUADS);
+
         for (int i = 0; i < listOfMenuComponents.size(); i++) {
             component = listOfMenuComponents.get(i);
             component.renderInfo();
         }
+
         glEnd();
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);

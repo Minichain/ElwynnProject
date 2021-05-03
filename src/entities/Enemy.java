@@ -428,7 +428,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
 
     public void drawAttackFX() {
         /** PATH RENDERING **/
-        if (Parameters.isDebugMode() && status != Status.DEAD) {
+        if (Parameters.isDebugMode() && status == Status.CHASING) {
             if (chasingMode == ChasingMode.DIJKSTRA
                     && pathFindingAlgorithm != null
                     && pathFindingAlgorithm.getPath() != null
@@ -438,7 +438,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 Coordinates cameraCoordinates1;
                 Coordinates cameraCoordinates2;
 
-                glDisable(GL_TEXTURE_2D);
                 glColor4f(1f, 1f, 1f, 0.5f);
                 OpenGLManager.glBegin(GL_LINES);
 
@@ -456,9 +455,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 }
 
                 glEnd();
-                glEnable(GL_TEXTURE_2D);
             } else if (chasingMode == ChasingMode.STRAIGHT_LINE && goalCoordinates != null) {
-                glDisable(GL_TEXTURE_2D);
                 glColor4f(1f, 1f, 1f, 0.5f);
                 OpenGLManager.glBegin(GL_LINES);
 
@@ -469,7 +466,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
                 glVertex2d(cameraCoordinates2.x + (TileMap.TILE_WIDTH / 2.0) * Camera.getZoom(), cameraCoordinates2.y - (TileMap.TILE_HEIGHT / 2.0) * Camera.getZoom());
 
                 glEnd();
-                glEnable(GL_TEXTURE_2D);
             }
         }
     }

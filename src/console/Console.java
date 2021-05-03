@@ -69,7 +69,6 @@ public class Console {
     public void render() {
         int inputLength = currentInput.length();
 
-        glDisable(GL_TEXTURE_2D);
         glEnable(GL_BLEND);
         if (isTyping()) {
             OpenGLManager.glBegin(GL_TRIANGLES);

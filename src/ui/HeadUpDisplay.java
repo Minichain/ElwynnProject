@@ -64,8 +64,11 @@ public class HeadUpDisplay {
                 float x, y;
 
                 TileMap.bindTileSetTexture();
+
                 glEnable(GL_TEXTURE_2D);
+                glEnable(GL_BLEND);
                 OpenGLManager.glBegin(GL_QUADS);
+
                 for (int i = 0; i < 25; i++) {
                     currentTile = selectedTile + i - previousTilesToShow;
                     x = 20f * Parameters.getHeightResolutionFactor() + i * 128f * Parameters.getHeightResolutionFactor();
@@ -78,17 +81,21 @@ public class HeadUpDisplay {
                         TileMap.drawTile(currentTile, x, y, 8 * Parameters.getHeightResolutionFactor(), 0.5f, 0.5f, 0.5f, true);
                     }
                 }
+
                 glEnd();
+                glDisable(GL_TEXTURE_2D);
+                glDisable(GL_BLEND);
             } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES
                     || GameMode.getCreativeMode() == GameMode.CreativeMode.WARPS) {
                 int previousEntitiesToShow = 5, currentEntity;
                 float x = 0, y = 0;
 
-                glDisable(GL_TEXTURE_2D);
+                glEnable(GL_BLEND);
                 OpenGLManager.glBegin(GL_TRIANGLES);
                 OpenGLManager.drawRectangle(0, (int) (Window.getHeight() - (250f * Parameters.getHeightResolutionFactor())),
                         Window.getWidth(), 200f * Parameters.getHeightResolutionFactor(), 0.7, 0);
                 glEnd();
+                glDisable(GL_BLEND);
 
                 for (int i = 0; i < 25; i++) {
                     currentEntity = selectedEntity + i - previousEntitiesToShow;
@@ -132,10 +139,13 @@ public class HeadUpDisplay {
                     && 0 < mouseY && mouseY < Parameters.getResolutionHeight()) {
                 if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                     TileMap.bindTileSetTexture();
+
                     glEnable(GL_TEXTURE_2D);
                     OpenGLManager.glBegin(GL_QUADS);
+
                     TileMap.drawTile(selectedTile, mouseX + 5, mouseY + 5, 5f * Parameters.getHeightResolutionFactor(), 0f, 0f, 0f, true);
                     TileMap.drawTile(selectedTile, mouseX, mouseY, 5f * Parameters.getHeightResolutionFactor(), 1f, 1f, 1f, true);
+
                     glEnd();
                     glDisable(GL_TEXTURE_2D);
                 } else if (GameMode.getCreativeMode() == GameMode.CreativeMode.STATIC_ENTITIES) {

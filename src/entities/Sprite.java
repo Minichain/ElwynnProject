@@ -123,10 +123,9 @@ public class Sprite {
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
         if (!isTextureBoundAndOpenGlBegun) {
+            glEnd();
             glDisable(GL_BLEND);
             glDisable(GL_TEXTURE_2D);
-
-            glEnd();
         }
     }
 
@@ -160,9 +159,8 @@ public class Sprite {
         OpenGLManager.drawTexture(x, y, u, v, u2, v2, width, height, transparency,
                 color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f);
 
+        glEnd();
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
-
-        glEnd();
     }
 }

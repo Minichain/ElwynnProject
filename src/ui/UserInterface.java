@@ -185,7 +185,6 @@ public class UserInterface {
                             size = listOfItems.size() + 1;
                         }
 
-                        glDisable(GL_TEXTURE_2D);
                         OpenGLManager.glBegin(GL_TRIANGLES);
                         int x = (int) nonPlayerCharacter.getCameraCoordinates().x - (int) (325f * Parameters.getHeightResolutionFactor());
                         int y = (int) nonPlayerCharacter.getCameraCoordinates().y - (int) (25f * size * Parameters.getHeightResolutionFactor());

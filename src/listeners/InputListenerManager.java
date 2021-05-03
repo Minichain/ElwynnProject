@@ -83,7 +83,7 @@ public class InputListenerManager {
                     scroll.update(scroll.x, -1, scroll.width, scroll.height);
                 } else {
                     if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
-                        if (yOffset > 0.0) {
+                        if (yOffset < 0.0) {
                             if (GameMode.getCreativeMode() == GameMode.CreativeMode.TILES) {
                                 HeadUpDisplay.setSelectedTile(HeadUpDisplay.getSelectedTile() - 1);
                             } else {
