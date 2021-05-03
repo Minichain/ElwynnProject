@@ -177,6 +177,17 @@ public class Enemy extends LivingDynamicGraphicEntity {
 //            }
 
             if (status != Status.ROLLING) {
+                if (distanceToGoal < chasingRange) {
+                    if (status != Status.DYING
+                            && status != Status.DEAD
+                            && status != Status.ATTACKING
+                            && distanceToGoal > attackRange) {
+                        status = Status.CHASING;
+                    }
+                } else {
+                    status = Status.IDLE;
+                }
+
                 computeMovementVector(timeElapsed);
             }
             movementVector[0] = movementVectorNormalized[0] * timeElapsed;
@@ -302,16 +313,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
     }
 
     public void computeMovementVector(long timeElapsed) {
-        if (status != Status.DYING
-                && status != Status.DEAD
-                && status != Status.ATTACKING
-                && distanceToGoal > attackRange
-                && distanceToGoal < chasingRange) {
-            status = Status.CHASING;
-        } else {
-            status = Status.IDLE;
-        }
-
         movementVector = new double[]{0, 0};
         movementVectorNormalized = new double[]{0, 0};
 

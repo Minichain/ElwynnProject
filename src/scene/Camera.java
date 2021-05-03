@@ -93,7 +93,8 @@ public class Camera {
             followingSpeed = 0.0015 * zoom;
             double[] cameraVelocityVector = new double[2];
 
-            Coordinates focusCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
+            Coordinates playerCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
+            Coordinates focusCoordinates = new Coordinates(playerCoordinates.x, playerCoordinates.y);
             if (Player.getInstance().isPlayingMusic()) {
                 focusCoordinates.x += Player.getInstance().facingVector[0] * 25;
                 focusCoordinates.y += Player.getInstance().facingVector[1] * 25;

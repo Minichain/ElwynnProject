@@ -69,8 +69,8 @@ public abstract class GraphicEntity extends Entity {
     public abstract String getEntityCode();
 
     public boolean isOverEntity(Coordinates coordinates) {
-        return (Math.abs(coordinates.x - centerOfMassWorldCoordinates.x) <= (getSprite().SPRITE_WIDTH / 2))
-                && (Math.abs(coordinates.y - centerOfMassWorldCoordinates.y) <= (getSprite().SPRITE_HEIGHT / 2));
+        return (Math.abs(coordinates.x - centerOfMassWorldCoordinates.x) <= (getSprite().SPRITE_WIDTH / 2.0))
+                && (Math.abs(coordinates.y - centerOfMassWorldCoordinates.y) <= (getSprite().SPRITE_HEIGHT / 2.0));
     }
 
     public ArrayList<LightSource> getLightSources() {
