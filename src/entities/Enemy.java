@@ -21,7 +21,7 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private Utils.DirectionFacing directionFacing;
     private Status status;
     public enum Status {
-        IDLE, RUNNING, ROLLING, DYING, DEAD, ATTACKING, CHASING;
+        IDLE, RUNNING, DYING, DEAD, ATTACKING, CHASING;
     }
 
     /** ATTACK **/
@@ -45,6 +45,10 @@ public class Enemy extends LivingDynamicGraphicEntity {
     private int computePathPeriod = 500;
     private int computePathCoolDown = 0;
     private double chasingRange = 150;
+
+    private final int runningPeriod = 2000;
+    private int runningCoolDown = 0;
+    private double[] runningVector;
 
     MusicalMode musicalMode;
 
@@ -144,84 +148,75 @@ public class Enemy extends LivingDynamicGraphicEntity {
     @Override
     public void update(long timeElapsed) {
         if (health > 0) {   //Enemy is alive
-            goalCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
-            distanceToGoal = MathUtils.module(getCenterOfMassWorldCoordinates(), goalCoordinates);
-
-            if (status != Status.ROLLING && distanceToGoal < chasingRange) {
-                status = Status.CHASING;
+            if (!Player.getInstance().isDead()) {
+                goalCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
+                distanceToGoal = MathUtils.module(getCenterOfMassWorldCoordinates(), goalCoordinates);
+            } else {
+                goalCoordinates = new Coordinates(-1, -1);
+                distanceToGoal = Double.MAX_VALUE;
             }
 
-            if (status == Status.IDLE) {
-                return;
+            if (distanceToGoal <= attackRange) {
+                status = Status.ATTACKING;
+            } else if (distanceToGoal < chasingRange) {
+                status = Status.CHASING;
+            } else if (runningCoolDown > 0) {
+                status = Status.RUNNING;
+                runningCoolDown -= timeElapsed;
+            } else {
+                status = Status.IDLE;
+            }
+
+            if (runningCoolDown <= 0 && status == Status.IDLE && Math.random() < 0.01) {
+                status = Status.RUNNING;
+                runningVector = new double[]{Math.random() * 2 - 1, Math.random() * 2 - 1};
+                runningCoolDown = runningPeriod;
             }
 
 //            Log.l("status: " + status);
 //            Log.l("distanceToGoal: " + distanceToGoal);
-
-            if (status != Status.ROLLING) {
-                if (checkObstacles(timeElapsed)) {
-                    chasingMode = ChasingMode.DIJKSTRA;
-                    if (status == Status.ATTACKING) {
-                        status = Status.CHASING;
+            if (status != Status.IDLE) {
+                if (status == Status.CHASING) {
+                    if (checkObstacles(timeElapsed)) {
+                        chasingMode = ChasingMode.DIJKSTRA;
+                    } else {
+                        chasingMode = ChasingMode.STRAIGHT_LINE;
                     }
-                } else {
-                    chasingMode = ChasingMode.STRAIGHT_LINE;
-                    if (status == Status.CHASING && distanceToGoal <= attackRange) {
-                        status = Status.ATTACKING;
-                    }
-                }
-            }
-
-//            if ((status == Status.CHASING || status == Status.RUNNING) && Math.random() < 0.01) {
-//                roll();
-//            }
-
-            if (status != Status.ROLLING) {
-                if (distanceToGoal < chasingRange) {
-                    if (status != Status.DYING
-                            && status != Status.DEAD
-                            && status != Status.ATTACKING
-                            && distanceToGoal > attackRange) {
-                        status = Status.CHASING;
-                    }
-                } else {
-                    status = Status.IDLE;
                 }
 
                 computeMovementVector(timeElapsed);
-            }
-            movementVector[0] = movementVectorNormalized[0] * timeElapsed;
-            movementVector[1] = movementVectorNormalized[1] * timeElapsed;
 
-            updateAttack(timeElapsed);
+                movementVector[0] = movementVectorNormalized[0] * timeElapsed;
+                movementVector[1] = movementVectorNormalized[1] * timeElapsed;
 
-            /** CHECK COLLISIONS **/
-            boolean horizontalCollision = checkHorizontalCollision(movementVectorNormalized, 6);
-            boolean verticalCollision = checkVerticalCollision(movementVectorNormalized, 6);
+                updateAttack(timeElapsed);
 
-            /** MOVE ENTITY **/
-            double speed = 0.0;
-            if (status == Status.ATTACKING) {
-                speed = this.speed * 0.5;
-            } else if (status == Status.RUNNING || status == Status.CHASING) {
-                speed = this.speed;
-            } else if (status == Status.ROLLING) {
-                speed = this.speed * 1.5;
-            }
+                /** CHECK COLLISIONS **/
+                boolean horizontalCollision = checkHorizontalCollision(movementVectorNormalized, 6);
+                boolean verticalCollision = checkVerticalCollision(movementVectorNormalized, 6);
 
-            if (!horizontalCollision) {
-                getWorldCoordinates().x += movementVector[0] * speed;
-            }
-            if (!verticalCollision) {
-                getWorldCoordinates().y += movementVector[1] * speed;
-            }
+                /** MOVE ENTITY **/
+                double speed = 0.0;
+                if (status == Status.RUNNING) {
+                    speed = this.speed * 0.5;
+                } else if (status == Status.CHASING) {
+                    speed = this.speed;
+                }
 
-            /** WHERE IS IT FACING? **/
-            facingVector = null;
-            if (movementVector[0] != 0 || movementVector[1] != 0) {
-                directionFacing = Utils.checkDirectionFacing(movementVector);
+                if (!horizontalCollision) {
+                    getWorldCoordinates().x += movementVector[0] * speed;
+                }
+                if (!verticalCollision) {
+                    getWorldCoordinates().y += movementVector[1] * speed;
+                }
+
+                /** WHERE IS IT FACING? **/
+                facingVector = null;
+                if (movementVector[0] != 0 || movementVector[1] != 0) {
+                    directionFacing = Utils.checkDirectionFacing(movementVector);
+                }
+                if (hurtCoolDown >= 0) hurtCoolDown -= timeElapsed;
             }
-            if (hurtCoolDown >= 0) hurtCoolDown -= timeElapsed;
         } else if (status != Status.DEAD) {   //Enemy is dying
             status = Status.DYING;
         } else {
@@ -239,15 +234,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
             case CHASING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.015));
                 setSpriteCoordinateFromSpriteSheetX(frame % getSprite().RUNNING_FRAMES);
-                break;
-            case ROLLING:
-                frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.005));
-                if (frame >= getSprite().ROLLING_FRAMES) {
-                    status = Status.IDLE;
-                    setSpriteCoordinateFromSpriteSheetX(0);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetX(frame % getSprite().ROLLING_FRAMES);
-                }
                 break;
             case ATTACKING:
                 frame = (getSpriteCoordinateFromSpriteSheetX() + (timeElapsed * 0.0115)) % getSprite().ATTACKING_FRAMES;
@@ -316,30 +302,29 @@ public class Enemy extends LivingDynamicGraphicEntity {
         movementVector = new double[]{0, 0};
         movementVectorNormalized = new double[]{0, 0};
 
-        if (status != Status.CHASING) {
-            return;
-        }
+        if (status == Status.CHASING) {
+            if (chasingMode == ChasingMode.DIJKSTRA) {
+                if (computePathCoolDown <= 0) {
+                    computePath();
+                    computePathCoolDown = computePathPeriod;
+                }
+                computePathCoolDown -= timeElapsed;
 
-        if (chasingMode == ChasingMode.DIJKSTRA) {
-            if (computePathCoolDown <= 0) {
-                computePath();
-                computePathCoolDown = computePathPeriod;
+                if (pathFindingAlgorithm.getPath() != null && pathFindingAlgorithm.getPath().size() > 0) {
+                    int[] step = pathFindingAlgorithm.getNextStep(getCenterOfMassWorldCoordinates());
+                    Coordinates stepWorldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(step[0], step[1]);
+                    movementVector = new double[]{
+                            stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2.0),
+                            stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2.0)};
+                } else {
+                    status = Status.IDLE;
+                }
+            } else if (chasingMode == ChasingMode.STRAIGHT_LINE) {
+                movementVector[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
+                movementVector[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
             }
-            computePathCoolDown -= timeElapsed;
-
-            if (pathFindingAlgorithm.getPath() == null || pathFindingAlgorithm.getPath().size() <= 0) {
-                status = Status.IDLE;
-                return;
-            }
-
-            int[] step = pathFindingAlgorithm.getNextStep(getCenterOfMassWorldCoordinates());
-            Coordinates stepWorldCoordinates = Coordinates.tileCoordinatesToWorldCoordinates(step[0], step[1]);
-            movementVector = new double[]{
-                    stepWorldCoordinates.x - getCenterOfMassWorldCoordinates().x + (TileMap.TILE_WIDTH / 2.0),
-                    stepWorldCoordinates.y - getCenterOfMassWorldCoordinates().y + (TileMap.TILE_HEIGHT / 2.0)};
-        } else if (chasingMode == ChasingMode.STRAIGHT_LINE) {
-            movementVector[0] = (Player.getInstance().getWorldCoordinates().x - getWorldCoordinates().x);
-            movementVector[1] = (Player.getInstance().getWorldCoordinates().y - getWorldCoordinates().y);
+        } else if (status == Status.RUNNING) {
+            movementVector = runningVector;
         }
 
         movementVectorNormalized = MathUtils.normalizeVector(movementVector);
@@ -363,17 +348,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
                     setSpriteCoordinateFromSpriteSheetY(1);
                 } else {
                     setSpriteCoordinateFromSpriteSheetY(2);
-                }
-                break;
-            case ROLLING:
-                if (directionFacing == Utils.DirectionFacing.DOWN) {
-                    setSpriteCoordinateFromSpriteSheetY(10);
-                } else if (directionFacing == Utils.DirectionFacing.LEFT) {
-                    setSpriteCoordinateFromSpriteSheetY(13);
-                } else if (directionFacing == Utils.DirectionFacing.RIGHT) {
-                    setSpriteCoordinateFromSpriteSheetY(11);
-                } else {
-                    setSpriteCoordinateFromSpriteSheetY(12);
                 }
                 break;
             case ATTACKING:
@@ -480,14 +454,6 @@ public class Enemy extends LivingDynamicGraphicEntity {
             return 1f;
         } else {
             return 0.15f;
-        }
-    }
-
-    public void roll() {
-        if (status != Status.ATTACKING && MathUtils.module(getWorldCoordinates(), Player.getInstance().getWorldCoordinates()) < 150f) {
-            status = Status.ROLLING;
-            setSpriteCoordinateFromSpriteSheetX(0);
-            OpenALManager.playSound(OpenALManager.SOUND_ROLLING_01);
         }
     }
 }

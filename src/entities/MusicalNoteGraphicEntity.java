@@ -96,7 +96,7 @@ public class MusicalNoteGraphicEntity extends DynamicGraphicEntity {
                 }
             } else if (graphicEntity instanceof Enemy && !enemyAttack) {
                 entity = (Enemy) graphicEntity;
-                if (entity.getStatus() == Enemy.Status.DEAD || entity.getStatus() == Enemy.Status.ROLLING) {
+                if (entity.getStatus() == Enemy.Status.DEAD) {
                     continue;
                 }
                 if (MathUtils.module(getCenterOfMassWorldCoordinates(), graphicEntity.getCenterOfMassWorldCoordinates()) < 15) {
