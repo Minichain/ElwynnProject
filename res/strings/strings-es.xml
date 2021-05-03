@@ -19,6 +19,7 @@
     <string name="item_mana_potion">Poción de Magia</string>
     <string name="item_haste_potion">Poción de Celeridad</string>
     <string name="item_wood">Madera</string>
+    <string name="item_gold_coin">Moneda de Oro</string>
 
     <!--MENU-->
     <string name="resume_game">Reanudar el Juego</string>

@@ -19,6 +19,7 @@
     <string name="item_mana_potion">Mana Potion</string>
     <string name="item_haste_potion">Haste Potion</string>
     <string name="item_wood">Wood</string>
+    <string name="item_gold_coin">Gold Coin</string>
 
     <!--MENU-->
     <string name="resume_game">Resume Game</string>

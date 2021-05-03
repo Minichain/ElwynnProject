@@ -7,7 +7,6 @@ import main.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL11.GL_TEXTURE_2D;
 
 public class Inventory {
     private int width = 0;

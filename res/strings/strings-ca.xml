@@ -19,6 +19,7 @@
     <string name="item_mana_potion">Poció de Màgia</string>
     <string name="item_haste_potion">Poció de Celeritat</string>
     <string name="item_wood">Fusta</string>
+    <string name="item_gold_coin">Moneda d'Or</string>
 
     <!--MENU-->
     <string name="resume_game">Reprendre el Joc</string>

@@ -1,10 +1,12 @@
 package inventory;
 
 import items.Item;
+import listeners.InputListenerManager;
 import main.Coordinates;
 import main.OpenGLManager;
 import main.Parameters;
 import text.TextRendering;
+import utils.MathUtils;
 
 public class InventorySlot {
     private Coordinates coordinates;
@@ -34,6 +36,9 @@ public class InventorySlot {
             item.getSprite().draw(x, y, 0, 0, 1f, 4.0 * Parameters.getHeightResolutionFactor(), true);
             if (amount > 1) {
                 TextRendering.renderText(x, y, "x" + amount, 2f * Parameters.getHeightResolutionFactor());
+            }
+            if (item.getName() != null && MathUtils.module(new Coordinates(x, y), InputListenerManager.getMouseWindowCoordinates()) < getWidth() / 2.0) {
+                TextRendering.renderText(x - 25 * Parameters.getHeightResolutionFactor(), y + 25 * Parameters.getHeightResolutionFactor(), item.getName(), 2f * Parameters.getHeightResolutionFactor());
             }
         }
     }
