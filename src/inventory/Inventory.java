@@ -1,5 +1,6 @@
 package inventory;
 
+import audio.OpenALManager;
 import items.GoldCoin;
 import items.Item;
 import main.*;
@@ -31,6 +32,8 @@ public class Inventory {
 
     public void setOpened(boolean opened) {
         Log.l("Inventory opened: " + opened);
+        if (opened) OpenALManager.playSound(OpenALManager.SOUND_OPEN_BAG);
+        else OpenALManager.playSound(OpenALManager.SOUND_CLOSE_BAG);
         this.opened = opened;
     }
 

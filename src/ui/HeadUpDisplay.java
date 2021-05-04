@@ -1,6 +1,7 @@
 package ui;
 
 import entities.*;
+import inventory.Inventory;
 import main.*;
 import menu.Menu;
 import scene.TileMap;
@@ -25,6 +26,16 @@ public class HeadUpDisplay {
 
             /** MUSICAL MODE **/
             renderMusicalModes();
+
+            /** BAG **/
+            int spriteCoordinateFromSpriteSheetX = 0;
+            if (Player.getInstance().getInventory().isOpened()) spriteCoordinateFromSpriteSheetX = 1;
+            SpriteManager.getInstance().BAG.draw((int) (Window.getWidth() - 250f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
+                    (int) (Window.getHeight() - 50f * Parameters.getHeightResolutionFactor()),
+                    spriteCoordinateFromSpriteSheetX, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+            SpriteManager.getInstance().I_KEYBOARD_KEY.draw((int) (Window.getWidth() - 200f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
+                    (int) (Window.getHeight() - 40f * Parameters.getHeightResolutionFactor()),
+                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
 
             float rightPaddingText = 100f * Parameters.getHeightResolutionFactor();
             float rightPaddingSprite = 150f * Parameters.getHeightResolutionFactor();

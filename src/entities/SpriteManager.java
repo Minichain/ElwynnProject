@@ -14,16 +14,15 @@ public class SpriteManager {
             LIGHT01, TORCH01, UTILITY_POLE_01,
             WARP_UP_LARGE, WARP_RIGHT_LARGE, WARP_DOWN_LARGE, WARP_LEFT_LARGE,
             WARP_UP_SMALL, WARP_RIGHT_SMALL, WARP_DOWN_SMALL, WARP_LEFT_SMALL,
-            G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE,
-            A_CONTROLLER_BUTTON,
-            B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, M_KEYBOARD_KEY;
+            G_CLEF, QUARTER_NOTE, EIGHTH_NOTE, DOUBLE_EIGHTH_NOTE;
 
     /** TILESET **/
     public Sprite TILESET;
 
     /** INTERFACE **/
     public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
-            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, FRET_BOARD;
+            HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, FRET_BOARD, BAG,
+            A_CONTROLLER_BUTTON, B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, I_KEYBOARD_KEY, M_KEYBOARD_KEY;
 
     /** ITEMS **/
     public Sprite GOLD_COIN, HEALTH_POTION, MANA_POTION, HASTE_POTION, WOOD;
@@ -93,9 +92,12 @@ public class SpriteManager {
         B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_8x8.png", 8, 8, -1);
         F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_8x8.png", 8, 8, -1);
         H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_8x8.png", 8, 8, -1);
+        I_KEYBOARD_KEY = new Sprite("res/sprites/interface/i_keyboard_key_8x8.png", 8, 8, -1);
         M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_8x8.png", 8, 8, -1);
 
         FRET_BOARD = new Sprite("res/sprites/interface/fret_board.png", 8, 8);
+
+        BAG = new Sprite("res/sprites/interface/bag.png", 16, 16);
 
         /** ITEMS **/
         HEALTH_POTION = new Sprite("res/sprites/interface/health_potion_8x8.png", 8, 8, -1);
