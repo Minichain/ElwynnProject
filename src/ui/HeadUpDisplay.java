@@ -1,6 +1,7 @@
 package ui;
 
 import entities.*;
+import listeners.ActionManager;
 import main.*;
 import menu.Menu;
 import scene.TileMap;
@@ -19,6 +20,8 @@ public class HeadUpDisplay {
         //Width and Height factors relative to 1920x1080 resolution.
 
         if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            Sprite sprite;
+
             /** NORMAL MODE HUD **/
 
             /** HEALTH, MANA AND STAMINA **/
@@ -33,7 +36,8 @@ public class HeadUpDisplay {
             SpriteManager.getInstance().BAG.draw((int) (Window.getWidth() - 250f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 50f * Parameters.getHeightResolutionFactor()),
                     spriteCoordinateFromSpriteSheetX, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
-            SpriteManager.getInstance().I_KEYBOARD_KEY.draw((int) (Window.getWidth() - 200f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
+            sprite = SpriteManager.getKeySprite(ActionManager.Action.OPEN_INVENTORY.getActionKey()[0]);
+            sprite.draw((int) (Window.getWidth() - 200f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 40f * Parameters.getHeightResolutionFactor()),
                     0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
@@ -48,7 +52,8 @@ public class HeadUpDisplay {
             renderItemInfo(SpriteManager.getInstance().HEALTH_POTION, Player.getInstance().getAmountOfHealthPotions(), rightPaddingSprite,
                     75f * Parameters.getHeightResolutionFactor(), rightPaddingText, 100f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+            sprite = SpriteManager.getKeySprite(ActionManager.Action.USE_HEALTH_POTION.getActionKey()[0]);
+            sprite.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 75f * Parameters.getHeightResolutionFactor()),
                     0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
@@ -56,7 +61,8 @@ public class HeadUpDisplay {
             renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
                     125f * Parameters.getHeightResolutionFactor(), rightPaddingText, 150f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+            sprite = SpriteManager.getKeySprite(ActionManager.Action.USE_MANA_POTION.getActionKey()[0]);
+            sprite.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 125f * Parameters.getHeightResolutionFactor()),
                     0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
@@ -64,7 +70,8 @@ public class HeadUpDisplay {
             renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
                     175f * Parameters.getHeightResolutionFactor(), rightPaddingText, 200f * Parameters.getHeightResolutionFactor());
 
-            SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
+            sprite = SpriteManager.getKeySprite(ActionManager.Action.USE_HASTE_POTION.getActionKey()[0]);
+            sprite.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 175f * Parameters.getHeightResolutionFactor()),
                     0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 

@@ -2,6 +2,8 @@ package entities;
 
 import scene.TileMap;
 
+import static org.lwjgl.glfw.GLFW.*;
+
 public class SpriteManager {
     private static SpriteManager instance = null;
 
@@ -22,7 +24,8 @@ public class SpriteManager {
     /** INTERFACE **/
     public Sprite IONIAN_ICON, DORIAN_ICON, PHRYGIAN_ICON, LYDIAN_ICON, MIXOLYDIAN_ICON, AEOLIAN_ICON, LOCRIAN_ICON,
             HEALTH_BAR, MANA_BAR, STAMINA_BAR, EMPTY_BAR, FRET_BOARD, BAG,
-            A_CONTROLLER_BUTTON, B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, I_KEYBOARD_KEY, M_KEYBOARD_KEY;
+            A_CONTROLLER_BUTTON, NO_KEY_KEYBOARD_KEY, A_KEYBOARD_KEY, B_KEYBOARD_KEY, F_KEYBOARD_KEY, H_KEYBOARD_KEY, I_KEYBOARD_KEY, M_KEYBOARD_KEY,
+            F1_KEYBOARD_KEY, F2_KEYBOARD_KEY;
 
     /** ITEMS **/
     public Sprite GOLD_COIN, HEALTH_POTION, MANA_POTION, HASTE_POTION, WOOD;
@@ -89,11 +92,15 @@ public class SpriteManager {
         EMPTY_BAR = new Sprite("res/sprites/interface/empty_bar_64x8.png", 64, 8, -1);
 
         A_CONTROLLER_BUTTON = new Sprite("res/sprites/interface/a_controller_button_8x8.png", 8, 8, -1);
+        NO_KEY_KEYBOARD_KEY = new Sprite("res/sprites/interface/no_key_keyboard_key_16x16.png", 16, 16, -1);
+        A_KEYBOARD_KEY = new Sprite("res/sprites/interface/a_keyboard_key_16x16.png", 16, 16, -1);
         B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_16x16.png", 16, 16, -1);
         F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_16x16.png", 16, 16, -1);
         H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_16x16.png", 16, 16, -1);
         I_KEYBOARD_KEY = new Sprite("res/sprites/interface/i_keyboard_key_16x16.png", 16, 16, -1);
         M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_16x16.png", 16, 16, -1);
+        F1_KEYBOARD_KEY = new Sprite("res/sprites/interface/f1_keyboard_key_16x16.png", 16, 16, -1);
+        F2_KEYBOARD_KEY = new Sprite("res/sprites/interface/f2_keyboard_key_16x16.png", 16, 16, -1);
 
         FRET_BOARD = new Sprite("res/sprites/interface/fret_board.png", 8, 8);
 
@@ -207,5 +214,28 @@ public class SpriteManager {
                 break;
         }
         return sprite;
+    }
+
+    public static Sprite getKeySprite(int key) {
+        switch(key) {
+            default:
+                return SpriteManager.getInstance().NO_KEY_KEYBOARD_KEY;
+            case GLFW_KEY_A:
+                return SpriteManager.getInstance().A_KEYBOARD_KEY;
+            case GLFW_KEY_B:
+                return SpriteManager.getInstance().B_KEYBOARD_KEY;
+            case GLFW_KEY_F:
+                return SpriteManager.getInstance().F_KEYBOARD_KEY;
+            case GLFW_KEY_H:
+                return SpriteManager.getInstance().H_KEYBOARD_KEY;
+            case GLFW_KEY_I:
+                return SpriteManager.getInstance().I_KEYBOARD_KEY;
+            case GLFW_KEY_M:
+                return SpriteManager.getInstance().M_KEYBOARD_KEY;
+            case GLFW_KEY_F1:
+                return SpriteManager.getInstance().F1_KEYBOARD_KEY;
+            case GLFW_KEY_F2:
+                return SpriteManager.getInstance().F2_KEYBOARD_KEY;
+        }
     }
 }

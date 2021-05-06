@@ -1,5 +1,6 @@
 package entities;
 
+import listeners.ActionManager;
 import listeners.InputListenerManager;
 import main.OpenGLManager;
 import main.Parameters;
@@ -17,7 +18,7 @@ public class InteractionEntity extends GraphicEntity {
 
     private void init(int x, int y) {
         if (InputListenerManager.isUsingKeyboardAndMouse()) {
-            setSprite(SpriteManager.getInstance().F_KEYBOARD_KEY);
+            setSprite(SpriteManager.getKeySprite(ActionManager.Action.INTERACT.getActionKey()[0]));
         } else {
             setSprite(SpriteManager.getInstance().A_CONTROLLER_BUTTON);
         }
