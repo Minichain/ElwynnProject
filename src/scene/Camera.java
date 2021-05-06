@@ -4,8 +4,8 @@ import entities.Player;
 import listeners.ActionManager;
 import main.Coordinates;
 import main.GameMode;
-import main.Log;
 import main.Parameters;
+import menu.Menu;
 import utils.MathUtils;
 
 public class Camera {
@@ -95,7 +95,7 @@ public class Camera {
 
             Coordinates playerCoordinates = Player.getInstance().getCenterOfMassWorldCoordinates();
             Coordinates focusCoordinates = new Coordinates(playerCoordinates.x, playerCoordinates.y);
-            if (Player.getInstance().isPlayingMusic()) {
+            if (!Menu.getInstance().isShowing() && Player.getInstance().isPlayingMusic()) {
                 focusCoordinates.x += Player.getInstance().facingVector[0] * 25;
                 focusCoordinates.y += Player.getInstance().facingVector[1] * 25;
             }

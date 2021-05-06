@@ -1,7 +1,6 @@
 package ui;
 
 import entities.*;
-import inventory.Inventory;
 import main.*;
 import menu.Menu;
 import scene.TileMap;
@@ -14,6 +13,7 @@ import static org.lwjgl.opengl.GL11.glEnd;
 public class HeadUpDisplay {
     private static int selectedTile = 0;
     private static int selectedEntity = 0;
+    private static float userInterfaceSize = 4f;
 
     public static void render() {
         //Width and Height factors relative to 1920x1080 resolution.
@@ -32,10 +32,10 @@ public class HeadUpDisplay {
             if (Player.getInstance().getInventory().isOpened()) spriteCoordinateFromSpriteSheetX = 1;
             SpriteManager.getInstance().BAG.draw((int) (Window.getWidth() - 250f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 50f * Parameters.getHeightResolutionFactor()),
-                    spriteCoordinateFromSpriteSheetX, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                    spriteCoordinateFromSpriteSheetX, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
             SpriteManager.getInstance().I_KEYBOARD_KEY.draw((int) (Window.getWidth() - 200f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 40f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
 
             float rightPaddingText = 100f * Parameters.getHeightResolutionFactor();
             float rightPaddingSprite = 150f * Parameters.getHeightResolutionFactor();
@@ -50,7 +50,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 75f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
 
             /** MANA POTIONS **/
             renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
@@ -58,7 +58,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 125f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
 
             /** HASTE POTIONS **/
             renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
@@ -66,7 +66,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 175f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
@@ -174,14 +174,14 @@ public class HeadUpDisplay {
         /** YOU DIED **/
         if (!Menu.getInstance().isShowing() && Player.getInstance().getStatus() == Player.Status.DEAD) {
             String text = Strings.getString("ui_you_died");
-            float scale = 4f * Parameters.getHeightResolutionFactor();
+            float scale = userInterfaceSize * Parameters.getHeightResolutionFactor();
             TextRendering.renderText((Parameters.getResolutionWidth() / 2f) - (TextRendering.CHARACTER_WIDTH * scale * text.length() / 2f), 450, text, scale);
         }
     }
 
     private static void renderItemInfo(Sprite sprite, int amount, float rightPaddingSprite, float bottomPaddingSprite, float rightPaddingText, float bottomPaddingText) {
         sprite.draw((int) (Window.getWidth() - rightPaddingSprite), (int) (Window.getHeight() - bottomPaddingSprite),
-                0, 0, 1f, 4f * Parameters.getHeightResolutionFactor());
+                0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
         TextRendering.renderText(Window.getWidth() - rightPaddingText, Window.getHeight() - bottomPaddingText,
                 "x" + amount, 2f * Parameters.getHeightResolutionFactor(), false, 1f);
     }
@@ -189,18 +189,17 @@ public class HeadUpDisplay {
     private static void renderHealthManaAndStaminaBars() {
         float x = 30f * Parameters.getHeightResolutionFactor();
         float y = Parameters.getResolutionHeight() - 100f * Parameters.getHeightResolutionFactor();
-        float scale = 4f;
-        float width = (SpriteManager.getInstance().EMPTY_BAR.SPRITE_WIDTH * Parameters.getHeightResolutionFactor() * scale);
-        float height = SpriteManager.getInstance().EMPTY_BAR.SPRITE_HEIGHT * Parameters.getHeightResolutionFactor() * scale;
+        float width = (SpriteManager.getInstance().EMPTY_BAR.SPRITE_WIDTH * Parameters.getHeightResolutionFactor() * userInterfaceSize);
+        float height = SpriteManager.getInstance().EMPTY_BAR.SPRITE_HEIGHT * Parameters.getHeightResolutionFactor() * userInterfaceSize;
         float healthPercentage = Player.getInstance().getHealth() / Player.MAX_HEALTH;
         float manaPercentage = Player.getInstance().getMana() / Player.MAX_MANA;
         float staminaPercentage = Player.getInstance().getStamina() / Player.MAX_STAMINA;
 
-        renderBar(SpriteManager.getInstance().HEALTH_BAR, x, y, width, height, healthPercentage, scale);
+        renderBar(SpriteManager.getInstance().HEALTH_BAR, x, y, width, height, healthPercentage, userInterfaceSize);
         y += 40f * Parameters.getHeightResolutionFactor();
-        renderBar(SpriteManager.getInstance().MANA_BAR, x, y, width, height, manaPercentage, scale);
+        renderBar(SpriteManager.getInstance().MANA_BAR, x, y, width, height, manaPercentage, userInterfaceSize);
         y += 40f * Parameters.getHeightResolutionFactor();
-        renderBar(SpriteManager.getInstance().STAMINA_BAR, x, y, width, height, staminaPercentage, scale);
+        renderBar(SpriteManager.getInstance().STAMINA_BAR, x, y, width, height, staminaPercentage, userInterfaceSize);
     }
 
     private static void renderBar(Sprite sprite, float x, float y, float width, float height, float percentage, float scale) {
@@ -224,10 +223,10 @@ public class HeadUpDisplay {
             currentMusicalMode = MusicalMode.values()[i];
             if (Player.getInstance().getMusicalMode() == currentMusicalMode) {
                 transparency = 1f;
-                scale = 4.5f;
+                scale = userInterfaceSize * 1.125f;
             } else {
                 transparency = 0.5f;
-                scale = 4f;
+                scale = userInterfaceSize;
             }
             currentMusicalMode.getSprite().draw((int) x, (int) y, transparency,
                     scale * Parameters.getHeightResolutionFactor(), MusicalMode.values()[i].getColor(), true);

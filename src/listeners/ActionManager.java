@@ -289,11 +289,11 @@ public class ActionManager {
                 }
             }
         } else if (isSameKeyCombination(key, Action.ATTACK_02.getActionKey())) {
-            if (pressed && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
+            if (pressed && !Menu.getInstance().isShowing() && GameMode.getGameMode() == GameMode.Mode.NORMAL) {
                 Player.getInstance().playNote();
             }
 
-            if (!pressed && !Menu.getInstance().isShowing() ) {
+            if (!pressed && !Menu.getInstance().isShowing()) {
                 if (GameMode.getGameMode() == GameMode.Mode.NORMAL) {
 
                 } else {

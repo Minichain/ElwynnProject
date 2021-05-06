@@ -11,7 +11,7 @@ public class Parameters {
     private static boolean spawnEnemies = true;
     private static float spawnRate = 1f;
     private static boolean shadersEnabled = true;
-    private static float renderDistance = 336f;
+    private static float renderDistance = 400f;
     private static float updateDistance = 2000f;
     private static Language language = Language.ENGLISH;
 

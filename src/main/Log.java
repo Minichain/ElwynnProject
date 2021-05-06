@@ -2,6 +2,7 @@ package main;
 
 import console.Console;
 
+import java.awt.Color;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -68,7 +69,8 @@ public class Log {
     }
 
     private static void l(String log, String ansiColor) {
-        Console.getInstance().addNewLine(log);
+        Color color = getAnsiColorColor(ansiColor);
+        Console.getInstance().addNewLine(log, color);
         if (!fileCreated) {
             createLogFile();
             openLogFile();
@@ -89,5 +91,19 @@ public class Log {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
         LocalDateTime now = LocalDateTime.now();
         return "[" + dtf.format(now) + "]: ";
+    }
+
+    private static Color getAnsiColorColor(String ansiColor) {
+        Color color;
+        switch (ansiColor) {
+            default:
+            case ANSI_WHITE:
+                color = new Color(1f, 1f, 1f);
+                break;
+            case ANSI_RED:
+                color = new Color(1f, 0f, 0f);
+                break;
+        }
+        return color;
     }
 }

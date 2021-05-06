@@ -74,10 +74,8 @@ public class DataBase {
         if (connection == null) {
             try {
                 getConnection();
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
 
@@ -96,10 +94,8 @@ public class DataBase {
         if (connection == null) {
             try {
                 getConnection();
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
 
@@ -134,10 +130,8 @@ public class DataBase {
         if (connection == null) {
             try {
                 getConnection();
-            } catch (ClassNotFoundException e) {
+            } catch (ClassNotFoundException | SQLException e) {
                 e.printStackTrace();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
             }
         }
 

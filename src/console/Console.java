@@ -1,8 +1,10 @@
 package console;
 
 import main.*;
+import main.Window;
 import text.TextRendering;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -26,10 +28,12 @@ public class Console {
         private final float timeToLive = 10000f;
         private float timeLiving;
         private final String string;
+        private Color color;
 
-        public ConsoleLine(String string) {
+        public ConsoleLine(String string, Color color) {
             this.string = string;
             this.timeLiving = 0;
+            this.color = color;
         }
 
         public void update(long timeElapsed) {
@@ -38,8 +42,8 @@ public class Console {
         }
 
         public void render(int x, int y) {
-            TextRendering.renderText(x, y, this.string,
-                    2f * Parameters.getHeightResolutionFactor(), true, 1f - (timeLiving / timeToLive), 1f, 1f, 1f);
+            TextRendering.renderText(x, y, this.string, 2f * Parameters.getHeightResolutionFactor(),
+                    true, 1f - (timeLiving / timeToLive), color.getRed(), color.getGreen(), color.getBlue());
         }
 
         public String getString() {
@@ -99,8 +103,8 @@ public class Console {
         glDisable(GL_BLEND);
     }
 
-    public void addNewLine(String newLine) {
-        listOfTextLines.add(new ConsoleLine(newLine));
+    public void addNewLine(String newLine, Color color) {
+        listOfTextLines.add(new ConsoleLine(newLine, color));
         if (listOfTextLines.size() > maxNumberOfLines) {
             listOfTextLines.remove(0);
         }
