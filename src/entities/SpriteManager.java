@@ -89,11 +89,11 @@ public class SpriteManager {
         EMPTY_BAR = new Sprite("res/sprites/interface/empty_bar_64x8.png", 64, 8, -1);
 
         A_CONTROLLER_BUTTON = new Sprite("res/sprites/interface/a_controller_button_8x8.png", 8, 8, -1);
-        B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_8x8.png", 8, 8, -1);
-        F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_8x8.png", 8, 8, -1);
-        H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_8x8.png", 8, 8, -1);
-        I_KEYBOARD_KEY = new Sprite("res/sprites/interface/i_keyboard_key_8x8.png", 8, 8, -1);
-        M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_8x8.png", 8, 8, -1);
+        B_KEYBOARD_KEY = new Sprite("res/sprites/interface/b_keyboard_key_16x16.png", 16, 16, -1);
+        F_KEYBOARD_KEY = new Sprite("res/sprites/interface/f_keyboard_key_16x16.png", 16, 16, -1);
+        H_KEYBOARD_KEY = new Sprite("res/sprites/interface/h_keyboard_key_16x16.png", 16, 16, -1);
+        I_KEYBOARD_KEY = new Sprite("res/sprites/interface/i_keyboard_key_16x16.png", 16, 16, -1);
+        M_KEYBOARD_KEY = new Sprite("res/sprites/interface/m_keyboard_key_16x16.png", 16, 16, -1);
 
         FRET_BOARD = new Sprite("res/sprites/interface/fret_board.png", 8, 8);
 

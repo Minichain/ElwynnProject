@@ -31,8 +31,8 @@ public class InteractionEntity extends GraphicEntity {
     @Override
     public void drawSprite(int x, int y) {
         getSprite().draw(x, y, (int) getSpriteCoordinateFromSpriteSheetX(), (int) getSpriteCoordinateFromSpriteSheetY(),
-                1f, 3.0 * Parameters.getHeightResolutionFactor());
-        TextRendering.renderText(x + 25 * Parameters.getHeightResolutionFactor(), y - 23 * Parameters.getHeightResolutionFactor(),
+                1f, 2.0 * Parameters.getHeightResolutionFactor());
+        TextRendering.renderText(x + 35 * Parameters.getHeightResolutionFactor(), y - 25 * Parameters.getHeightResolutionFactor(),
                 Strings.getString("ui_interact_npc"), 2f * Parameters.getHeightResolutionFactor());
     }
 

@@ -35,7 +35,7 @@ public class HeadUpDisplay {
                     spriteCoordinateFromSpriteSheetX, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
             SpriteManager.getInstance().I_KEYBOARD_KEY.draw((int) (Window.getWidth() - 200f * Parameters.getHeightResolutionFactor() - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 40f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
             float rightPaddingText = 100f * Parameters.getHeightResolutionFactor();
             float rightPaddingSprite = 150f * Parameters.getHeightResolutionFactor();
@@ -50,7 +50,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().H_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 75f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
             /** MANA POTIONS **/
             renderItemInfo(SpriteManager.getInstance().MANA_POTION, Player.getInstance().getAmountOfManaPotions(), rightPaddingSprite,
@@ -58,7 +58,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().M_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 125f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
             /** HASTE POTIONS **/
             renderItemInfo(SpriteManager.getInstance().HASTE_POTION, Player.getInstance().getAmountOfHastePotions(), rightPaddingSprite,
@@ -66,7 +66,7 @@ public class HeadUpDisplay {
 
             SpriteManager.getInstance().B_KEYBOARD_KEY.draw((int) (Window.getWidth() - rightPaddingSprite - 50f * Parameters.getHeightResolutionFactor()),
                     (int) (Window.getHeight() - 175f * Parameters.getHeightResolutionFactor()),
-                    0, 0, 1f, userInterfaceSize * Parameters.getHeightResolutionFactor());
+                    0, 0, 1f, userInterfaceSize * 0.5f * Parameters.getHeightResolutionFactor());
 
         } else if (GameMode.getGameMode() == GameMode.Mode.CREATIVE) {
             /** CREATIVE MODE HUD **/
