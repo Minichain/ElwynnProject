@@ -651,6 +651,10 @@ public class Player extends LivingDynamicGraphicEntity {
         }
     }
 
+    public boolean isHasteEffect() {
+        return hasteEffect;
+    }
+
     public boolean isChoosingMusicalMode() {
         return choosingMusicalMode;
     }

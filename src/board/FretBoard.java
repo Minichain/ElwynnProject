@@ -8,7 +8,7 @@ import particles.Particle;
 import particles.ParticleManager;
 import scene.Camera;
 import scene.Scene;
-import text.FloatingTextEntity;
+import text.TextRendering;
 import utils.MathUtils;
 
 import java.awt.*;
@@ -26,6 +26,7 @@ public class FretBoard {
     private boolean playingMusic;
     private float transparency;
     private int combo;
+    private float comboTextScale;
 
     /** MUSIC GENERATOR **/
     private final float beatPeriod = 1000f;
@@ -50,6 +51,7 @@ public class FretBoard {
         setupCoordinates();
         transparency = 0f;
         combo = 1;
+        comboTextScale = 0f;
     }
 
     private void setupTempos() {
@@ -65,8 +67,10 @@ public class FretBoard {
 
         if (playingMusic) {
             if (transparency < 1f) transparency += timeElapsed * 0.001f;
+            OpenALManager.onMusicLevelChange(Parameters.getMusicSoundLevel() * (1f - transparency));
         } else if (transparency > 0f) {
             transparency -= timeElapsed * 0.001f;
+            OpenALManager.onMusicLevelChange(Parameters.getMusicSoundLevel() * (1f - transparency));
             return;
         }
 
@@ -100,16 +104,19 @@ public class FretBoard {
         }
 
         if (this.timeElapsed > beatPeriod) {
-            if ((Math.random() < 0.25 && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
-                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
-                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
-                    || (Math.random() < 0.25 && Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod)) {
+            double probability = Player.getInstance().isHasteEffect() ? 0.5 : 0.25;
+            if ((Math.random() < probability && (beatProgress < halfFramePeriod || Math.abs(beatProgress - beatPeriod) < halfFramePeriod))
+                    || (Math.random() < probability && Math.abs(beatProgress - (beatPeriod * 1f / 4f)) < halfFramePeriod)
+                    || (Math.random() < probability && Math.abs(beatProgress - (beatPeriod * 2f / 4f)) < halfFramePeriod)
+                    || (Math.random() < probability && Math.abs(beatProgress - (beatPeriod * 3f / 4f)) < halfFramePeriod)) {
                 int r = (int) (MathUtils.random(0, 4) % 4.0);
                 notes.add(new FretBoardNote(r));
             }
         }
 
         beatProgress = (beatProgress + (int) timeElapsed) % beatPeriod;
+        this.comboTextScale += timeElapsed * 0.01f;
+        if (this.comboTextScale > 10f) this.comboTextScale = 10f;
         this.timeElapsed += timeElapsed;
     }
 
@@ -141,6 +148,24 @@ public class FretBoard {
         glEnd();
         glDisable(GL_TEXTURE_2D);
         glDisable(GL_BLEND);
+
+        if (combo > 5) {
+            Coordinates coordinates = new Coordinates(targetNotes[3].x, targetNotes[3].y);
+            String textToRender = "x" + combo;
+            coordinates.x += 25 * Parameters.getWidthResolutionFactor();
+            coordinates.y -= 50 * Parameters.getHeightResolutionFactor();
+            Color color = new Color(1f, 1f, 1f);
+            float scale = 2f;
+            if (combo >= 10) {
+                color = new Color(1f, 0.5f, 0.5f);
+                scale = 4f;
+            }
+            scale = (float) Math.log(scale * this.comboTextScale) + 1;
+            coordinates.x += scale;
+            coordinates.y += scale;
+            TextRendering.renderText((float) coordinates.x, (float) coordinates.y, textToRender, scale,
+                    false, transparency, color.getRed(), color.getGreen(), color.getBlue());
+        }
     }
 
     public void onResolutionChanged() {
@@ -202,19 +227,9 @@ public class FretBoard {
                 }
 
                 combo++;
+                comboTextScale = 0f;
                 Scene.getInstance().getListOfShockWaves().add(new ShockWave(Player.getInstance().getCenterOfMassWorldCoordinates(),
                         Player.getInstance().facingVector, musicalMode, musicalNote, 250f * combo));
-
-                if (combo > 3) {
-                    Coordinates coordinates = new Coordinates(targetNotes[note.getTargetNote()].x, targetNotes[note.getTargetNote()].y).toWorldCoordinates();
-                    Color color = new Color(1f, 1f, 1f);
-                    float scale = 2f;
-                    if (combo >= 10) {
-                        color = new Color(1f, 0.5f, 0.5f);
-                        scale = 4f;
-                    }
-                    new FloatingTextEntity(coordinates.x, coordinates.y, "x" + combo, color, 0.5, new double[]{0, -1}, scale);
-                }
                 return;
             }
         }
@@ -227,5 +242,9 @@ public class FretBoard {
             OpenALManager.playSound(OpenALManager.SOUND_MISS_NOTE_02);
         }
         Camera.getInstance().shake(100, 1f);
+    }
+
+    public float getTransparency() {
+        return transparency;
     }
 }
