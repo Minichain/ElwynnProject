@@ -13,7 +13,7 @@ LWJGL is a java library that includes APIs such as OpenGL and OpenAL in order to
 All the assets (sprites and sounds) have been designed and recorded by me.
 
 ## Video Demo
-[![Elwynn Project Demo](/screenshots/screenshot01.jpg)](https://youtu.be/72e-9ftkaj4)
+[![Elwynn Project Demo](/screenshots/screenshot01.jpg)](https://youtu.be/jBmSVZri8L4)
 
 ## [Download](https://drive.google.com/drive/folders/1ouFLMoRi2XZKDLciLRhzkJsJ3ALuE3bf?usp=sharing)
 
