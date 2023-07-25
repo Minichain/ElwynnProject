@@ -1,59 +1,55 @@
-package main;
+package main
 
-import console.Console;
+import org.lwjgl.glfw.GLFW
+import java.io.File
+import kotlin.system.exitProcess
 
-import java.io.File;
+fun main() {
+  //Load natives files
+  System.setProperty("org.lwjgl.librarypath", File("natives/windows/x64").absolutePath)
+  initializeGLFW()
+  Log.l("OS Name " + System.getProperty("os.name"))
+  Log.l("OS Version " + System.getProperty("os.version"))
+  Game.startGame()
+  runGameLoopUntilStopped()
+  exit()
+}
 
-import static org.lwjgl.glfw.GLFW.*;
+private fun initializeGLFW() {
+  if (!GLFW.glfwInit()) {
+    System.err.println("GLFW Failed to initialize!")
+    exitProcess(0)
+  }
+}
 
-public class Main {
-    public static void main(String[] args) {
-        //Load natives files
-        System.setProperty("org.lwjgl.librarypath", new File("natives/windows/x64").getAbsolutePath());
-
-        long timeElapsedNanos = 0;
-        long timeElapsedMillis = 0;
-        long lastUpdateTime = System.nanoTime();
-        long maxTimeBetweenFrames;
-
-        if (!glfwInit()) {
-            System.err.println("GLFW Failed to initialize!");
-            System.exit(0);
-        }
-
-        Log.l("OS Name " + System.getProperty("os.name"));
-        Log.l("OS Version " + System.getProperty("os.version"));
-
-        Game.startGame();
-
-        while (!glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED) {
-            maxTimeBetweenFrames = 1000000000 / Parameters.getFramesPerSecond();
-            timeElapsedMillis = timeElapsedNanos / 1000000;
-
-            FramesPerSecond.update(1000000000f / timeElapsedNanos);
-
-            Game.update(timeElapsedMillis);
-            Game.render();
-
-            glfwSwapBuffers(Window.getWindow());
-            glfwPollEvents();
-
-            //Wait time until processing next frame. FPS locked.
-            timeElapsedNanos = System.nanoTime() - lastUpdateTime;
-            while (timeElapsedNanos < maxTimeBetweenFrames) {
-                timeElapsedNanos = System.nanoTime() - lastUpdateTime;
-            }
-
-            lastUpdateTime = System.nanoTime();
-        }
-
-        exit(0);
+private fun runGameLoopUntilStopped() {
+  var timeElapsedNanos: Long = 0
+  var lastUpdateTime = System.nanoTime()
+  var maxTimeBetweenFrames: Long
+  while (gameIsRunning()) {
+    maxTimeBetweenFrames = (1000000000 / Parameters.getFramesPerSecond()).toLong()
+    FramesPerSecond.update(1000000000f / timeElapsedNanos)
+    updateAndRender(timeElapsedNanos / 1000000)
+    //Wait time until processing next frame. FPS locked.
+    timeElapsedNanos = System.nanoTime() - lastUpdateTime
+    while (timeElapsedNanos < maxTimeBetweenFrames) {
+      timeElapsedNanos = System.nanoTime() - lastUpdateTime
     }
+    lastUpdateTime = System.nanoTime()
+  }
+}
 
-    public static void exit(int status) {
-        Game.stopGame();
-        glfwTerminate();
+private fun gameIsRunning() = !GLFW.glfwWindowShouldClose(Window.getWindow()) && GameStatus.getStatus() != GameStatus.Status.STOPPED
 
-        System.exit(status);
-    }
+private fun updateAndRender(timeElapsedMillis: Long) {
+  Game.update(timeElapsedMillis)
+  Game.render()
+  GLFW.glfwSwapBuffers(Window.getWindow())
+  GLFW.glfwPollEvents()
+}
+
+private fun exit() {
+  Game.stopGame()
+  GLFW.glfwTerminate()
+  exitProcess(0)
 }
