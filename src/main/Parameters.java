@@ -7,6 +7,9 @@ import enums.Resolution;
 import ui.UserInterface;
 
 public class Parameters {
+
+    private static DataBase dataBase = new DataBase();
+
     private static boolean debugMode = false;
     private static boolean spawnEnemies = true;
     private static float spawnRate = 1f;
@@ -26,7 +29,7 @@ public class Parameters {
         int dataBaseValue;
 
         /** FramesPerSecond **/
-        dataBaseValue = DataBase.selectParameter("framesPerSecond");
+        dataBaseValue = dataBase.selectParameter("framesPerSecond");
         if (dataBaseValue != -1) {
             setFramesPerSecond(dataBaseValue);
         } else {
@@ -34,7 +37,7 @@ public class Parameters {
         }
 
         /** FullScreen **/
-        dataBaseValue = DataBase.selectParameter("fullScreen");
+        dataBaseValue = dataBase.selectParameter("fullScreen");
         if (dataBaseValue != -1) {
             setFullScreen(dataBaseValue != 0);
         } else {
@@ -42,7 +45,7 @@ public class Parameters {
         }
 
         /** Resolution **/
-        dataBaseValue = DataBase.selectParameter("resolution");
+        dataBaseValue = dataBase.selectParameter("resolution");
         if (dataBaseValue != -1) {
             setResolution(Resolution.values()[dataBaseValue]);
         } else {
@@ -50,7 +53,7 @@ public class Parameters {
         }
 
         /** Language **/
-        dataBaseValue = DataBase.selectParameter("language");
+        dataBaseValue = dataBase.selectParameter("language");
         if (dataBaseValue != -1) {
             setLanguage(Language.values()[dataBaseValue]);
         } else {
@@ -58,7 +61,7 @@ public class Parameters {
         }
 
         /** MusicSoundLevel **/
-        dataBaseValue = DataBase.selectParameter("musicSoundLevel");
+        dataBaseValue = dataBase.selectParameter("musicSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
             setMusicSoundLevel(dataBaseValue / 100f);
         } else {
@@ -66,7 +69,7 @@ public class Parameters {
         }
 
         /** EffectSoundLevel **/
-        dataBaseValue = DataBase.selectParameter("effectSoundLevel");
+        dataBaseValue = dataBase.selectParameter("effectSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
             setEffectSoundLevel(dataBaseValue / 100f);
         } else {
@@ -74,7 +77,7 @@ public class Parameters {
         }
 
         /** AmbienceSoundLevel **/
-        dataBaseValue = DataBase.selectParameter("ambienceSoundLevel");
+        dataBaseValue = dataBase.selectParameter("ambienceSoundLevel");
         if (dataBaseValue > 0 && dataBaseValue < 100) {
             setAmbienceSoundLevel(dataBaseValue / 100f);
         } else {
@@ -94,7 +97,7 @@ public class Parameters {
         else if (framesPerSecond > 250) framesPerSecond = 250;
         Log.l("setFramesPerSecond to " + framesPerSecond);
         Parameters.framesPerSecond = framesPerSecond;
-        DataBase.insertOrUpdateParameter("framesPerSecond", framesPerSecond);
+        dataBase.insertOrUpdateParameter("framesPerSecond", framesPerSecond);
     }
 
     public static int getResolutionWidth() {
@@ -108,7 +111,7 @@ public class Parameters {
     public static void setResolution(Resolution resolution) {
         Log.l("setResolution to " + resolution);
         Parameters.resolution = resolution;
-        DataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
+        dataBase.insertOrUpdateParameter("resolution", resolution.getResolutionValue());
         Parameters.widthResolutionFactor = (float) resolution.getResolution()[0] / (float) Resolution.RESOLUTION_1920_1080.getResolution()[0];
         Parameters.heightResolutionFactor = (float) resolution.getResolution()[1] / (float) Resolution.RESOLUTION_1920_1080.getResolution()[1];
         UserInterface.onResolutionChanged();
@@ -129,7 +132,7 @@ public class Parameters {
     public static void setFullScreen(boolean fullScreen) {
         Log.l("setFullScreen to " + fullScreen);
         Parameters.fullScreen = fullScreen;
-        DataBase.insertOrUpdateParameter("fullScreen", fullScreen ? 1 : 0);
+        dataBase.insertOrUpdateParameter("fullScreen", fullScreen ? 1 : 0);
     }
 
     public static boolean isDebugMode() {
@@ -193,7 +196,7 @@ public class Parameters {
     public static void setLanguage(Language language) {
         Log.l("setLanguage to " + language);
         Parameters.language = language;
-        DataBase.insertOrUpdateParameter("language", language.getValue());
+        dataBase.insertOrUpdateParameter("language", language.getValue());
         Strings.updateStrings();
     }
 
@@ -210,7 +213,7 @@ public class Parameters {
         Log.l("setMusicSoundLevel to " + soundLevel);
         OpenALManager.onMusicLevelChange(soundLevel);
         Parameters.musicSoundLevel = soundLevel;
-        DataBase.insertOrUpdateParameter("musicSoundLevel", (int) (soundLevel * 100));
+        dataBase.insertOrUpdateParameter("musicSoundLevel", (int) (soundLevel * 100));
     }
 
     public static float getEffectSoundLevel() {
@@ -221,7 +224,7 @@ public class Parameters {
         Log.l("setEffectSoundLevel to " + soundLevel);
         OpenALManager.onEffectLevelChange(soundLevel);
         Parameters.effectSoundLevel = soundLevel;
-        DataBase.insertOrUpdateParameter("effectSoundLevel", (int) (soundLevel * 100));
+        dataBase.insertOrUpdateParameter("effectSoundLevel", (int) (soundLevel * 100));
     }
 
     public static float getAmbienceSoundLevel() {
@@ -232,7 +235,7 @@ public class Parameters {
         Log.l("setAmbienceSoundLevel to " + soundLevel);
         OpenALManager.onAmbienceLevelChange(soundLevel);
         Parameters.ambienceSoundLevel = soundLevel;
-        DataBase.insertOrUpdateParameter("ambienceSoundLevel", (int) (soundLevel * 100));
+        dataBase.insertOrUpdateParameter("ambienceSoundLevel", (int) (soundLevel * 100));
     }
 
     /** ------------------------ PROJECT VERSION ------------------------

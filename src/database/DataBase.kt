@@ -1,147 +1,86 @@
-package database;
+package database
 
-import main.Log;
+import main.Log
 
-import java.io.File;
-import java.sql.*;
+import java.io.File
+import java.sql.*
 
-public class DataBase {
-    private static Connection connection;
-    private static boolean connected = false;
+class DataBase {
 
-    private static void getConnection() throws ClassNotFoundException, SQLException {
-        Class.forName("org.sqlite.JDBC");
-        String dataBasePath = System.getenv("APPDATA") + "\\ElwynnProject";
-        Log.l("DataBase Path: " + dataBasePath);
+  private var connected = false
+  private val connection: Connection by lazy {
+    Class.forName("org.sqlite.JDBC")
+    val dataBasePath: String = System.getenv("APPDATA") + "\\ElwynnProject"
+    Log.l("DataBase Path: $dataBasePath")
+    val file = File(dataBasePath)
+    if (!file.exists()) file.mkdir()
+    DriverManager.getConnection("jdbc:sqlite:$dataBasePath\\elwynn.db")
+  }
 
-        File file = new File(dataBasePath);
+  init {
+    connected = true
+    val statement01 = connection.createStatement()
+    val queryString = "SELECT name FROM sqlite_master WHERE type='table' AND name='parameter'"
+    val result = statement01.executeQuery(queryString)
 
-        if (file.exists() || file.mkdir()) {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + dataBasePath + "\\elwynn.db");
-            initialise();
-        }
+    if (!result.next()) {
+      val statement02 = connection.createStatement()
+      val queryString = "CREATE TABLE IF NOT EXISTS parameter(parameterName varchar(64)," + "parameterValue integer);"
+      statement02.execute(queryString)
+      Log.l("DataBase initialized!")
+      statement02.close()
+    }
+    statement01.close()
+  }
+
+  fun selectParameter(parameter: String): Int {
+    val parameterValue = -1;
+    if (!doestParameterExist(parameter)) {
+      return parameterValue
     }
 
-    private static void initialise() throws SQLException {
-        if (!connected) {
-            connected = true;
-            Statement statement01 = connection.createStatement();
-            String queryString;
-            ResultSet result;
+    return executeStatement("SELECT parameterValue FROM parameter WHERE parameterName='$parameter';").getInt("parameterValue")
+  }
 
-            queryString = "SELECT name FROM sqlite_master WHERE type='table' AND name='parameter'";
-            result = statement01.executeQuery(queryString);
-
-            if (!result.next()) {
-                Statement statement02 = connection.createStatement();
-                queryString = "CREATE TABLE IF NOT EXISTS parameter(parameterName varchar(64)," + "parameterValue integer);";
-                statement02.execute(queryString);
-                Log.l("DataBase initialized!");
-                statement02.close();
-            }
-            statement01.close();
-        }
+  fun insertOrUpdateParameter(parameterName: String, parameterValue: Int) {
+    if (doestParameterExist(parameterName)) {
+      updateParameter(parameterName, parameterValue);
+    } else {
+      insertParameter(parameterName, parameterValue);
     }
+  }
 
-    public static int selectParameter(String parameter) {
-        int parameterValue = -1;
-        if (!doestParameterExist(parameter)) {
-            return parameterValue;
-        }
-
-        ResultSet resultSet = executeStatement("SELECT parameterValue FROM parameter WHERE parameterName='" + parameter + "';");
-        if (resultSet != null) {
-            try {
-                parameterValue = resultSet.getInt("parameterValue");
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return parameterValue;
+  fun updateParameter(parameterName: String, parameterValue: Int) {
+    try {
+      val statement = connection.createStatement()
+      Log.l("Updating parameter. parameterValue = $parameterValue, parameterName = '$parameterName'")
+      statement.executeUpdate("UPDATE parameter SET parameterValue = $parameterValue WHERE parameterName = '$parameterName';")
+      statement.close()
+    } catch (e: SQLException) {
+      Log.e("Error updating parameter. parameterValue = $parameterValue, parameterName = '$parameterName'")
+      e.printStackTrace()
     }
+  }
 
-    public static void insertOrUpdateParameter(String parameterName, int parameterValue) {
-        if (doestParameterExist(parameterName)) {
-            updateParameter(parameterName, parameterValue);
-//            Log.l(parameterName + "value updated into database!");
-        } else {
-            insertParameter(parameterName, parameterValue);
-//            Log.l(parameterName + "value inserted into database!");
-        }
-    }
+  fun insertParameter(parameterName: String, parameterValue: Int) {
+    val statement = connection.prepareStatement("INSERT INTO parameter values(?,?);")
+    statement.setString(1, parameterName)
+    statement.setInt(2, parameterValue)
+    statement.execute()
+    statement.close()
+  }
 
-    public static void updateParameter(String parameterName, int parameterValue) {
-        if (connection == null) {
-            try {
-                getConnection();
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
+  fun doestParameterExist(parameterName: String): Boolean {
+    return countParameters(parameterName) > 0;
+  }
 
-        try {
-            Statement statement = connection.createStatement();
-            Log.l("Updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
-            statement.executeUpdate("UPDATE parameter SET parameterValue = "+ parameterValue + " WHERE parameterName = '" + parameterName + "';");
-            statement.close();
-        } catch (SQLException e) {
-            Log.e("Error updating parameter. parameterValue = "+ parameterValue + ", parameterName = '" + parameterName + "'");
-            e.printStackTrace();
-        }
-    }
+  fun countParameters(parameterName: String): Int {
+    return executeStatement("SELECT COUNT(parameterName) FROM parameter WHERE parameterName='$parameterName';").getInt(
+      1
+    )
+  }
 
-    public static void insertParameter(String parameterName, int parameterValue) {
-        if (connection == null) {
-            try {
-                getConnection();
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        try {
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO parameter values(?,?);");
-            statement.setString(1, parameterName);
-            statement.setInt(2, parameterValue);
-            statement.execute();
-            statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static boolean doestParameterExist(String parameterName) {
-        return countParameters(parameterName) > 0;
-    }
-
-    public static int countParameters(String parameterName) {
-        ResultSet resultSet = executeStatement("SELECT COUNT(parameterName) FROM parameter WHERE parameterName='" + parameterName + "';");
-        if (resultSet != null) {
-            try {
-                return resultSet.getInt(1);
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
-        return 0;
-    }
-
-    private static ResultSet executeStatement(String queryString) {
-        if (connection == null) {
-            try {
-                getConnection();
-            } catch (ClassNotFoundException | SQLException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ResultSet result = null;
-        try {
-            Statement statement = connection.createStatement();
-            result = statement.executeQuery(queryString);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
+  fun executeStatement(queryString: String): ResultSet {
+    return connection.createStatement().executeQuery(queryString)
+  }
 }
