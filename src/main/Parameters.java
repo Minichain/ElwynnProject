@@ -16,7 +16,7 @@ public class Parameters {
     private static boolean shadersEnabled = true;
     private static float renderDistance = 400f;
     private static float updateDistance = 2000f;
-    private static Language language = Language.ENGLISH;
+    private static Language language = Language.English;
 
     /** GRAPHIC/DISPLAY SETTINGS **/
     private static int framesPerSecond;
@@ -57,7 +57,7 @@ public class Parameters {
         if (dataBaseValue != -1) {
             setLanguage(Language.values()[dataBaseValue]);
         } else {
-            setLanguage(Language.ENGLISH);
+            setLanguage(Language.English);
         }
 
         /** MusicSoundLevel **/

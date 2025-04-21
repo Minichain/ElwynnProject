@@ -21,7 +21,7 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.stb.STBImage.*;
 import static org.lwjgl.system.MemoryUtil.memAllocInt;
 import static org.lwjgl.system.MemoryUtil.memFree;
-import static utils.IOUtils.ioResourceToByteBuffer;
+import static utils.IOUtilsKt.ioResourceToByteBuffer;
 
 public class Window {
     private static GLFWWindowSizeCallback windowSizeCallback;

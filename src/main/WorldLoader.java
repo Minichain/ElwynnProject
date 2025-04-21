@@ -6,10 +6,11 @@ import scene.Camera;
 import scene.Scene;
 import scene.Tile;
 import scene.TileMap;
-import utils.IOUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+
+import static utils.IOUtilsKt.readFile;
 
 public class WorldLoader {
     private static WorldLoader instance = null;
@@ -47,7 +48,7 @@ public class WorldLoader {
         public void run() {
             long start = System.currentTimeMillis();
             try {
-                String worldFileContentOld = IOUtils.readFile("res/world/world.txt", StandardCharsets.UTF_8);
+                String worldFileContentOld = readFile("res/world/world.txt", StandardCharsets.UTF_8);
 //                Log.l(worldFileContentOld);
 
                 String startSceneString = "start_scene:name=\"" + sceneToSave + "\"";
@@ -140,7 +141,7 @@ public class WorldLoader {
         long start = System.currentTimeMillis();
         try {
             String sceneToLoad = Scene.getInstance().getSceneName();
-            String worldFileContent = IOUtils.readFile("res/world/world.txt", StandardCharsets.UTF_8);
+            String worldFileContent = readFile("res/world/world.txt", StandardCharsets.UTF_8);
 
             String startSceneString = "start_scene:name=\"" + sceneToLoad + "\"";
             int startSceneIndex = worldFileContent.indexOf(startSceneString);

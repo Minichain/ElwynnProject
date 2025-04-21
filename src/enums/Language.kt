@@ -1,27 +1,7 @@
-package enums;
+package enums
 
-public enum Language {
-    ENGLISH (0), SPANISH(1), CATALAN(2);
-
-    public int value;
-
-    Language(final int value) {
-        this.value = value;
-    }
-
-    public int getValue() {
-        return this.value;
-    }
-
-    public String toString() {
-        switch (this) {
-            case ENGLISH:
-            default:
-                return "English";
-            case SPANISH:
-                return "Español";
-            case CATALAN:
-                return "Català";
-        }
-    }
+enum class Language(val value: Int, val string: String) {
+  English(0, "English"),
+  Spanish(1, "Español"),
+  Catalan(2, "Català")
 }

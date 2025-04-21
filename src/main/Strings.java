@@ -37,14 +37,14 @@ public class Strings {
     public static void updateStrings() {
         String pathName;
         switch (Parameters.getLanguage()) {
-            case ENGLISH:
+            case English:
             default:
                 pathName = englishStringPath;
                 break;
-            case SPANISH:
+            case Spanish:
                 pathName = spanishStringPath;
                 break;
-            case CATALAN:
+            case Catalan:
                 pathName = catalanStringPath;
                 break;
         }
